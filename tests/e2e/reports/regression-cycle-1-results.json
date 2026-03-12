@@ -1,0 +1,549 @@
+{
+  "config": {
+    "configFile": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/regression-cycle-1.config.ts",
+    "rootDir": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/subhang/Desktop/Projects/auto-levleup/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "regression-cycle-1",
+        "name": "regression-cycle-1",
+        "testDir": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "regression-cycle-1*.spec.ts"
+        ],
+        "timeout": 120000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "reports/regression-cycle-1-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "regression-cycle-1-rerun.spec.ts",
+      "file": "regression-cycle-1-rerun.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "BUG-002-RETEST: Story point viewer shows h1 heading",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "regression-cycle-1",
+              "projectName": "regression-cycle-1",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 25913,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('h1')\nExpected substring: \u001b[32m\"Dashboard\"\u001b[39m\nReceived string:    \u001b[31m\"Student Portal\"\u001b[39m\nTimeout: 25000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 25000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    29 × locator resolved to <h1 class=\"text-2xl font-bold\">Student Portal</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Student Portal\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('h1')\nExpected substring: \u001b[32m\"Dashboard\"\u001b[39m\nReceived string:    \u001b[31m\"Student Portal\"\u001b[39m\nTimeout: 25000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 25000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    29 × locator resolved to <h1 class=\"text-2xl font-bold\">Student Portal</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Student Portal\"\u001b[22m\n\n    at loginAsStudent (/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/regression-cycle-1-rerun.spec.ts:18:36)\n    at /Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/regression-cycle-1-rerun.spec.ts:24:3",
+                    "location": {
+                      "file": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/regression-cycle-1-rerun.spec.ts",
+                      "column": 36,
+                      "line": 18
+                    },
+                    "snippet": "  16 |   await page.fill('#password', PASSWORD);\n  17 |   await page.click('button[type=\"submit\"]:has-text(\"Sign In\")');\n> 18 |   await expect(page.locator('h1')).toContainText('Dashboard', { timeout: 25_000 });\n     |                                    ^\n  19 | }\n  20 |\n  21 | // ─── BUG-002 L3 Re-test ─────────────────────────────────────────────────"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/regression-cycle-1-rerun.spec.ts",
+                        "column": 36,
+                        "line": 18
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('h1')\nExpected substring: \u001b[32m\"Dashboard\"\u001b[39m\nReceived string:    \u001b[31m\"Student Portal\"\u001b[39m\nTimeout: 25000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 25000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    29 × locator resolved to <h1 class=\"text-2xl font-bold\">Student Portal</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Student Portal\"\u001b[22m\n\n\n  16 |   await page.fill('#password', PASSWORD);\n  17 |   await page.click('button[type=\"submit\"]:has-text(\"Sign In\")');\n> 18 |   await expect(page.locator('h1')).toContainText('Dashboard', { timeout: 25_000 });\n     |                                    ^\n  19 | }\n  20 |\n  21 | // ─── BUG-002 L3 Re-test ─────────────────────────────────────────────────\n    at loginAsStudent (/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/regression-cycle-1-rerun.spec.ts:18:36)\n    at /Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/regression-cycle-1-rerun.spec.ts:24:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-03-09T16:06:05.698Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/subhang/Desktop/Projects/auto-levleup/test-results/regression-cycle-1-rerun-B-2a6ec-int-viewer-shows-h1-heading-regression-cycle-1/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/subhang/Desktop/Projects/auto-levleup/test-results/regression-cycle-1-rerun-B-2a6ec-int-viewer-shows-h1-heading-regression-cycle-1/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/regression-cycle-1-rerun.spec.ts",
+                    "column": 36,
+                    "line": 18
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "607a6717a41f7142d462-553037e6b81664c61cd4",
+          "file": "regression-cycle-1-rerun.spec.ts",
+          "line": 23,
+          "column": 5
+        },
+        {
+          "title": "G5-RETEST: Study planner loads",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "regression-cycle-1",
+              "projectName": "regression-cycle-1",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 26355,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('h1')\nExpected substring: \u001b[32m\"Dashboard\"\u001b[39m\nReceived string:    \u001b[31m\"Student Portal\"\u001b[39m\nTimeout: 25000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 25000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    29 × locator resolved to <h1 class=\"text-2xl font-bold\">Student Portal</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Student Portal\"\u001b[22m\n",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('h1')\nExpected substring: \u001b[32m\"Dashboard\"\u001b[39m\nReceived string:    \u001b[31m\"Student Portal\"\u001b[39m\nTimeout: 25000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 25000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    29 × locator resolved to <h1 class=\"text-2xl font-bold\">Student Portal</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Student Portal\"\u001b[22m\n\n    at loginAsStudent (/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/regression-cycle-1-rerun.spec.ts:18:36)\n    at /Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/regression-cycle-1-rerun.spec.ts:52:3",
+                    "location": {
+                      "file": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/regression-cycle-1-rerun.spec.ts",
+                      "column": 36,
+                      "line": 18
+                    },
+                    "snippet": "  16 |   await page.fill('#password', PASSWORD);\n  17 |   await page.click('button[type=\"submit\"]:has-text(\"Sign In\")');\n> 18 |   await expect(page.locator('h1')).toContainText('Dashboard', { timeout: 25_000 });\n     |                                    ^\n  19 | }\n  20 |\n  21 | // ─── BUG-002 L3 Re-test ─────────────────────────────────────────────────"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/regression-cycle-1-rerun.spec.ts",
+                        "column": 36,
+                        "line": 18
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoContainText\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m failed\n\nLocator: locator('h1')\nExpected substring: \u001b[32m\"Dashboard\"\u001b[39m\nReceived string:    \u001b[31m\"Student Portal\"\u001b[39m\nTimeout: 25000ms\n\nCall log:\n\u001b[2m  - Expect \"toContainText\" with timeout 25000ms\u001b[22m\n\u001b[2m  - waiting for locator('h1')\u001b[22m\n\u001b[2m    29 × locator resolved to <h1 class=\"text-2xl font-bold\">Student Portal</h1>\u001b[22m\n\u001b[2m       - unexpected value \"Student Portal\"\u001b[22m\n\n\n  16 |   await page.fill('#password', PASSWORD);\n  17 |   await page.click('button[type=\"submit\"]:has-text(\"Sign In\")');\n> 18 |   await expect(page.locator('h1')).toContainText('Dashboard', { timeout: 25_000 });\n     |                                    ^\n  19 | }\n  20 |\n  21 | // ─── BUG-002 L3 Re-test ─────────────────────────────────────────────────\n    at loginAsStudent (/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/regression-cycle-1-rerun.spec.ts:18:36)\n    at /Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/regression-cycle-1-rerun.spec.ts:52:3"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-03-09T16:06:32.665Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/subhang/Desktop/Projects/auto-levleup/test-results/regression-cycle-1-rerun-G5-RETEST-Study-planner-loads-regression-cycle-1/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/subhang/Desktop/Projects/auto-levleup/test-results/regression-cycle-1-rerun-G5-RETEST-Study-planner-loads-regression-cycle-1/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/regression-cycle-1-rerun.spec.ts",
+                    "column": 36,
+                    "line": 18
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "607a6717a41f7142d462-8c52a6e2957b008855b5",
+          "file": "regression-cycle-1-rerun.spec.ts",
+          "line": 51,
+          "column": 5
+        },
+        {
+          "title": "N2-RETEST: Mobile bottom nav visible at 375px",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "regression-cycle-1",
+              "projectName": "regression-cycle-1",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 10262,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "Nav elements at 375px: 1\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-03-09T16:07:00.079Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "607a6717a41f7142d462-8c548a3fe226c9a8a8ea",
+          "file": "regression-cycle-1-rerun.spec.ts",
+          "line": 64,
+          "column": 5
+        },
+        {
+          "title": "N5-RETEST: Notification bell icon visible",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "regression-cycle-1",
+              "projectName": "regression-cycle-1",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 4296,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n    at /Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/regression-cycle-1-rerun.spec.ts:88:45",
+                    "location": {
+                      "file": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/regression-cycle-1-rerun.spec.ts",
+                      "column": 45,
+                      "line": 88
+                    },
+                    "snippet": "  86 |   const anyBellCount = await anyBell.count();\n  87 |   console.log(`Any /notifications link: ${anyBellCount}`);\n> 88 |   expect(bellCount > 0 || anyBellCount > 0).toBeTruthy();\n     |                                             ^\n  89 | });\n  90 |\n  91 | // ─── N6 Sign Out Re-test ─────────────────────────────────────────────────"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/regression-cycle-1-rerun.spec.ts",
+                        "column": 45,
+                        "line": 88
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n\n  86 |   const anyBellCount = await anyBell.count();\n  87 |   console.log(`Any /notifications link: ${anyBellCount}`);\n> 88 |   expect(bellCount > 0 || anyBellCount > 0).toBeTruthy();\n     |                                             ^\n  89 | });\n  90 |\n  91 | // ─── N6 Sign Out Re-test ─────────────────────────────────────────────────\n    at /Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/regression-cycle-1-rerun.spec.ts:88:45"
+                    }
+                  ],
+                  "stdout": [
+                    {
+                      "text": "Bell elements: 0\n"
+                    },
+                    {
+                      "text": "Any /notifications link: 0\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-03-09T16:07:10.673Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/subhang/Desktop/Projects/auto-levleup/test-results/regression-cycle-1-rerun-N-bf2d8-ification-bell-icon-visible-regression-cycle-1/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/subhang/Desktop/Projects/auto-levleup/test-results/regression-cycle-1-rerun-N-bf2d8-ification-bell-icon-visible-regression-cycle-1/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/regression-cycle-1-rerun.spec.ts",
+                    "column": 45,
+                    "line": 88
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "607a6717a41f7142d462-1d8f2a54ea02604edf3d",
+          "file": "regression-cycle-1-rerun.spec.ts",
+          "line": 76,
+          "column": 5
+        },
+        {
+          "title": "N6-RETEST: Sign out button exists",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "regression-cycle-1",
+              "projectName": "regression-cycle-1",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4311,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "Sign out buttons: 1\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-03-09T16:07:15.716Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "607a6717a41f7142d462-129ddc41711f44ccb861",
+          "file": "regression-cycle-1-rerun.spec.ts",
+          "line": 93,
+          "column": 5
+        },
+        {
+          "title": "E1-RETEST: 404 page for invalid route",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "regression-cycle-1",
+              "projectName": "regression-cycle-1",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 5885,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n    at /Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/regression-cycle-1-rerun.spec.ts:110:18",
+                    "location": {
+                      "file": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/regression-cycle-1-rerun.spec.ts",
+                      "column": 18,
+                      "line": 110
+                    },
+                    "snippet": "  108 |   const bodyText = await page.locator('body').textContent().catch(() => '');\n  109 |   console.log(`404 text visible: ${has404}, body has content: ${bodyText.length > 10}`);\n> 110 |   expect(has404).toBeTruthy();\n      |                  ^\n  111 | });\n  112 |\n  113 | // ─── E2 Spaces Cards Re-test ─────────────────────────────────────────────"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/regression-cycle-1-rerun.spec.ts",
+                        "column": 18,
+                        "line": 110
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeTruthy\u001b[2m()\u001b[22m\n\nReceived: \u001b[31mfalse\u001b[39m\n\n  108 |   const bodyText = await page.locator('body').textContent().catch(() => '');\n  109 |   console.log(`404 text visible: ${has404}, body has content: ${bodyText.length > 10}`);\n> 110 |   expect(has404).toBeTruthy();\n      |                  ^\n  111 | });\n  112 |\n  113 | // ─── E2 Spaces Cards Re-test ─────────────────────────────────────────────\n    at /Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/regression-cycle-1-rerun.spec.ts:110:18"
+                    }
+                  ],
+                  "stdout": [
+                    {
+                      "text": "404 text visible: false, body has content: true\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-03-09T16:07:20.375Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "/Users/subhang/Desktop/Projects/auto-levleup/test-results/regression-cycle-1-rerun-E-f00a4--404-page-for-invalid-route-regression-cycle-1/test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/Users/subhang/Desktop/Projects/auto-levleup/test-results/regression-cycle-1-rerun-E-f00a4--404-page-for-invalid-route-regression-cycle-1/error-context.md"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/regression-cycle-1-rerun.spec.ts",
+                    "column": 18,
+                    "line": 110
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "607a6717a41f7142d462-e17f3c7335ca47396e13",
+          "file": "regression-cycle-1-rerun.spec.ts",
+          "line": 103,
+          "column": 5
+        },
+        {
+          "title": "E2-RETEST: Spaces page shows cards or empty state",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "regression-cycle-1",
+              "projectName": "regression-cycle-1",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 6419,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "Cards: true, empty: false\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-03-09T16:07:26.973Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "607a6717a41f7142d462-7432e1842369dea728e1",
+          "file": "regression-cycle-1-rerun.spec.ts",
+          "line": 115,
+          "column": 5
+        },
+        {
+          "title": "E3-RETEST: Content loads correctly",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "regression-cycle-1",
+              "projectName": "regression-cycle-1",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4204,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-03-09T16:07:33.753Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "607a6717a41f7142d462-f00e12bc09d731bfc0ab",
+          "file": "regression-cycle-1-rerun.spec.ts",
+          "line": 127,
+          "column": 5
+        },
+        {
+          "title": "E4-RETEST: Error boundary is functional",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "regression-cycle-1",
+              "projectName": "regression-cycle-1",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5188,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-03-09T16:07:37.963Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "607a6717a41f7142d462-78fa964b95bf83a10f46",
+          "file": "regression-cycle-1-rerun.spec.ts",
+          "line": 134,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-03-09T16:06:04.953Z",
+    "duration": 98240.265,
+    "expected": 5,
+    "skipped": 0,
+    "unexpected": 4,
+    "flaky": 0
+  }
+}

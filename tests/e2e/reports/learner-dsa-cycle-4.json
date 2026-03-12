@@ -1,0 +1,189 @@
+{
+  "cycleNumber": 4,
+  "learner": "DSA Learner (tm_1773067938659_5fys6s24v)",
+  "timestamp": "2026-03-09T18:03:19.591Z",
+  "space": "Data Structures & Algorithms",
+  "spaceId": "ZikR8xEHkqIaIsugmdQg",
+  "environment": {
+    "url": "http://localhost:4570",
+    "credentials": {
+      "email": "student.test@subhang.academy",
+      "schoolCode": "SUB001"
+    },
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "testSummary": {
+    "totalChecks": 46,
+    "passed": 44,
+    "failed": 2,
+    "passRate": "95.7%",
+    "p0Issues": 0,
+    "p1Issues": 0,
+    "p2Issues": 2,
+    "p3Issues": 0
+  },
+  "workingFeatures": [
+    "L1: Login with school code + email works",
+    "L2: Spaces page loads (h1=\"My Spaces\")",
+    "L2: DSA Space card visible (text=\"Data Structures & AlgorithmsMaster data structures\")",
+    "L3: DSA Space viewer has h1: \"Data Structures & Algorithms\" [C1 DSA-003 FIXED]",
+    "L3: DSA Space viewer shows 6 story point links (partial)",
+    "L4: Arrays & Strings Foundations h1: \"Arrays & Strings Foundations\"",
+    "L4: Arrays & Strings Foundations — code blocks rendered (2 found)",
+    "L4: Arrays & Strings Foundations — Big-O notation / complexity found",
+    "UX1: Arrays & Strings Foundations — breadcrumbs/back navigation visible",
+    "L4: Hash Maps & Sets Mastery h1: \"Hash Maps & Sets Mastery\"",
+    "L4: Hash Maps & Sets Mastery — code blocks rendered (2 found)",
+    "L4: Hash Maps & Sets Mastery — Big-O notation / complexity found",
+    "UX1: Hash Maps & Sets Mastery — breadcrumbs/back navigation visible",
+    "L4: Graphs — BFS, DFS & Topological Sort h1: \"Graphs — BFS, DFS & Topological Sort\"",
+    "L4: Graphs — BFS, DFS & Topological Sort — code blocks rendered (2 found)",
+    "L4: Graphs — BFS, DFS & Topological Sort — Big-O notation / complexity found",
+    "UX1: Graphs — BFS, DFS & Topological Sort — breadcrumbs/back navigation visible",
+    "L4: Tries, Segment Trees & Advanced DS h1: \"Tries, Segment Trees & Advanced DS\"",
+    "L4: Tries, Segment Trees & Advanced DS — Big-O notation / complexity found",
+    "UX1: Tries, Segment Trees & Advanced DS — breadcrumbs/back navigation visible",
+    "L4: Linked Lists & Stack/Queue Patterns accessible (h1: \"Linked Lists & Stack/Queue Patterns\")",
+    "L4: Binary Trees & BSTs accessible (h1: \"Binary Trees & BSTs\")",
+    "L4: Advanced Graphs — Dijkstra, Union-Find, MST accessible (h1: \"Advanced Graphs — Dijkstra, Union-Find, \")",
+    "L4: Dynamic Programming I — 1D & 2D accessible (h1: \"Dynamic Programming I — 1D & 2D\")",
+    "L4: Dynamic Programming II — Advanced Patterns accessible (h1: \"Dynamic Programming II — Advanced Patter\")",
+    "L4: Greedy & Backtracking Patterns accessible (h1: \"Greedy & Backtracking Patterns\")",
+    "L4: DSA Comprehensive Quiz accessible (h1: \"DSA Comprehensive Quiz\")",
+    "L4: DSA Staff-Level Assessment accessible (h1: \"DSA Staff-Level Assessment\")",
+    "P1: Practice mode — Submit Answer button visible",
+    "P1: Submit Answer correctly disabled before answer selection",
+    "P1: Practice mode — answer options visible (14 found)",
+    "P2: Practice mode — difficulty filter visible",
+    "P1: Section/breadcrumb navigation visible in practice mode",
+    "P2: Ask AI Tutor button visible in practice mode",
+    "P1: Code blocks visible in practice mode content (2)",
+    "Q1: Quiz story point accessible: \"DSA Comprehensive Quiz\"",
+    "Q1: MCQ question type visible in quiz",
+    "Q1: MCAQ question type visible in quiz",
+    "Q1: Quiz submit/next button visible",
+    "T1: Timed Assessment h1: \"DSA Staff-Level Assessment\" [C1 DSA-010 FIXED]",
+    "T3: Timed Assessment landing shows instructions/metadata",
+    "UX1: Story point viewer responsive on mobile (375px) — h1=\"Arrays & Strings Foundations\"",
+    "P1: Search input visible in story point viewer",
+    "CQ1: Arrays content has DSA-relevant terms (8/11)"
+  ],
+  "issues": [
+    {
+      "id": "DSA-C4-001",
+      "severity": "P2",
+      "category": "content",
+      "title": "DSA Space viewer shows only 6/12 story point links",
+      "details": "Expected 12, found 6",
+      "previousCycle": "DSA-004"
+    },
+    {
+      "id": "DSA-C4-002",
+      "severity": "P2",
+      "category": "timed-assessment",
+      "title": "Start button not found on timed assessment landing",
+      "details": "At http://localhost:4570/spaces/ZikR8xEHkqIaIsugmdQg/story-points/7LgnRSSjBcZxj4PFoB1S"
+    }
+  ],
+  "contentAssessment": {
+    "storyPointsTested": 12,
+    "storyPointsAccessible": 12,
+    "totalStoryPoints": 12,
+    "codeBlocksRendered": true,
+    "bigONotationDisplayed": true,
+    "syntaxHighlighting": false,
+    "contentQualityNotes": [
+      "  No code blocks in Tries, Segment Trees & Advanced DS — may be non-code content",
+      "DSA keywords found: array, string, pointer, sliding window, complexity, O(n, O(log, hash"
+    ]
+  },
+  "uxAssessment": {
+    "navigationWorking": true,
+    "loadTimesAcceptable": false,
+    "mobileResponsive": true,
+    "uxIssues": []
+  },
+  "practiceMode": {
+    "tested": true,
+    "retryWorks": false,
+    "hintsVisible": false,
+    "solutionVisible": false,
+    "difficultyFilterWorks": true,
+    "progressPersists": false,
+    "notes": [
+      "Graphs practice: h1=\"Graphs — BFS, DFS & Topological Sort\", submit=true, options=14"
+    ]
+  },
+  "quizMode": {
+    "tested": true,
+    "questionTypesFound": [
+      "MCQ",
+      "MCAQ"
+    ],
+    "resultsDisplayed": false,
+    "submitWorks": true,
+    "notes": [
+      "Quiz: h1=\"DSA Comprehensive Quiz\", mcq=8, mcaq=4"
+    ]
+  },
+  "timedAssessment": {
+    "tested": true,
+    "h1Present": true,
+    "timerVisible": false,
+    "startButtonVisible": false,
+    "autoSubmit": null,
+    "analyticsShown": false,
+    "notes": [
+      "Timed test: h1=\"DSA Staff-Level Assessment\", timer=false, startBtn=false"
+    ]
+  },
+  "learningEffectiveness": {
+    "score": 9,
+    "notes": "44 working features, 2 total issues (0 P0, 0 P1, 2 P2). Content accessible: 12/12 story points."
+  },
+  "rawObservations": [
+    "Cached auth expired — re-logging in",
+    "Auth state saved to cache",
+    "Spaces page h1: \"My Spaces\"",
+    "Space cards found: 5 — Behavioral Interview MasteryMaster behavioral interview tech | System DesignMaster the fundamentals of system design, cover | Low-Level Design & OOPMaster object-oriented design, SOLID p | Data Structures & AlgorithmsMaster data structures and algor | System DesignMaster the fundamentals of system design, cover",
+    "DSA Space viewer h1: \"Data Structures & Algorithms\" (3138ms)",
+    "Story point links in space viewer: 6",
+    "Arrays & Strings Foundations h1: \"Arrays & Strings Foundations\"",
+    "  Code blocks: 2",
+    "  No syntax highlighting tokens found in Arrays & Strings Foundations",
+    "  Copy buttons: 0",
+    "Hash Maps & Sets Mastery h1: \"Hash Maps & Sets Mastery\"",
+    "  Code blocks: 2",
+    "  No syntax highlighting tokens found in Hash Maps & Sets Mastery",
+    "  Copy buttons: 0",
+    "Graphs — BFS, DFS & Topological Sort h1: \"Graphs — BFS, DFS & Topological Sort\"",
+    "  Code blocks: 2",
+    "  No syntax highlighting tokens found in Graphs — BFS, DFS & Topological Sort",
+    "  Copy buttons: 0",
+    "Tries, Segment Trees & Advanced DS h1: \"Tries, Segment Trees & Advanced DS\"",
+    "  Code blocks: 0",
+    "  No code blocks in Tries, Segment Trees & Advanced DS — may be non-code content",
+    "Quick check Linked Lists & Stack/Queue Patterns: h1=\"Linked Lists & Stack/Queue Patterns\"",
+    "Quick check Binary Trees & BSTs: h1=\"Binary Trees & BSTs\"",
+    "Quick check Advanced Graphs — Dijkstra, Union-Find, MST: h1=\"Advanced Graphs — Dijkstra, Union-Find, MST\"",
+    "Quick check Dynamic Programming I — 1D & 2D: h1=\"Dynamic Programming I — 1D & 2D\"",
+    "Quick check Dynamic Programming II — Advanced Patterns: h1=\"Dynamic Programming II — Advanced Patterns\"",
+    "Quick check Greedy & Backtracking Patterns: h1=\"Greedy & Backtracking Patterns\"",
+    "Quick check DSA Comprehensive Quiz: h1=\"DSA Comprehensive Quiz\"",
+    "Quick check DSA Staff-Level Assessment: h1=\"DSA Staff-Level Assessment\"",
+    "Story points accessible: 12/12",
+    "Practice mode (Graphs) h1: \"Graphs — BFS, DFS & Topological Sort\"",
+    "Submit button: visible=true, disabled=true",
+    "Answer options: radio=12, checkbox=0, true/false=2",
+    "Submit button still disabled after selecting answer",
+    "Difficulty filter: 4",
+    "Quiz h1: \"DSA Comprehensive Quiz\"",
+    "Timed Assessment h1: \"DSA Staff-Level Assessment\"",
+    "Timer elements: 0",
+    "Timer not visible on landing — may appear after starting test",
+    "DSA keywords found: array, string, pointer, sliding window, complexity, O(n, O(log, hash"
+  ]
+}

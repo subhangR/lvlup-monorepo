@@ -1,0 +1,50 @@
+{
+  "name": "@levelup/parent-web",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint src --ext .ts,.tsx",
+    "typecheck": "tsc --noEmit",
+    "test": "echo 'No unit tests for parent-web'",
+    "analyze": "ANALYZE=true vite build"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "@levelup/shared-hooks": "workspace:*",
+    "@levelup/shared-services": "workspace:*",
+    "@levelup/shared-stores": "workspace:*",
+    "@levelup/shared-ui": "workspace:*",
+    "@levelup/shared-utils": "workspace:*",
+    "@tanstack/react-query": "^5.62.8",
+    "clsx": "^2.1.1",
+    "firebase": "^11.2.0",
+    "lucide-react": "^0.462.0",
+    "next-themes": "^0.3.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.71.2",
+    "react-router-dom": "^7.1.0",
+    "sonner": "^2.0.7",
+    "tailwind-merge": "^2.6.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@levelup/eslint-config": "workspace:*",
+    "@levelup/tailwind-config": "workspace:*",
+    "@types/react": "^18.3.23",
+    "@types/react-dom": "^18.3.7",
+    "@vitejs/plugin-react-swc": "^3.11.0",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "rollup-plugin-visualizer": "^7.0.1",
+    "tailwindcss": "^3.4.17",
+    "terser": "^5.46.0",
+    "typescript": "^5.8.3",
+    "vite": "^5.4.0",
+    "vite-plugin-compression": "^0.5.1"
+  }
+}

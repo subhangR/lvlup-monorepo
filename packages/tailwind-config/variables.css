@@ -1,0 +1,236 @@
+/*
+ * LevelUp Design System — Canonical CSS Variables
+ *
+ * Single source of truth for all color tokens across all 5 apps.
+ * Import this file in each app's index.css instead of duplicating variables.
+ *
+ * Usage:
+ *   @import '@levelup/tailwind-config/variables.css';
+ *   @tailwind base;
+ *   @tailwind components;
+ *   @tailwind utilities;
+ */
+
+/* ─── Font Display: Swap ─── */
+/* Ensures no FOIT (flash of invisible text) for any web fonts.
+   System font stack is used by default, so this primarily guards
+   future custom font additions and tenant-specific branding fonts. */
+@font-face {
+  font-family: 'system-ui';
+  font-display: swap;
+  src: local('system-ui'), local('-apple-system'), local('Segoe UI'), local('Roboto'), local('sans-serif');
+}
+
+@layer base {
+  :root {
+    /* ─── Core ─── */
+    --background: 0 0% 100%;
+    --foreground: 222.2 47.4% 11.2%;
+
+    /* ─── Card ─── */
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 47.4% 11.2%;
+    --card-border: 214.3 31.8% 91.4%;
+
+    /* ─── Popover ─── */
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+
+    /* ─── Primary ─── */
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --primary-glow: 221.2 83.2% 53.3%;
+
+    /* ─── Secondary ─── */
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    /* ─── Muted ─── */
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    /* ─── Accent ─── */
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    /* ─── Destructive ─── */
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* ─── Semantic: Success / Warning / Info ─── */
+    --success: 142.1 76.2% 36.3%;
+    --success-foreground: 355.7 100% 97.3%;
+    --warning: 32.1 94.6% 43.7%;
+    --warning-foreground: 26 83.3% 14.1%;
+    --info: 221.2 83.2% 53.3%;
+    --info-foreground: 210 40% 98%;
+
+    /* ─── Borders / Input / Ring ─── */
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.75rem;
+
+    /* ─── Chart Colors ─── */
+    --chart-1: 221.2 83.2% 53.3%;
+    --chart-2: 142 71% 45%;
+    --chart-3: 45 93% 47%;
+    --chart-4: 263 70% 50%;
+    --chart-5: 220 9% 46%;
+
+    /* ─── Spacing Scale ─── */
+    --spacing-page-x: clamp(1rem, 3vw, 2rem);
+    --spacing-page-y: clamp(1rem, 2vw, 1.5rem);
+    --spacing-section: clamp(1.5rem, 4vw, 3rem);
+    --spacing-card: clamp(1rem, 2vw, 1.5rem);
+    --spacing-stack-sm: 0.5rem;
+    --spacing-stack-md: 1rem;
+    --spacing-stack-lg: 1.5rem;
+
+    /* ─── Sidebar ─── */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 221.2 83.2% 53.3%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 221.2 83.2% 53.3%;
+  }
+
+  .dark {
+    /* ─── Core ─── */
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    /* ─── Card ─── */
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --card-border: 217.2 32.6% 17.5%;
+
+    /* ─── Popover ─── */
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    /* ─── Primary ─── */
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary-glow: 217.2 91.2% 59.8%;
+
+    /* ─── Secondary ─── */
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    /* ─── Muted ─── */
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    /* ─── Accent ─── */
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    /* ─── Destructive ─── */
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* ─── Semantic: Success / Warning / Info ─── */
+    --success: 142.1 70.6% 45.3%;
+    --success-foreground: 144.9 80.4% 10%;
+    --warning: 32.1 94.6% 43.7%;
+    --warning-foreground: 26 83.3% 14.1%;
+    --info: 217.2 91.2% 59.8%;
+    --info-foreground: 222.2 47.4% 11.2%;
+
+    /* ─── Borders / Input / Ring ─── */
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+
+    /* ─── Chart Colors ─── */
+    --chart-1: 217.2 91.2% 59.8%;
+    --chart-2: 142 71% 45%;
+    --chart-3: 45 93% 47%;
+    --chart-4: 263 70% 50%;
+    --chart-5: 220 9% 46%;
+
+    /* ─── Sidebar ─── */
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 217.2 91.2% 59.8%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  /* ─── High Contrast Mode ─── */
+  .high-contrast {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 0%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 0%;
+    --card-border: 0 0% 0%;
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 25%;
+    --border: 0 0% 0%;
+    --input: 0 0% 75%;
+    --ring: 221.2 83.2% 40%;
+    --primary: 221.2 83.2% 40%;
+    --primary-foreground: 0 0% 100%;
+    --destructive: 0 100% 40%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 142 76% 28%;
+    --success-foreground: 0 0% 100%;
+    --warning: 32 95% 35%;
+    --warning-foreground: 0 0% 100%;
+  }
+
+  .dark.high-contrast {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 5%;
+    --card-foreground: 0 0% 100%;
+    --card-border: 0 0% 100%;
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 80%;
+    --border: 0 0% 100%;
+    --input: 0 0% 30%;
+    --ring: 217.2 91.2% 70%;
+    --primary: 217.2 91.2% 70%;
+    --primary-foreground: 0 0% 0%;
+    --destructive: 0 100% 60%;
+    --destructive-foreground: 0 0% 0%;
+    --success: 142 70% 55%;
+    --success-foreground: 0 0% 0%;
+    --warning: 48 96% 55%;
+    --warning-foreground: 0 0% 0%;
+  }
+
+  /* ─── Global Focus Styles ─── */
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
+  /* ─── Reduced Motion ─── */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* ─── Global Resets ─── */
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}

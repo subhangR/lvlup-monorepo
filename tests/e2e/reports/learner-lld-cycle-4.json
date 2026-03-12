@@ -1,0 +1,231 @@
+{
+  "cycleNumber": 4,
+  "learner": "LLD Learner (tm_1773067959781_vgloe0tc9)",
+  "timestamp": "2026-03-09T18:09:51.876Z",
+  "space": "Low-Level Design & OOP",
+  "spaceId": "XTw3bLqiT4dMyvFJkI0g",
+  "environment": {
+    "url": "http://localhost:4570",
+    "credentials": {
+      "email": "student.test@subhang.academy",
+      "schoolCode": "SUB001"
+    },
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "testSummary": {
+    "totalChecks": 52,
+    "passed": 46,
+    "failed": 6,
+    "passRate": "88.5%",
+    "p0Issues": 0,
+    "p1Issues": 0,
+    "p2Issues": 6,
+    "p3Issues": 0
+  },
+  "workingFeatures": [
+    "L1: Login with school code + email works",
+    "L2: Spaces page loads (h1=\"My Spaces\")",
+    "L2: LLD Space card visible (text=\"Low-Level Design & OOPMaster object-oriented design, SOLID p\")",
+    "L3: LLD Space viewer has h1: \"Low-Level Design & OOP\"",
+    "L3: LLD Space viewer shows 6 story point links (partial)",
+    "L4: OOP Fundamentals & SOLID Principles accessible (h1: \"OOP Fundamentals & SOLID Principles\")",
+    "CQ1: OOP Fundamentals content has SOLID keywords (9/9)",
+    "CQ1: OOP Fundamentals — UML/class diagram references found (2)",
+    "UX1: OOP Fundamentals & SOLID Principles — back navigation visible",
+    "UX2: OOP Fundamentals & SOLID Principles — section navigation/filter elements present",
+    "L4: Design Patterns — Creational accessible (h1: \"Design Patterns — Creational\")",
+    "L4: Design Patterns — Creational — code blocks rendered (2 found)",
+    "CQ2: Creational Patterns content quality (7/7 keywords)",
+    "UX1: Design Patterns — Creational — back navigation visible",
+    "UX2: Design Patterns — Creational — section navigation/filter elements present",
+    "L4: LLD — Parking Lot & Elevator System accessible (h1: \"LLD — Parking Lot & Elevator System\")",
+    "CQ3: Parking Lot scenario content completeness (6/9)",
+    "UX1: LLD — Parking Lot & Elevator System — back navigation visible",
+    "UX2: LLD — Parking Lot & Elevator System — section navigation/filter elements present",
+    "L4: CQRS, Event Sourcing & Domain-Driven Design accessible (h1: \"CQRS, Event Sourcing & Domain-Driven Design\")",
+    "CQ4: CQRS/Event Sourcing/DDD content (8/8 keywords)",
+    "UX1: CQRS, Event Sourcing & Domain-Driven Design — back navigation visible",
+    "UX2: CQRS, Event Sourcing & Domain-Driven Design — section navigation/filter elements present",
+    "L4: Design Patterns — Structural accessible (h1: \"Design Patterns — Structural\")",
+    "L4: Design Patterns — Behavioral accessible (h1: \"Design Patterns — Behavioral\")",
+    "L4: Clean Architecture & Dependency Injection accessible (h1: \"Clean Architecture & Dependency Injectio\")",
+    "L4: LLD — Library Management & Hotel Booking accessible (h1: \"LLD — Library Management & Hotel Booking\")",
+    "L4: LLD — Social Media Feed & Notification System accessible (h1: \"LLD — Social Media Feed & Notification S\")",
+    "L4: LLD — Chess Game & Card Game Engine accessible (h1: \"LLD — Chess Game & Card Game Engine\")",
+    "L4: LLD Comprehensive Quiz accessible (h1: \"LLD Comprehensive Quiz\")",
+    "L4: LLD Staff-Level Assessment accessible (h1: \"LLD Staff-Level Assessment\")",
+    "P1: Practice mode — Submit button visible",
+    "P1: Practice mode — answer options visible (11 found, radio=4, textarea=1)",
+    "P2: Practice mode — long-form textarea accepts text input",
+    "P2: Ask AI Tutor button visible in practice mode",
+    "CQ3: LLD Parking Lot scenario content loaded",
+    "CQ3: Parking Lot scenario includes class design guidance",
+    "Q1: LLD Quiz story point accessible: \"LLD Comprehensive Quiz\"",
+    "Q1: MCQ question type in LLD Quiz",
+    "Q1: Quiz submit/next button visible and clickable",
+    "T1: LLD Timed Assessment h1: \"LLD Staff-Level Assessment\"",
+    "T3: Timed Assessment shows instructions/metadata",
+    "CQ5: LLD Timed Assessment references LLD concepts (4 keywords)",
+    "UX1: LLD story point responsive on mobile (375px) — h1=\"OOP Fundamentals & SOLID Princ\"",
+    "CQ1: OOP content has strong LLD-relevant terms (9/10)",
+    "CQ2: Behavioral Patterns content quality (6/8 keywords)"
+  ],
+  "issues": [
+    {
+      "id": "LLD-C4-001",
+      "severity": "P2",
+      "category": "content",
+      "title": "LLD Space viewer shows only 6/12 story point links",
+      "details": "Expected 12, found 6"
+    },
+    {
+      "id": "LLD-C4-002",
+      "severity": "P2",
+      "category": "content-quality",
+      "title": "No code blocks in OOP Fundamentals & SOLID Principles",
+      "details": "Expected code examples in standard story point"
+    },
+    {
+      "id": "LLD-C4-003",
+      "severity": "P2",
+      "category": "content-quality",
+      "title": "No code blocks in LLD — Parking Lot & Elevator System",
+      "details": "Expected code examples in practice story point"
+    },
+    {
+      "id": "LLD-C4-004",
+      "severity": "P2",
+      "category": "content-quality",
+      "title": "No code blocks in CQRS, Event Sourcing & Domain-Driven Design",
+      "details": "Expected code examples in standard story point"
+    },
+    {
+      "id": "LLD-C4-005",
+      "severity": "P2",
+      "category": "timed-assessment",
+      "title": "Timer not visible on LLD timed assessment landing",
+      "details": "At http://localhost:4570/spaces/XTw3bLqiT4dMyvFJkI0g/story-points/U8zyZhJtJX8MzHmN3NC6"
+    },
+    {
+      "id": "LLD-C4-006",
+      "severity": "P2",
+      "category": "timed-assessment",
+      "title": "Start button not found on LLD timed assessment",
+      "details": "At http://localhost:4570/spaces/XTw3bLqiT4dMyvFJkI0g/story-points/U8zyZhJtJX8MzHmN3NC6"
+    }
+  ],
+  "contentAssessment": {
+    "storyPointsTested": 12,
+    "storyPointsAccessible": 12,
+    "totalStoryPoints": 12,
+    "codeBlocksRendered": true,
+    "umlDiagramsFound": true,
+    "solidPrinciplesContent": true,
+    "designPatternsContent": true,
+    "lldScenariosAccessible": true,
+    "contentQualityNotes": [
+      "  OOP/SOLID keywords: encapsulation, inheritance, polymorphism, abstraction, SOLID, single responsibility, open, closed, interface",
+      "  Creational pattern keywords: factory, singleton, builder, prototype, abstract factory, creational, pattern",
+      "  Parking Lot scenario keywords: parking, vehicle, floor, ticket, entry, class",
+      "  DDD/CQRS keywords: CQRS, event sourcing, domain, aggregate, bounded context, command, query, event",
+      "LLD timed assessment keywords: design, class, pattern, SOLID",
+      "LLD/OOP keywords found: encapsulation, inheritance, polymorphism, abstraction, class, interface, method, principle, SOLID",
+      "Behavioral patterns keywords: observer, strategy, command, template, behavioral, pattern"
+    ]
+  },
+  "uxAssessment": {
+    "navigationWorking": true,
+    "loadTimesAcceptable": false,
+    "mobileResponsive": true,
+    "uxIssues": []
+  },
+  "practiceMode": {
+    "tested": true,
+    "retryWorks": false,
+    "hintsVisible": false,
+    "solutionVisible": false,
+    "longFormAnswerWorks": true,
+    "aiEvaluationFeedback": false,
+    "progressPersists": false,
+    "notes": [
+      "Clean Architecture practice: h1=\"Clean Architecture & Dependency Injection\", submit=true, options=11 (radio=4, textarea=1)",
+      "Parking Lot: h1=\"LLD — Parking Lot & Elevator System\""
+    ]
+  },
+  "quizMode": {
+    "tested": true,
+    "questionTypesFound": [
+      "MCQ"
+    ],
+    "resultsDisplayed": false,
+    "submitWorks": true,
+    "notes": [
+      "LLD Quiz: h1=\"LLD Comprehensive Quiz\", questionTypes=MCQ, mcq=12, mcaq=0, textarea=0"
+    ]
+  },
+  "timedAssessment": {
+    "tested": true,
+    "h1Present": true,
+    "timerVisible": false,
+    "startButtonVisible": false,
+    "autoSubmit": null,
+    "analyticsShown": false,
+    "notes": [
+      "LLD timed test: h1=\"LLD Staff-Level Assessment\", timer=false, startBtn=false, lldKeywords=4"
+    ]
+  },
+  "learningEffectiveness": {
+    "score": 7,
+    "notes": "46 working features, 6 total issues (0 P0, 0 P1, 6 P2). Content accessible: 12/12 story points."
+  },
+  "rawObservations": [
+    "Auth state saved to cache",
+    "Spaces page h1: \"My Spaces\"",
+    "Space cards found: 5 — Behavioral Interview MasteryMaster behavioral interview tech | System DesignMaster the fundamentals of system design, cover | Low-Level Design & OOPMaster object-oriented design, SOLID p | Data Structures & AlgorithmsMaster data structures and algor | System DesignMaster the fundamentals of system design, cover",
+    "LLD Space viewer h1: \"Low-Level Design & OOP\" (3168ms)",
+    "Story point links in LLD space viewer: 6",
+    "OOP Fundamentals & SOLID Principles h1: \"OOP Fundamentals & SOLID Principles\" (3130ms)",
+    "  Code blocks in OOP Fundamentals & SOLID Principles: 0",
+    "  OOP/SOLID keywords: encapsulation, inheritance, polymorphism, abstraction, SOLID, single responsibility, open, closed, interface",
+    "  UML-related terms: interface, abstract",
+    "  Section/sidebar elements: 23",
+    "Design Patterns — Creational h1: \"Design Patterns — Creational\" (3137ms)",
+    "  Code blocks in Design Patterns — Creational: 2",
+    "  No syntax highlighting tokens in Design Patterns — Creational",
+    "  Creational pattern keywords: factory, singleton, builder, prototype, abstract factory, creational, pattern",
+    "  Section/sidebar elements: 23",
+    "LLD — Parking Lot & Elevator System h1: \"LLD — Parking Lot & Elevator System\" (3144ms)",
+    "  Code blocks in LLD — Parking Lot & Elevator System: 0",
+    "  Parking Lot scenario keywords: parking, vehicle, floor, ticket, entry, class",
+    "  Section/sidebar elements: 23",
+    "CQRS, Event Sourcing & Domain-Driven Design h1: \"CQRS, Event Sourcing & Domain-Driven Design\" (3135ms)",
+    "  Code blocks in CQRS, Event Sourcing & Domain-Driven Design: 0",
+    "  DDD/CQRS keywords: CQRS, event sourcing, domain, aggregate, bounded context, command, query, event",
+    "  Section/sidebar elements: 23",
+    "Quick check Design Patterns — Structural: h1=\"Design Patterns — Structural\"",
+    "Quick check Design Patterns — Behavioral: h1=\"Design Patterns — Behavioral\"",
+    "Quick check Clean Architecture & Dependency Injection: h1=\"Clean Architecture & Dependency Injection\"",
+    "Quick check LLD — Library Management & Hotel Booking: h1=\"LLD — Library Management & Hotel Booking\"",
+    "Quick check LLD — Social Media Feed & Notification System: h1=\"LLD — Social Media Feed & Notification System\"",
+    "Quick check LLD — Chess Game & Card Game Engine: h1=\"LLD — Chess Game & Card Game Engine\"",
+    "Quick check LLD Comprehensive Quiz: h1=\"LLD Comprehensive Quiz\"",
+    "Quick check LLD Staff-Level Assessment: h1=\"LLD Staff-Level Assessment\"",
+    "Story points accessible: 12/12",
+    "Practice mode (Clean Architecture) h1: \"Clean Architecture & Dependency Injection\"",
+    "Answer options: radio=4, checkbox=4, textarea=1, tf=2",
+    "Submit button visible: true",
+    "  Textarea maxlength: null",
+    "  Character count indicator: \"null\"",
+    "Parking Lot h1: \"LLD — Parking Lot & Elevator System\"",
+    "LLD Quiz h1: \"LLD Comprehensive Quiz\"",
+    "Quiz options: radio=12, checkbox=0, textarea=0",
+    "LLD Timed Assessment h1: \"LLD Staff-Level Assessment\"",
+    "Timer elements: 0",
+    "LLD timed assessment keywords: design, class, pattern, SOLID",
+    "LLD/OOP keywords found: encapsulation, inheritance, polymorphism, abstraction, class, interface, method, principle, SOLID",
+    "Behavioral patterns keywords: observer, strategy, command, template, behavioral, pattern"
+  ]
+}

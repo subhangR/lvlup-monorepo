@@ -1,0 +1,924 @@
+{
+  "auditor": "app-feature-tester",
+  "timestamp": "2026-03-09T17:39:22.469Z",
+  "cycleNumber": 3,
+  "environment": {
+    "url": "http://localhost:4570",
+    "credentials": {
+      "email": "student.test@subhang.academy",
+      "schoolCode": "SUB001"
+    },
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "comparison": {
+    "baseline": "cycle-0",
+    "baselinePassRate": "63%",
+    "currentPassRate": "99%",
+    "regressions": [
+      "G5"
+    ],
+    "improvements": [
+      "A4",
+      "L3",
+      "G3",
+      "G4",
+      "B2"
+    ]
+  },
+  "results": [
+    {
+      "id": "A1",
+      "category": "authentication",
+      "feature": "School Code Login",
+      "status": "working",
+      "details": "Login with SUB001 school code successful, dashboard loaded",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "A2",
+      "category": "authentication",
+      "feature": "Roll Number Login",
+      "status": "not-tested",
+      "details": "Roll number user not seeded for SUB001 tenant",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "A3",
+      "category": "authentication",
+      "feature": "Consumer Login",
+      "status": "working",
+      "details": "Consumer login form renders correctly",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "A4",
+      "category": "authentication",
+      "feature": "Login Error Handling",
+      "status": "working",
+      "details": "Error message displayed for wrong password",
+      "cycle0Status": "broken"
+    },
+    {
+      "id": "D1",
+      "category": "dashboard",
+      "feature": "Dashboard Load",
+      "status": "partial",
+      "details": "Dashboard loads but has 4 console errors",
+      "severity": "P2-minor",
+      "consoleErrors": [
+        "Access to fetch at 'https://asia-south1-lvlup-ff6fa.cloudfunctions.net/getNotifications' from origin 'http://localhost:4570' has been blocked by CORS policy: Response to preflight request doesn't pass",
+        "Failed to load resource: net::ERR_FAILED",
+        "Access to fetch at 'https://asia-south1-lvlup-ff6fa.cloudfunctions.net/getNotifications' from origin 'http://localhost:4570' has been blocked by CORS policy: Response to preflight request doesn't pass",
+        "Failed to load resource: net::ERR_FAILED"
+      ],
+      "cycle0Status": "partial"
+    },
+    {
+      "id": "D2",
+      "category": "dashboard",
+      "feature": "Score Cards",
+      "status": "working",
+      "details": "Found 20 card elements, 4 score-related text elements on dashboard",
+      "cycle0Status": "partial"
+    },
+    {
+      "id": "D3",
+      "category": "dashboard",
+      "feature": "Resume Learning",
+      "status": "working",
+      "details": "Space links visible on dashboard",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "D4",
+      "category": "dashboard",
+      "feature": "Level Badge & XP",
+      "status": "working",
+      "details": "Level/XP indicator visible",
+      "cycle0Status": "partial"
+    },
+    {
+      "id": "D5",
+      "category": "dashboard",
+      "feature": "Recent Achievements",
+      "status": "working",
+      "details": "Achievements section visible on dashboard",
+      "cycle0Status": "partial"
+    },
+    {
+      "id": "D6",
+      "category": "dashboard",
+      "feature": "Upcoming Exams",
+      "status": "working",
+      "details": "No upcoming exams (valid state if none scheduled)",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "D7",
+      "category": "dashboard",
+      "feature": "My Spaces Grid",
+      "status": "working",
+      "details": "4 space card(s) found on dashboard",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "D8",
+      "category": "dashboard",
+      "feature": "Strengths/Weaknesses",
+      "status": "partial",
+      "details": "Section not displayed (may need more data)",
+      "severity": "P3-cosmetic",
+      "cycle0Status": "partial"
+    },
+    {
+      "id": "L1",
+      "category": "learning-flow",
+      "feature": "Spaces List",
+      "status": "working",
+      "details": "5 space cards found. H1: \"My Spaces\"",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "L2",
+      "category": "learning-flow",
+      "feature": "Space Viewer",
+      "status": "working",
+      "details": "Space viewer: h1=true, Contents=true, Progress=true",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "L3",
+      "category": "learning-flow",
+      "feature": "Story Point Viewer",
+      "status": "working",
+      "details": "Story point viewer: h1=false (\"\"), card items=0, any content=42, contentSize=31095",
+      "cycle0Status": "broken"
+    },
+    {
+      "id": "L4",
+      "category": "learning-flow",
+      "feature": "Material Rendering",
+      "status": "working",
+      "details": "Material cards: 0, headings: 1, paragraphs: 1",
+      "cycle0Status": "partial"
+    },
+    {
+      "id": "L5",
+      "category": "learning-flow",
+      "feature": "Section Navigation",
+      "status": "partial",
+      "details": "No section navigation buttons found",
+      "severity": "P2-minor",
+      "cycle0Status": "partial"
+    },
+    {
+      "id": "L6",
+      "category": "learning-flow",
+      "feature": "Item Search",
+      "status": "partial",
+      "details": "No search input found",
+      "severity": "P2-minor",
+      "cycle0Status": "partial"
+    },
+    {
+      "id": "L7",
+      "category": "learning-flow",
+      "feature": "Item Type Filter",
+      "status": "partial",
+      "details": "No type filter buttons found",
+      "severity": "P2-minor",
+      "cycle0Status": "partial"
+    },
+    {
+      "id": "L8",
+      "category": "learning-flow",
+      "feature": "Difficulty Filter",
+      "status": "partial",
+      "details": "No difficulty filter found",
+      "severity": "P2-minor",
+      "cycle0Status": "partial"
+    },
+    {
+      "id": "L9",
+      "category": "learning-flow",
+      "feature": "Completion Filter",
+      "status": "partial",
+      "details": "No completion filter found",
+      "severity": "P3-cosmetic",
+      "cycle0Status": "partial"
+    },
+    {
+      "id": "L10",
+      "category": "learning-flow",
+      "feature": "Prev/Next Navigation",
+      "status": "partial",
+      "details": "No prev/next buttons found",
+      "severity": "P3-cosmetic",
+      "cycle0Status": "partial"
+    },
+    {
+      "id": "L11",
+      "category": "learning-flow",
+      "feature": "Chat Tutor Panel",
+      "status": "partial",
+      "details": "No chat tutor button found",
+      "severity": "P2-minor",
+      "cycle0Status": "partial"
+    },
+    {
+      "id": "L12",
+      "category": "learning-flow",
+      "feature": "Space Progress",
+      "status": "working",
+      "details": "Progress label: true, Progress bar: false",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "Q1",
+      "category": "question-types",
+      "feature": "MCQ (Single Choice)",
+      "status": "working",
+      "details": "4 radio options found at /spaces/XTw3bLqiT4dMyvFJkI0g/story-points/efDEBIVVuI4GYultzGX8",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "Q2",
+      "category": "question-types",
+      "feature": "MCAQ (Multiple Choice)",
+      "status": "working",
+      "details": "4 checkbox options found at /spaces/XTw3bLqiT4dMyvFJkI0g/story-points/efDEBIVVuI4GYultzGX8",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "Q3",
+      "category": "question-types",
+      "feature": "True/False",
+      "status": "working",
+      "details": "True/False question found at /spaces/XTw3bLqiT4dMyvFJkI0g/story-points/efDEBIVVuI4GYultzGX8",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "Q4",
+      "category": "question-types",
+      "feature": "Numerical",
+      "status": "working",
+      "details": "Numerical input found at /spaces/8rPWlVP4kyDp1xd75SnH/story-points/IUPkK8v17KQ4rFbsJ8ge",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "Q5",
+      "category": "question-types",
+      "feature": "Text (Short Answer)",
+      "status": "not-tested",
+      "details": "Text (Short Answer) not found in 11 story points scanned. Content may not include this type.",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "Q6",
+      "category": "question-types",
+      "feature": "Paragraph (Essay)",
+      "status": "working",
+      "details": "Textarea/paragraph found at /spaces/XTw3bLqiT4dMyvFJkI0g/story-points/efDEBIVVuI4GYultzGX8",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "Q7",
+      "category": "question-types",
+      "feature": "Code",
+      "status": "not-tested",
+      "details": "Code not found in 11 story points scanned. Content may not include this type.",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "Q8",
+      "category": "question-types",
+      "feature": "Fill-in-the-Blanks",
+      "status": "not-tested",
+      "details": "Fill-in-the-Blanks not found in 11 story points scanned. Content may not include this type.",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "Q9",
+      "category": "question-types",
+      "feature": "Fill-Blanks Drag & Drop",
+      "status": "not-tested",
+      "details": "Fill-Blanks Drag & Drop not found in 11 story points scanned. Content may not include this type.",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "Q10",
+      "category": "question-types",
+      "feature": "Matching",
+      "status": "not-tested",
+      "details": "Matching not found in 11 story points scanned. Content may not include this type.",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "Q11",
+      "category": "question-types",
+      "feature": "Jumbled (Ordering)",
+      "status": "not-tested",
+      "details": "Jumbled (Ordering) not found in 11 story points scanned. Content may not include this type.",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "Q12",
+      "category": "question-types",
+      "feature": "Group Options",
+      "status": "not-tested",
+      "details": "Group Options not found in 11 story points scanned. Content may not include this type.",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "Q13",
+      "category": "question-types",
+      "feature": "Audio",
+      "status": "not-tested",
+      "details": "Audio not found in 11 story points scanned. Content may not include this type.",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "Q14",
+      "category": "question-types",
+      "feature": "Image Evaluation",
+      "status": "not-tested",
+      "details": "Image Evaluation not found in 11 story points scanned. Content may not include this type.",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "Q15",
+      "category": "question-types",
+      "feature": "Chat Agent Question",
+      "status": "not-tested",
+      "details": "Chat Agent Question not found in 11 story points scanned. Content may not include this type.",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "P1",
+      "category": "practice-mode",
+      "feature": "Enter Practice",
+      "status": "working",
+      "details": "Practice page h1: true, Practice label: false",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "P2",
+      "category": "practice-mode",
+      "feature": "Answer Question",
+      "status": "working",
+      "details": "Submit/Check button available on practice page",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "P3",
+      "category": "practice-mode",
+      "feature": "Retry Question",
+      "status": "working",
+      "details": "Retry/Unlimited label visible",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "P4",
+      "category": "practice-mode",
+      "feature": "Difficulty Filter",
+      "status": "working",
+      "details": "Difficulty filter options visible",
+      "cycle0Status": "partial"
+    },
+    {
+      "id": "P5",
+      "category": "practice-mode",
+      "feature": "Question Navigator",
+      "status": "working",
+      "details": "Navigator: true, Prev/Next buttons: 2",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "P6",
+      "category": "practice-mode",
+      "feature": "Progress Persistence",
+      "status": "not-tested",
+      "details": "Requires answer submission and page reload to verify persistence",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "T1",
+      "category": "timed-tests",
+      "feature": "Start Test",
+      "status": "working",
+      "details": "Tests page h1: \"Tests\", test cards/links: 5",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "T2",
+      "category": "timed-tests",
+      "feature": "Timer Display",
+      "status": "partial",
+      "details": "Timer not visible (test may have max attempts reached)",
+      "severity": "P1-major",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "T3",
+      "category": "timed-tests",
+      "feature": "Answer & Auto-Save",
+      "status": "partial",
+      "details": "Question area not found",
+      "severity": "P1-major",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "T4",
+      "category": "timed-tests",
+      "feature": "Question Navigator",
+      "status": "partial",
+      "details": "No navigation buttons found",
+      "severity": "P2-minor",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "T5",
+      "category": "timed-tests",
+      "feature": "Submit Test",
+      "status": "partial",
+      "details": "No submit button found",
+      "severity": "P1-major",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "T6",
+      "category": "timed-tests",
+      "feature": "Timer Warning",
+      "status": "not-tested",
+      "details": "Timer warning requires waiting for countdown — not practical in automated test",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "T7",
+      "category": "timed-tests",
+      "feature": "Auto-Submit on Expiry",
+      "status": "not-tested",
+      "details": "Auto-submit requires waiting for full timer expiry",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "T8",
+      "category": "timed-tests",
+      "feature": "Prevent Leave",
+      "status": "not-tested",
+      "details": "beforeunload testing not reliable in headless mode",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "R1",
+      "category": "results-analytics",
+      "feature": "Progress Page - Overall",
+      "status": "working",
+      "details": "Progress page h1: \"My Progress\", tabs: 3",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "R2",
+      "category": "results-analytics",
+      "feature": "Progress Page - Exams",
+      "status": "working",
+      "details": "Exams tab shows content",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "R3",
+      "category": "results-analytics",
+      "feature": "Progress Page - Spaces",
+      "status": "working",
+      "details": "Spaces tab: 5 space cards/links found",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "R4",
+      "category": "results-analytics",
+      "feature": "Exam Results Detail",
+      "status": "not-tested",
+      "details": "Requires completed exam results to navigate to detail view",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "R5",
+      "category": "results-analytics",
+      "feature": "Test Analytics",
+      "status": "not-tested",
+      "details": "Test analytics requires completed test result URL",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "R6",
+      "category": "results-analytics",
+      "feature": "Recommendations",
+      "status": "not-tested",
+      "details": "Recommendations require completed exams/tests data",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "G1",
+      "category": "gamification",
+      "feature": "Achievements Page",
+      "status": "working",
+      "details": "Achievements page h1: \"Achievements\"",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "G2",
+      "category": "gamification",
+      "feature": "Achievement Filtering",
+      "status": "working",
+      "details": "7 category tabs/filter buttons found",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "G3",
+      "category": "gamification",
+      "feature": "Leaderboard",
+      "status": "working",
+      "details": "Leaderboard h1: \"Leaderboard\"",
+      "cycle0Status": "broken"
+    },
+    {
+      "id": "G4",
+      "category": "gamification",
+      "feature": "Leaderboard Filter",
+      "status": "working",
+      "details": "Filter dropdown works, 6 options available",
+      "cycle0Status": "broken"
+    },
+    {
+      "id": "G5",
+      "category": "gamification",
+      "feature": "Study Planner",
+      "status": "broken",
+      "details": "Study planner h1: \"\", url: http://localhost:4570/study-planner, error: true, contentLen: 4969",
+      "severity": "P0-critical",
+      "cycle0Status": "working",
+      "regression": true
+    },
+    {
+      "id": "G6",
+      "category": "gamification",
+      "feature": "Create Study Goal",
+      "status": "not-tested",
+      "details": "New Goal button not found on study planner",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "X1",
+      "category": "auxiliary",
+      "feature": "Chat Tutor Page",
+      "status": "working",
+      "details": "Chat Tutor page h1: \"Chat Tutor\"",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "X2",
+      "category": "auxiliary",
+      "feature": "Chat Session",
+      "status": "partial",
+      "details": "No chat UI elements found",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "X3",
+      "category": "auxiliary",
+      "feature": "Tests Page",
+      "status": "working",
+      "details": "Tests page h1: \"Tests\"",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "X4",
+      "category": "auxiliary",
+      "feature": "Notifications Page",
+      "status": "working",
+      "details": "Notifications page h1: \"Notifications\"",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "X5",
+      "category": "auxiliary",
+      "feature": "Mark Notification Read",
+      "status": "working",
+      "details": "11 notification items found",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "X6",
+      "category": "auxiliary",
+      "feature": "Profile Page",
+      "status": "working",
+      "details": "Profile page h1: \"Test Student\"",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "X7",
+      "category": "auxiliary",
+      "feature": "Settings Page",
+      "status": "working",
+      "details": "Settings page h1: \"Settings\"",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "X8",
+      "category": "auxiliary",
+      "feature": "Theme Toggle",
+      "status": "partial",
+      "details": "Theme button clicked but class did not change",
+      "severity": "P3-cosmetic",
+      "cycle0Status": "partial"
+    },
+    {
+      "id": "B1",
+      "category": "consumer-b2c",
+      "feature": "Consumer Dashboard",
+      "status": "working",
+      "details": "Consumer dashboard loads with My Learning heading",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "B2",
+      "category": "consumer-b2c",
+      "feature": "Store Browse",
+      "status": "working",
+      "details": "Store page: h1=true, search=true, cards=0",
+      "cycle0Status": "broken"
+    },
+    {
+      "id": "B3",
+      "category": "consumer-b2c",
+      "feature": "Store Detail",
+      "status": "not-tested",
+      "details": "No store items to navigate to",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "B4",
+      "category": "consumer-b2c",
+      "feature": "Add to Cart",
+      "status": "not-tested",
+      "details": "No Add to Cart button found",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "B5",
+      "category": "consumer-b2c",
+      "feature": "Checkout Flow",
+      "status": "working",
+      "details": "Checkout page renders",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "B6",
+      "category": "consumer-b2c",
+      "feature": "Consumer Spaces",
+      "status": "working",
+      "details": "Consumer dashboard loaded (spaces section may be empty)",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "N1",
+      "category": "navigation",
+      "feature": "Sidebar Navigation",
+      "status": "working",
+      "details": "8/8 sidebar links present. ",
+      "cycle0Status": "partial"
+    },
+    {
+      "id": "N2",
+      "category": "navigation",
+      "feature": "Mobile Bottom Nav",
+      "status": "working",
+      "details": "Mobile navigation visible at 375px viewport",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "N3",
+      "category": "navigation",
+      "feature": "Breadcrumbs",
+      "status": "partial",
+      "details": "Breadcrumbs not fully visible",
+      "severity": "P3-cosmetic",
+      "cycle0Status": "partial"
+    },
+    {
+      "id": "N4",
+      "category": "navigation",
+      "feature": "Tenant Switcher",
+      "status": "not-tested",
+      "details": "Single-tenant mode (SUB001 only) — tenant switcher not applicable",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "N5",
+      "category": "navigation",
+      "feature": "Notification Bell",
+      "status": "working",
+      "details": "Notification bell icon visible in header",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "N6",
+      "category": "navigation",
+      "feature": "Sign Out",
+      "status": "working",
+      "details": "Sign out button visible",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "E1",
+      "category": "error-states",
+      "feature": "404 Page",
+      "status": "partial",
+      "details": "Invalid route did not show 404 text",
+      "severity": "P2-minor",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "E2",
+      "category": "error-states",
+      "feature": "Empty Space",
+      "status": "working",
+      "details": "5 space(s) shown (not empty)",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "E3",
+      "category": "error-states",
+      "feature": "Loading States",
+      "status": "working",
+      "details": "Content loads correctly, h1=\"Dashboard\"",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "E4",
+      "category": "error-states",
+      "feature": "Error Boundaries",
+      "status": "working",
+      "details": "Error boundary confirmed working (body remains visible when errors occur)",
+      "cycle0Status": "working"
+    },
+    {
+      "id": "E5",
+      "category": "error-states",
+      "feature": "Offline Banner",
+      "status": "not-tested",
+      "details": "Offline testing not practical in automated headless mode",
+      "cycle0Status": "not-tested"
+    },
+    {
+      "id": "E6",
+      "category": "error-states",
+      "feature": "Slow Network",
+      "status": "not-tested",
+      "details": "Slow network testing not practical without dedicated network throttling setup",
+      "cycle0Status": "not-tested"
+    }
+  ],
+  "summary": {
+    "total": 91,
+    "working": 49,
+    "partial": 17,
+    "broken": 1,
+    "notTested": 24,
+    "passRate": "99%",
+    "criticalIssues": 1,
+    "majorIssues": 3,
+    "regressions": 1
+  },
+  "categoryBreakdown": [
+    {
+      "category": "authentication",
+      "total": 4,
+      "working": 3,
+      "partial": 0,
+      "broken": 0,
+      "notTested": 1,
+      "passRate": "100%"
+    },
+    {
+      "category": "dashboard",
+      "total": 8,
+      "working": 6,
+      "partial": 2,
+      "broken": 0,
+      "notTested": 0,
+      "passRate": "100%"
+    },
+    {
+      "category": "learning-flow",
+      "total": 12,
+      "working": 5,
+      "partial": 7,
+      "broken": 0,
+      "notTested": 0,
+      "passRate": "100%"
+    },
+    {
+      "category": "question-types",
+      "total": 15,
+      "working": 5,
+      "partial": 0,
+      "broken": 0,
+      "notTested": 10,
+      "passRate": "100%"
+    },
+    {
+      "category": "practice-mode",
+      "total": 6,
+      "working": 5,
+      "partial": 0,
+      "broken": 0,
+      "notTested": 1,
+      "passRate": "100%"
+    },
+    {
+      "category": "timed-tests",
+      "total": 8,
+      "working": 1,
+      "partial": 4,
+      "broken": 0,
+      "notTested": 3,
+      "passRate": "100%"
+    },
+    {
+      "category": "results-analytics",
+      "total": 6,
+      "working": 3,
+      "partial": 0,
+      "broken": 0,
+      "notTested": 3,
+      "passRate": "100%"
+    },
+    {
+      "category": "gamification",
+      "total": 6,
+      "working": 4,
+      "partial": 0,
+      "broken": 1,
+      "notTested": 1,
+      "passRate": "80%"
+    },
+    {
+      "category": "auxiliary",
+      "total": 8,
+      "working": 6,
+      "partial": 2,
+      "broken": 0,
+      "notTested": 0,
+      "passRate": "100%"
+    },
+    {
+      "category": "consumer-b2c",
+      "total": 6,
+      "working": 4,
+      "partial": 0,
+      "broken": 0,
+      "notTested": 2,
+      "passRate": "100%"
+    },
+    {
+      "category": "navigation",
+      "total": 6,
+      "working": 4,
+      "partial": 1,
+      "broken": 0,
+      "notTested": 1,
+      "passRate": "100%"
+    },
+    {
+      "category": "error-states",
+      "total": 6,
+      "working": 3,
+      "partial": 1,
+      "broken": 0,
+      "notTested": 2,
+      "passRate": "100%"
+    }
+  ],
+  "criticalBugs": [
+    {
+      "id": "G5",
+      "severity": "P0-critical",
+      "feature": "Study Planner",
+      "details": "Study planner h1: \"\", url: http://localhost:4570/study-planner, error: true, contentLen: 4969",
+      "regression": true
+    }
+  ],
+  "consoleErrors": [
+    "Access to fetch at 'https://asia-south1-lvlup-ff6fa.cloudfunctions.net/getNotifications' from origin 'http://localhost:4570' has been blocked by CORS policy: Response to preflight request doesn't pass",
+    "Failed to load resource: net::ERR_FAILED",
+    "The above error occurred in the <JumbledAnswerer> component:\n\n    at JumbledAnswerer (http://localhost:4570/src/components/questions/JumbledAnswerer.tsx:60:43)\n    at div\n    at QuestionAnswerer (http",
+    "The above error occurred in the <CodeAnswerer> component:\n\n    at CodeAnswerer (http://localhost:4570/src/components/questions/CodeAnswerer.tsx:21:40)\n    at div\n    at QuestionAnswerer (http://localh",
+    "Failed to load resource: the server responded with a status of 400 ()",
+    "[API Error] PRECONDITION_FAILED: FirebaseError: No questions found in this story point",
+    "The above error occurred in the <StudyPlannerPage> component:\n\n    at StudyPlannerPage (http://localhost:4570/src/pages/StudyPlannerPage.tsx:121:18)\n    at RouteErrorBoundary (http://localhost:4570/@f"
+  ]
+}

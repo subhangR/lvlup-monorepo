@@ -1,0 +1,181 @@
+{
+  "config": {
+    "configFile": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/assessment-fix-test.config.ts",
+    "rootDir": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/subhang/Desktop/Projects/auto-levleup/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "assessment-fix-test.spec.ts"
+        ],
+        "timeout": 300000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "reports/assessment-fix-test-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "assessment-fix-test.spec.ts",
+      "file": "assessment-fix-test.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Assessment Feature",
+          "file": "assessment-fix-test.spec.ts",
+          "line": 83,
+          "column": 6,
+          "specs": [
+            {
+              "title": "complete assessment flow: start test → answer → submit → results",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 300000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 13871,
+                      "errors": [],
+                      "stdout": [
+                        {
+                          "text": "\n=== Step 1: Login ===\n"
+                        },
+                        {
+                          "text": "[Auth] Fresh login successful\n"
+                        },
+                        {
+                          "text": "\n=== Step 2: Navigate to Tests page ===\n"
+                        },
+                        {
+                          "text": "Tests page loaded, checking for test cards...\n"
+                        },
+                        {
+                          "text": "Found 5 test links\n"
+                        },
+                        {
+                          "text": "  Test 0: Behavioral Interview Timed AssessmentBehavioral Interview Mastery45 minMax 1 att -> /spaces/1AqFwKSf59FiIrqzaQ7i/test/xBnumc8jTQje26POV6Lq\n"
+                        },
+                        {
+                          "text": "  Test 1: System Design AssessmentSystem Design30 minMax 1 attempts -> /spaces/8rPWlVP4kyDp1xd75SnH/test/3PYpieQtVUMQYiM9W43i\n"
+                        },
+                        {
+                          "text": "  Test 2: LLD Staff-Level AssessmentLow-Level Design & OOP45 minMax 1 attempts -> /spaces/XTw3bLqiT4dMyvFJkI0g/test/U8zyZhJtJX8MzHmN3NC6\n"
+                        },
+                        {
+                          "text": "  Test 3: DSA Staff-Level AssessmentData Structures & Algorithms45 minMax 1 attempts -> /spaces/ZikR8xEHkqIaIsugmdQg/test/7LgnRSSjBcZxj4PFoB1S\n"
+                        },
+                        {
+                          "text": "  Test 4: System Design AssessmentSystem Design30 minMax 1 attempts -> /spaces/PDFq1OluyAGNAz6Fpx0j/test/9uddzCPbgIxHQgzBFBOf\n"
+                        },
+                        {
+                          "text": "\nSelecting test: /spaces/ZikR8xEHkqIaIsugmdQg/test/7LgnRSSjBcZxj4PFoB1S\n"
+                        },
+                        {
+                          "text": "\n=== Step 3: Test Landing Page ===\n"
+                        },
+                        {
+                          "text": "Current URL: http://localhost:4570/spaces/ZikR8xEHkqIaIsugmdQg/test/7LgnRSSjBcZxj4PFoB1S\n"
+                        },
+                        {
+                          "text": "Start Test button visible: false\n"
+                        },
+                        {
+                          "text": "No Start Test button — checking if already in test mode (active session)...\n"
+                        },
+                        {
+                          "text": "Already in test mode: questions=true, deadlineMsg=false, timerBar=true\n"
+                        },
+                        {
+                          "text": "✓ Active session detected with questions rendering — assessment feature is WORKING!\n"
+                        },
+                        {
+                          "text": "Submit Test button visible — full test flow confirmed working\n"
+                        },
+                        {
+                          "text": "\n=== ASSESSMENT FIX VERIFIED: Cloud functions + frontend rendering work ===\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-03-10T17:20:06.886Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "d0270f750da46dd57284-0ce7f479c2a676a678b8",
+              "file": "assessment-fix-test.spec.ts",
+              "line": 86,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-03-10T17:20:05.977Z",
+    "duration": 15535.759,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

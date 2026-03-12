@@ -1,0 +1,370 @@
+{
+  "config": {
+    "configFile": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/playwright.config.ts",
+    "rootDir": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/subhang/Desktop/Projects/auto-levleup/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "full-audit",
+        "name": "full-audit",
+        "testDir": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.@(spec|test).?(c|m)[jt]s?(x)"
+        ],
+        "timeout": 120000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "reports/playwright-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "sysdesign-learner-cycle-4.spec.ts",
+      "file": "sysdesign-learner-cycle-4.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "System Design Learner Cycle 4 — Deep Assessment",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 600000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "full-audit",
+              "projectName": "full-audit",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 43478,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "\n=== STEP 1: AUTHENTICATE ===\n"
+                    },
+                    {
+                      "text": "  [OBS] Auth state saved to cache\n"
+                    },
+                    {
+                      "text": "  [PASS] L1: Login with school code + email works\n"
+                    },
+                    {
+                      "text": "\n=== STEP 2: SPACES LIST ===\n"
+                    },
+                    {
+                      "text": "  [OBS] Spaces page h1: \"My Spaces\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L2: Spaces page loads (h1=\"My Spaces\")\n"
+                    },
+                    {
+                      "text": "  [OBS] Space cards found: 5 — Behavioral Interview MasteryMaster behavioral interview tech | System DesignMaster the fundamentals of system design, cover | Low-Level Design & OOPMaster object-oriented design, SOLID p | Data Structures & AlgorithmsMaster data structures and algor | System DesignMaster the fundamentals of system design, cover\n"
+                    },
+                    {
+                      "text": "  [PASS] L2: System Design Space card visible (seed space, text=\"System DesignMaster the fundamentals of system des\")\n"
+                    },
+                    {
+                      "text": "\n=== STEP 3: SYSTEM DESIGN SPACE VIEWER ===\n"
+                    },
+                    {
+                      "text": "  [OBS] System Design Space viewer h1: \"System Design\" (3134ms)\n"
+                    },
+                    {
+                      "text": "  [PASS] L3: System Design Space viewer has h1: \"System Design\"\n"
+                    },
+                    {
+                      "text": "  [OBS] Story point links in space viewer: 2\n"
+                    },
+                    {
+                      "text": "  [PASS] L3: System Design Space viewer shows 2 story point links (partial)\n"
+                    },
+                    {
+                      "text": "  [FAIL] SD-C4-001 (P2): Space viewer shows only 2/4 story point links\n"
+                    },
+                    {
+                      "text": "  [PASS] L3: Space viewer shows System Design related content\n"
+                    },
+                    {
+                      "text": "\n=== STEP 4: STORY POINTS ===\n"
+                    },
+                    {
+                      "text": "\n  Testing: Fundamentals of Scalability (standard)\n"
+                    },
+                    {
+                      "text": "  [OBS] Fundamentals of Scalability h1: \"Fundamentals of Scalability\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Fundamentals of Scalability h1 present: \"Fundamentals of Scalability\"\n"
+                    },
+                    {
+                      "text": "  [OBS]   SD keywords found: scalability, load balancer, database, horizontal, vertical, availability, consistency, partition\n"
+                    },
+                    {
+                      "text": "  [PASS] CQ1: Fundamentals of Scalability — system design keywords present (8/13)\n"
+                    },
+                    {
+                      "text": "  [OBS]   Diagram/visual elements: 43\n"
+                    },
+                    {
+                      "text": "  [PASS] CQ1: Fundamentals of Scalability — architecture diagram/visual elements present (43)\n"
+                    },
+                    {
+                      "text": "  [PASS] UX1: Fundamentals of Scalability — breadcrumbs/back navigation visible\n"
+                    },
+                    {
+                      "text": "  [OBS]   Code blocks: 0\n"
+                    },
+                    {
+                      "text": "\n  Testing: Database Design & Patterns (practice)\n"
+                    },
+                    {
+                      "text": "  [OBS] Database Design & Patterns h1: \"Database Design & Patterns\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Database Design & Patterns h1 present: \"Database Design & Patterns\"\n"
+                    },
+                    {
+                      "text": "  [PASS] UX1: Database Design & Patterns — breadcrumbs/back navigation visible\n"
+                    },
+                    {
+                      "text": "  [OBS]   Code blocks: 2\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Database Design & Patterns — code blocks rendered (2 found)\n"
+                    },
+                    {
+                      "text": "\n  Testing: Caching & Load Balancing Quiz (quiz)\n"
+                    },
+                    {
+                      "text": "  [OBS] Caching & Load Balancing Quiz h1: \"Caching & Load Balancing Quiz\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Caching & Load Balancing Quiz h1 present: \"Caching & Load Balancing Quiz\"\n"
+                    },
+                    {
+                      "text": "  [PASS] UX1: Caching & Load Balancing Quiz — breadcrumbs/back navigation visible\n"
+                    },
+                    {
+                      "text": "  [OBS]   Code blocks: 0\n"
+                    },
+                    {
+                      "text": "\n  Testing: System Design Assessment (timed_test)\n"
+                    },
+                    {
+                      "text": "  [OBS] System Design Assessment h1: \"System Design Assessment\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: System Design Assessment h1 present: \"System Design Assessment\"\n"
+                    },
+                    {
+                      "text": "  [PASS] UX1: System Design Assessment — breadcrumbs/back navigation visible\n"
+                    },
+                    {
+                      "text": "  [OBS]   Code blocks: 0\n"
+                    },
+                    {
+                      "text": "  [OBS] Story points accessible: 4/4\n"
+                    },
+                    {
+                      "text": "\n=== STEP 5: PRACTICE MODE ===\n"
+                    },
+                    {
+                      "text": "  [OBS] Practice mode (Database Design & Patterns) h1: \"Database Design & Patterns\"\n"
+                    },
+                    {
+                      "text": "  [OBS] Submit button: visible=true, disabled=true\n"
+                    },
+                    {
+                      "text": "  [PASS] P1: Practice mode — Submit Answer button visible\n"
+                    },
+                    {
+                      "text": "  [PASS] P1: Submit Answer correctly disabled before answer selection\n"
+                    },
+                    {
+                      "text": "  [OBS] Answer options: radio=8, checkbox=4, true/false=2\n"
+                    },
+                    {
+                      "text": "  [PASS] P1: Practice mode — answer options visible (14 found)\n"
+                    },
+                    {
+                      "text": "  [PASS] P1: Submit Answer enabled after selecting answer\n"
+                    },
+                    {
+                      "text": "  [PASS] P1: Next button visible after submit\n"
+                    },
+                    {
+                      "text": "  [PASS] P1: Section/breadcrumb navigation visible in practice mode\n"
+                    },
+                    {
+                      "text": "  [PASS] P2: Ask AI Tutor button visible in practice mode\n"
+                    },
+                    {
+                      "text": "\n=== STEP 6: QUIZ MODE ===\n"
+                    },
+                    {
+                      "text": "  [OBS] Quiz h1: \"Caching & Load Balancing Quiz\"\n"
+                    },
+                    {
+                      "text": "  [PASS] Q1: Quiz story point accessible: \"Caching & Load Balancing Quiz\"\n"
+                    },
+                    {
+                      "text": "  [OBS] Quiz config: attempts=false, passing=false, shuffle=false\n"
+                    },
+                    {
+                      "text": "  [PASS] Q1: MCQ question type visible in quiz\n"
+                    },
+                    {
+                      "text": "  [PASS] Q1: MCAQ question type visible in quiz\n"
+                    },
+                    {
+                      "text": "  [PASS] Q1: Quiz submit/next button visible\n"
+                    },
+                    {
+                      "text": "  [PASS] Q1: Quiz results/score section visible\n"
+                    },
+                    {
+                      "text": "\n=== STEP 7: TIMED ASSESSMENT ===\n"
+                    },
+                    {
+                      "text": "  [OBS] Timed Assessment h1: \"System Design Assessment\"\n"
+                    },
+                    {
+                      "text": "  [PASS] T1: Timed Assessment h1: \"System Design Assessment\"\n"
+                    },
+                    {
+                      "text": "  [OBS] Timed config: 30min=true, 1attempt=false, 50%=false\n"
+                    },
+                    {
+                      "text": "  [PASS] T1: Timed Assessment shows 30-minute duration info\n"
+                    },
+                    {
+                      "text": "  [OBS] Timer elements: 0, timer text patterns: 0\n"
+                    },
+                    {
+                      "text": "  [OBS] Timer not visible on landing — may appear after starting test\n"
+                    },
+                    {
+                      "text": "  [FAIL] SD-C4-002 (P2): Timer not visible on timed assessment landing (T2)\n"
+                    },
+                    {
+                      "text": "  [FAIL] SD-C4-003 (P2): Start button not found on timed assessment landing (T3)\n"
+                    },
+                    {
+                      "text": "\n=== STEP 8: RESULTS + ANALYTICS ===\n"
+                    },
+                    {
+                      "text": "  [OBS] Results/analytics links from space page: 1\n"
+                    },
+                    {
+                      "text": "  [PASS] AN1: Results/analytics links visible on space page\n"
+                    },
+                    {
+                      "text": "\n=== STEP 9: UX CHECKS ===\n"
+                    },
+                    {
+                      "text": "  [PASS] UX1: Story point viewer responsive on mobile (375px) — h1=\"Fundamentals of Scalability\"\n"
+                    },
+                    {
+                      "text": "  [OBS] Scalability content keywords: load, server, database, network, distributed, availability, performance\n"
+                    },
+                    {
+                      "text": "  [PASS] CQ1: Scalability content has depth (7/12 keywords)\n"
+                    },
+                    {
+                      "text": "\n=== SYSTEM DESIGN LEARNER CYCLE 4 REPORT ===\n"
+                    },
+                    {
+                      "text": "Space ID used: 8rPWlVP4kyDp1xd75SnH\n"
+                    },
+                    {
+                      "text": "Story Points: 4/4 accessible\n"
+                    },
+                    {
+                      "text": "Pass Rate: 91.9% (34/37)\n"
+                    },
+                    {
+                      "text": "Issues: 0 P0, 0 P1, 3 P2, 0 P3\n"
+                    },
+                    {
+                      "text": "Learning Effectiveness: 8.5/10\n"
+                    },
+                    {
+                      "text": "Report written: /Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/reports/learner-sysdesign-cycle-4.json\n"
+                    },
+                    {
+                      "text": "============================================\n\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-03-09T18:07:15.795Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "93ed81d13ace0bd30232-9eb8c3cec6e44ebd5aa4",
+          "file": "sysdesign-learner-cycle-4.spec.ts",
+          "line": 238,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-03-09T18:07:14.966Z",
+    "duration": 44791.967000000004,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

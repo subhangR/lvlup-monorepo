@@ -1,0 +1,161 @@
+{
+  "cycleNumber": 1,
+  "timestamp": "2026-03-09T16:26:55.794Z",
+  "learner": "LLD Learner (tm_1773067959781_vgloe0tc9)",
+  "space": "Low-Level Design & OOP",
+  "spaceId": "XTw3bLqiT4dMyvFJkI0g",
+  "loginStatus": "success",
+  "testSummary": {
+    "total": 15,
+    "passed": 12,
+    "failed": 3,
+    "failedTests": [
+      "L2: Navigate to spaces list — LLD space card not visible (student not enrolled in cls_g10_lld_a)",
+      "L3: LLD space viewer — h1 not rendered (Space Viewer React hooks crash, same as System Design P0)",
+      "L8: Clean Architecture — test timeout (page context closed after hooks crash)"
+    ]
+  },
+  "workingFeatures": [
+    "L1: Login with school code + email works",
+    "L4-L9, P1-P3, Q1, T1: Story point URLs resolve (return 404 pages — student lacks LLD class enrollment)",
+    "UX1: Story point viewer responsive on mobile (375px)",
+    "UX1: Fast load time (144ms)"
+  ],
+  "issues": [
+    {
+      "id": "LLD-P0-001",
+      "severity": "P0",
+      "category": "access-control",
+      "title": "Student not enrolled in LLD class — all LLD story points return 404",
+      "details": "Test student (student.test@subhang.academy / SUB001) is not assigned to class cls_g10_lld_a. All 12 LLD story point URLs (e.g. /spaces/XTw3bLqiT4dMyvFJkI0g/story/efDEBIVVuI4GYultzGX8) return a 404 page with h1='404'. Student can only access System Design space (PDFq1OluyAGNAz6Fpx0j) and DSA space (ZikR8xEHkqIaIsugmdQg). Seed must enroll student into LLD class."
+    },
+    {
+      "id": "LLD-P0-002",
+      "severity": "P0",
+      "category": "learning-flow",
+      "title": "LLD space not visible in /spaces list — student not enrolled",
+      "details": "The /spaces page does not show the 'Low-Level Design & OOP' space card because student is not enrolled in cls_g10_lld_a. This is a prerequisite for all LLD learning. Root cause: seed config does not assign student to LLD class enrollment."
+    },
+    {
+      "id": "LLD-P0-003",
+      "severity": "P0",
+      "category": "space-viewer",
+      "title": "SpaceViewer crashes for LLD space (same React hooks bug as System Design)",
+      "details": "When navigating to /spaces/XTw3bLqiT4dMyvFJkI0g directly (L3 test), the space viewer fails to render story points — h1 is not found within timeout. Root cause (from sysdesign learner): SpaceViewerPage.tsx line 103 calls useState(false) AFTER conditional early-returns (lines 63-98), violating React Rules of Hooks. Fix: move all useState calls before line 63."
+    },
+    {
+      "id": "LLD-P1-004",
+      "severity": "P1",
+      "category": "content-delivery",
+      "title": "All LLD story points: no content rendered (OOP, Creational, Structural, Behavioral, Clean Arch, Parking Lot, Library, Chess, CQRS, Quiz, Timed Test)",
+      "details": "All story point pages for the LLD space return 404 because the student lacks enrollment. None of the following are verifiable: UML diagrams, code blocks, multi-language examples, long-form answer textarea, character limits, AI feedback, design scenario completeness."
+    },
+    {
+      "id": "LLD-P2-005",
+      "severity": "P2",
+      "category": "ux",
+      "title": "Breadcrumbs not visible on story point pages",
+      "details": "No breadcrumb nav found via [aria-label*='breadcrumb'], [class*='breadcrumb'], or nav ol selectors. May be correct if 404 pages don't include breadcrumbs."
+    }
+  ],
+  "contentAssessment": {
+    "storyPointsTested": 12,
+    "storyPointsAccessible": 0,
+    "accessBlocker": "Student not enrolled in cls_g10_lld_a — all story points return 404",
+    "umlDiagramsFound": false,
+    "codeBlocksRendered": false,
+    "multiLanguageExamples": false,
+    "longFormAnswerInput": false,
+    "characterLimitVisible": false,
+    "aiFeedbackShown": false,
+    "syntaxHighlighting": false,
+    "contentQualityNotes": [
+      "Cannot assess content quality — 404 returned for all story points",
+      "Expected: OOP fundamentals with UML class diagrams, SOLID principle examples",
+      "Expected: Creational/Structural/Behavioral patterns with multi-language code examples",
+      "Expected: Design scenario (Parking Lot, Library, Chess) with long-form textarea + AI evaluation",
+      "Expected: CQRS/Event Sourcing/DDD concepts with progressive depth"
+    ]
+  },
+  "uxAssessment": {
+    "navigationWorking": false,
+    "loadTimesAcceptable": true,
+    "mobileResponsive": true,
+    "breadcrumbsVisible": false,
+    "sectionFilterWorks": false,
+    "uxIssues": [
+      "LLD space not shown in /spaces list — student not enrolled",
+      "SpaceViewer crashes for LLD space (React hooks violation)",
+      "Breadcrumbs not visible on 404 story point pages"
+    ]
+  },
+  "practiceMode": {
+    "tested": true,
+    "designScenarioLoads": false,
+    "longFormAnswerWorks": false,
+    "retryWorks": false,
+    "progressPersists": false,
+    "notes": [
+      "Parking Lot scenario returns 404 — design context not verifiable",
+      "Library Management returns 404",
+      "Chess Game returns 404",
+      "Cannot test long-form answer, char limits, or AI evaluation without access"
+    ]
+  },
+  "quizMode": {
+    "tested": true,
+    "questionTypesFound": [],
+    "resultsDisplayed": false,
+    "notes": [
+      "LLD Quiz story point returns 404 — cannot assess question types",
+      "Expected: MCQ, MCAQ, and LongForm question types in comprehensive quiz"
+    ]
+  },
+  "timedAssessment": {
+    "tested": true,
+    "timerVisible": false,
+    "autoSubmit": null,
+    "analyticsShown": false,
+    "notes": [
+      "LLD Staff-Level Assessment returns 404 — cannot assess timer, auto-submit, analytics",
+      "Expected: countdown timer, multiple question types, performance analytics post-completion"
+    ]
+  },
+  "learningEffectiveness": {
+    "score": 1,
+    "notes": "Learning completely blocked. Student cannot access LLD space or any of its 12 story points due to missing class enrollment (cls_g10_lld_a). Fix: enroll test student in LLD class via seed or admin portal. Secondary blocker: SpaceViewer React hooks crash (same P0 as System Design space)."
+  },
+  "rootCauses": [
+    {
+      "issue": "Student enrollment missing",
+      "fix": "Seed or admin: assign student.test@subhang.academy (entity: vmP1QTDZBRCqE3Mr6IPK) to class cls_g10_lld_a",
+      "priority": "P0"
+    },
+    {
+      "issue": "SpaceViewerPage.tsx React hooks violation",
+      "fix": "Move all useState() calls before the conditional early-returns (before line 63). Specifically: move `const [celebrationShown, setCelebrationShown] = useState(false)` from line 103 to before line 63.",
+      "priority": "P0",
+      "file": "SpaceViewerPage.tsx"
+    }
+  ],
+  "rawObservations": [
+    "Auth state saved to /tmp/lld-learner-auth.json successfully",
+    "L1 (login): SUCCESS — student authenticated via school code + email flow",
+    "L2 (spaces list): FAIL — 'Low-Level Design' card not visible on /spaces page",
+    "L3 (space viewer): FAIL — h1 not found within timeout (React hooks crash)",
+    "L4 (OOP): Story point URL resolves but h1='404' — student not enrolled",
+    "L5 (Creational): h1='404' — 404 page",
+    "L6 (Structural): h1='404' — 404 page",
+    "L7 (Behavioral): h1='404' — 404 page",
+    "L8 (Clean Arch): Test timeout — page context closed after L3 crash propagated",
+    "P1 (Parking Lot): h1='404', no textarea/MCQ — 404 page, design scenario not verifiable",
+    "P2 (Library): h1='404' — 404 page",
+    "P3 (Chess): h1='404', found 'move' and 'king' in 404 page body text (false positive)",
+    "L9 (CQRS): h1='404', 0/7 keywords found — 404 page",
+    "Q1 (Quiz): h1='404', no question types found — 404 page",
+    "T1 (Timed Test): h1='404', no timer visible — 404 page",
+    "UX1: Mobile responsive (375px) — 404 page still shows h1",
+    "UX1: Load time 144ms (fast, but serving 404 pages)",
+    "Space ID confirmed: XTw3bLqiT4dMyvFJkI0g (from seed-results/subhang.json)"
+  ]
+}

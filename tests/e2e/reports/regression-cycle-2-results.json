@@ -1,0 +1,340 @@
+{
+  "config": {
+    "configFile": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/regression-cycle-2.config.ts",
+    "rootDir": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/subhang/Desktop/Projects/auto-levleup/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "regression-cycle-2",
+        "name": "regression-cycle-2",
+        "testDir": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "regression-cycle-2.spec.ts"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "reports/regression-cycle-2-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "regression-cycle-2.spec.ts",
+      "file": "regression-cycle-2.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Cycle 2 Full Regression — Single Session",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 300000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "regression-cycle-2",
+              "projectName": "regression-cycle-2",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 74770,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "\n=== LOGGING IN ===\n"
+                    },
+                    {
+                      "text": "Login successful!\n\n"
+                    },
+                    {
+                      "text": "  [PASS] A1: School Code Login (Login completed successfully)\n"
+                    },
+                    {
+                      "text": "  [PASS] A3: Consumer Login (Login page renders with form)\n"
+                    },
+                    {
+                      "text": "\n=== DASHBOARD TESTS ===\n"
+                    },
+                    {
+                      "text": "  [PASS] D1: Dashboard Load (h1=\"Dashboard\")\n"
+                    },
+                    {
+                      "text": "  [FAIL] D3: Resume Learning\n"
+                    },
+                    {
+                      "text": "  [PASS] D6: Upcoming Exams\n"
+                    },
+                    {
+                      "text": "  [PASS] D7: My Spaces Grid (spaceLinks=4)\n"
+                    },
+                    {
+                      "text": "  [PASS] D2: Dashboard Stat Cards (cards=17)\n"
+                    },
+                    {
+                      "text": "  [FAIL] D4: Level Badge and XP\n"
+                    },
+                    {
+                      "text": "  [PASS] N5: Notification Bell (bell=1)\n"
+                    },
+                    {
+                      "text": "  [PASS] N6: Sign Out (signOutBtns=1)\n"
+                    },
+                    {
+                      "text": "\n=== LEADERBOARD TESTS ===\n"
+                    },
+                    {
+                      "text": "  [PASS] G3: Leaderboard Page (h1=\"Leaderboard\")\n"
+                    },
+                    {
+                      "text": "  [PASS] G4: Leaderboard Filter (selects=1)\n"
+                    },
+                    {
+                      "text": "  [PASS] N1: Sidebar to Leaderboard (Verified via direct nav)\n"
+                    },
+                    {
+                      "text": "\n=== STORE TESTS ===\n"
+                    },
+                    {
+                      "text": "  [PASS] B2: Store Browse Page (h1=\"Space Store\", search=1, cards=0)\n"
+                    },
+                    {
+                      "text": "  [PASS] B3: Store Search (searchInputs=1)\n"
+                    },
+                    {
+                      "text": "  [PASS] B4: Store Space Cards (cards=0)\n"
+                    },
+                    {
+                      "text": "  [PASS] B1: Consumer Dashboard (Verified via login)\n"
+                    },
+                    {
+                      "text": "  [PASS] B5: Checkout Flow (Store page loads)\n"
+                    },
+                    {
+                      "text": "  [PASS] B6: Consumer Spaces (Spaces accessible)\n"
+                    },
+                    {
+                      "text": "\n=== SPACES TESTS ===\n"
+                    },
+                    {
+                      "text": "  [PASS] L1: Spaces List (cards=5, LLD=true, Behavioral=true)\n"
+                    },
+                    {
+                      "text": "\n=== EVAL-C2-001: SPACE VIEWER PAGE FIX ===\n"
+                    },
+                    {
+                      "text": "  [PASS] EVAL-C2-001: SpaceViewerPage hooks fix (h1=\"Data Structures & Algorithms\", links=12, errors=0)\n"
+                    },
+                    {
+                      "text": "  [PASS] EVAL-C2-001b: SpaceViewerPage story point links (links=12)\n"
+                    },
+                    {
+                      "text": "  [PASS] L2: Space Viewer (h1=\"Data Structures & Algorithms\")\n"
+                    },
+                    {
+                      "text": "  [PASS] L12: Space Progress (progressBars=7)\n"
+                    },
+                    {
+                      "text": "  [PASS] P1: Enter Practice (practice=5, storyPoints=6)\n"
+                    },
+                    {
+                      "text": "\n=== EVAL-C2-005: STORY POINT VIEWER H1 FIX ===\n"
+                    },
+                    {
+                      "text": "  [PASS] EVAL-C2-005: StoryPointViewer h1 visibility (h1=\"Arrays & Strings Foundations\", breadcrumbs=2, items=91)\n"
+                    },
+                    {
+                      "text": "  [PASS] P2: Answer Question (Story point viewer loads)\n"
+                    },
+                    {
+                      "text": "  [PASS] P3: Retry Question (Story point viewer loads)\n"
+                    },
+                    {
+                      "text": "  [PASS] P5: Question Navigator (Story point viewer loads)\n"
+                    },
+                    {
+                      "text": "\n=== SYSTEM DESIGN SPACE ===\n"
+                    },
+                    {
+                      "text": "  [PASS] SYSDESIGN-ACCESS: System Design Space Accessible (h1=\"System Design\", links=4)\n"
+                    },
+                    {
+                      "text": "\n=== LLD SPACE ACCESSIBILITY ===\n"
+                    },
+                    {
+                      "text": "  [PASS] LLD-ACCESS: LLD Space Accessible (h1=\"Low-Level Design & OOP\", notFound=0, links=12)\n"
+                    },
+                    {
+                      "text": "\n=== BEHAVIORAL SPACE ACCESSIBILITY ===\n"
+                    },
+                    {
+                      "text": "  [PASS] BEHAV-ACCESS: Behavioral Space Accessible (h1=\"Behavioral Interview Mastery\", notFound=0, links=12)\n"
+                    },
+                    {
+                      "text": "\n=== REMAINING PAGE TESTS ===\n"
+                    },
+                    {
+                      "text": "  [PASS] T1: Tests Page (h1=\"Tests\")\n"
+                    },
+                    {
+                      "text": "  [PASS] R1: Progress Page - Overall (h1=\"My Progress\")\n"
+                    },
+                    {
+                      "text": "  [PASS] R2: Progress Page - Exams (tabs=3)\n"
+                    },
+                    {
+                      "text": "  [PASS] R3: Progress Page - Spaces (tabs=3)\n"
+                    },
+                    {
+                      "text": "  [PASS] G1: Achievements Page (h1=\"Achievements\")\n"
+                    },
+                    {
+                      "text": "  [PASS] G2: Achievement Filtering (filters=7)\n"
+                    },
+                    {
+                      "text": "  [FAIL] G5: Study Planner (h1=\"\")\n"
+                    },
+                    {
+                      "text": "  [PASS] X1: Chat Tutor Page (h1=\"Chat Tutor\")\n"
+                    },
+                    {
+                      "text": "  [PASS] X2: Chat Session\n"
+                    },
+                    {
+                      "text": "  [PASS] X3: Tests Page\n"
+                    },
+                    {
+                      "text": "  [PASS] X4: Notifications Page (h1=\"Notifications\")\n"
+                    },
+                    {
+                      "text": "  [PASS] X6: Profile Page (h1=\"Test Student\")\n"
+                    },
+                    {
+                      "text": "  [PASS] X7: Settings Page (h1=\"Settings\")\n"
+                    },
+                    {
+                      "text": "  [FAIL] X8: Theme Toggle (class=\"light\")\n"
+                    },
+                    {
+                      "text": "  [FAIL] N2: Mobile Bottom Nav (navs=0)\n"
+                    },
+                    {
+                      "text": "\n=== ERROR HANDLING TESTS ===\n"
+                    },
+                    {
+                      "text": "  [PASS] E1: 404 Page\n"
+                    },
+                    {
+                      "text": "  [PASS] E2: Empty Space\n"
+                    },
+                    {
+                      "text": "  [PASS] E3: Loading States (h1=\"Data Structures & Algorithms\")\n"
+                    },
+                    {
+                      "text": "  [PASS] E4: Error Boundaries\n"
+                    },
+                    {
+                      "text": "\n=== LOGIN ERROR TEST ===\n"
+                    },
+                    {
+                      "text": "  [PASS] A4: Login Error Messages (alerts=1, destructive=2, errorWords=true)\n"
+                    },
+                    {
+                      "text": "\n=== CYCLE 2 REGRESSION REPORT ===\n"
+                    },
+                    {
+                      "text": "Total: 52, Passed: 47, Failed: 5\n"
+                    },
+                    {
+                      "text": "Pass Rate: 90.4%\n"
+                    },
+                    {
+                      "text": "Regressions: 3\n"
+                    },
+                    {
+                      "text": "Newly Fixed: 6\n"
+                    },
+                    {
+                      "text": "Still Broken: 2\n"
+                    },
+                    {
+                      "text": "Verdict: REGRESSIONS FOUND\n"
+                    },
+                    {
+                      "text": "REGRESSIONS: D3: Resume Learning, G5: Study Planner, N2: Mobile Bottom Nav\n"
+                    },
+                    {
+                      "text": "=================================\n\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-03-09T17:11:03.952Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "f1f7b688bccb9cf97060-ff7960f074284e97dab7",
+          "file": "regression-cycle-2.spec.ts",
+          "line": 120,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-03-09T17:11:03.132Z",
+    "duration": 76259.292,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

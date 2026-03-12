@@ -1,0 +1,110 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Blog',
+  name: 'Blog - Auto LevelUp',
+  description: 'Insights on AI-powered education, gamified learning, and school technology from the Auto LevelUp team.',
+};
+
+const placeholderPosts = [
+  {
+    title: 'How AI is Transforming Classroom Assessment',
+    excerpt: 'Discover how artificial intelligence is helping teachers save time on grading while providing students with more personalized, actionable feedback on their work.',
+    category: 'AI in Education',
+    date: 'Coming Soon',
+    color: 'primary',
+  },
+  {
+    title: 'The Science Behind Gamified Learning',
+    excerpt: 'Research shows that gamification elements like XP, skill tiers, and achievements can significantly boost student engagement and retention. Here\'s what the data says.',
+    category: 'Research',
+    date: 'Coming Soon',
+    color: 'success',
+  },
+  {
+    title: 'FERPA Compliance: A Guide for EdTech',
+    excerpt: 'Navigating student data privacy regulations can be complex. We break down what schools need to know about FERPA compliance when adopting new educational technology.',
+    category: 'Compliance',
+    date: 'Coming Soon',
+    color: 'warning',
+  },
+];
+---
+
+<Layout
+  title="Blog - Auto LevelUp"
+  description="Insights on AI-powered education, gamified learning, and school technology from the Auto LevelUp team."
+  jsonLd={jsonLd}
+  breadcrumbs={[{ name: 'Home', url: '/' }, { name: 'Blog', url: '/blog' }]}
+>
+  <Nav />
+  <main id="main-content">
+    <section class="pt-28 pb-20 sm:pt-36 sm:pb-28">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+          <div class="mb-4 inline-flex rounded-full bg-info/10 px-4 py-1 text-sm font-medium text-info">
+            Coming Soon
+          </div>
+          <h1 class="section-heading">Auto LevelUp Blog</h1>
+          <p class="section-subheading">
+            Insights on AI-powered education, gamified learning, and school technology.
+            Stay tuned for our first articles.
+          </p>
+        </div>
+
+        <!-- Placeholder article cards -->
+        <div class="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {placeholderPosts.map((post) => (
+            <article class="group rounded-xl border border-border bg-card overflow-hidden shadow-sm transition-all hover:shadow-md">
+              <!-- Placeholder image area -->
+              <div class={`h-48 bg-gradient-to-br from-${post.color}/20 to-${post.color}/5 flex items-center justify-center`}>
+                <div class="rounded-full bg-background/80 p-4">
+                  <svg class={`h-8 w-8 text-${post.color}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 7.5h1.5m-1.5 3h1.5m-7.5 3h7.5m-7.5 3h7.5m3-9h3.375c.621 0 1.125.504 1.125 1.125V18a2.25 2.25 0 01-2.25 2.25M16.5 7.5V18a2.25 2.25 0 002.25 2.25M16.5 7.5V4.875c0-.621-.504-1.125-1.125-1.125H4.125C3.504 3.75 3 4.254 3 4.875V18a2.25 2.25 0 002.25 2.25h13.5M6 7.5h3v3H6v-3z" />
+                  </svg>
+                </div>
+              </div>
+              <div class="p-6">
+                <div class="flex items-center gap-2">
+                  <span class={`rounded-full bg-${post.color}/10 px-2.5 py-0.5 text-xs font-medium text-${post.color}`}>
+                    {post.category}
+                  </span>
+                  <span class="text-xs text-muted-foreground">{post.date}</span>
+                </div>
+                <h2 class="mt-3 text-lg font-bold leading-snug group-hover:text-primary transition-colors">
+                  {post.title}
+                </h2>
+                <p class="mt-2 text-sm text-muted-foreground line-clamp-3">
+                  {post.excerpt}
+                </p>
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <!-- Newsletter signup -->
+        <div class="mt-16 rounded-xl border border-border bg-muted/30 p-8 text-center sm:p-12">
+          <h2 class="text-xl font-bold">Get Notified When We Launch</h2>
+          <p class="mt-2 text-sm text-muted-foreground">
+            Be the first to read our articles on AI-powered education and gamified learning.
+          </p>
+          <div class="mx-auto mt-6 flex max-w-md flex-col gap-3 sm:flex-row">
+            <input
+              type="email"
+              placeholder="your@email.com"
+              class="flex-1 rounded-lg border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-ring/20"
+              aria-label="Email address for blog notifications"
+            />
+            <button class="btn-primary whitespace-nowrap">Notify Me</button>
+          </div>
+          <p class="mt-3 text-xs text-muted-foreground">No spam. Unsubscribe anytime.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>

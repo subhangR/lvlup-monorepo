@@ -1,0 +1,27 @@
+{
+  "rules": {
+    "practiceProgress": {
+      "$tenantId": {
+        ".read": "auth != null && auth.token.tenantId === $tenantId",
+        "$userId": {
+          ".write": "auth != null && auth.uid === $userId && auth.token.tenantId === $tenantId",
+          ".read": "auth != null && (auth.uid === $userId || auth.token.role === 'teacher' || auth.token.role === 'tenantAdmin')"
+        }
+      }
+    },
+    "leaderboards": {
+      "$tenantId": {
+        ".read": "auth != null && auth.token.tenantId === $tenantId",
+        ".write": false
+      }
+    },
+    "notifications": {
+      "$tenantId": {
+        "$userId": {
+          ".read": "auth != null && auth.uid === $userId && auth.token.tenantId === $tenantId",
+          ".write": false
+        }
+      }
+    }
+  }
+}

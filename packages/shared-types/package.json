@@ -1,0 +1,50 @@
+{
+  "name": "@levelup/shared-types",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Shared TypeScript types and interfaces for LevelUp monorepo",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./identity": {
+      "types": "./dist/identity/index.d.ts",
+      "import": "./dist/identity/index.mjs",
+      "require": "./dist/identity/index.js"
+    },
+    "./tenant": {
+      "types": "./dist/tenant/index.d.ts",
+      "import": "./dist/tenant/index.mjs",
+      "require": "./dist/tenant/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.3.0"
+  },
+  "keywords": [
+    "typescript",
+    "types",
+    "shared"
+  ],
+  "dependencies": {
+    "zod": "^4.3.6"
+  }
+}

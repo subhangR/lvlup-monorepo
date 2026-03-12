@@ -1,0 +1,38 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build outputs
+dist
+build
+.next
+.turbo
+out
+coverage
+
+# Package managers
+pnpm-lock.yaml
+package-lock.json
+yarn.lock
+bun.lockb
+
+# Environment files
+.env
+.env.*
+
+# IDE
+.vscode
+.idea
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Firebase
+.firebase
+firebase-debug.log
+firestore-debug.log
+
+# Misc
+*.log
+*.tsbuildinfo

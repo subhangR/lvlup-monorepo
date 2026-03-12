@@ -1,0 +1,30 @@
+{
+  "projects": {
+    "default": "lvlup-ff6fa"
+  },
+  "targets": {
+    "lvlup-ff6fa": {
+      "hosting": {
+        "admin-web": [
+          "lvlup-ff6fa-admin"
+        ],
+        "parent-web": [
+          "lvlup-ff6fa-parent"
+        ],
+        "student-web": [
+          "lvlup-ff6fa-student"
+        ],
+        "super-admin": [
+          "lvlup-ff6fa-super-admin"
+        ],
+        "teacher-web": [
+          "lvlup-ff6fa-teacher"
+        ],
+        "website": [
+          "lvlup-ff6fa-website"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Center circle -->
+  <circle cx="12" cy="12" r="3"/>
+  <!-- Four radiating lines to outer circles at 45-degree intervals -->
+  <line x1="14.1" y1="9.9" x2="17.5" y2="6.5"/>
+  <line x1="14.1" y1="14.1" x2="17.5" y2="17.5"/>
+  <line x1="9.9" y1="14.1" x2="6.5" y2="17.5"/>
+  <line x1="9.9" y1="9.9" x2="6.5" y2="6.5"/>
+  <!-- Four outer circles -->
+  <circle cx="18.5" cy="5.5" r="1.5"/>
+  <circle cx="18.5" cy="18.5" r="1.5"/>
+  <circle cx="5.5" cy="18.5" r="1.5"/>
+  <circle cx="5.5" cy="5.5" r="1.5"/>
+</svg>

@@ -1,0 +1,140 @@
+---
+import { ClientRouter } from 'astro:transitions';
+
+interface BreadcrumbItem {
+  name: string;
+  url: string;
+}
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  ogType?: string;
+  canonicalUrl?: string;
+  jsonLd?: Record<string, unknown>;
+  breadcrumbs?: BreadcrumbItem[];
+}
+
+const {
+  title,
+  description = 'Auto LevelUp - The intelligent learning platform that empowers schools, teachers, students, and parents with AI-powered education tools.',
+  ogImage = '/og-default.png',
+  ogType = 'website',
+  canonicalUrl,
+  jsonLd,
+  breadcrumbs,
+} = Astro.props;
+
+const siteUrl = 'https://autolevelup.com';
+const canonical = canonicalUrl || new URL(Astro.url.pathname, siteUrl).href;
+const fullOgImage = ogImage.startsWith('http') ? ogImage : new URL(ogImage, siteUrl).href;
+
+// Build breadcrumb JSON-LD
+const breadcrumbJsonLd = breadcrumbs && breadcrumbs.length > 0 ? {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: breadcrumbs.map((item, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    name: item.name,
+    item: new URL(item.url, siteUrl).href,
+  })),
+} : null;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Primary Meta -->
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={fullOgImage} />
+    <meta property="og:site_name" content="Auto LevelUp" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={fullOgImage} />
+
+    <!-- JSON-LD -->
+    {jsonLd && (
+      <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    )}
+    {breadcrumbJsonLd && (
+      <script type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)} />
+    )}
+
+    <!-- Fonts: preconnect + async loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      as="style"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+      />
+    </noscript>
+
+    <!-- View Transitions -->
+    <ClientRouter />
+  </head>
+  <body class="min-h-screen font-['Inter',system-ui,sans-serif] antialiased">
+    <!-- Skip to content link -->
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only fixed top-2 left-2 z-[100] rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground shadow-lg focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+    >
+      Skip to main content
+    </a>
+
+    <slot />
+
+    <!-- Scroll reveal observer -->
+    <script>
+      function initScrollReveal() {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('revealed');
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+        );
+
+        document.querySelectorAll('.scroll-reveal').forEach((el) => {
+          observer.observe(el);
+        });
+      }
+
+      // Run on initial load and after View Transitions
+      initScrollReveal();
+      document.addEventListener('astro:after-swap', initScrollReveal);
+    </script>
+  </body>
+</html>

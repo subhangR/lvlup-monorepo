@@ -1,0 +1,84 @@
+{
+  "tenantId": "8VWB1J3P1FRsAUpvW59p",
+  "tenantCode": "GRN001",
+  "timestamp": "2026-03-03T07:03:49.817Z",
+  "results": [
+    {
+      "step": "1",
+      "collection": "evaluationSettings",
+      "count": 1,
+      "status": "success"
+    },
+    {
+      "step": "2",
+      "collection": "submissions",
+      "count": 14,
+      "status": "success"
+    },
+    {
+      "step": "2",
+      "collection": "questionSubmissions",
+      "count": 69,
+      "status": "success"
+    },
+    {
+      "step": "3",
+      "collection": "examAnalytics",
+      "count": 3,
+      "status": "success"
+    },
+    {
+      "step": "4",
+      "collection": "studentProgressSummaries",
+      "count": 20,
+      "status": "success"
+    },
+    {
+      "step": "5",
+      "collection": "classProgressSummaries",
+      "count": 5,
+      "status": "success"
+    },
+    {
+      "step": "6",
+      "collection": "digitalTestSessions",
+      "count": 10,
+      "status": "success"
+    },
+    {
+      "step": "7",
+      "collection": "notifications",
+      "count": 30,
+      "status": "success"
+    },
+    {
+      "step": "8",
+      "collection": "notificationPreferences",
+      "count": 20,
+      "status": "success"
+    },
+    {
+      "step": "9",
+      "collection": "insights",
+      "count": 21,
+      "status": "success"
+    },
+    {
+      "step": "10",
+      "collection": "dailyCostSummaries",
+      "count": 14,
+      "status": "success"
+    },
+    {
+      "step": "11",
+      "collection": "RTDB notification state",
+      "count": 20,
+      "status": "success"
+    }
+  ],
+  "totals": {
+    "totalDocumentsCreated": 227,
+    "successSteps": 12,
+    "failedSteps": 0
+  }
+}

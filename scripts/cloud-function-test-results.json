@@ -1,0 +1,44 @@
+[
+  {
+    "name": "switchActiveTenant",
+    "status": "auth_failed",
+    "error": "{\"error\":{\"code\":400,\"message\":\"CREDENTIAL_MISMATCH\",\"errors\":[{\"message\":\"CREDENTIAL_MISMATCH\",\"domain\":\"global\",\"reason\":\"invalid\"}]}}",
+    "label": "switchActiveTenant (admin)"
+  },
+  {
+    "name": "listClasses",
+    "status": "auth_failed",
+    "error": "{\"error\":{\"code\":400,\"message\":\"CREDENTIAL_MISMATCH\",\"errors\":[{\"message\":\"CREDENTIAL_MISMATCH\",\"domain\":\"global\",\"reason\":\"invalid\"}]}}",
+    "label": "listClasses (admin)"
+  },
+  {
+    "name": "getNotifications",
+    "status": "auth_failed",
+    "error": "{\"error\":{\"code\":400,\"message\":\"CREDENTIAL_MISMATCH\",\"errors\":[{\"message\":\"CREDENTIAL_MISMATCH\",\"domain\":\"global\",\"reason\":\"invalid\"}]}}",
+    "label": "getNotifications (admin)"
+  },
+  {
+    "name": "getStudentSummary",
+    "status": "auth_failed",
+    "error": "{\"error\":{\"code\":400,\"message\":\"CREDENTIAL_MISMATCH\",\"errors\":[{\"message\":\"CREDENTIAL_MISMATCH\",\"domain\":\"global\",\"reason\":\"invalid\"}]}}",
+    "label": "getStudentSummary (teacher)"
+  },
+  {
+    "name": "getClassSummary",
+    "status": "auth_failed",
+    "error": "{\"error\":{\"code\":400,\"message\":\"CREDENTIAL_MISMATCH\",\"errors\":[{\"message\":\"CREDENTIAL_MISMATCH\",\"domain\":\"global\",\"reason\":\"invalid\"}]}}",
+    "label": "getClassSummary (teacher)"
+  },
+  {
+    "name": "switchActiveTenant",
+    "status": "auth_failed",
+    "error": "{\"error\":{\"code\":400,\"message\":\"CREDENTIAL_MISMATCH\",\"errors\":[{\"message\":\"CREDENTIAL_MISMATCH\",\"domain\":\"global\",\"reason\":\"invalid\"}]}}",
+    "label": "switchActiveTenant (student)"
+  },
+  {
+    "name": "getNotifications",
+    "status": "auth_failed",
+    "error": "{\"error\":{\"code\":400,\"message\":\"CREDENTIAL_MISMATCH\",\"errors\":[{\"message\":\"CREDENTIAL_MISMATCH\",\"domain\":\"global\",\"reason\":\"invalid\"}]}}",
+    "label": "getNotifications (student)"
+  }
+]

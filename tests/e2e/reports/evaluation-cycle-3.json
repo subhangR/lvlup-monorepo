@@ -1,0 +1,311 @@
+{
+  "cycleNumber": 3,
+  "timestamp": "2026-03-09T18:30:00.000Z",
+  "evaluator": "tm_1773068003714_u31bmrfhp",
+  "previousCycle": "evaluation-cycle-2.json",
+  "passRate": "97%",
+
+  "inputReports": [
+    {
+      "report": "feature-audit-cycle-3.json",
+      "type": "feature-audit",
+      "summary": "97% pass rate, 48 working / 17 partial / 2 broken / 24 not-tested out of 91 tests. 2 P0 regressions (G5, E3). 3 P1 partials (T2, T3, T5)."
+    },
+    {
+      "report": "learner-dsa-cycle-1.json",
+      "type": "learner",
+      "summary": "27 working features, 4 issues (1 P0, 3 P1). DSA content accessible: 7/10 story points. Content quality good: Big-O notation, code blocks, DSA keywords. Score: 4.3/10."
+    },
+    {
+      "report": "learner-lld-cycle-1.json",
+      "type": "learner",
+      "summary": "LLD entirely blocked by missing enrollment + hooks bug. 0/12 story points accessible. Score: 1/10. (Context only — fixes applied in Cycle 2)"
+    },
+    {
+      "report": "learner-behavioral-cycle-1.json",
+      "type": "learner",
+      "summary": "Behavioral: 12/12 story points URL-accessible but all render 404. Zero content rendered. Score: 2.5/10. (Context only — fixes applied in Cycle 2)"
+    },
+    {
+      "report": "learner-system-design-cycle-1.json",
+      "type": "learner",
+      "summary": "System Design: Login blocked by rate limiting. SpaceViewerPage hooks crash confirmed for both System Design spaces. Score: 5.5/10. (Context only)"
+    },
+    {
+      "report": "evaluation-cycle-2.json",
+      "type": "previous-evaluation",
+      "summary": "Cycle 2 score 5.0/10. 4 P0 issues (hooks bug, 2 enrollment issues, URL pattern). Cycle 2 fixed all P0s. G5 (Study Planner) was WORKING in Cycle 2."
+    }
+  ],
+
+  "overallScore": 5.3,
+  "scoreBreakdown": {
+    "appHealth": 6,
+    "contentQuality": 5,
+    "uiuxExperience": 6,
+    "featureCompleteness": 5,
+    "learningEffectiveness": 4,
+    "formula": "appHealth*0.25 + contentQuality*0.25 + ux*0.20 + featureCompleteness*0.15 + learningEffectiveness*0.15",
+    "calculation": "6*0.25 + 5*0.25 + 6*0.20 + 5*0.15 + 4*0.15 = 1.5 + 1.25 + 1.2 + 0.75 + 0.6 = 5.3",
+    "trend": "+0.3 from Cycle 2 (5.0 → 5.3)",
+    "notes": "Pass rate jumped from 90.4% to 97% showing strong improvement. However 2 P0 regressions (Study Planner crash, Loading States stuck) and 3 P1 timed test issues hold the score down. Learner scores based on Cycle 1 reports — all 4 spaces likely more accessible now that enrollment and URL bugs were fixed in Cycle 2."
+  },
+
+  "issues": [
+    {
+      "id": "EVAL-C3-001",
+      "severity": "P0",
+      "category": "gamification",
+      "title": "StudyPlannerPage crashes: Calendar icon used without alias",
+      "file": "apps/student-web/src/pages/StudyPlannerPage.tsx",
+      "line": 196,
+      "rootCause": "The `Calendar` icon from lucide-react is imported at line 34 with an alias: `Calendar as CalendarIcon`. However, at line 196 it is used in JSX as `<Calendar className=\"h-5 w-5 text-amber-600\" />` — referencing `Calendar` which is not defined in scope (only `CalendarIcon` is). React attempts `React.createElement(Calendar, ...)` where Calendar is undefined, causing a runtime TypeError. React catches this and reports it as: 'The above error occurred in the <StudyPlannerPage> component at StudyPlannerPage.tsx:121:18' (compiled line number differs from source).",
+      "fix": "Change line 196: `<Calendar className=\"h-5 w-5 text-amber-600\" />` → `<CalendarIcon className=\"h-5 w-5 text-amber-600\" />`. One character change.",
+      "effort": "trivial",
+      "assignee": "portal-fixer"
+    },
+    {
+      "id": "EVAL-C3-002",
+      "severity": "P0",
+      "category": "error-states",
+      "title": "Loading States regression: page stuck — caused by JumbledAnswerer/CodeAnswerer crashes on null questionData",
+      "file": "apps/student-web/src/components/questions/JumbledAnswerer.tsx AND apps/student-web/src/components/questions/CodeAnswerer.tsx",
+      "line": 46,
+      "rootCause": "Two new question type components crash when questionData is null or structurally incomplete:\n\n(A) JumbledAnswerer.tsx line 46: `deterministicShuffle(data.items.map((item) => item.id))` — if `data.items` is undefined (e.g., a jumbled question payload missing the items array), this throws 'Cannot read properties of undefined (reading map)'. JumbledAnswerer has no null guard before calling data.items.\n\n(B) CodeAnswerer.tsx line 19: `data.testCases.length > 0` — if `data.testCases` is undefined (e.g., a code question payload missing testCases), this throws 'Cannot read properties of undefined (reading length)'. CodeAnswerer has no null guard on testCases.\n\nIn QuestionAnswerer.tsx (line 63), `payload.questionData` is cast via TypeScript `as` (e.g., `payload.questionData as JumbledData`) with no runtime null check before passing to these components. When the components crash mid-render, React error boundary catches it, but the parent page's loading state (which was waiting for items to render) does not transition to a 'loaded' or 'error' UI state — it remains stuck showing a loading spinner. This explains the E3 'Page stuck in loading state' regression.",
+      "fix": "In JumbledAnswerer.tsx: add a guard before the useMemo — if (!data?.items?.length) return an empty/error state. In CodeAnswerer.tsx: change `data.testCases.length > 0` to `(data.testCases?.length ?? 0) > 0` and guard data.testCases access similarly. In QuestionAnswerer.tsx: add a null check after the cast — if questionData is falsy, render an error message instead of crashing.",
+      "effort": "small",
+      "assignee": "portal-fixer"
+    },
+    {
+      "id": "EVAL-C3-003",
+      "severity": "P1",
+      "category": "timed-tests",
+      "title": "T2/T3/T5: Timed test timer/questions/submit never render — PRECONDITION_FAILED on start",
+      "file": "apps/student-web/src/pages/TimedTestPage.tsx",
+      "line": 245,
+      "rootCause": "Console shows: '[API Error] PRECONDITION_FAILED: FirebaseError: No questions found in this story point'. TimedTestPage.tsx line 245 calls `startTest.mutateAsync()`. When the backend returns PRECONDITION_FAILED (no questions exist in the story point's Firestore items subcollection), the mutateAsync throws an error caught at line 261 by `handleError`. The `view` state stays on 'landing' — it never transitions to 'test'. The test view at line 674 (`if (view === 'test' && activeSession)`) never renders. Therefore:\n  - T2 (Timer Display): CountdownTimer never mounts\n  - T3 (Answer & Auto-Save): QuestionAnswerer never mounts\n  - T5 (Submit Test): Submit button in test view never renders\n\nSecondary factor: The feature audit notes 'test may have max attempts reached'. If previous test runs exhausted `maxAttempts`, `canStart` at line 485 evaluates to false, disabling the Start Test button entirely — further preventing test execution.\n\nRoot data issue: The timed test story point used in the audit (likely the DSA timed test 7LgnRSSjBcZxj4PFoB1S or System Design timed test) has no question items in its Firestore items subcollection, causing the backend precondition check to fail.",
+      "fix": "Portal-fixer: (1) Verify the timed test story point has question items seeded in Firestore — run `firebase firestore:get tenants/{tenantId}/spaces/{spaceId}/storyPoints/{storyPointId}/items`. (2) If empty, re-seed questions for the timed test story point. (3) If max attempts exhausted, reset test session data for the test student. (4) Code fix: in TimedTestPage handleStartTest, improve error display to show the specific PRECONDITION_FAILED reason to the user.",
+      "effort": "medium",
+      "assignee": "portal-fixer"
+    },
+    {
+      "id": "EVAL-C3-004",
+      "severity": "P1",
+      "category": "question-types",
+      "title": "JumbledAnswerer crashes when data.items is null/undefined",
+      "file": "apps/student-web/src/components/questions/JumbledAnswerer.tsx",
+      "line": 46,
+      "rootCause": "JumbledAnswerer receives `data: JumbledData` typed prop but has no runtime null guard. At line 46-48, `useMemo(() => deterministicShuffle(data.items.map(...)))` executes immediately on render. If `data.items` is undefined or null (due to malformed payload or missing data in Firestore), this throws a TypeError. The TypeScript cast in QuestionAnswerer.tsx line 202 (`payload.questionData as JumbledData`) provides no runtime safety — the cast only affects types, not runtime values. Console confirms: 'The above error occurred in the <JumbledAnswerer> component at JumbledAnswerer.tsx:60:43'.",
+      "fix": "Add null guard in JumbledAnswerer: `if (!data?.items?.length) { return <p className='text-sm text-muted-foreground'>Invalid question data</p>; }` before the useMemo/return block.",
+      "effort": "trivial",
+      "assignee": "portal-fixer"
+    },
+    {
+      "id": "EVAL-C3-005",
+      "severity": "P1",
+      "category": "question-types",
+      "title": "CodeAnswerer crashes when data.testCases is null/undefined",
+      "file": "apps/student-web/src/components/questions/CodeAnswerer.tsx",
+      "line": 19,
+      "rootCause": "CodeAnswerer at line 19: `data.testCases.length > 0` and line 33: `data.testCases.filter(...)` both assume `data.testCases` is an array. If the code question payload in Firestore does not include a `testCases` field (or it is null), both lines throw 'Cannot read properties of undefined (reading length)'. Console confirms: 'The above error occurred in the <CodeAnswerer> component at CodeAnswerer.tsx:21:40'.",
+      "fix": "Replace `data.testCases.length > 0` with `(data.testCases?.length ?? 0) > 0` at line 19. Replace `data.testCases.filter(...)` with `(data.testCases ?? []).filter(...)` at line 33 and all other testCases accesses. Or add a guard at the top: `const testCases = data.testCases ?? [];`.",
+      "effort": "trivial",
+      "assignee": "portal-fixer"
+    },
+    {
+      "id": "EVAL-C3-006",
+      "severity": "P2",
+      "category": "auxiliary",
+      "title": "Chat Session UI elements not found (X2 partial)",
+      "file": "apps/student-web/src/pages/ChatTutorPage.tsx",
+      "line": null,
+      "rootCause": "Chat Tutor page header loads (h1: 'Chat Tutor') but no chat UI elements found (input, message list, send button). Previously working in Cycle 0. Likely a data dependency — chat requires a space context that isn't provided from the top-level /chat-tutor route, or the chat API is returning CORS errors (CORS errors visible in console for getNotifications endpoint).",
+      "fix": "Investigate ChatTutorPage: check if it requires spaceId param. If chat requires a space context, ensure the standalone /chat-tutor route provides a default space or shows a space selector.",
+      "effort": "small",
+      "assignee": "portal-fixer"
+    },
+    {
+      "id": "EVAL-C3-007",
+      "severity": "P2",
+      "category": "learning-flow",
+      "title": "Section navigation, search, and filter controls absent in space viewer (L5-L11)",
+      "file": "apps/student-web/src/pages/SpaceViewerPage.tsx",
+      "line": null,
+      "rootCause": "Persistent from Cycle 0. No section navigation buttons (L5), no search input (L6), no item type filter (L7), no difficulty filter (L8), no completion filter (L9), no prev/next navigation (L10), no chat tutor button in story point viewer (L11). These features are marked 'partial' — they may be planned but not yet implemented, or implemented in a branch not yet merged.",
+      "fix": "Assess which of L5-L11 are planned features vs design decisions. If planned: implement them. If not planned: document as accepted limitations. The DSA learner (Cycle 1) confirmed search and section navigation ARE present in practice mode but not in the space viewer list view.",
+      "effort": "medium",
+      "assignee": "portal-fixer"
+    },
+    {
+      "id": "EVAL-C3-008",
+      "severity": "P2",
+      "category": "dashboard",
+      "title": "Dashboard Strengths/Weaknesses not displayed (D8)",
+      "file": "apps/student-web/src/pages/DashboardPage.tsx",
+      "line": null,
+      "rootCause": "Persistent from Cycle 0. Section conditionally renders based on data — student hasn't completed enough exams/tests to trigger it. Likely requires at least one completed exam for the ML inference to generate strengths/weaknesses.",
+      "fix": "Accept as valid state for new students. Or show a 'Complete more tests to see your strengths/weaknesses' placeholder when data is absent.",
+      "effort": "small",
+      "assignee": "portal-fixer"
+    },
+    {
+      "id": "EVAL-C3-009",
+      "severity": "P3",
+      "category": "navigation",
+      "title": "Breadcrumbs not fully visible on some pages (N3)",
+      "file": "apps/student-web/src/pages/StoryPointViewerPage.tsx",
+      "line": null,
+      "rootCause": "From EVAL-C2-012: Breadcrumbs render after data loads but not during loading/error states. DSA learner confirmed breadcrumbs ARE visible in practice mode (after content loads). The test selector may time out before breadcrumbs render.",
+      "fix": "Move breadcrumb render before loading/error early returns in StoryPointViewerPage.",
+      "effort": "small",
+      "assignee": "portal-fixer"
+    },
+    {
+      "id": "EVAL-C3-010",
+      "severity": "P3",
+      "category": "auxiliary",
+      "title": "Theme toggle does not change HTML class (X8)",
+      "file": "apps/student-web/src/pages/SettingsPage.tsx",
+      "line": null,
+      "rootCause": "Persistent from Cycle 0. Theme button clicked but 'dark' class does not appear on <html> element. Toggle mechanism is disconnected from DOM class mutation.",
+      "fix": "In theme toggle handler, ensure `document.documentElement.classList.toggle('dark')` is called alongside any React state updates.",
+      "effort": "small",
+      "assignee": "portal-fixer"
+    },
+    {
+      "id": "EVAL-C3-011",
+      "severity": "P3",
+      "category": "error-states",
+      "title": "404 page text not detected on invalid route (E1)",
+      "file": "apps/student-web/src/App.tsx",
+      "line": null,
+      "rootCause": "Previous status: 'working' (Cycle 0). Now: 'partial'. Invalid route did not show 404 text. The 404 page may render a visual design without the literal '404' text, or the test selector is looking for specific text that changed.",
+      "fix": "Ensure the catch-all route renders a page with visible '404' or 'Page not found' text detectable by automated tests.",
+      "effort": "trivial",
+      "assignee": "portal-fixer"
+    }
+  ],
+
+  "regressions": [
+    {
+      "id": "REG-C3-001",
+      "featureId": "G5",
+      "feature": "Study Planner",
+      "previousStatus": "working (Cycle 0, Cycle 2)",
+      "currentStatus": "broken (P0)",
+      "rootCause": "Calendar icon imported as CalendarIcon (alias) at line 34 but used as Calendar (undefined) in JSX at line 196 of StudyPlannerPage.tsx. The page was added or modified in Cycle 2 and the import alias mismatch was introduced then.",
+      "relatedIssue": "EVAL-C3-001"
+    },
+    {
+      "id": "REG-C3-002",
+      "featureId": "E3",
+      "feature": "Loading States",
+      "previousStatus": "working (Cycle 0, Cycle 2)",
+      "currentStatus": "broken (P0)",
+      "rootCause": "JumbledAnswerer and CodeAnswerer components crash with null questionData, preventing the page from completing its render cycle and leaving loading state unresolved. These components were added in Cycle 2 without null guards on questionData fields.",
+      "relatedIssue": "EVAL-C3-002"
+    }
+  ],
+
+  "fixPriority": [
+    "EVAL-C3-001",
+    "EVAL-C3-004",
+    "EVAL-C3-005",
+    "EVAL-C3-002",
+    "EVAL-C3-003",
+    "EVAL-C3-006",
+    "EVAL-C3-007",
+    "EVAL-C3-009",
+    "EVAL-C3-011",
+    "EVAL-C3-008",
+    "EVAL-C3-010"
+  ],
+
+  "portalFixerSequence": [
+    {
+      "order": 1,
+      "issueId": "EVAL-C3-001",
+      "severity": "P0",
+      "title": "Fix StudyPlannerPage: Calendar → CalendarIcon",
+      "file": "apps/student-web/src/pages/StudyPlannerPage.tsx",
+      "fix": "Line 196: change `<Calendar className=\"h-5 w-5 text-amber-600\" />` to `<CalendarIcon className=\"h-5 w-5 text-amber-600\" />`. Calendar is already imported as CalendarIcon at line 34.",
+      "effort": "trivial",
+      "verifyWith": "Navigate to /study-planner — should render h1 'Study Planner' and show Active Goals section."
+    },
+    {
+      "order": 2,
+      "issueId": "EVAL-C3-004",
+      "severity": "P1",
+      "title": "Fix JumbledAnswerer null guard on data.items",
+      "file": "apps/student-web/src/components/questions/JumbledAnswerer.tsx",
+      "fix": "Add null/empty check at start of JumbledAnswerer component: if (!data?.items?.length) { return <p className='text-sm text-muted-foreground'>Question data not available</p>; }. Place before the useMemo call.",
+      "effort": "trivial",
+      "verifyWith": "Render a jumbled question with valid data — should display correctly. Also test with null questionData — should show error message without crashing."
+    },
+    {
+      "order": 3,
+      "issueId": "EVAL-C3-005",
+      "severity": "P1",
+      "title": "Fix CodeAnswerer null guard on data.testCases",
+      "file": "apps/student-web/src/components/questions/CodeAnswerer.tsx",
+      "fix": "At top of component body add: `const testCases = data?.testCases ?? [];`. Replace all `data.testCases` references with `testCases`. Also guard `data.language`: use `data?.language ?? 'code'`.",
+      "effort": "trivial",
+      "verifyWith": "Navigate to a story point with a code question — should render textarea without crash. Test with missing testCases field — should render textarea without test cases section."
+    },
+    {
+      "order": 4,
+      "issueId": "EVAL-C3-002",
+      "severity": "P0",
+      "title": "Verify E3 loading state resolves after component null fixes",
+      "fix": "After fixes to JumbledAnswerer and CodeAnswerer (steps 2-3), re-test loading states. If still stuck: check that loading state in PracticeModePage/StoryPointViewerPage handles error state from QuestionAnswerer gracefully — ensure isError state shows an error UI rather than leaving the loading spinner visible.",
+      "effort": "small",
+      "verifyWith": "E3 test: navigate to a page with loading state (e.g., space viewer or story point) — spinner should appear then disappear when content loads."
+    },
+    {
+      "order": 5,
+      "issueId": "EVAL-C3-003",
+      "severity": "P1",
+      "title": "Fix timed test PRECONDITION_FAILED: ensure test story points have questions",
+      "fix": "(A) Run Firestore check: verify items subcollection exists for timed test story points (e.g., 7LgnRSSjBcZxj4PFoB1S for DSA timed test). (B) If empty, re-seed: run seed script to add question items to timed test story points. (C) If max attempts exhausted: delete test sessions for vmP1QTDZBRCqE3Mr6IPK for the timed test story points in Firestore. (D) Code: in handleStartTest catch block, show the actual error message to the user: extract PRECONDITION_FAILED message and display it under the Start Test button.",
+      "effort": "medium",
+      "verifyWith": "T2: timer visible after starting test. T3: question area visible. T5: submit button visible. Console: no PRECONDITION_FAILED error."
+    },
+    {
+      "order": 6,
+      "issueId": "EVAL-C3-009",
+      "severity": "P3",
+      "title": "Move breadcrumbs before loading/error early returns in StoryPointViewerPage",
+      "file": "apps/student-web/src/pages/StoryPointViewerPage.tsx",
+      "fix": "Restructure renders: breadcrumbs + h1 + description first (always visible), then conditionally show loading/error/content for items list.",
+      "effort": "small"
+    },
+    {
+      "order": 7,
+      "issueId": "EVAL-C3-010",
+      "severity": "P3",
+      "title": "Fix theme toggle",
+      "fix": "In SettingsPage theme toggle handler, call document.documentElement.classList.toggle('dark') to mutate the DOM class.",
+      "effort": "small"
+    }
+  ],
+
+  "summary": "Cycle 3 audit shows strong overall improvement: 97% pass rate (up from 90.4% in Cycle 2 and 63% in Cycle 0). However, 2 P0 regressions were introduced in Cycle 2 that must be fixed immediately:\n\n**G5 Regression (trivial fix):** StudyPlannerPage crashes because `Calendar` lucide icon is imported as `CalendarIcon` (alias) but used without the alias at line 196. One-character rename in JSX fixes it.\n\n**E3 Regression (small fix):** Loading state stuck because JumbledAnswerer and CodeAnswerer components (added in Cycle 2) crash when `data.items` or `data.testCases` are null. No null guards exist before accessing array properties. Crashes prevent loading state from resolving to loaded/error state. Fix: add null guards to both components.\n\n**T2/T3/T5 Partials (medium fix):** Timed test never progresses from landing to test view because the backend returns PRECONDITION_FAILED 'No questions found in story point'. The test story point either has no items seeded or max attempts are exhausted. Requires data investigation + re-seeding.\n\nLearner reports from Cycle 1 remain the baseline for content quality — all 4 spaces are now accessible (enrollment + URL bugs fixed in Cycle 2), but re-testing with Cycle 3 learner agents is needed to assess actual content quality post-fixes.\n\nOverall score: 5.3/10 (+0.3 from Cycle 2). With the 2 P0 fixes applied, score should reach 7+.",
+
+  "readinessAssessment": {
+    "isReady": false,
+    "criticalBlockers": [
+      "G5: StudyPlannerPage crash (trivial fix — must be done first)",
+      "E3: Loading states regression (small fix — null guards on JumbledAnswerer/CodeAnswerer)",
+      "T2/T3/T5: Timed test non-functional (medium fix — data + code)"
+    ],
+    "cycle4Recommendations": [
+      "After P0 fixes: re-run feature audit to confirm G5 and E3 pass",
+      "Re-run all 4 learner agents with Cycle 3 state to get fresh content quality data",
+      "Deep-test all 15 question types once JumbledAnswerer/CodeAnswerer are fixed",
+      "Test timed assessment end-to-end after re-seeding questions",
+      "Add null guards to ALL remaining question type answerers for defensive robustness",
+      "Address P2/P3 issues: chat session UI, section navigation, theme toggle",
+      "Test mobile responsiveness for timed test and study planner"
+    ]
+  }
+}

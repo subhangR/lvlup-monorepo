@@ -1,0 +1,110 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Features from '../components/Features.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import Testimonials from '../components/Testimonials.astro';
+import FAQ from '../components/FAQ.astro';
+import CTA from '../components/CTA.astro';
+import Footer from '../components/Footer.astro';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'SoftwareApplication',
+      name: 'Auto-LevelUp',
+      applicationCategory: 'EducationalApplication',
+      operatingSystem: 'Web',
+      description: 'AI education platform for schools. LvlUp Spaces gives every student a personalised AI tutor and adaptive learning path. AutoGrade turns handwritten exams into fully graded, feedback-rich reports in minutes.',
+    },
+    {
+      '@type': 'FAQPage',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: 'What is Auto-LevelUp?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Auto-LevelUp is an AI education platform built for schools. It has two products: LvlUp Spaces gives every student a personalised AI tutor and adaptive learning path. AutoGrade lets teachers scan handwritten exams with any phone and get fully graded, feedback-rich reports in minutes.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'How does AutoGrade work?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'A teacher photographs answer sheets using any smartphone. The AI reads the handwriting, maps each answer to the right question, and grades everything against the teacher\'s rubric — all at once, for the whole class. Every student gets a detailed report. Teachers can review and override any grade. The whole process takes about 8 minutes for a class of 40.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Will Auto-LevelUp work for my school size?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Yes. Auto-LevelUp works for a single classroom or an entire school district. Each school\'s data is fully isolated and secure. The platform scales with you — every school gets its own branding, settings, and admin controls.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'How does the student experience work?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Students earn XP for completing lessons, maintaining streaks, and hitting learning goals. They progress through achievement tiers — from Bronze to Diamond — and see their rank on weekly leaderboards. The AI tutor is available 24/7, and difficulty adjusts automatically.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Can parents see how their child is doing?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Yes. Parents get real-time alerts when exam scores drop or when a child hasn\'t been active. They can see strengths, weak topics, and specific AI recommendations. Downloadable PDF progress reports make it easy to prepare for tutor sessions or parent-teacher meetings.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'How is student data protected?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Every school\'s data is fully isolated. All data is encrypted, and staff access is controlled through granular permissions. Schools bring their own AI credentials, so usage costs stay on their own billing account. We never sell student data.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'Does the AI replace teachers?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'No. The AI handles the repetitive work — grading, flagging at-risk students, adjusting difficulty — so teachers can focus on teaching, mentoring, and making judgment calls. Teachers always have the final word. Every AI grade can be reviewed and overridden.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: 'How do we get started?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Book a 30-minute demo and we\'ll walk you through the platform. Setup takes under an hour: create your school profile, import your users, and your teachers are ready to go.',
+          },
+        },
+      ],
+    },
+  ],
+};
+---
+
+<Layout
+  title="Auto-LevelUp — AI-Powered Learning and Grading for Schools"
+  description="Auto-LevelUp gives every student a personalised AI tutor and every teacher an 8-minute exam grading tool. One platform built for schools, teachers, students, and parents."
+  jsonLd={jsonLd}
+>
+  <Nav />
+  <main id="main-content">
+    <Hero />
+    <Features />
+    <HowItWorks />
+    <Testimonials />
+    <FAQ />
+    <CTA />
+  </main>
+  <Footer />
+</Layout>

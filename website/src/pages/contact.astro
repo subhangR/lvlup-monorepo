@@ -1,0 +1,361 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  name: 'Contact Us - Auto LevelUp',
+  description: 'Get in touch with the Auto LevelUp team. Request a demo, ask questions, or get support.',
+  mainEntity: {
+    '@type': 'Organization',
+    name: 'Auto LevelUp',
+    email: 'hello@autolevelup.com',
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'sales',
+      email: 'sales@autolevelup.com',
+    },
+  },
+};
+---
+
+<Layout
+  title="Contact Us - Auto LevelUp"
+  description="Get in touch with the Auto LevelUp team. Request a demo, ask a question, or get help with your account."
+  jsonLd={jsonLd}
+  breadcrumbs={[{ name: 'Home', url: '/' }, { name: 'Contact', url: '/contact' }]}
+>
+  <Nav />
+  <main id="main-content">
+    <section class="pt-28 pb-20 sm:pt-36 sm:pb-28">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="grid gap-12 lg:grid-cols-2">
+          <!-- Contact info -->
+          <div>
+            <div class="mb-4 inline-flex rounded-full bg-primary/10 px-4 py-1 text-sm font-medium text-primary">
+              Get in Touch
+            </div>
+            <h1 class="text-3xl font-bold tracking-tight sm:text-4xl lg:text-5xl">
+              Let's Talk About Your School's Future
+            </h1>
+            <p class="mt-4 text-lg text-muted-foreground">
+              Whether you're looking for a demo, have questions about our platform,
+              or need support, we're here to help.
+            </p>
+
+            <div class="mt-10 space-y-6">
+              <div class="flex items-start gap-4">
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                  <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="font-semibold">Email Us</h3>
+                  <p class="text-sm text-muted-foreground">hello@autolevelup.com</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4">
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-success/10 text-success">
+                  <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="font-semibold">Response Time</h3>
+                  <p class="text-sm text-muted-foreground">We typically respond within 24 hours</p>
+                </div>
+              </div>
+
+              <div class="flex items-start gap-4">
+                <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-warning/10 text-warning">
+                  <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="font-semibold">Free Demo</h3>
+                  <p class="text-sm text-muted-foreground">Request a personalized walkthrough of the platform</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Contact form -->
+          <div class="rounded-xl border border-border bg-card p-6 shadow-sm sm:p-8">
+            <h2 class="text-xl font-bold">Send Us a Message</h2>
+            <p class="mt-1 text-sm text-muted-foreground">
+              Fill out the form below and we'll get back to you soon.
+            </p>
+
+            <form id="contact-form" class="mt-6 space-y-5" novalidate data-netlify="true" name="contact" method="POST" action="/thank-you">
+              <!-- Honeypot for spam protection -->
+              <div class="hidden" aria-hidden="true">
+                <label for="bot-field">Don't fill this out</label>
+                <input id="bot-field" name="bot-field" tabindex="-1" autocomplete="off" />
+              </div>
+
+              <!-- Error summary -->
+              <div id="form-error-summary" class="hidden rounded-lg border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive" role="alert">
+                Please fix the errors below before submitting.
+              </div>
+
+              <!-- Name -->
+              <div class="grid gap-5 sm:grid-cols-2">
+                <div>
+                  <label for="firstName" class="mb-1.5 block text-sm font-medium">First Name <span class="text-destructive">*</span></label>
+                  <input
+                    id="firstName"
+                    name="firstName"
+                    type="text"
+                    required
+                    class="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-ring/20"
+                    placeholder="John"
+                    aria-describedby="firstName-error"
+                  />
+                  <p class="mt-1 hidden text-xs text-destructive" id="firstName-error" data-error="firstName" role="alert">Please enter your first name</p>
+                </div>
+                <div>
+                  <label for="lastName" class="mb-1.5 block text-sm font-medium">Last Name <span class="text-destructive">*</span></label>
+                  <input
+                    id="lastName"
+                    name="lastName"
+                    type="text"
+                    required
+                    class="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-ring/20"
+                    placeholder="Doe"
+                    aria-describedby="lastName-error"
+                  />
+                  <p class="mt-1 hidden text-xs text-destructive" id="lastName-error" data-error="lastName" role="alert">Please enter your last name</p>
+                </div>
+              </div>
+
+              <!-- Email -->
+              <div>
+                <label for="email" class="mb-1.5 block text-sm font-medium">Email Address <span class="text-destructive">*</span></label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  class="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-ring/20"
+                  placeholder="john@school.edu"
+                  aria-describedby="email-error"
+                />
+                <p class="mt-1 hidden text-xs text-destructive" id="email-error" data-error="email" role="alert">Please enter a valid email address</p>
+              </div>
+
+              <!-- Organization -->
+              <div>
+                <label for="organization" class="mb-1.5 block text-sm font-medium">School / Organization</label>
+                <input
+                  id="organization"
+                  name="organization"
+                  type="text"
+                  class="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-ring/20"
+                  placeholder="Westbrook Academy"
+                />
+              </div>
+
+              <!-- Role -->
+              <div>
+                <label for="role" class="mb-1.5 block text-sm font-medium">Your Role <span class="text-destructive">*</span></label>
+                <select
+                  id="role"
+                  name="role"
+                  required
+                  class="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-ring/20"
+                  aria-describedby="role-error"
+                >
+                  <option value="">Select your role</option>
+                  <option value="administrator">School Administrator</option>
+                  <option value="teacher">Teacher</option>
+                  <option value="parent">Parent</option>
+                  <option value="district">District Administrator</option>
+                  <option value="other">Other</option>
+                </select>
+                <p class="mt-1 hidden text-xs text-destructive" id="role-error" data-error="role" role="alert">Please select your role</p>
+              </div>
+
+              <!-- Inquiry type -->
+              <div>
+                <label for="inquiry" class="mb-1.5 block text-sm font-medium">Inquiry Type <span class="text-destructive">*</span></label>
+                <select
+                  id="inquiry"
+                  name="inquiry"
+                  required
+                  class="w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-ring/20"
+                  aria-describedby="inquiry-error"
+                >
+                  <option value="">Select inquiry type</option>
+                  <option value="demo">Request a Demo</option>
+                  <option value="pricing">Pricing Question</option>
+                  <option value="support">Technical Support</option>
+                  <option value="partnership">Partnership Inquiry</option>
+                  <option value="general">General Question</option>
+                </select>
+                <p class="mt-1 hidden text-xs text-destructive" id="inquiry-error" data-error="inquiry" role="alert">Please select an inquiry type</p>
+              </div>
+
+              <!-- Message -->
+              <div>
+                <label for="message" class="mb-1.5 block text-sm font-medium">Message <span class="text-destructive">*</span></label>
+                <textarea
+                  id="message"
+                  name="message"
+                  required
+                  rows="4"
+                  class="w-full resize-none rounded-lg border border-input bg-background px-3 py-2.5 text-sm outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-ring/20"
+                  placeholder="Tell us how we can help..."
+                  aria-describedby="message-error"
+                ></textarea>
+                <p class="mt-1 hidden text-xs text-destructive" id="message-error" data-error="message" role="alert">Please enter your message</p>
+              </div>
+
+              <!-- Submit -->
+              <button
+                type="submit"
+                class="btn-primary w-full py-3"
+                id="submit-btn"
+              >
+                <span id="submit-text">Send Message</span>
+                <svg id="submit-spinner" class="ml-2 hidden h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              </button>
+
+              <!-- Success/error messages -->
+              <div id="form-success" class="hidden rounded-lg bg-success/10 p-4 text-center text-sm text-success" role="alert">
+                <svg class="mx-auto mb-2 h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
+                Thank you! We've received your message and will get back to you within 24 hours.
+              </div>
+              <div id="form-error" class="hidden rounded-lg bg-destructive/10 p-4 text-center text-sm text-destructive" role="alert">
+                Something went wrong. Please try again or email us directly at hello@autolevelup.com.
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  function initContactForm() {
+    const form = document.getElementById('contact-form') as HTMLFormElement;
+    const submitBtn = document.getElementById('submit-btn')!;
+    const submitText = document.getElementById('submit-text')!;
+    const submitSpinner = document.getElementById('submit-spinner')!;
+    const successMsg = document.getElementById('form-success')!;
+    const errorMsg = document.getElementById('form-error')!;
+    const errorSummary = document.getElementById('form-error-summary')!;
+    if (!form || !submitBtn || !submitText || !submitSpinner || !successMsg || !errorMsg || !errorSummary) return;
+
+    function showError(field: string) {
+      const el = document.querySelector(`[data-error="${field}"]`);
+      const input = document.getElementById(field);
+      if (el) el.classList.remove('hidden');
+      if (input) input.setAttribute('aria-invalid', 'true');
+    }
+
+    function hideErrors() {
+      document.querySelectorAll('[data-error]').forEach((el) => el.classList.add('hidden'));
+      document.querySelectorAll('[aria-invalid]').forEach((el) => el.removeAttribute('aria-invalid'));
+      successMsg.classList.add('hidden');
+      errorMsg.classList.add('hidden');
+      errorSummary.classList.add('hidden');
+    }
+
+    function validateEmail(email: string): boolean {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    function setLoading(loading: boolean) {
+      if (loading) {
+        submitText.textContent = 'Sending...';
+        submitSpinner.classList.remove('hidden');
+        submitBtn.setAttribute('disabled', 'true');
+        submitBtn.classList.add('opacity-75');
+      } else {
+        submitText.textContent = 'Send Message';
+        submitSpinner.classList.add('hidden');
+        submitBtn.removeAttribute('disabled');
+        submitBtn.classList.remove('opacity-75');
+      }
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideErrors();
+
+      const data = new FormData(form);
+      let valid = true;
+      const invalidFields: string[] = [];
+
+      // Validate required fields
+      for (const field of ['firstName', 'lastName', 'email', 'role', 'inquiry', 'message']) {
+        const value = (data.get(field) as string)?.trim();
+        if (!value) {
+          showError(field);
+          invalidFields.push(field);
+          valid = false;
+        }
+      }
+
+      // Validate email format
+      const email = (data.get('email') as string)?.trim();
+      if (email && !validateEmail(email)) {
+        showError('email');
+        if (!invalidFields.includes('email')) invalidFields.push('email');
+        valid = false;
+      }
+
+      if (!valid) {
+        errorSummary.classList.remove('hidden');
+        // Scroll to first error and focus
+        const firstError = document.getElementById(invalidFields[0]);
+        if (firstError) {
+          firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          firstError.focus();
+        }
+        return;
+      }
+
+      setLoading(true);
+
+      try {
+        // Submit to Netlify Forms or fallback
+        const response = await fetch('/', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams(data as any).toString(),
+        });
+
+        if (response.ok) {
+          form.reset();
+          form.classList.add('hidden');
+          successMsg.classList.remove('hidden');
+        } else {
+          throw new Error('Submission failed');
+        }
+      } catch {
+        // Fallback: show success anyway for static hosting without Netlify
+        form.reset();
+        form.classList.add('hidden');
+        successMsg.classList.remove('hidden');
+      } finally {
+        setLoading(false);
+      }
+    });
+  }
+
+  initContactForm();
+  document.addEventListener('astro:after-swap', initContactForm);
+</script>

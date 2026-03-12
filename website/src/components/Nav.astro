@@ -1,0 +1,165 @@
+---
+interface NavLink {
+  label: string;
+  href: string;
+}
+
+const links: NavLink[] = [
+  { label: 'Features', href: '/#features' },
+  { label: 'How It Works', href: '/#how-it-works' },
+  { label: 'Pricing', href: '/pricing' },
+  { label: 'FAQ', href: '/#faq' },
+  { label: 'Contact', href: '/contact' },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<nav
+  id="main-nav"
+  class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+  aria-label="Main navigation"
+  transition:persist
+>
+  <!-- Scroll progress bar -->
+  <div
+    id="scroll-progress"
+    class="absolute top-0 left-0 h-0.5 bg-primary transition-all duration-150"
+    style="width: 0%"
+    aria-hidden="true"
+  ></div>
+
+  <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+    <!-- Logo -->
+    <a href="/" class="flex items-center gap-2 text-xl font-bold" aria-label="Auto LevelUp Home">
+      <svg class="h-8 w-8" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="hsl(221.2, 83.2%, 53.3%)" />
+        <path d="M8 22L16 10L24 22H8Z" fill="white" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
+        <path d="M13 18H19" stroke="hsl(221.2, 83.2%, 53.3%)" stroke-width="2" stroke-linecap="round" />
+      </svg>
+      <span>Auto<span class="text-primary">LevelUp</span></span>
+    </a>
+
+    <!-- Desktop links -->
+    <div class="hidden items-center gap-1 md:flex">
+      {links.map((link) => {
+        const isActive = link.href === currentPath || (link.href === '/pricing' && currentPath === '/pricing') || (link.href === '/contact' && currentPath === '/contact');
+        return (
+          <a
+            href={link.href}
+            class={`rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:text-foreground ${isActive ? 'text-foreground bg-accent' : 'text-muted-foreground'}`}
+            {...(isActive ? { 'aria-current': 'page' } : {})}
+          >
+            {link.label}
+          </a>
+        );
+      })}
+    </div>
+
+    <!-- CTA buttons -->
+    <div class="hidden items-center gap-3 md:flex">
+      <a href="https://app.autolevelup.com/login" class="btn-ghost text-sm">Log In</a>
+      <a href="https://app.autolevelup.com/signup" class="btn-primary text-sm">Get Started Free</a>
+    </div>
+
+    <!-- Mobile menu button -->
+    <button
+      id="mobile-menu-btn"
+      class="flex items-center justify-center rounded-lg p-2 text-muted-foreground md:hidden"
+      aria-label="Toggle mobile menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <svg id="menu-icon" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+      <svg id="close-icon" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden border-t border-border bg-background/95 backdrop-blur-md md:hidden">
+    <div class="space-y-1 px-4 py-4">
+      {links.map((link) => {
+        const isActive = link.href === currentPath || (link.href === '/pricing' && currentPath === '/pricing') || (link.href === '/contact' && currentPath === '/contact');
+        return (
+          <a
+            href={link.href}
+            class={`block rounded-lg px-3 py-2 text-base font-medium hover:bg-accent hover:text-foreground ${isActive ? 'text-foreground bg-accent' : 'text-muted-foreground'}`}
+            {...(isActive ? { 'aria-current': 'page' } : {})}
+          >
+            {link.label}
+          </a>
+        );
+      })}
+      <div class="mt-4 flex flex-col gap-2 border-t border-border pt-4">
+        <a href="https://app.autolevelup.com/login" class="btn-ghost w-full text-center">Log In</a>
+        <a href="https://app.autolevelup.com/signup" class="btn-primary w-full text-center">Get Started Free</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<script>
+  function initNav() {
+    const nav = document.getElementById('main-nav');
+    const scrollProgress = document.getElementById('scroll-progress');
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('menu-icon');
+    const closeIcon = document.getElementById('close-icon');
+    if (!nav || !scrollProgress || !mobileMenuBtn || !mobileMenu || !menuIcon || !closeIcon) return;
+
+    // Floating nav on scroll
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? (scrollY / docHeight) * 100 : 0;
+      scrollProgress.style.width = `${progress}%`;
+
+      if (scrollY > 50) {
+        nav.classList.add('bg-background/95', 'backdrop-blur-md', 'shadow-sm');
+      } else {
+        nav.classList.remove('bg-background/95', 'backdrop-blur-md', 'shadow-sm');
+      }
+    });
+
+    // Mobile menu toggle
+    let isOpen = false;
+    mobileMenuBtn.addEventListener('click', () => {
+      isOpen = !isOpen;
+      mobileMenu.classList.toggle('hidden', !isOpen);
+      menuIcon.classList.toggle('hidden', isOpen);
+      closeIcon.classList.toggle('hidden', !isOpen);
+      mobileMenuBtn.setAttribute('aria-expanded', String(isOpen));
+    });
+
+    // Close mobile menu on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        isOpen = false;
+        mobileMenu.classList.add('hidden');
+        menuIcon.classList.remove('hidden');
+        closeIcon.classList.add('hidden');
+        mobileMenuBtn.setAttribute('aria-expanded', 'false');
+        mobileMenuBtn.focus();
+      }
+    });
+
+    // Close mobile menu on link click
+    mobileMenu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        isOpen = false;
+        mobileMenu.classList.add('hidden');
+        menuIcon.classList.remove('hidden');
+        closeIcon.classList.add('hidden');
+        mobileMenuBtn.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+
+  initNav();
+  document.addEventListener('astro:after-swap', initNav);
+</script>

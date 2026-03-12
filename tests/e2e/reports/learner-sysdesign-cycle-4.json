@@ -1,0 +1,177 @@
+{
+  "cycleNumber": 4,
+  "learner": "System Design Learner (tm_1773067950146_tduxo7n9p)",
+  "timestamp": "2026-03-09T18:07:59.584Z",
+  "space": "System Design",
+  "spaceId": "8rPWlVP4kyDp1xd75SnH",
+  "environment": {
+    "url": "http://localhost:4570",
+    "credentials": {
+      "email": "student.test@subhang.academy",
+      "schoolCode": "SUB001"
+    },
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "testSummary": {
+    "totalChecks": 37,
+    "passed": 34,
+    "failed": 3,
+    "passRate": "91.9%",
+    "p0Issues": 0,
+    "p1Issues": 0,
+    "p2Issues": 3,
+    "p3Issues": 0
+  },
+  "workingFeatures": [
+    "L1: Login with school code + email works",
+    "L2: Spaces page loads (h1=\"My Spaces\")",
+    "L2: System Design Space card visible (seed space, text=\"System DesignMaster the fundamentals of system des\")",
+    "L3: System Design Space viewer has h1: \"System Design\"",
+    "L3: System Design Space viewer shows 2 story point links (partial)",
+    "L3: Space viewer shows System Design related content",
+    "L4: Fundamentals of Scalability h1 present: \"Fundamentals of Scalability\"",
+    "CQ1: Fundamentals of Scalability — system design keywords present (8/13)",
+    "CQ1: Fundamentals of Scalability — architecture diagram/visual elements present (43)",
+    "UX1: Fundamentals of Scalability — breadcrumbs/back navigation visible",
+    "L4: Database Design & Patterns h1 present: \"Database Design & Patterns\"",
+    "UX1: Database Design & Patterns — breadcrumbs/back navigation visible",
+    "L4: Database Design & Patterns — code blocks rendered (2 found)",
+    "L4: Caching & Load Balancing Quiz h1 present: \"Caching & Load Balancing Quiz\"",
+    "UX1: Caching & Load Balancing Quiz — breadcrumbs/back navigation visible",
+    "L4: System Design Assessment h1 present: \"System Design Assessment\"",
+    "UX1: System Design Assessment — breadcrumbs/back navigation visible",
+    "P1: Practice mode — Submit Answer button visible",
+    "P1: Submit Answer correctly disabled before answer selection",
+    "P1: Practice mode — answer options visible (14 found)",
+    "P1: Submit Answer enabled after selecting answer",
+    "P1: Next button visible after submit",
+    "P1: Section/breadcrumb navigation visible in practice mode",
+    "P2: Ask AI Tutor button visible in practice mode",
+    "Q1: Quiz story point accessible: \"Caching & Load Balancing Quiz\"",
+    "Q1: MCQ question type visible in quiz",
+    "Q1: MCAQ question type visible in quiz",
+    "Q1: Quiz submit/next button visible",
+    "Q1: Quiz results/score section visible",
+    "T1: Timed Assessment h1: \"System Design Assessment\"",
+    "T1: Timed Assessment shows 30-minute duration info",
+    "AN1: Results/analytics links visible on space page",
+    "UX1: Story point viewer responsive on mobile (375px) — h1=\"Fundamentals of Scalability\"",
+    "CQ1: Scalability content has depth (7/12 keywords)"
+  ],
+  "issues": [
+    {
+      "id": "SD-C4-001",
+      "severity": "P2",
+      "category": "content",
+      "title": "Space viewer shows only 2/4 story point links",
+      "details": "Expected 4, found 2"
+    },
+    {
+      "id": "SD-C4-002",
+      "severity": "P2",
+      "category": "timed-assessment",
+      "title": "Timer not visible on timed assessment landing (T2)",
+      "details": "At http://localhost:4570/spaces/8rPWlVP4kyDp1xd75SnH/story-points/3PYpieQtVUMQYiM9W43i. Expected countdown timer."
+    },
+    {
+      "id": "SD-C4-003",
+      "severity": "P2",
+      "category": "timed-assessment",
+      "title": "Start button not found on timed assessment landing (T3)",
+      "details": "At http://localhost:4570/spaces/8rPWlVP4kyDp1xd75SnH/story-points/3PYpieQtVUMQYiM9W43i"
+    }
+  ],
+  "contentAssessment": {
+    "storyPointsTested": 4,
+    "storyPointsAccessible": 4,
+    "totalStoryPoints": 4,
+    "architectureDiagramRendered": true,
+    "systemDesignKeywordsFound": [
+      "  SD keywords found: scalability, load balancer, database, horizontal, vertical, availability, consistency, partition",
+      "Scalability content keywords: load, server, database, network, distributed, availability, performance"
+    ],
+    "contentQualityNotes": [
+      "  SD keywords found: scalability, load balancer, database, horizontal, vertical, availability, consistency, partition",
+      "  Diagram/visual elements: 43",
+      "Scalability content keywords: load, server, database, network, distributed, availability, performance"
+    ]
+  },
+  "uxAssessment": {
+    "navigationWorking": true,
+    "loadTimesAcceptable": false,
+    "mobileResponsive": true,
+    "uxIssues": []
+  },
+  "practiceMode": {
+    "tested": true,
+    "retryWorks": true,
+    "hintsVisible": false,
+    "solutionVisible": false,
+    "difficultyFilterWorks": false,
+    "progressPersists": false,
+    "notes": [
+      "Database Design & Patterns: h1=\"Database Design & Patterns\", submit=true, options=14"
+    ]
+  },
+  "quizMode": {
+    "tested": true,
+    "questionTypesFound": [
+      "MCQ",
+      "MCAQ"
+    ],
+    "resultsDisplayed": true,
+    "submitWorks": true,
+    "shuffleDetected": false,
+    "notes": [
+      "Quiz: h1=\"Caching & Load Balancing Quiz\", mcq=16, mcaq=4, attempts=false, passing=false"
+    ]
+  },
+  "timedAssessment": {
+    "tested": true,
+    "h1Present": true,
+    "timerVisible": false,
+    "startButtonVisible": false,
+    "autoSubmit": null,
+    "analyticsShown": false,
+    "timerAccuracy": null,
+    "notes": [
+      "Timed test: h1=\"System Design Assessment\", timer=false, startBtn=false, 30min=true, 1attempt=false"
+    ]
+  },
+  "learningEffectiveness": {
+    "score": 8.5,
+    "notes": "34 working features, 3 total issues (0 P0, 0 P1, 3 P2). Content accessible: 4/4 story points."
+  },
+  "rawObservations": [
+    "Auth state saved to cache",
+    "Spaces page h1: \"My Spaces\"",
+    "Space cards found: 5 — Behavioral Interview MasteryMaster behavioral interview tech | System DesignMaster the fundamentals of system design, cover | Low-Level Design & OOPMaster object-oriented design, SOLID p | Data Structures & AlgorithmsMaster data structures and algor | System DesignMaster the fundamentals of system design, cover",
+    "System Design Space viewer h1: \"System Design\" (3134ms)",
+    "Story point links in space viewer: 2",
+    "Fundamentals of Scalability h1: \"Fundamentals of Scalability\"",
+    "  SD keywords found: scalability, load balancer, database, horizontal, vertical, availability, consistency, partition",
+    "  Diagram/visual elements: 43",
+    "  Code blocks: 0",
+    "Database Design & Patterns h1: \"Database Design & Patterns\"",
+    "  Code blocks: 2",
+    "Caching & Load Balancing Quiz h1: \"Caching & Load Balancing Quiz\"",
+    "  Code blocks: 0",
+    "System Design Assessment h1: \"System Design Assessment\"",
+    "  Code blocks: 0",
+    "Story points accessible: 4/4",
+    "Practice mode (Database Design & Patterns) h1: \"Database Design & Patterns\"",
+    "Submit button: visible=true, disabled=true",
+    "Answer options: radio=8, checkbox=4, true/false=2",
+    "Quiz h1: \"Caching & Load Balancing Quiz\"",
+    "Quiz config: attempts=false, passing=false, shuffle=false",
+    "Timed Assessment h1: \"System Design Assessment\"",
+    "Timed config: 30min=true, 1attempt=false, 50%=false",
+    "Timer elements: 0, timer text patterns: 0",
+    "Timer not visible on landing — may appear after starting test",
+    "Results/analytics links from space page: 1",
+    "Scalability content keywords: load, server, database, network, distributed, availability, performance"
+  ]
+}

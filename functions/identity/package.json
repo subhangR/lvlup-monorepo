@@ -1,0 +1,31 @@
+{
+  "name": "@levelup/functions-identity",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Identity & Auth Cloud Functions for the LevelUp platform",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "clean": "rm -rf lib",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "firebase-admin": "^13.0.0",
+    "firebase-functions": "^6.0.0",
+    "@google-cloud/secret-manager": "^5.0.0",
+    "@levelup/shared-types": "file:.local-deps/shared-types"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^3.0.0",
+    "typescript": "^5.3.0",
+    "vitest": "^2.0.0",
+    "@vitest/coverage-v8": "^2.0.0"
+  },
+  "engines": {
+    "node": "20"
+  }
+}

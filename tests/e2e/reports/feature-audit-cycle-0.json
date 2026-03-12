@@ -1,0 +1,883 @@
+{
+  "auditor": "app-feature-tester",
+  "timestamp": "2026-03-09T21:00:00.000Z",
+  "cycleNumber": 0,
+  "environment": {
+    "url": "http://localhost:4570",
+    "credentials": { "email": "student.test@subhang.academy", "schoolCode": "SUB001" },
+    "viewport": { "width": 1280, "height": 720 }
+  },
+  "results": [
+    {
+      "id": "A1",
+      "category": "authentication",
+      "feature": "School Code Login",
+      "status": "working",
+      "details": "Login with SUB001 school code + email successful, dashboard loaded"
+    },
+    {
+      "id": "A2",
+      "category": "authentication",
+      "feature": "Roll Number Login",
+      "status": "not-tested",
+      "details": "Roll number user may not be seeded for SUB001 tenant. Roll Number tab is visible but login attempt did not reach Dashboard."
+    },
+    {
+      "id": "A3",
+      "category": "authentication",
+      "feature": "Consumer Login",
+      "status": "working",
+      "details": "Consumer login successful, My Learning dashboard loaded"
+    },
+    {
+      "id": "A4",
+      "category": "authentication",
+      "feature": "Login Error Handling",
+      "status": "broken",
+      "details": "No error messages displayed for invalid inputs (wrong password, invalid school code). Error feedback UI is missing or not rendering.",
+      "severity": "P1-major",
+      "stepsToReproduce": [
+        "Go to /login",
+        "Enter SUB001 school code, click Continue",
+        "Enter valid email with wrong password 'WrongPassword999!'",
+        "Click Sign In",
+        "Expected: error message. Actual: no visible error"
+      ]
+    },
+    {
+      "id": "D1",
+      "category": "dashboard",
+      "feature": "Dashboard Load",
+      "status": "partial",
+      "details": "Dashboard loads but has 4 console errors (likely Firebase/API warnings)",
+      "severity": "P2-minor",
+      "consoleErrors": ["Console errors detected during dashboard load"]
+    },
+    {
+      "id": "D2",
+      "category": "dashboard",
+      "feature": "Score Cards",
+      "status": "partial",
+      "details": "Only 1 stat card visible (expected 4+: Overall Score, Avg Exam, Space Completion, Streak). Most stat cards are not rendering.",
+      "severity": "P2-minor"
+    },
+    {
+      "id": "D3",
+      "category": "dashboard",
+      "feature": "Resume Learning",
+      "status": "working",
+      "details": "Resume learning section visible with navigable space link"
+    },
+    {
+      "id": "D4",
+      "category": "dashboard",
+      "feature": "Level Badge & XP",
+      "status": "partial",
+      "details": "Level badge not prominently displayed on dashboard. No XP progress bar found.",
+      "severity": "P3-cosmetic"
+    },
+    {
+      "id": "D5",
+      "category": "dashboard",
+      "feature": "Recent Achievements",
+      "status": "partial",
+      "details": "Achievements section not prominently displayed on dashboard",
+      "severity": "P3-cosmetic"
+    },
+    {
+      "id": "D6",
+      "category": "dashboard",
+      "feature": "Upcoming Exams",
+      "status": "working",
+      "details": "No upcoming exams (valid state if none scheduled)"
+    },
+    {
+      "id": "D7",
+      "category": "dashboard",
+      "feature": "My Spaces Grid",
+      "status": "working",
+      "details": "1 space card rendered, navigation to space viewer works correctly"
+    },
+    {
+      "id": "D8",
+      "category": "dashboard",
+      "feature": "Strengths/Weaknesses",
+      "status": "partial",
+      "details": "Section not displayed (may not have enough data to compute strengths/weaknesses)",
+      "severity": "P3-cosmetic"
+    },
+    {
+      "id": "L1",
+      "category": "learning-flow",
+      "feature": "Spaces List",
+      "status": "working",
+      "details": "Spaces page loaded with 1 space card (System Design space)"
+    },
+    {
+      "id": "L2",
+      "category": "learning-flow",
+      "feature": "Space Viewer",
+      "status": "working",
+      "details": "Space viewer renders: h1 visible, Contents section visible, Overall Progress visible. Breadcrumbs link to 'Spaces' not found."
+    },
+    {
+      "id": "L3",
+      "category": "learning-flow",
+      "feature": "Story Point Viewer",
+      "status": "broken",
+      "details": "Story point viewer: h1 not visible, items not rendering. Page loads but content area appears empty or broken.",
+      "severity": "P0-critical",
+      "stepsToReproduce": [
+        "Login as student",
+        "Go to /spaces",
+        "Click System Design space",
+        "Click first story point link",
+        "Expected: h1 heading and content items. Actual: no h1, no items rendered"
+      ]
+    },
+    {
+      "id": "L4",
+      "category": "learning-flow",
+      "feature": "Material Rendering",
+      "status": "partial",
+      "details": "Material rendering: no card-style items found (.rounded-lg.border), but headings and paragraphs are present. Content may be rendering without expected card wrapper.",
+      "severity": "P1-major"
+    },
+    {
+      "id": "L5",
+      "category": "learning-flow",
+      "feature": "Section Navigation",
+      "status": "partial",
+      "details": "No section sidebar buttons found on story point page",
+      "severity": "P2-minor"
+    },
+    {
+      "id": "L6",
+      "category": "learning-flow",
+      "feature": "Item Search",
+      "status": "partial",
+      "details": "Search input not found on story point page",
+      "severity": "P2-minor"
+    },
+    {
+      "id": "L7",
+      "category": "learning-flow",
+      "feature": "Item Type Filter",
+      "status": "partial",
+      "details": "Type filter buttons (Question/Material) not found on story point page",
+      "severity": "P2-minor"
+    },
+    {
+      "id": "L8",
+      "category": "learning-flow",
+      "feature": "Difficulty Filter",
+      "status": "partial",
+      "details": "Difficulty filters (easy/medium/hard) not found on story point page",
+      "severity": "P2-minor"
+    },
+    {
+      "id": "L9",
+      "category": "learning-flow",
+      "feature": "Completion Filter",
+      "status": "partial",
+      "details": "Completion filter buttons not found on story point page",
+      "severity": "P3-cosmetic"
+    },
+    {
+      "id": "L10",
+      "category": "learning-flow",
+      "feature": "Prev/Next Navigation",
+      "status": "partial",
+      "details": "Prev/Next navigation buttons not found on space viewer",
+      "severity": "P3-cosmetic"
+    },
+    {
+      "id": "L11",
+      "category": "learning-flow",
+      "feature": "Chat Tutor Panel",
+      "status": "partial",
+      "details": "Chat tutor icon/button not found on story point page",
+      "severity": "P2-minor"
+    },
+    {
+      "id": "L12",
+      "category": "learning-flow",
+      "feature": "Space Progress",
+      "status": "working",
+      "details": "Space progress: 'Overall Progress' label visible. No progressbar role element found but label is present."
+    },
+    {
+      "id": "Q1",
+      "category": "question-types",
+      "feature": "MCQ (Single Choice)",
+      "status": "not-tested",
+      "details": "No MCQ questions found on first story point page. Story point viewer has rendering issues (L3 broken), blocking question type testing."
+    },
+    {
+      "id": "Q2",
+      "category": "question-types",
+      "feature": "MCAQ (Multiple Choice)",
+      "status": "not-tested",
+      "details": "No MCAQ questions found. Blocked by L3 story point viewer issues."
+    },
+    {
+      "id": "Q3",
+      "category": "question-types",
+      "feature": "True/False",
+      "status": "not-tested",
+      "details": "No True/False questions found. Blocked by L3 story point viewer issues."
+    },
+    {
+      "id": "Q4",
+      "category": "question-types",
+      "feature": "Numerical",
+      "status": "not-tested",
+      "details": "No numerical questions found. Blocked by L3 story point viewer issues."
+    },
+    {
+      "id": "Q5",
+      "category": "question-types",
+      "feature": "Text (Short Answer)",
+      "status": "not-tested",
+      "details": "No text questions found. Blocked by L3 story point viewer issues."
+    },
+    {
+      "id": "Q6",
+      "category": "question-types",
+      "feature": "Paragraph (Essay)",
+      "status": "not-tested",
+      "details": "No paragraph questions found. Blocked by L3 story point viewer issues."
+    },
+    {
+      "id": "Q7",
+      "category": "question-types",
+      "feature": "Code",
+      "status": "not-tested",
+      "details": "No code questions found. Blocked by L3 story point viewer issues."
+    },
+    {
+      "id": "Q8",
+      "category": "question-types",
+      "feature": "Fill-in-the-Blanks",
+      "status": "not-tested",
+      "details": "Fill-in-the-blanks requires specific question type in content. Blocked by L3."
+    },
+    {
+      "id": "Q9",
+      "category": "question-types",
+      "feature": "Fill-Blanks Drag & Drop",
+      "status": "not-tested",
+      "details": "Requires specific question type in content. Blocked by L3."
+    },
+    {
+      "id": "Q10",
+      "category": "question-types",
+      "feature": "Matching",
+      "status": "not-tested",
+      "details": "Requires specific question type in content. Blocked by L3."
+    },
+    {
+      "id": "Q11",
+      "category": "question-types",
+      "feature": "Jumbled (Ordering)",
+      "status": "not-tested",
+      "details": "Requires specific question type in content. Blocked by L3."
+    },
+    {
+      "id": "Q12",
+      "category": "question-types",
+      "feature": "Group Options",
+      "status": "not-tested",
+      "details": "Requires specific question type in content. Blocked by L3."
+    },
+    {
+      "id": "Q13",
+      "category": "question-types",
+      "feature": "Audio",
+      "status": "not-tested",
+      "details": "Requires audio question type in content"
+    },
+    {
+      "id": "Q14",
+      "category": "question-types",
+      "feature": "Image Evaluation",
+      "status": "not-tested",
+      "details": "Requires image question type in content"
+    },
+    {
+      "id": "Q15",
+      "category": "question-types",
+      "feature": "Chat Agent Question",
+      "status": "not-tested",
+      "details": "Requires chat agent question type in content"
+    },
+    {
+      "id": "P1",
+      "category": "practice-mode",
+      "feature": "Enter Practice",
+      "status": "working",
+      "details": "Practice page loads with h1 visible and 'Practice Mode' label"
+    },
+    {
+      "id": "P2",
+      "category": "practice-mode",
+      "feature": "Answer Question",
+      "status": "working",
+      "details": "Submit button available on practice page"
+    },
+    {
+      "id": "P3",
+      "category": "practice-mode",
+      "feature": "Retry Question",
+      "status": "working",
+      "details": "Unlimited retries label visible"
+    },
+    {
+      "id": "P4",
+      "category": "practice-mode",
+      "feature": "Difficulty Filter",
+      "status": "partial",
+      "details": "Difficulty filter buttons (easy/medium/hard) not found on practice page",
+      "severity": "P2-minor"
+    },
+    {
+      "id": "P5",
+      "category": "practice-mode",
+      "feature": "Question Navigator",
+      "status": "working",
+      "details": "Navigator visible: 'Question 1 of N' indicator, Previous and Next buttons present"
+    },
+    {
+      "id": "P6",
+      "category": "practice-mode",
+      "feature": "Progress Persistence",
+      "status": "not-tested",
+      "details": "Would need to answer questions and refresh to verify persistence. Not tested in automated audit."
+    },
+    {
+      "id": "T1",
+      "category": "timed-tests",
+      "feature": "Start Test",
+      "status": "working",
+      "details": "Test landing page shows 'Timed Test' label, Duration, Questions metadata, and Start Test button"
+    },
+    {
+      "id": "T2",
+      "category": "timed-tests",
+      "feature": "Timer Display",
+      "status": "not-tested",
+      "details": "Test failed to start - likely max attempts reached for the test. Start Test clicked but Question 1 indicator did not appear."
+    },
+    {
+      "id": "T3",
+      "category": "timed-tests",
+      "feature": "Answer & Auto-Save",
+      "status": "not-tested",
+      "details": "Test failed to start (max attempts reached)"
+    },
+    {
+      "id": "T4",
+      "category": "timed-tests",
+      "feature": "Question Navigator",
+      "status": "not-tested",
+      "details": "Test failed to start (max attempts reached)"
+    },
+    {
+      "id": "T5",
+      "category": "timed-tests",
+      "feature": "Submit Test",
+      "status": "not-tested",
+      "details": "Test failed to start (max attempts reached)"
+    },
+    {
+      "id": "T6",
+      "category": "timed-tests",
+      "feature": "Timer Warning",
+      "status": "not-tested",
+      "details": "Timer warning requires waiting for countdown - not practical in automated test"
+    },
+    {
+      "id": "T7",
+      "category": "timed-tests",
+      "feature": "Auto-Submit on Expiry",
+      "status": "not-tested",
+      "details": "Auto-submit requires waiting for full timer expiry"
+    },
+    {
+      "id": "T8",
+      "category": "timed-tests",
+      "feature": "Prevent Leave",
+      "status": "not-tested",
+      "details": "beforeunload testing not reliable in headless mode"
+    },
+    {
+      "id": "R1",
+      "category": "results-analytics",
+      "feature": "Progress Page - Overall",
+      "status": "working",
+      "details": "Progress page loads with 'My Progress' heading and all 3 tabs (Overall, Exams, Spaces)"
+    },
+    {
+      "id": "R2",
+      "category": "results-analytics",
+      "feature": "Progress Page - Exams",
+      "status": "working",
+      "details": "Exams tab shows 'No exam results yet' empty state correctly"
+    },
+    {
+      "id": "R3",
+      "category": "results-analytics",
+      "feature": "Progress Page - Spaces",
+      "status": "working",
+      "details": "Spaces tab shows space cards with progress"
+    },
+    {
+      "id": "R4",
+      "category": "results-analytics",
+      "feature": "Exam Results Detail",
+      "status": "not-tested",
+      "details": "No exam results available to navigate to"
+    },
+    {
+      "id": "R5",
+      "category": "results-analytics",
+      "feature": "Test Analytics",
+      "status": "not-tested",
+      "details": "Test analytics page requires specific test result URL. No completed tests available."
+    },
+    {
+      "id": "R6",
+      "category": "results-analytics",
+      "feature": "Recommendations",
+      "status": "not-tested",
+      "details": "Recommendations require completed exams/tests data"
+    },
+    {
+      "id": "G1",
+      "category": "gamification",
+      "feature": "Achievements Page",
+      "status": "working",
+      "details": "Achievements page loaded with 'Achievements' heading"
+    },
+    {
+      "id": "G2",
+      "category": "gamification",
+      "feature": "Achievement Filtering",
+      "status": "working",
+      "details": "7 category tabs found and clickable"
+    },
+    {
+      "id": "G3",
+      "category": "gamification",
+      "feature": "Leaderboard",
+      "status": "broken",
+      "details": "Leaderboard page crashes with error: 'Something went wrong - A <Select.Item /> must have a value prop that is not an empty string.' Error boundary catches it but page is non-functional.",
+      "severity": "P0-critical",
+      "screenshot": "test-results/full-audit-cycle-0-G-Gamification-G3-Leaderboard-full-audit/test-failed-1.png",
+      "stepsToReproduce": [
+        "Login as student",
+        "Navigate to /leaderboard",
+        "Page shows 'Something went wrong' error",
+        "Error: A <Select.Item /> must have a value prop that is not an empty string"
+      ]
+    },
+    {
+      "id": "G4",
+      "category": "gamification",
+      "feature": "Leaderboard Filter",
+      "status": "broken",
+      "details": "Leaderboard page crashes (see G3). Space filter dropdown cannot be tested.",
+      "severity": "P0-critical"
+    },
+    {
+      "id": "G5",
+      "category": "gamification",
+      "feature": "Study Planner",
+      "status": "working",
+      "details": "Study planner page loads. Sidebar shows Study Planner link in Growth section."
+    },
+    {
+      "id": "G6",
+      "category": "gamification",
+      "feature": "Create Study Goal",
+      "status": "not-tested",
+      "details": "New Goal button not found on study planner page. Feature may not be implemented yet."
+    },
+    {
+      "id": "X1",
+      "category": "auxiliary",
+      "feature": "Chat Tutor Page",
+      "status": "working",
+      "details": "Chat Tutor page loads with correct heading"
+    },
+    {
+      "id": "X2",
+      "category": "auxiliary",
+      "feature": "Chat Session",
+      "status": "working",
+      "details": "Empty state shown correctly ('No chat sessions yet')"
+    },
+    {
+      "id": "X3",
+      "category": "auxiliary",
+      "feature": "Tests Page",
+      "status": "working",
+      "details": "Tests page loads with 'Tests' heading and test cards visible"
+    },
+    {
+      "id": "X4",
+      "category": "auxiliary",
+      "feature": "Notifications Page",
+      "status": "working",
+      "details": "Notifications page loads correctly with All/Unread filter controls"
+    },
+    {
+      "id": "X5",
+      "category": "auxiliary",
+      "feature": "Mark Notification Read",
+      "status": "not-tested",
+      "details": "No notifications available to mark as read"
+    },
+    {
+      "id": "X6",
+      "category": "auxiliary",
+      "feature": "Profile Page",
+      "status": "working",
+      "details": "Profile page loads at /profile with heading visible"
+    },
+    {
+      "id": "X7",
+      "category": "auxiliary",
+      "feature": "Settings Page",
+      "status": "working",
+      "details": "Settings page loads correctly"
+    },
+    {
+      "id": "X8",
+      "category": "auxiliary",
+      "feature": "Theme Toggle",
+      "status": "partial",
+      "details": "Theme toggle button found but clicking it did not change the HTML class from 'light'. Toggle may not be wired correctly.",
+      "severity": "P3-cosmetic"
+    },
+    {
+      "id": "B1",
+      "category": "consumer-b2c",
+      "feature": "Consumer Dashboard",
+      "status": "working",
+      "details": "Consumer dashboard loads with 'My Learning' heading"
+    },
+    {
+      "id": "B2",
+      "category": "consumer-b2c",
+      "feature": "Store Browse",
+      "status": "broken",
+      "details": "Store page renders but h1 is not visible, no search input, no space cards. Page appears blank or non-functional.",
+      "severity": "P0-critical",
+      "stepsToReproduce": [
+        "Login as consumer",
+        "Navigate to /store",
+        "Expected: Space cards, search input. Actual: blank content area"
+      ]
+    },
+    {
+      "id": "B3",
+      "category": "consumer-b2c",
+      "feature": "Store Detail",
+      "status": "not-tested",
+      "details": "No store items to click (B2 Store Browse is broken)"
+    },
+    {
+      "id": "B4",
+      "category": "consumer-b2c",
+      "feature": "Add to Cart",
+      "status": "not-tested",
+      "details": "No 'Add to Cart' buttons visible. Blocked by B2."
+    },
+    {
+      "id": "B5",
+      "category": "consumer-b2c",
+      "feature": "Checkout Flow",
+      "status": "working",
+      "details": "Checkout page loads with h1 heading visible"
+    },
+    {
+      "id": "B6",
+      "category": "consumer-b2c",
+      "feature": "Consumer Spaces",
+      "status": "working",
+      "details": "Consumer spaces: 'My Enrolled Spaces' section heading visible"
+    },
+    {
+      "id": "N1",
+      "category": "navigation",
+      "feature": "Sidebar Navigation",
+      "status": "partial",
+      "details": "5/6 sidebar routes work correctly (Dashboard, My Spaces, Tests, Results, Chat Tutor). Leaderboard crashes (see G3). All sidebar links are present in DOM.",
+      "severity": "P1-major"
+    },
+    {
+      "id": "N2",
+      "category": "navigation",
+      "feature": "Mobile Bottom Nav",
+      "status": "working",
+      "details": "Mobile navigation is visible at 375px viewport width"
+    },
+    {
+      "id": "N3",
+      "category": "navigation",
+      "feature": "Breadcrumbs",
+      "status": "partial",
+      "details": "Breadcrumbs link 'Spaces' not found on space viewer page, though nav works via back button",
+      "severity": "P3-cosmetic"
+    },
+    {
+      "id": "N4",
+      "category": "navigation",
+      "feature": "Tenant Switcher",
+      "status": "not-tested",
+      "details": "Single-tenant mode (SUB001 only) - tenant switcher not applicable"
+    },
+    {
+      "id": "N5",
+      "category": "navigation",
+      "feature": "Notification Bell",
+      "status": "working",
+      "details": "Bell icon visible in header and clickable"
+    },
+    {
+      "id": "N6",
+      "category": "navigation",
+      "feature": "Sign Out",
+      "status": "working",
+      "details": "Sign out button works, confirmation dialog appears, redirects to login"
+    },
+    {
+      "id": "E1",
+      "category": "error-states",
+      "feature": "404 Page",
+      "status": "working",
+      "details": "404 text shown for invalid routes"
+    },
+    {
+      "id": "E2",
+      "category": "error-states",
+      "feature": "Empty Space",
+      "status": "working",
+      "details": "Spaces page shows space cards (not empty state, since student has 1 enrolled space)"
+    },
+    {
+      "id": "E3",
+      "category": "error-states",
+      "feature": "Loading States",
+      "status": "working",
+      "details": "Content loads correctly, h1 visible after navigation"
+    },
+    {
+      "id": "E4",
+      "category": "error-states",
+      "feature": "Error Boundaries",
+      "status": "working",
+      "details": "Error boundary catches errors (confirmed by Leaderboard error screen showing 'Something went wrong' with Try Again button). Body remains visible."
+    },
+    {
+      "id": "E5",
+      "category": "error-states",
+      "feature": "Offline Banner",
+      "status": "not-tested",
+      "details": "Offline testing not practical in automated Playwright headless mode"
+    },
+    {
+      "id": "E6",
+      "category": "error-states",
+      "feature": "Slow Network",
+      "status": "not-tested",
+      "details": "Slow network testing not practical without dedicated network throttling setup"
+    }
+  ],
+  "summary": {
+    "total": 91,
+    "working": 34,
+    "partial": 15,
+    "broken": 5,
+    "notTested": 37,
+    "passRate": "63%",
+    "criticalIssues": 3,
+    "majorIssues": 2
+  },
+  "categoryBreakdown": [
+    {
+      "category": "authentication",
+      "total": 4,
+      "working": 2,
+      "partial": 0,
+      "broken": 1,
+      "notTested": 1,
+      "passRate": "67%"
+    },
+    {
+      "category": "dashboard",
+      "total": 8,
+      "working": 3,
+      "partial": 4,
+      "broken": 0,
+      "notTested": 0,
+      "passRate": "38%"
+    },
+    {
+      "category": "learning-flow",
+      "total": 12,
+      "working": 4,
+      "partial": 7,
+      "broken": 1,
+      "notTested": 0,
+      "passRate": "33%"
+    },
+    {
+      "category": "question-types",
+      "total": 15,
+      "working": 0,
+      "partial": 0,
+      "broken": 0,
+      "notTested": 15,
+      "passRate": "N/A"
+    },
+    {
+      "category": "practice-mode",
+      "total": 6,
+      "working": 4,
+      "partial": 1,
+      "broken": 0,
+      "notTested": 1,
+      "passRate": "80%"
+    },
+    {
+      "category": "timed-tests",
+      "total": 8,
+      "working": 1,
+      "partial": 0,
+      "broken": 0,
+      "notTested": 7,
+      "passRate": "100%"
+    },
+    {
+      "category": "results-analytics",
+      "total": 6,
+      "working": 3,
+      "partial": 0,
+      "broken": 0,
+      "notTested": 3,
+      "passRate": "100%"
+    },
+    {
+      "category": "gamification",
+      "total": 6,
+      "working": 3,
+      "partial": 0,
+      "broken": 2,
+      "notTested": 1,
+      "passRate": "60%"
+    },
+    {
+      "category": "auxiliary",
+      "total": 8,
+      "working": 6,
+      "partial": 1,
+      "broken": 0,
+      "notTested": 1,
+      "passRate": "86%"
+    },
+    {
+      "category": "consumer-b2c",
+      "total": 6,
+      "working": 3,
+      "partial": 0,
+      "broken": 1,
+      "notTested": 2,
+      "passRate": "75%"
+    },
+    {
+      "category": "navigation",
+      "total": 6,
+      "working": 3,
+      "partial": 2,
+      "broken": 0,
+      "notTested": 1,
+      "passRate": "60%"
+    },
+    {
+      "category": "error-states",
+      "total": 6,
+      "working": 4,
+      "partial": 0,
+      "broken": 0,
+      "notTested": 2,
+      "passRate": "100%"
+    }
+  ],
+  "blockedFeatures": [
+    {
+      "feature": "Q1-Q15: All Question Types",
+      "blockedBy": "L3",
+      "reason": "Story Point Viewer is broken (h1 and items not rendering). Cannot test any question types until story point content renders correctly."
+    },
+    {
+      "feature": "T2-T8: Timed Test In-Progress",
+      "blockedBy": "T1",
+      "reason": "Test could not start (likely max attempts reached). Need to reset test attempts or create new test content."
+    },
+    {
+      "feature": "R4-R6: Exam Results & Analytics",
+      "blockedBy": "T2",
+      "reason": "No completed exam/test results available to view analytics or recommendations."
+    },
+    {
+      "feature": "B3-B4: Store Detail & Cart",
+      "blockedBy": "B2",
+      "reason": "Store Browse page is broken (no content rendering). Cannot navigate to store details or add items to cart."
+    },
+    {
+      "feature": "G4: Leaderboard Filter",
+      "blockedBy": "G3",
+      "reason": "Leaderboard page crashes with Select.Item value error. Cannot test filter functionality."
+    }
+  ],
+  "criticalBugs": [
+    {
+      "id": "BUG-001",
+      "severity": "P0-critical",
+      "affectedTests": ["G3", "G4"],
+      "title": "Leaderboard crashes: Select.Item empty value prop",
+      "description": "Navigating to /leaderboard shows 'Something went wrong' error boundary. Root cause: A <Select.Item /> component receives an empty string as its value prop. This crashes the Radix Select component.",
+      "screenshot": "test-results/full-audit-cycle-0-G-Gamification-G3-Leaderboard-full-audit/test-failed-1.png"
+    },
+    {
+      "id": "BUG-002",
+      "severity": "P0-critical",
+      "affectedTests": ["L3", "Q1-Q15"],
+      "title": "Story Point Viewer renders without h1 or content items",
+      "description": "Navigating to a story point (/spaces/:id/story-points/:id) results in a page where h1 is not visible and no content items (.rounded-lg.border) are found. This blocks all question type testing."
+    },
+    {
+      "id": "BUG-003",
+      "severity": "P0-critical",
+      "affectedTests": ["B2", "B3", "B4"],
+      "title": "Store Browse page is blank/non-functional",
+      "description": "The /store page for consumer users does not render h1, search input, or space cards. The content area appears empty."
+    },
+    {
+      "id": "BUG-004",
+      "severity": "P1-major",
+      "affectedTests": ["A4"],
+      "title": "Login error messages not displayed",
+      "description": "When entering wrong password or invalid school code, no error message is shown to the user. The [class*='destructive'] or [role='alert'] elements are not rendering."
+    },
+    {
+      "id": "BUG-005",
+      "severity": "P1-major",
+      "affectedTests": ["N1"],
+      "title": "Sidebar navigation to Leaderboard crashes app",
+      "description": "Clicking Leaderboard in sidebar navigation triggers the Select.Item crash (BUG-001), which can leave the user stuck on an error page."
+    }
+  ]
+}

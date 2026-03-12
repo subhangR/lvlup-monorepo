@@ -1,0 +1,589 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ── Platform Helpers ──────────────────────────────────
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isSuperAdmin() {
+      return isAuthenticated()
+        && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.isSuperAdmin == true;
+    }
+
+    // ── Tenant Helpers ────────────────────────────────────
+    function belongsToTenant(tenantId) {
+      return isAuthenticated()
+        && request.auth.token.tenantId == tenantId;
+    }
+
+    // Block writes to deactivated/suspended/expired tenants (defense-in-depth)
+    function isTenantActive(tenantId) {
+      let tenantData = get(/databases/$(database)/documents/tenants/$(tenantId)).data;
+      return tenantData.status in ['active', 'trial'];
+    }
+
+    function getMembership(tenantId) {
+      let membershipId = request.auth.uid + '_' + tenantId;
+      return get(/databases/$(database)/documents/userMemberships/$(membershipId)).data;
+    }
+
+    function hasActiveMembership(tenantId) {
+      return belongsToTenant(tenantId)
+        || (exists(/databases/$(database)/documents/userMemberships/$(request.auth.uid + '_' + tenantId))
+            && getMembership(tenantId).status == 'active');
+    }
+
+    function hasRole(tenantId, role) {
+      return belongsToTenant(tenantId)
+        && request.auth.token.role == role;
+    }
+
+    function isTenantAdmin(tenantId) {
+      return hasRole(tenantId, 'tenantAdmin') || isSuperAdmin();
+    }
+
+    function isTeacher(tenantId) {
+      return hasRole(tenantId, 'teacher');
+    }
+
+    function isStudent(tenantId) {
+      return hasRole(tenantId, 'student');
+    }
+
+    function isParent(tenantId) {
+      return hasRole(tenantId, 'parent');
+    }
+
+    function isStaff(tenantId) {
+      return hasRole(tenantId, 'staff');
+    }
+
+    function hasStaffPermission(tenantId, perm) {
+      return isStaff(tenantId)
+        && getMembership(tenantId).staffPermissions[perm] == true;
+    }
+
+    // ── Class Access (with overflow handling) ─────────────
+    function canAccessClass(tenantId, classId) {
+      return request.auth.token.classIds.hasAny([classId])
+        || (request.auth.token.classIdsOverflow == true
+            && getMembership(tenantId).permissions.managedClassIds.hasAny([classId]));
+    }
+
+    function hasTeacherPermission(tenantId, perm) {
+      return isTeacher(tenantId)
+        && getMembership(tenantId).permissions[perm] == true;
+    }
+
+    // ── Space Access (for LevelUp class-scoped spaces) ───
+    function canAccessSpace(tenantId) {
+      return isTenantAdmin(tenantId)
+        || isTeacher(tenantId)
+        || (isStudent(tenantId) && (
+            resource.data.accessType == 'tenant_wide'
+            || resource.data.classIds.hasAny(request.auth.token.classIds)
+        ));
+    }
+
+    // ══════════════════════════════════════════════════════
+    // IDENTITY COLLECTION RULES
+    // ══════════════════════════════════════════════════════
+
+    // ── /users/{uid} ─────────────────────────────────────
+    match /users/{uid} {
+      allow read: if isAuthenticated()
+        && (request.auth.uid == uid || isSuperAdmin());
+
+      allow create: if isAuthenticated()
+        && request.auth.uid == uid;
+
+      allow update: if isAuthenticated()
+        && request.auth.uid == uid
+        // BLOCK self-elevation to superAdmin
+        && (!('isSuperAdmin' in request.resource.data)
+            || request.resource.data.isSuperAdmin == resource.data.isSuperAdmin)
+        // BLOCK self-status change
+        && request.resource.data.status == resource.data.status
+        // BLOCK self-modification of enrolled spaces (payment must go through CF)
+        && (!('consumerProfile' in request.resource.data)
+            || !('enrolledSpaceIds' in request.resource.data.consumerProfile)
+            || request.resource.data.consumerProfile.enrolledSpaceIds
+               == resource.data.consumerProfile.enrolledSpaceIds);
+
+      allow delete: if isSuperAdmin();
+    }
+
+    // ── /userMemberships/{membershipId} ──────────────────
+    match /userMemberships/{membershipId} {
+      allow read: if isAuthenticated()
+        && (request.auth.uid == resource.data.uid
+            || isSuperAdmin());
+
+      // ALL writes via Admin SDK (Cloud Functions) only
+      allow write: if false;
+    }
+
+    // ── /tenants/{tenantId} ──────────────────────────────
+    match /tenants/{tenantId} {
+      // Pre-auth login flow needs single-doc get; once authenticated, full access
+      // Note: get is allowed for authenticated users + pre-auth flow (tenantCode lookup).
+      // Sensitive fields (subscription, billing) are only in subcollections or callable-gated.
+      allow get: if true;
+      // Listing all tenants requires authentication (prevent enumeration)
+      allow list: if isAuthenticated();
+
+      allow create: if isSuperAdmin();
+
+      // Only SuperAdmin can update tenant docs directly; TenantAdmin uses saveTenant callable
+      // which now gates privileged fields (status, subscription, features) to SuperAdmin
+      allow update: if isSuperAdmin();
+
+      allow delete: if isSuperAdmin();
+    }
+
+    // ── /tenantCodes/{code} ──────────────────────────────
+    match /tenantCodes/{code} {
+      // Pre-auth login flow needs single-doc lookup (get) by school code
+      allow get: if true;
+      // Listing all codes requires authentication (prevent enumeration)
+      allow list: if isAuthenticated();
+
+      // Only Cloud Functions write
+      allow write: if false;
+    }
+
+    // ── /tenants/{tenantId}/students/{studentId} ─────────
+    match /tenants/{tenantId}/students/{studentId} {
+      allow read: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || isTeacher(tenantId)
+        || hasStaffPermission(tenantId, 'canManageUsers')
+        || (isStudent(tenantId) && request.auth.token.studentId == studentId)
+        || (isParent(tenantId)
+            && request.auth.token.studentIds.hasAny([studentId]));
+
+      allow create, update: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || hasStaffPermission(tenantId, 'canManageUsers');
+
+      allow delete: if isSuperAdmin()
+        || isTenantAdmin(tenantId);
+    }
+
+    // ── /tenants/{tenantId}/teachers/{teacherId} ─────────
+    match /tenants/{tenantId}/teachers/{teacherId} {
+      allow read: if isSuperAdmin()
+        || hasActiveMembership(tenantId);
+
+      allow create, update: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || hasStaffPermission(tenantId, 'canManageUsers');
+
+      allow delete: if isSuperAdmin()
+        || isTenantAdmin(tenantId);
+    }
+
+    // ── /tenants/{tenantId}/parents/{parentId} ───────────
+    match /tenants/{tenantId}/parents/{parentId} {
+      allow read: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || (isParent(tenantId) && request.auth.token.parentId == parentId);
+
+      allow create, update: if isSuperAdmin()
+        || isTenantAdmin(tenantId);
+
+      allow delete: if isSuperAdmin()
+        || isTenantAdmin(tenantId);
+    }
+
+    // ── /tenants/{tenantId}/classes/{classId} ────────────
+    match /tenants/{tenantId}/classes/{classId} {
+      allow read: if isSuperAdmin()
+        || hasActiveMembership(tenantId);
+
+      allow create, update: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || hasStaffPermission(tenantId, 'canManageClasses');
+
+      allow delete: if isSuperAdmin()
+        || isTenantAdmin(tenantId);
+    }
+
+    // ── /tenants/{tenantId}/staff/{staffId} ────────────
+    match /tenants/{tenantId}/staff/{staffId} {
+      allow read: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || (isStaff(tenantId) && resource.data.uid == request.auth.uid);
+
+      allow create, update, delete: if isSuperAdmin()
+        || isTenantAdmin(tenantId);
+    }
+
+    // ── /scanners/{scannerId} ────────────────────────────
+    match /scanners/{scannerId} {
+      allow read: if isSuperAdmin()
+        || (isAuthenticated() && resource.data.authUid == request.auth.uid);
+
+      // Only Cloud Functions write
+      allow write: if false;
+    }
+
+    // ── /tenants/{tenantId}/notifications/{notifId} ──────
+    match /tenants/{tenantId}/notifications/{notifId} {
+      // Users can only read their own notifications
+      allow read: if isAuthenticated()
+        && belongsToTenant(tenantId)
+        && resource.data.recipientId == request.auth.uid;
+
+      // Users can only mark their own notifications as read
+      allow update: if isAuthenticated()
+        && belongsToTenant(tenantId)
+        && resource.data.recipientId == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['isRead', 'readAt']);
+
+      // Create and delete: Cloud Functions only
+      allow create, delete: if false;
+    }
+
+    // ── /tenants/{tenantId}/notificationPreferences/{userId} ──
+    match /tenants/{tenantId}/notificationPreferences/{userId} {
+      allow read, write: if isAuthenticated()
+        && belongsToTenant(tenantId)
+        && request.auth.uid == userId;
+    }
+
+    // ══════════════════════════════════════════════════════
+    // LEVELUP COLLECTION RULES
+    // ══════════════════════════════════════════════════════
+
+    // ── /tenants/{tenantId}/spaces/{spaceId} ────────────
+    match /tenants/{tenantId}/spaces/{spaceId} {
+      allow read: if isSuperAdmin()
+        || canAccessSpace(tenantId);
+
+      allow create: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || (isTeacher(tenantId) && isTenantActive(tenantId));
+
+      allow update: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || (isTeacher(tenantId) && resource.data.createdBy == request.auth.uid && isTenantActive(tenantId));
+
+      allow delete: if isSuperAdmin()
+        || isTenantAdmin(tenantId);
+
+      // ── /tenants/{tenantId}/spaces/{spaceId}/storyPoints/{storyPointId}
+      match /storyPoints/{storyPointId} {
+        allow read: if isSuperAdmin()
+          || isTenantAdmin(tenantId)
+          || isTeacher(tenantId)
+          || (isStudent(tenantId) && (
+              get(/databases/$(database)/documents/tenants/$(tenantId)/spaces/$(spaceId)).data.accessType == 'tenant_wide'
+              || get(/databases/$(database)/documents/tenants/$(tenantId)/spaces/$(spaceId)).data.classIds.hasAny(request.auth.token.classIds)
+          ));
+
+        allow create, update: if isSuperAdmin()
+          || isTenantAdmin(tenantId)
+          || (isTeacher(tenantId)
+              && get(/databases/$(database)/documents/tenants/$(tenantId)/spaces/$(spaceId)).data.createdBy == request.auth.uid);
+
+        allow delete: if isSuperAdmin()
+          || isTenantAdmin(tenantId);
+
+        // ── /tenants/{tenantId}/spaces/{spaceId}/storyPoints/{storyPointId}/items/{itemId}
+        match /items/{itemId} {
+          allow read: if isSuperAdmin()
+            || isTenantAdmin(tenantId)
+            || isTeacher(tenantId)
+            || (isStudent(tenantId) && (
+                get(/databases/$(database)/documents/tenants/$(tenantId)/spaces/$(spaceId)).data.accessType == 'tenant_wide'
+                || get(/databases/$(database)/documents/tenants/$(tenantId)/spaces/$(spaceId)).data.classIds.hasAny(request.auth.token.classIds)
+            ));
+
+          allow create, update: if isSuperAdmin()
+            || isTenantAdmin(tenantId)
+            || (isTeacher(tenantId)
+                && get(/databases/$(database)/documents/tenants/$(tenantId)/spaces/$(spaceId)).data.createdBy == request.auth.uid);
+
+          allow delete: if isSuperAdmin()
+            || isTenantAdmin(tenantId);
+
+          // ── Answer Keys — Admin SDK only
+          match /answerKeys/{keyId} {
+            allow read, write: if false;
+          }
+        }
+      }
+
+      // ── /tenants/{tenantId}/spaces/{spaceId}/items/{itemId}
+      match /items/{itemId} {
+        allow read: if isSuperAdmin()
+          || isTenantAdmin(tenantId)
+          || isTeacher(tenantId)
+          || (isStudent(tenantId) && (
+              get(/databases/$(database)/documents/tenants/$(tenantId)/spaces/$(spaceId)).data.accessType == 'tenant_wide'
+              || get(/databases/$(database)/documents/tenants/$(tenantId)/spaces/$(spaceId)).data.classIds.hasAny(request.auth.token.classIds)
+          ));
+
+        allow create, update: if isSuperAdmin()
+          || isTenantAdmin(tenantId)
+          || (isTeacher(tenantId)
+              && get(/databases/$(database)/documents/tenants/$(tenantId)/spaces/$(spaceId)).data.createdBy == request.auth.uid);
+
+        allow delete: if isSuperAdmin()
+          || isTenantAdmin(tenantId);
+
+        // ── Answer Keys — Admin SDK only
+        match /answerKeys/{keyId} {
+          allow read, write: if false;
+        }
+      }
+    }
+
+    // ══════════════════════════════════════════════════════
+    // AUTOGRADE COLLECTION RULES
+    // ══════════════════════════════════════════════════════
+
+    // ── /tenants/{tenantId}/exams/{examId} ──────────────
+    match /tenants/{tenantId}/exams/{examId} {
+      allow read: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || (isTeacher(tenantId) && (
+            resource.data.createdBy == request.auth.uid
+            || resource.data.classIds.hasAny(request.auth.token.classIds)
+        ))
+        || (isStudent(tenantId)
+            && resource.data.classIds.hasAny(request.auth.token.classIds)
+            && resource.data.status in ['published', 'grading', 'completed', 'results_released'])
+        || (isParent(tenantId)
+            && resource.data.classIds.hasAny(request.auth.token.classIds)
+            && resource.data.status in ['completed', 'results_released']);
+
+      allow create: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || (isTeacher(tenantId) && isTenantActive(tenantId));
+
+      allow update: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || (isTeacher(tenantId) && resource.data.createdBy == request.auth.uid && isTenantActive(tenantId));
+
+      allow delete: if isSuperAdmin()
+        || isTenantAdmin(tenantId);
+
+      // ── /tenants/{tenantId}/exams/{examId}/questions/{questionId}
+      match /questions/{questionId} {
+        allow read: if isSuperAdmin()
+          || isTenantAdmin(tenantId)
+          || (isTeacher(tenantId) && (
+              get(/databases/$(database)/documents/tenants/$(tenantId)/exams/$(examId)).data.createdBy == request.auth.uid
+              || get(/databases/$(database)/documents/tenants/$(tenantId)/exams/$(examId)).data.classIds.hasAny(request.auth.token.classIds)
+          ));
+
+        allow create, update: if isSuperAdmin()
+          || isTenantAdmin(tenantId)
+          || (isTeacher(tenantId)
+              && get(/databases/$(database)/documents/tenants/$(tenantId)/exams/$(examId)).data.createdBy == request.auth.uid);
+
+        allow delete: if isSuperAdmin()
+          || isTenantAdmin(tenantId);
+      }
+    }
+
+    // ── /tenants/{tenantId}/submissions/{submissionId} ──
+    match /tenants/{tenantId}/submissions/{submissionId} {
+      allow read: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || isTeacher(tenantId)
+        || (isStudent(tenantId) && resource.data.studentId == request.auth.token.studentId)
+        || (isParent(tenantId)
+            && request.auth.token.studentIds.hasAny([resource.data.studentId])
+            && resource.data.resultsReleased == true);
+
+      // Students can create submissions (upload answer sheets)
+      allow create: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || isTeacher(tenantId)
+        || (isStudent(tenantId) && request.resource.data.studentId == request.auth.token.studentId && isTenantActive(tenantId));
+
+      allow update: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || (isTeacher(tenantId) && resource.data.classId in request.auth.token.classIds);
+
+      allow delete: if isSuperAdmin()
+        || isTenantAdmin(tenantId);
+
+      // ── /tenants/{tenantId}/submissions/{submissionId}/questionSubmissions/{qsId}
+      match /questionSubmissions/{qsId} {
+        allow read: if isSuperAdmin()
+          || isTenantAdmin(tenantId)
+          || (isTeacher(tenantId)
+              && get(/databases/$(database)/documents/tenants/$(tenantId)/submissions/$(submissionId)).data.classId in request.auth.token.classIds)
+          || (isStudent(tenantId)
+              && get(/databases/$(database)/documents/tenants/$(tenantId)/submissions/$(submissionId)).data.studentId == request.auth.token.studentId);
+
+        // Cloud Functions handle writes during grading
+        allow write: if isSuperAdmin()
+          || isTenantAdmin(tenantId)
+          || (isTeacher(tenantId)
+              && get(/databases/$(database)/documents/tenants/$(tenantId)/submissions/$(submissionId)).data.classId in request.auth.token.classIds);
+      }
+    }
+
+    // ══════════════════════════════════════════════════════
+    // PROGRESS & SESSIONS
+    // ══════════════════════════════════════════════════════
+
+    // ── /tenants/{tenantId}/spaceProgress/{progressId} ──
+    match /tenants/{tenantId}/spaceProgress/{progressId} {
+      allow read: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || isTeacher(tenantId)
+        || (isStudent(tenantId) && resource.data.userId == request.auth.uid)
+        || (isParent(tenantId)
+            && request.auth.token.studentIds.hasAny([resource.data.userId]));
+
+      // Students can write their own progress (only if tenant is active)
+      allow create, update: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || (isStudent(tenantId) && request.resource.data.userId == request.auth.uid && isTenantActive(tenantId));
+
+      allow delete: if isSuperAdmin()
+        || isTenantAdmin(tenantId);
+    }
+
+    // ── /tenants/{tenantId}/progress/{progressId} ───────
+    match /tenants/{tenantId}/progress/{progressId} {
+      allow read: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || isTeacher(tenantId)
+        || (isStudent(tenantId) && resource.data.studentId == request.auth.token.studentId)
+        || (isParent(tenantId)
+            && request.auth.token.studentIds.hasAny([resource.data.studentId]));
+
+      allow create, update: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || (isStudent(tenantId) && request.resource.data.studentId == request.auth.token.studentId && isTenantActive(tenantId));
+
+      allow delete: if isSuperAdmin()
+        || isTenantAdmin(tenantId);
+    }
+
+    // ── /tenants/{tenantId}/testSessions/{sessionId} ────
+    match /tenants/{tenantId}/testSessions/{sessionId} {
+      allow read: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || isTeacher(tenantId)
+        || (isStudent(tenantId) && resource.data.studentId == request.auth.token.studentId);
+
+      allow create: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || (isStudent(tenantId) && request.resource.data.studentId == request.auth.token.studentId && isTenantActive(tenantId));
+
+      allow update: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || (isStudent(tenantId) && resource.data.studentId == request.auth.token.studentId && isTenantActive(tenantId));
+
+      allow delete: if isSuperAdmin()
+        || isTenantAdmin(tenantId);
+    }
+
+    // ── /tenants/{tenantId}/digitalTestSessions/{sessionId}
+    match /tenants/{tenantId}/digitalTestSessions/{sessionId} {
+      allow read: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || isTeacher(tenantId)
+        || (isStudent(tenantId) && resource.data.userId == request.auth.uid);
+
+      allow create: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || (isStudent(tenantId) && request.resource.data.userId == request.auth.uid && isTenantActive(tenantId));
+
+      allow update: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || (isStudent(tenantId) && resource.data.userId == request.auth.uid && isTenantActive(tenantId));
+
+      allow delete: if isSuperAdmin()
+        || isTenantAdmin(tenantId);
+    }
+
+    // ── /tenants/{tenantId}/chatSessions/{sessionId} ────
+    match /tenants/{tenantId}/chatSessions/{sessionId} {
+      allow read: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || (isStudent(tenantId) && resource.data.studentId == request.auth.token.studentId);
+
+      allow create: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || (isStudent(tenantId) && isTenantActive(tenantId));
+
+      allow update: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || (isStudent(tenantId) && resource.data.studentId == request.auth.token.studentId && isTenantActive(tenantId));
+
+      // No client-side delete
+      allow delete: if isSuperAdmin();
+    }
+
+    // ══════════════════════════════════════════════════════
+    // SETTINGS & CONFIG
+    // ══════════════════════════════════════════════════════
+
+    // ── /tenants/{tenantId}/academicSessions/{sessionId} ─
+    match /tenants/{tenantId}/academicSessions/{sessionId} {
+      allow read: if isSuperAdmin()
+        || hasActiveMembership(tenantId);
+
+      allow create, update: if isSuperAdmin()
+        || isTenantAdmin(tenantId);
+
+      allow delete: if isSuperAdmin()
+        || isTenantAdmin(tenantId);
+    }
+
+    // ── /tenants/{tenantId}/evaluationSettings/{settingsId}
+    match /tenants/{tenantId}/evaluationSettings/{settingsId} {
+      allow read: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || isTeacher(tenantId);
+
+      allow create, update: if isSuperAdmin()
+        || isTenantAdmin(tenantId);
+
+      allow delete: if isSuperAdmin()
+        || isTenantAdmin(tenantId);
+    }
+
+    // ── /tenants/{tenantId}/llmCallLogs/{logId} ─────────
+    match /tenants/{tenantId}/llmCallLogs/{logId} {
+      allow read: if isSuperAdmin()
+        || isTenantAdmin(tenantId)
+        || hasStaffPermission(tenantId, 'canViewAnalytics');
+
+      // Cloud Functions only
+      allow write: if false;
+    }
+
+    // ── /tenants/{tenantId}/auditLogs/{logId} ─────────
+    match /tenants/{tenantId}/auditLogs/{logId} {
+      allow read: if isSuperAdmin()
+        || isTenantAdmin(tenantId);
+
+      // Cloud Functions only
+      allow write: if false;
+    }
+
+    // ── platform_public tenant (consumer access) ─────────
+    match /tenants/platform_public/spaces/{spaceId} {
+      allow read: if isAuthenticated()
+        && resource.data.accessType == 'public_store';
+    }
+
+    // ── /globalEvaluationPresets/{presetId} ──────────────
+    match /globalEvaluationPresets/{presetId} {
+      allow read: if isAuthenticated();
+      allow create, update, delete: if isSuperAdmin();
+    }
+  }
+}

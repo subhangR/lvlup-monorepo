@@ -1,0 +1,150 @@
+{
+  "cycleNumber": 1,
+  "timestamp": "2026-03-09T16:40:26.533Z",
+  "learner": "DSA Learner (tm_1773067938659_5fys6s24v)",
+  "space": "Data Structures & Algorithms",
+  "loginStatus": "success",
+  "workingFeatures": [
+    "L1: Login with school code + email works",
+    "L2: DSA Space card visible in spaces list",
+    "L2: Clicking DSA space navigates to correct space URL",
+    "L4: Arrays & Strings story point h1: \"Arrays & Strings Foundations\"",
+    "L4: Code blocks rendered (1 found)",
+    "L4: Big-O notation found in content",
+    "L6: Linked Lists story point accessible: \"Linked Lists & Stack/Queue Patterns\"",
+    "L7: Binary Trees story point accessible: \"Binary Trees & BSTs\"",
+    "P1: Graphs practice story point accessible: \"Graphs — BFS, DFS & Topological Sort\"",
+    "P1: Submit Answer button visible (disabled until answer selected: true)",
+    "P1: Answer options (radio/True/False) visible",
+    "P1: Submit Answer enabled after selecting answer",
+    "P1: Next button visible after submit",
+    "P1: Section/breadcrumb navigation visible",
+    "P1: Search input visible in story point viewer",
+    "P1: Ask AI Tutor button visible",
+    "P1: Code blocks visible in practice mode content",
+    "P2: DP I practice story point accessible: \"Dynamic Programming I — 1D & 2D\"",
+    "Q1: Quiz story point accessible: \"DSA Comprehensive Quiz\"",
+    "Q1: MCQ question type visible in quiz",
+    "Q1: MCAQ question type visible in quiz",
+    "P3: Greedy & Backtracking accessible: \"Greedy & Backtracking Patterns\"",
+    "CQ1: Arrays content has DSA-relevant terms (7/7)",
+    "UX1: Breadcrumbs visible on story point page",
+    "UX1: Back/Spaces navigation link visible",
+    "UX1: Story point viewer responsive on mobile (375px)",
+    "UX1: Fast load time (131ms)"
+  ],
+  "issues": [
+    {
+      "id": "DSA-003",
+      "severity": "P1",
+      "category": "learning-flow",
+      "title": "Space viewer missing h1",
+      "details": "URL: http://localhost:4570/spaces/ZikR8xEHkqIaIsugmdQg"
+    },
+    {
+      "id": "DSA-004",
+      "severity": "P1",
+      "category": "content",
+      "title": "No story point links found in DSA space viewer",
+      "details": "URL: http://localhost:4570/spaces/ZikR8xEHkqIaIsugmdQg"
+    },
+    {
+      "id": "DSA-006",
+      "severity": "P0",
+      "category": "learning-flow",
+      "title": "Hash Maps story point viewer: no h1",
+      "details": "URL: http://localhost:4570/spaces/ZikR8xEHkqIaIsugmdQg/story-points/Zu86i5osXGCbp6Rf70Tm"
+    },
+    {
+      "id": "DSA-010",
+      "severity": "P1",
+      "category": "timed-assessment",
+      "title": "DSA Timed Assessment: no h1 on landing page",
+      "details": "URL: http://localhost:4570/spaces/ZikR8xEHkqIaIsugmdQg/story-points/7LgnRSSjBcZxj4PFoB1S"
+    }
+  ],
+  "contentAssessment": {
+    "storyPointsTested": 10,
+    "storyPointsAccessible": 7,
+    "codeBlocksRendered": true,
+    "bigONotationDisplayed": true,
+    "syntaxHighlighting": false,
+    "contentQualityNotes": [
+      "Code blocks present but no syntax highlighting tokens detected",
+      "No search input found in story point viewer",
+      "Arrays content contains DSA keywords: array, string, two pointer, sliding window, complexity, O(n, O(log"
+    ]
+  },
+  "uxAssessment": {
+    "navigationWorking": true,
+    "loadTimesAcceptable": true,
+    "mobileResponsive": true,
+    "uxIssues": []
+  },
+  "practiceMode": {
+    "tested": true,
+    "retryWorks": false,
+    "difficultyFilterWorks": false,
+    "progressPersists": false,
+    "notes": []
+  },
+  "quizMode": {
+    "tested": true,
+    "questionTypesFound": [
+      "MCQ",
+      "MCAQ"
+    ],
+    "resultsDisplayed": false,
+    "notes": []
+  },
+  "timedAssessment": {
+    "tested": true,
+    "timerVisible": false,
+    "autoSubmit": null,
+    "analyticsShown": false,
+    "notes": [
+      "Timer not visible on landing page (may appear after starting test)"
+    ]
+  },
+  "learningEffectiveness": {
+    "score": 4.3,
+    "notes": "27 working features, 4 total issues (1 P0, 3 P1). Content accessible: 7/10 story points."
+  },
+  "rawObservations": [
+    "Login page: school code accepted, credential form shown",
+    "Email tab is visible and clickable",
+    "Login successful. URL: http://localhost:4570/",
+    "Spaces page title: LevelUp - Student Portal",
+    "Spaces visible in My Spaces (5): Behavioral Interview MasteryMaster behavioral interview tech, System DesignMaster the fundamentals of system design, cover, Low-Level Design & OOPMaster object-oriented design, SOLID p, Data Structures & AlgorithmsMaster data structures and algor, System DesignMaster the fundamentals of system design, cover",
+    "DSA Space card found in spaces list",
+    "DSA Space URL after click: http://localhost:4570/spaces/ZikR8xEHkqIaIsugmdQg",
+    "DSA Space viewer URL: http://localhost:4570/spaces/ZikR8xEHkqIaIsugmdQg",
+    "Space viewer h1: \"\"",
+    "Story point links found: 0",
+    "L3 result: h1=\"\", storyPointLinks=0",
+    "Arrays story point URL: http://localhost:4570/spaces/ZikR8xEHkqIaIsugmdQg/story-points/NUDWSZDR9YRnPJX6qoeP",
+    "Arrays h1: \"Arrays & Strings Foundations\"",
+    "Arrays content items found: 84",
+    "Code blocks found: 1",
+    "Arrays material content detected: false",
+    "Hash Maps h1: \"\"",
+    "Hash Maps navigation: next=false, prev=false",
+    "Copy buttons found: 0",
+    "Trees h1: \"Binary Trees & BSTs\"",
+    "Graphs practice URL: http://localhost:4570/spaces/ZikR8xEHkqIaIsugmdQg/story-points/wGH5xwxuPQcOWyL55gFR",
+    "Graphs practice h1: \"Graphs — BFS, DFS & Topological Sort\"",
+    "Submit button visible: true, disabled: true",
+    "Difficulty filter (combobox) visible: false",
+    "DP I h1: \"Dynamic Programming I — 1D & 2D\"",
+    "Tries h1: \"\"",
+    "Quiz URL: http://localhost:4570/spaces/ZikR8xEHkqIaIsugmdQg/story-points/DDvMqnfuSGs3btPIYpnK",
+    "Quiz h1: \"DSA Comprehensive Quiz\"",
+    "Timed test URL: http://localhost:4570/spaces/ZikR8xEHkqIaIsugmdQg/story-points/7LgnRSSjBcZxj4PFoB1S",
+    "Timed test h1: \"\"",
+    "Greedy h1: \"Greedy & Backtracking Patterns\"",
+    "DSA keywords found: array, string, two pointer, sliding window, complexity, O(n, O(log",
+    "Approximate word count on page: 367",
+    "Content item cards: 0",
+    "DSA Space viewer load time: 131ms"
+  ]
+}

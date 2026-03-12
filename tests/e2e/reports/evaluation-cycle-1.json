@@ -1,0 +1,330 @@
+{
+  "cycleNumber": 1,
+  "timestamp": "2026-03-09T22:30:00.000Z",
+  "evaluator": "tm_1773068003714_u31bmrfhp",
+
+  "overallScores": {
+    "appHealth": 5,
+    "contentQuality": 6,
+    "uiuxExperience": 5,
+    "featureCompleteness": 4,
+    "learningEffectiveness": 3,
+    "overallScore": 4.6,
+    "notes": "Cycle 0 baseline. 3 P0-critical bugs block core learning flows. 63% pass rate (34/91 working). 15 question types untestable due to Story Point Viewer crash. Content seeded but not validated due to viewer issues."
+  },
+
+  "featureAudit": {
+    "totalTests": 91,
+    "working": 34,
+    "partial": 15,
+    "broken": 5,
+    "notTested": 37,
+    "passRate": "63%",
+    "regressions": [],
+    "newlyFixed": [],
+    "notes": "First cycle — no regression baseline yet. 37 tests blocked by upstream P0 bugs (L3 blocks Q1-Q15, B2 blocks B3-B4, G3 blocks G4)."
+  },
+
+  "consolidatedIssues": [
+    {
+      "id": "EVAL-C1-001",
+      "severity": "P0",
+      "category": "gamification",
+      "title": "Leaderboard page crashes: Select.Item receives empty string value",
+      "source": "feature-tester",
+      "affectedTests": ["G3", "G4", "N1"],
+      "rootCause": {
+        "file": "apps/student-web/src/pages/LeaderboardPage.tsx",
+        "lines": "89-104",
+        "component": "Select dropdown for space filter",
+        "explanation": "Line 97 has <SelectItem value=\"\">Overall</SelectItem> — Radix UI Select.Item does NOT allow empty string as value prop. Additionally, line 90 passes value={selectedSpaceId ?? ''} which sends empty string when selectedSpaceId is null. Both cause the Radix Select component to throw an error caught by the ErrorBoundary."
+      },
+      "fixSpecification": "1. Change the 'Overall' SelectItem value from empty string to a sentinel value like 'all'. Replace: <SelectItem value=\"\">Overall</SelectItem> with <SelectItem value=\"all\">Overall</SelectItem>. 2. Update the Select value prop: value={selectedSpaceId ?? 'all'}. 3. Update the onValueChange handler: onValueChange={(v) => setSelectedSpaceId(v === 'all' ? null : v)}. All changes are in LeaderboardPage.tsx lines 89-104.",
+      "estimatedEffort": "small",
+      "assignTo": "portal-fixer"
+    },
+    {
+      "id": "EVAL-C1-002",
+      "severity": "P0",
+      "category": "learning-flow",
+      "title": "Story Point Viewer renders without h1 or content items — blocks all question type testing",
+      "source": "feature-tester",
+      "affectedTests": ["L3", "L4", "Q1", "Q2", "Q3", "Q4", "Q5", "Q6", "Q7", "Q8", "Q9", "Q10", "Q11", "Q12", "Q13", "Q14", "Q15"],
+      "rootCause": {
+        "file": "apps/student-web/src/pages/StoryPointViewerPage.tsx",
+        "lines": "59, 74-75, 234, 339-381",
+        "hook": "apps/student-web/src/hooks/useSpaceItems.ts lines 13-22",
+        "component": "StoryPointViewerPage + useStoryPointItems hook",
+        "explanation": "Multiple compounding issues: (1) useStoryPointItems hook (useSpaceItems.ts:13-22) has NO try-catch on getDocs() — Firestore query failures are swallowed silently. (2) StoryPointViewerPage.tsx:59 destructures only {data, isLoading} but NOT {error, isError} from useStoryPointItems — errors are invisible. (3) Line 74: storyPoint = storyPoints?.find(sp => sp.id === storyPointId) — if storyPoints is undefined/empty, storyPoint is undefined. (4) Line 234: h1 renders storyPoint?.title which is undefined → empty h1 invisible to tests. (5) Lines 339-381: displayItems is empty when query fails → shows misleading 'No items in this section' message."
+      },
+      "fixSpecification": "1. In useSpaceItems.ts, wrap getDocs() in try-catch and re-throw with meaningful error. 2. In StoryPointViewerPage.tsx line 59, destructure {error, isError} from the hook. 3. Add error state rendering: if isError, show error message with retry button. 4. Add null check for storyPoint — if undefined after storyPoints loads, show 'Story point not found' message. 5. Distinguish between 'no items exist' vs 'failed to load items' in the empty state. 6. CRITICAL: Verify Firestore composite indexes exist for tenants/{tenantId}/spaces/{spaceId}/storyPoints/{storyPointId}/items with orderBy('orderIndex', 'asc'). Check firestore.indexes.json for correct index configuration.",
+      "estimatedEffort": "medium",
+      "assignTo": "portal-fixer"
+    },
+    {
+      "id": "EVAL-C1-003",
+      "severity": "P0",
+      "category": "consumer-b2c",
+      "title": "Store Browse page (/store) renders blank — no h1, search, or space cards",
+      "source": "feature-tester",
+      "affectedTests": ["B2", "B3", "B4"],
+      "rootCause": {
+        "file": "apps/student-web/src/pages/StoreListPage.tsx",
+        "lines": "62-71",
+        "apiFile": "packages/shared-services/src/levelup/store-callables.ts lines 58-64",
+        "component": "StoreListPage + callListStoreSpaces Cloud Function",
+        "explanation": "StoreListPage.tsx:62-71 uses useQuery to call callListStoreSpaces() — a Firebase Cloud Function (listStoreSpaces). If the Cloud Function is not deployed, returns null/error, or has permission issues, the query returns error/undefined data. The page then shows loading skeletons or empty state with no visible content. The h1, search input, and space cards all conditionally render based on successful data fetch. Additionally, ConsumerLayout.tsx:138-142 wraps content in a div#main-content with no explicit styling — if CSS hides this div, all content is invisible."
+      },
+      "fixSpecification": "1. Verify the 'listStoreSpaces' Cloud Function is deployed and accessible in the dev environment. Run: firebase functions:list to check. 2. In StoreListPage.tsx, ensure the h1 and search input render OUTSIDE the data-dependent conditional — they should always be visible regardless of data loading state. 3. Add proper error state rendering when useQuery returns error (show error message + retry button). 4. If Cloud Function is not available in dev, add a fallback that queries Firestore directly for published spaces with visibility='public'. 5. Check ConsumerLayout div#main-content CSS for height/display issues.",
+      "estimatedEffort": "medium",
+      "assignTo": "portal-fixer"
+    },
+    {
+      "id": "EVAL-C1-004",
+      "severity": "P1",
+      "category": "authentication",
+      "title": "Login error messages not displayed for invalid credentials",
+      "source": "feature-tester",
+      "affectedTests": ["A4"],
+      "rootCause": {
+        "file": "packages/shared-stores/src/auth-store.ts",
+        "lines": "141-153 (standard login), 158-198 (school login)",
+        "errorUtilFile": "packages/shared-hooks/src/use-api-error.ts lines 6-42",
+        "component": "Auth store login methods + getApiErrorMessage utility",
+        "explanation": "Three compounding issues: (1) auth-store.ts:149 extracts err.message directly from Firebase Auth errors — gets raw messages like 'Firebase: Error (auth/wrong-password).' instead of user-friendly text. (2) use-api-error.ts:6-42 only handles Firebase Callable errors (code format 'functions/...') but NOT Firebase Auth errors (code format 'auth/...'). Firebase Auth errors fall through to the generic Error.message handler. (3) The login form components DO render error state correctly (LoginPage.tsx:31-35, SchoolCredentialsForm.tsx:60-64), but the error message is either empty or the raw Firebase message which may not match the expected [class*='destructive'] or [role='alert'] selectors."
+      },
+      "fixSpecification": "1. In auth-store.ts, add a Firebase Auth error code mapper in the catch blocks for both login and loginWithSchoolCode methods. Map common codes: 'auth/wrong-password' → 'Incorrect password. Please try again.', 'auth/user-not-found' → 'No account found with this email.', 'auth/invalid-email' → 'Please enter a valid email address.', 'auth/too-many-requests' → 'Too many attempts. Please try again later.', 'auth/invalid-credential' → 'Invalid email or password.'. 2. In use-api-error.ts, extend isFirebaseCallableError() to also detect Firebase Auth errors by checking if code starts with 'auth/'. Add a similar friendly message mapping. 3. Ensure the error message is set in state (set({ error: friendlyMessage })) so the form components can display it.",
+      "estimatedEffort": "small",
+      "assignTo": "portal-fixer"
+    },
+    {
+      "id": "EVAL-C1-005",
+      "severity": "P1",
+      "category": "navigation",
+      "title": "Sidebar navigation to Leaderboard crashes entire app",
+      "source": "feature-tester",
+      "affectedTests": ["N1"],
+      "rootCause": {
+        "sameAs": "EVAL-C1-001",
+        "explanation": "This is the same root cause as EVAL-C1-001 (Leaderboard Select.Item empty value). Clicking Leaderboard in sidebar navigates to /leaderboard which triggers the Select.Item crash. Fixing EVAL-C1-001 automatically fixes this issue."
+      },
+      "fixSpecification": "Automatically resolved by fixing EVAL-C1-001 (Leaderboard Select.Item empty value).",
+      "estimatedEffort": "small",
+      "assignTo": "portal-fixer",
+      "dependsOn": "EVAL-C1-001"
+    },
+    {
+      "id": "EVAL-C1-006",
+      "severity": "P2",
+      "category": "dashboard",
+      "title": "Dashboard shows only 1 stat card instead of expected 4+",
+      "source": "feature-tester",
+      "affectedTests": ["D2"],
+      "rootCause": {
+        "explanation": "Dashboard score cards (Overall Score, Avg Exam, Space Completion, Streak) likely depend on computed stats that are not populated for the test student. May be a data issue rather than a rendering bug."
+      },
+      "fixSpecification": "Investigate DashboardPage stat cards rendering logic. Check if stats are conditionally rendered based on data availability. If student has no exam history or streak data, cards may hide. Consider showing cards with '0' or 'N/A' values instead of hiding them entirely.",
+      "estimatedEffort": "small",
+      "assignTo": "portal-fixer"
+    },
+    {
+      "id": "EVAL-C1-007",
+      "severity": "P2",
+      "category": "learning-flow",
+      "title": "Story point page missing section navigation, search, filters",
+      "source": "feature-tester",
+      "affectedTests": ["L5", "L6", "L7", "L8"],
+      "rootCause": {
+        "explanation": "Section sidebar buttons, search input, type filter (Question/Material), and difficulty filter (easy/medium/hard) are not found on the story point page. These may be features that are not yet implemented, or they may be hidden when items fail to load (blocked by EVAL-C1-002)."
+      },
+      "fixSpecification": "Re-evaluate after EVAL-C1-002 is fixed. If story point items load correctly, these UI elements may appear. If not, implement: (1) Section sidebar navigation from storyPoint.sections, (2) Search input to filter items by title/content, (3) Type filter buttons for Question vs Material, (4) Difficulty filter for easy/medium/hard.",
+      "estimatedEffort": "medium",
+      "assignTo": "portal-fixer",
+      "dependsOn": "EVAL-C1-002"
+    },
+    {
+      "id": "EVAL-C1-008",
+      "severity": "P2",
+      "category": "dashboard",
+      "title": "Dashboard has console errors on load",
+      "source": "feature-tester",
+      "affectedTests": ["D1"],
+      "rootCause": {
+        "explanation": "Console errors detected during dashboard load. Likely Firebase/API warnings or missing data references. Needs dev tools investigation to identify specific errors."
+      },
+      "fixSpecification": "Open browser DevTools, navigate to dashboard, capture exact console errors. Fix based on error type — likely missing Firestore collection references or undefined property accesses.",
+      "estimatedEffort": "small",
+      "assignTo": "portal-fixer"
+    },
+    {
+      "id": "EVAL-C1-009",
+      "severity": "P3",
+      "category": "dashboard",
+      "title": "Level badge and XP progress bar not displayed on dashboard",
+      "source": "feature-tester",
+      "affectedTests": ["D4"],
+      "fixSpecification": "Investigate if level/XP components exist in DashboardPage. If missing, implement level badge and XP progress bar. If present but hidden, check data dependencies.",
+      "estimatedEffort": "small",
+      "assignTo": "portal-fixer"
+    },
+    {
+      "id": "EVAL-C1-010",
+      "severity": "P3",
+      "category": "dashboard",
+      "title": "Recent achievements section not displayed on dashboard",
+      "source": "feature-tester",
+      "affectedTests": ["D5"],
+      "fixSpecification": "Check if achievements widget exists on DashboardPage. If missing, add recent achievements card. May depend on gamification data being populated.",
+      "estimatedEffort": "small",
+      "assignTo": "portal-fixer"
+    },
+    {
+      "id": "EVAL-C1-011",
+      "severity": "P3",
+      "category": "navigation",
+      "title": "Breadcrumbs link 'Spaces' not found on space viewer page",
+      "source": "feature-tester",
+      "affectedTests": ["N3"],
+      "fixSpecification": "Add breadcrumb navigation to SpaceViewerPage showing: Spaces > [Space Name]. Use Link component to navigate back to /spaces.",
+      "estimatedEffort": "small",
+      "assignTo": "portal-fixer"
+    },
+    {
+      "id": "EVAL-C1-012",
+      "severity": "P3",
+      "category": "auxiliary",
+      "title": "Theme toggle button does not change HTML class",
+      "source": "feature-tester",
+      "affectedTests": ["X8"],
+      "fixSpecification": "Check theme toggle implementation. Verify it adds/removes 'dark' class on <html> element. May need to check ThemeProvider or theme store implementation.",
+      "estimatedEffort": "small",
+      "assignTo": "portal-fixer"
+    }
+  ],
+
+  "contentRecommendations": [],
+
+  "workingWell": [
+    "A1: School code login works correctly",
+    "A3: Consumer login successful",
+    "D3: Resume learning section visible and navigable",
+    "D6: Upcoming exams display works",
+    "D7: My Spaces grid renders correctly with navigation",
+    "L1: Spaces list page works",
+    "L2: Space viewer renders with h1, contents, and overall progress",
+    "P1-P3: Practice mode works — page loads, submit works, unlimited retries",
+    "P5: Question navigator works in practice mode",
+    "T1: Timed test landing page displays correctly",
+    "R1-R3: Progress page with all 3 tabs (Overall, Exams, Spaces) works",
+    "G1-G2: Achievements page with 7 category filter tabs works",
+    "G5: Study planner page loads correctly",
+    "X1-X4: Chat tutor, tests, notifications, profile, settings all load correctly",
+    "B1: Consumer dashboard loads",
+    "B5-B6: Checkout and consumer spaces work",
+    "N2: Mobile bottom navigation works",
+    "N5-N6: Notification bell and sign out work correctly",
+    "E1-E4: 404 page, error boundaries, loading states all work"
+  ],
+
+  "blockedFeatures": [
+    {
+      "feature": "Q1-Q15: All 15 Question Types",
+      "blockedBy": "EVAL-C1-002",
+      "reason": "Story Point Viewer broken — cannot render any question type content",
+      "impact": "high",
+      "unblockedWhen": "Story Point Viewer renders h1 and content items correctly"
+    },
+    {
+      "feature": "B3-B4: Store Detail & Add to Cart",
+      "blockedBy": "EVAL-C1-003",
+      "reason": "Store Browse blank — cannot navigate to store detail or cart",
+      "impact": "medium",
+      "unblockedWhen": "Store Browse renders space cards"
+    },
+    {
+      "feature": "G4: Leaderboard Filter",
+      "blockedBy": "EVAL-C1-001",
+      "reason": "Leaderboard page crashes before filter is accessible",
+      "impact": "low",
+      "unblockedWhen": "Leaderboard page renders without crash"
+    },
+    {
+      "feature": "T2-T8: Timed Test In-Progress Features",
+      "blockedBy": "test-data",
+      "reason": "Max test attempts reached for seeded test. Need to reset attempts or create new test.",
+      "impact": "medium",
+      "unblockedWhen": "Test attempts reset or new test content seeded"
+    },
+    {
+      "feature": "L5-L8: Story Point Filters/Search/Navigation",
+      "blockedBy": "EVAL-C1-002",
+      "reason": "May depend on items loading correctly first",
+      "impact": "medium",
+      "unblockedWhen": "Story Point Viewer items render correctly"
+    }
+  ],
+
+  "fixPriority": {
+    "description": "Ordered fix sequence for Portal Fixer",
+    "sequence": [
+      {
+        "order": 1,
+        "issueId": "EVAL-C1-001",
+        "title": "Fix Leaderboard Select.Item empty value",
+        "effort": "small",
+        "unblocks": ["EVAL-C1-005", "G3", "G4", "N1"],
+        "file": "apps/student-web/src/pages/LeaderboardPage.tsx"
+      },
+      {
+        "order": 2,
+        "issueId": "EVAL-C1-002",
+        "title": "Fix Story Point Viewer rendering + error handling",
+        "effort": "medium",
+        "unblocks": ["L3", "L4", "Q1-Q15", "L5-L8", "EVAL-C1-007"],
+        "files": [
+          "apps/student-web/src/hooks/useSpaceItems.ts",
+          "apps/student-web/src/pages/StoryPointViewerPage.tsx"
+        ]
+      },
+      {
+        "order": 3,
+        "issueId": "EVAL-C1-003",
+        "title": "Fix Store Browse blank page",
+        "effort": "medium",
+        "unblocks": ["B2", "B3", "B4"],
+        "files": [
+          "apps/student-web/src/pages/StoreListPage.tsx",
+          "packages/shared-services/src/levelup/store-callables.ts"
+        ]
+      },
+      {
+        "order": 4,
+        "issueId": "EVAL-C1-004",
+        "title": "Fix Login error message display",
+        "effort": "small",
+        "unblocks": ["A4"],
+        "files": [
+          "packages/shared-stores/src/auth-store.ts",
+          "packages/shared-hooks/src/use-api-error.ts"
+        ]
+      }
+    ]
+  },
+
+  "readiness": {
+    "isReady": false,
+    "blockers": [
+      "3 P0-critical bugs must be fixed before learners can effectively test the portal",
+      "Story Point Viewer broken — blocks ALL question type testing (15 tests) and learning flow",
+      "Leaderboard crash — blocks gamification testing",
+      "Store Browse blank — blocks consumer/B2C flow testing"
+    ],
+    "nextCycleRecommendations": [
+      "Fix all 3 P0 issues and 2 P1 issues in this cycle",
+      "After P0 fixes, run regression test on L3, G3, B2, A4, N1 to verify fixes",
+      "Reset timed test attempts or seed new test content to unblock T2-T8 testing",
+      "After fixes verified, spawn all 4 learner agents for initial learning sessions",
+      "Re-run full 91-test audit to establish post-fix baseline for Cycle 2"
+    ]
+  }
+}

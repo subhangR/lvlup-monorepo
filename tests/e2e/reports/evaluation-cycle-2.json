@@ -1,0 +1,621 @@
+{
+  "cycleNumber": 2,
+  "timestamp": "2026-03-09T23:50:00.000Z",
+  "evaluator": "tm_1773068003714_u31bmrfhp",
+  "previousCycle": "evaluation-cycle-1.json",
+
+  "overallScores": {
+    "appHealth": 7,
+    "contentQuality": 4,
+    "uiuxExperience": 6,
+    "featureCompleteness": 4,
+    "learningEffectiveness": 3,
+    "overallScore": 5.0,
+    "formula": "appHealth*0.25 + contentQuality*0.25 + ux*0.20 + featureCompleteness*0.15 + learningEffectiveness*0.15",
+    "trend": "+0.4 from Cycle 1 (4.6 → 5.0)",
+    "notes": "Cycle 1 fixes improved app health significantly (4 bugs fixed, 0 regressions, pass rate 63%→97.6%). However, learner testing revealed 3 new critical blockers: (1) SpaceViewerPage React hooks violation, (2) student not enrolled in LLD/Behavioral classes, (3) learner test scripts used wrong URL pattern /story/ instead of /story-points/. Content quality unverifiable for 3 of 4 spaces due to access issues."
+  },
+
+  "dataSources": [
+    {
+      "report": "regression-cycle-1.json",
+      "type": "regression-test",
+      "summary": "4/5 bugs fixed, 0 regressions, 37/37 regression tests pass, pass rate 63%→97.6%"
+    },
+    {
+      "report": "learner-dsa-cycle-1.json",
+      "type": "learner",
+      "summary": "Login incomplete. Space viewer h1 empty, 0 story point links found. DSA space viewer not accessible during learner test (likely auth issue)."
+    },
+    {
+      "report": "learner-system-design-cycle-1.json",
+      "type": "learner",
+      "summary": "Login FAILED due to Firebase rate limiting. 0 features tested."
+    },
+    {
+      "report": "learner-lld-cycle-1.json",
+      "type": "learner",
+      "summary": "Login success. ALL 12 story points return 404. Root causes: (1) student not enrolled in cls_g10_lld_a, (2) test script URLs use /story/ instead of /story-points/, (3) SpaceViewerPage React hooks crash."
+    },
+    {
+      "report": "learner-behavioral-cycle-1.json",
+      "type": "learner",
+      "summary": "Login success. ALL 12 story points return 404. Root causes: (1) student likely not enrolled in behavioral class, (2) test script URLs use /story/ instead of /story-points/, (3) SpaceViewerPage React hooks crash. Space card not visible in /spaces list."
+    },
+    {
+      "report": "evaluation-cycle-1.json",
+      "type": "previous-evaluation",
+      "summary": "Cycle 0 baseline. 3 P0 bugs, 2 P1 bugs. 63% pass rate. Score 4.6/10."
+    }
+  ],
+
+  "featureAudit": {
+    "totalTests": 91,
+    "working": 41,
+    "partial": 8,
+    "broken": 5,
+    "notTested": 37,
+    "passRate": "72%",
+    "previousPassRate": "63%",
+    "trend": "+9% from Cycle 1",
+    "regressions": [],
+    "newlyFixed": [
+      { "id": "G3", "feature": "Leaderboard Page", "fixedBy": "BUG-001" },
+      { "id": "G4", "feature": "Leaderboard Filter", "fixedBy": "BUG-001" },
+      { "id": "N1", "feature": "Sidebar to Leaderboard", "fixedBy": "BUG-001/005" },
+      { "id": "B2", "feature": "Store Browse Page", "fixedBy": "BUG-003" },
+      { "id": "B3", "feature": "Store Search", "fixedBy": "BUG-003" },
+      { "id": "B4", "feature": "Store Space Cards", "fixedBy": "BUG-003" },
+      { "id": "A4", "feature": "Login Error Messages", "fixedBy": "BUG-004" }
+    ],
+    "stillBroken": [
+      { "id": "L3-partial", "feature": "Story Point Viewer h1 timing", "note": "BUG-002 partially fixed" },
+      { "id": "D2", "feature": "Dashboard stat cards (1 instead of 4)", "since": "Cycle 0" },
+      { "id": "D4", "feature": "Level badge and XP progress bar", "since": "Cycle 0" },
+      { "id": "D5", "feature": "Recent achievements on dashboard", "since": "Cycle 0" },
+      { "id": "X8", "feature": "Theme toggle", "since": "Cycle 0" }
+    ],
+    "notes": "Pass rate improvement driven by Cycle 1 bug fixes. LLD and Behavioral spaces entirely inaccessible due to enrollment + URL issues — test results from those learners are unreliable."
+  },
+
+  "consolidatedIssues": [
+    {
+      "id": "EVAL-C2-001",
+      "severity": "P0",
+      "category": "routing",
+      "title": "SpaceViewerPage React hooks violation: useState after conditional early-returns",
+      "source": ["learner-lld", "learner-behavioral", "learner-dsa"],
+      "isRegression": false,
+      "affectedSpaces": ["DSA", "LLD", "Behavioral", "System Design"],
+      "rootCause": {
+        "file": "apps/student-web/src/pages/SpaceViewerPage.tsx",
+        "line": 103,
+        "explanation": "Line 103: `const [celebrationShown, setCelebrationShown] = useState(false)` is placed AFTER conditional early-returns at lines 63-98 (loading skeleton, error state, and 'not found' state). This violates React Rules of Hooks — hooks must be called in the same order every render, never conditionally. When the component early-returns before reaching line 103, React sees different hook counts between renders, causing a crash caught by ErrorBoundary."
+      },
+      "fixSpecification": {
+        "action": "Move useState to before early returns",
+        "steps": [
+          "Move `const [celebrationShown, setCelebrationShown] = useState(false)` from line 103 to line 45 (after the existing useState-like useMemo at line 47, or near other state declarations)",
+          "All other code stays the same — only the position of this one hook changes",
+          "Also move `const overallPercentage`, `const pointsEarned`, `const totalPoints` (lines 100-102) above the early returns since they depend on data that might not exist yet — use optional chaining"
+        ],
+        "verifyWith": "Navigate to /spaces/{any-space-id} — should render h1 and story point list without crash",
+        "estimatedEffort": "small",
+        "assignTo": "portal-fixer"
+      }
+    },
+    {
+      "id": "EVAL-C2-002",
+      "severity": "P0",
+      "category": "data-access",
+      "title": "Student not enrolled in LLD class — all LLD content returns 404",
+      "source": ["learner-lld"],
+      "isRegression": false,
+      "affectedTests": ["All LLD story points (12 total)"],
+      "rootCause": {
+        "explanation": "Test student (student.test@subhang.academy, entity: vmP1QTDZBRCqE3Mr6IPK) is only enrolled in System Design (PDFq1OluyAGNAz6Fpx0j) and DSA (ZikR8xEHkqIaIsugmdQg) spaces via class cls_g10_sysdesign_a. The student is NOT assigned to class cls_g10_lld_a, so the LLD space (XTw3bLqiT4dMyvFJkI0g) is not accessible."
+      },
+      "fixSpecification": {
+        "action": "Enroll test student in LLD class",
+        "steps": [
+          "Option A: Update seed config to add student entity vmP1QTDZBRCqE3Mr6IPK to class cls_g10_lld_a",
+          "Option B: Use Firebase Admin to add student to LLD class enrollment",
+          "Verify: After enrollment, /spaces page should show 'Low-Level Design & OOP' space card",
+          "Verify: /spaces/XTw3bLqiT4dMyvFJkI0g should render with story points visible"
+        ],
+        "estimatedEffort": "small",
+        "assignTo": "portal-fixer",
+        "note": "This is a seed/data issue. Portal-fixer can update the seed config or use admin tools."
+      }
+    },
+    {
+      "id": "EVAL-C2-003",
+      "severity": "P0",
+      "category": "data-access",
+      "title": "Student not enrolled in Behavioral class — all Behavioral content inaccessible",
+      "source": ["learner-behavioral"],
+      "isRegression": false,
+      "affectedTests": ["All Behavioral story points (12 total)"],
+      "rootCause": {
+        "explanation": "Behavioral Interview Mastery space (1AqFwKSf59FiIrqzaQ7i) card not visible in /spaces list. Student likely not enrolled in the Behavioral class. Direct URL navigation to story points returns 404."
+      },
+      "fixSpecification": {
+        "action": "Enroll test student in Behavioral class",
+        "steps": [
+          "Identify the Behavioral class ID (likely cls_g10_behavioral_a)",
+          "Add student entity vmP1QTDZBRCqE3Mr6IPK to the Behavioral class enrollment",
+          "Verify: /spaces page should show 'Behavioral Interview Mastery' space card",
+          "Verify: /spaces/1AqFwKSf59FiIrqzaQ7i should render with story points visible"
+        ],
+        "estimatedEffort": "small",
+        "assignTo": "portal-fixer"
+      }
+    },
+    {
+      "id": "EVAL-C2-004",
+      "severity": "P0",
+      "category": "test-infrastructure",
+      "title": "LLD and Behavioral learner test scripts use wrong URL pattern /story/ instead of /story-points/",
+      "source": ["learner-lld", "learner-behavioral"],
+      "isRegression": false,
+      "affectedTests": ["All LLD and Behavioral story point tests"],
+      "rootCause": {
+        "explanation": "The React Router defines story point viewer at /spaces/:spaceId/story-points/:storyPointId (App.tsx line 66). However, both LLD and Behavioral learner test scripts constructed URLs with /story/ instead of /story-points/. This caused all story point pages to hit the app's 404 fallback route. DSA learner correctly used /story-points/. The app's internal navigation links (SpaceViewerPage.tsx:57, StoryPointViewerPage.tsx:86) all correctly use /story-points/."
+      },
+      "fixSpecification": {
+        "action": "Fix learner test URL construction to use /story-points/ instead of /story/",
+        "steps": [
+          "In LLD learner test script: replace all /story/ URL segments with /story-points/",
+          "In Behavioral learner test script: replace all /story/ URL segments with /story-points/",
+          "Alternatively, instead of constructing URLs manually, navigate via the app's UI (click story point links from space viewer page) which generates correct URLs",
+          "NOTE: Even with correct URLs, tests will still 404 until EVAL-C2-002 and EVAL-C2-003 (enrollment) are fixed"
+        ],
+        "estimatedEffort": "small",
+        "assignTo": "portal-fixer",
+        "note": "This is a test script issue. Learner agent team member instructions should be updated to navigate via UI clicks rather than constructing URLs manually."
+      }
+    },
+    {
+      "id": "EVAL-C2-005",
+      "severity": "P1",
+      "category": "learning-flow",
+      "title": "BUG-002 residual: Story Point Viewer h1 timing/visibility issue",
+      "source": ["regression-cycle-1"],
+      "isRegression": false,
+      "affectedTests": ["L3"],
+      "rootCause": {
+        "explanation": "StoryPointViewerPage early-returns during loading state (line 148) show skeleton without h1. During itemsHasError state (line 158) shows error message without h1. The h1 at line 248 only renders after data loads successfully. Tests with short timeouts may not see h1 if items load slowly. Additionally, useSpaceItems.ts getDocs() at line 21 has no try-catch — React Query catches the error, but the error state rendering in StoryPointViewerPage doesn't include the story point title h1."
+      },
+      "fixSpecification": {
+        "action": "Ensure h1 renders in all states (loading, error, success)",
+        "steps": [
+          "Move the h1 rendering before the isLoading early return, or include it in the loading skeleton",
+          "Add h1 to the itemsHasError error state (line 158-170) so story point title is visible even on error",
+          "Consider: render breadcrumb + h1 + description before checking isLoading/isError, then show skeleton/error only for the items list below"
+        ],
+        "estimatedEffort": "small",
+        "assignTo": "portal-fixer"
+      }
+    },
+    {
+      "id": "EVAL-C2-006",
+      "severity": "P1",
+      "category": "learning-flow",
+      "title": "DSA Space Viewer: h1 empty and 0 story point links found",
+      "source": ["learner-dsa"],
+      "isRegression": false,
+      "affectedTests": ["DSA space content access"],
+      "rootCause": {
+        "explanation": "DSA learner report shows space viewer h1 is empty string and 0 story point links found. However, regression tests confirmed L2 (Space Viewer) works. Root cause is likely the SpaceViewerPage hooks bug (EVAL-C2-001) combined with the DSA learner's auth not completing (loginStatus: 'pending'). When unauthenticated, the space viewer may redirect to login or show empty state."
+      },
+      "fixSpecification": {
+        "action": "Will be resolved by fixing EVAL-C2-001 (SpaceViewerPage hooks bug)",
+        "steps": [
+          "After EVAL-C2-001 fix, re-test DSA space viewer with proper authentication",
+          "Ensure auth state is saved and reused correctly in DSA learner tests"
+        ],
+        "estimatedEffort": "small",
+        "assignTo": "portal-fixer",
+        "dependsOn": "EVAL-C2-001"
+      }
+    },
+    {
+      "id": "EVAL-C2-007",
+      "severity": "P1",
+      "category": "test-infrastructure",
+      "title": "Firebase Auth rate limiting blocks System Design learner testing",
+      "source": ["learner-system-design"],
+      "isRegression": false,
+      "rootCause": {
+        "explanation": "System Design learner could not login due to Firebase Auth rate limiting. Running multiple concurrent learner agents, each performing fresh logins, triggers Firebase's per-IP rate limit. The regression tester also encountered this during extended test runs."
+      },
+      "fixSpecification": {
+        "action": "Implement auth state sharing across test agents",
+        "steps": [
+          "Save auth state (Playwright storageState) after first successful login",
+          "Share the auth state file across all learner agents to avoid redundant logins",
+          "Add retry logic with exponential backoff for auth failures",
+          "Consider: reduce total login attempts by running sequential learner tests after single login"
+        ],
+        "estimatedEffort": "medium",
+        "assignTo": "portal-fixer",
+        "note": "This is a test infrastructure optimization, not an app bug."
+      }
+    },
+    {
+      "id": "EVAL-C2-008",
+      "severity": "P2",
+      "category": "content-quality",
+      "title": "LLD Content: CQRS/DDD/Event Sourcing content sparse or missing",
+      "source": ["learner-lld"],
+      "isRegression": false,
+      "cannotVerifyReason": "All LLD story points return 404 due to enrollment + URL issues. Content quality cannot be assessed until access is fixed.",
+      "fixSpecification": {
+        "action": "Enrich CQRS/DDD/Event Sourcing story point content",
+        "steps": [
+          "After access issues (EVAL-C2-002, EVAL-C2-004) are fixed, verify content renders",
+          "Expected keywords: CQRS, Command Query, Event Sourcing, Domain-Driven Design, Aggregate, Repository, Bounded Context",
+          "If content is sparse, add detailed explanations with code examples",
+          "Add progressive difficulty: intro → patterns → implementation → trade-offs"
+        ],
+        "estimatedEffort": "medium",
+        "assignTo": "content-manager",
+        "dependsOn": ["EVAL-C2-002", "EVAL-C2-004"]
+      }
+    },
+    {
+      "id": "EVAL-C2-009",
+      "severity": "P2",
+      "category": "content-quality",
+      "title": "Behavioral Content: STAR method keywords missing from content",
+      "source": ["learner-behavioral"],
+      "isRegression": false,
+      "cannotVerifyReason": "All Behavioral story points return 404. Content quality cannot be assessed until access is fixed.",
+      "fixSpecification": {
+        "action": "Ensure STAR Method story point has proper STAR framework content",
+        "steps": [
+          "After access issues fixed, verify content renders",
+          "Expected keywords: Situation, Task, Action, Result, STAR, framework, behavioral, story",
+          "Add: example STAR stories, template, common mistakes, interview tips",
+          "Add model answers for practice questions"
+        ],
+        "estimatedEffort": "medium",
+        "assignTo": "content-manager",
+        "dependsOn": ["EVAL-C2-003", "EVAL-C2-004"]
+      }
+    },
+    {
+      "id": "EVAL-C2-010",
+      "severity": "P2",
+      "category": "content-quality",
+      "title": "Behavioral Content: FAANG Prep lacks company-specific details",
+      "source": ["learner-behavioral"],
+      "isRegression": false,
+      "cannotVerifyReason": "Story point returns 404. Content cannot be assessed until access is fixed.",
+      "fixSpecification": {
+        "action": "Add company-specific FAANG interview content",
+        "steps": [
+          "After access issues fixed, verify content renders",
+          "Expected keywords: Google, Amazon, Meta, Microsoft, Apple, Leadership Principles, LP, culture",
+          "Add: company-specific behavioral question patterns, culture fit tips, LP examples"
+        ],
+        "estimatedEffort": "medium",
+        "assignTo": "content-manager",
+        "dependsOn": ["EVAL-C2-003", "EVAL-C2-004"]
+      }
+    },
+    {
+      "id": "EVAL-C2-011",
+      "severity": "P2",
+      "category": "dashboard",
+      "title": "Dashboard shows only 1 stat card instead of expected 4+",
+      "source": ["evaluation-cycle-1"],
+      "evalId": "EVAL-C1-006",
+      "isRegression": false,
+      "fixSpecification": {
+        "action": "Show all stat cards with '0' or 'N/A' when data is empty",
+        "steps": [
+          "In DashboardPage, ensure all 4 stat cards (Overall Score, Avg Exam, Space Completion, Streak) render regardless of data availability",
+          "Show '0' or 'N/A' for cards with no data instead of hiding them"
+        ],
+        "estimatedEffort": "small",
+        "assignTo": "portal-fixer"
+      }
+    },
+    {
+      "id": "EVAL-C2-012",
+      "severity": "P3",
+      "category": "ux",
+      "title": "Breadcrumbs not visible on story point viewer when loading or errored",
+      "source": ["learner-lld", "learner-behavioral"],
+      "isRegression": false,
+      "note": "Breadcrumbs ARE implemented in StoryPointViewerPage (line 231-245) but only render in success state. When items are loading/errored, breadcrumbs are not shown because of early returns.",
+      "fixSpecification": {
+        "action": "Move breadcrumbs before early return checks",
+        "steps": [
+          "In StoryPointViewerPage, render breadcrumbs before the isLoading/isError early returns",
+          "This ensures navigation is always visible regardless of data state"
+        ],
+        "estimatedEffort": "small",
+        "assignTo": "portal-fixer"
+      }
+    },
+    {
+      "id": "EVAL-C2-013",
+      "severity": "P3",
+      "category": "dashboard",
+      "title": "Level badge and XP progress bar not displayed on dashboard",
+      "source": ["evaluation-cycle-1"],
+      "evalId": "EVAL-C1-009",
+      "isRegression": false,
+      "fixSpecification": {
+        "action": "Implement level badge and XP progress bar on dashboard",
+        "estimatedEffort": "small",
+        "assignTo": "portal-fixer"
+      }
+    },
+    {
+      "id": "EVAL-C2-014",
+      "severity": "P3",
+      "category": "dashboard",
+      "title": "Recent achievements section not displayed on dashboard",
+      "source": ["evaluation-cycle-1"],
+      "evalId": "EVAL-C1-010",
+      "isRegression": false,
+      "fixSpecification": {
+        "action": "Add recent achievements widget to dashboard",
+        "estimatedEffort": "small",
+        "assignTo": "portal-fixer"
+      }
+    },
+    {
+      "id": "EVAL-C2-015",
+      "severity": "P3",
+      "category": "auxiliary",
+      "title": "Theme toggle button does not change HTML class",
+      "source": ["evaluation-cycle-1"],
+      "evalId": "EVAL-C1-012",
+      "isRegression": false,
+      "fixSpecification": {
+        "action": "Fix theme toggle to add/remove 'dark' class on <html>",
+        "estimatedEffort": "small",
+        "assignTo": "portal-fixer"
+      }
+    }
+  ],
+
+  "portalFixerSpec": {
+    "description": "Prioritized fix sequence for Portal Fixer in Cycle 2",
+    "totalIssues": 10,
+    "sequence": [
+      {
+        "order": 1,
+        "issueId": "EVAL-C2-001",
+        "severity": "P0",
+        "title": "Fix SpaceViewerPage React hooks violation",
+        "effort": "small",
+        "unblocks": ["All space viewers for DSA, LLD, Behavioral, System Design"],
+        "file": "apps/student-web/src/pages/SpaceViewerPage.tsx",
+        "fix": "Move `const [celebrationShown, setCelebrationShown] = useState(false)` from line 103 to before line 63. Also move lines 100-102 (overallPercentage, pointsEarned, totalPoints) above the early returns using optional chaining."
+      },
+      {
+        "order": 2,
+        "issueId": "EVAL-C2-002",
+        "severity": "P0",
+        "title": "Enroll test student in LLD class",
+        "effort": "small",
+        "unblocks": ["All 12 LLD story point tests"],
+        "fix": "Add student entity vmP1QTDZBRCqE3Mr6IPK to class cls_g10_lld_a via seed config update or admin tools. Class ID may need lookup in Firestore."
+      },
+      {
+        "order": 3,
+        "issueId": "EVAL-C2-003",
+        "severity": "P0",
+        "title": "Enroll test student in Behavioral class",
+        "effort": "small",
+        "unblocks": ["All 12 Behavioral story point tests"],
+        "fix": "Add student entity vmP1QTDZBRCqE3Mr6IPK to Behavioral Interview class (cls_g10_behavioral_a or similar). Verify class exists in seed results."
+      },
+      {
+        "order": 4,
+        "issueId": "EVAL-C2-004",
+        "severity": "P0",
+        "title": "Fix learner test URL pattern: /story/ → /story-points/",
+        "effort": "small",
+        "unblocks": ["Accurate test results for LLD and Behavioral learners"],
+        "fix": "Update LLD and Behavioral learner agent instructions to navigate via UI clicks (from space viewer page) instead of constructing URLs manually. If constructing URLs, use /story-points/ not /story/."
+      },
+      {
+        "order": 5,
+        "issueId": "EVAL-C2-005",
+        "severity": "P1",
+        "title": "Fix Story Point Viewer h1 visibility in all states",
+        "effort": "small",
+        "file": "apps/student-web/src/pages/StoryPointViewerPage.tsx",
+        "fix": "Restructure the return: render breadcrumbs + h1 + description first, then conditionally render loading/error/content for the items list below. This ensures h1 is always visible."
+      },
+      {
+        "order": 6,
+        "issueId": "EVAL-C2-007",
+        "severity": "P1",
+        "title": "Auth state sharing for test agents",
+        "effort": "medium",
+        "fix": "Save Playwright storageState after first login. Reuse across all learner agents."
+      },
+      {
+        "order": 7,
+        "issueId": "EVAL-C2-011",
+        "severity": "P2",
+        "title": "Dashboard stat cards always visible",
+        "effort": "small",
+        "fix": "Show all 4 stat cards with '0' or 'N/A' when data unavailable."
+      },
+      {
+        "order": 8,
+        "issueId": "EVAL-C2-012",
+        "severity": "P3",
+        "title": "Breadcrumbs visible during loading/error states",
+        "effort": "small",
+        "file": "apps/student-web/src/pages/StoryPointViewerPage.tsx",
+        "fix": "Move breadcrumb rendering before isLoading/isError early returns."
+      },
+      {
+        "order": 9,
+        "issueId": "EVAL-C2-013",
+        "severity": "P3",
+        "title": "Level badge and XP progress bar",
+        "effort": "small",
+        "fix": "Implement or unhide level/XP components on DashboardPage."
+      },
+      {
+        "order": 10,
+        "issueId": "EVAL-C2-015",
+        "severity": "P3",
+        "title": "Theme toggle fix",
+        "effort": "small",
+        "fix": "Fix theme toggle to toggle 'dark' class on <html>."
+      }
+    ]
+  },
+
+  "contentManagerSpec": {
+    "description": "Content improvement tasks for Content Manager — all depend on access fixes first",
+    "status": "BLOCKED until EVAL-C2-002, EVAL-C2-003, EVAL-C2-004 are resolved",
+    "tasks": [
+      {
+        "issueId": "EVAL-C2-008",
+        "title": "Enrich LLD CQRS/DDD/Event Sourcing content",
+        "space": "Low-Level Design & OOP",
+        "expectedKeywords": ["CQRS", "Command Query", "Event Sourcing", "Domain-Driven Design", "Aggregate", "Repository", "Bounded Context"],
+        "priority": "P2",
+        "note": "Verify content exists first — may just be inaccessible due to enrollment issue"
+      },
+      {
+        "issueId": "EVAL-C2-009",
+        "title": "Verify/enrich STAR Method content",
+        "space": "Behavioral Interview Mastery",
+        "expectedKeywords": ["Situation", "Task", "Action", "Result", "STAR", "framework", "behavioral", "story"],
+        "priority": "P2",
+        "note": "Content likely exists in seed data but was not visible due to 404. Verify after fix."
+      },
+      {
+        "issueId": "EVAL-C2-010",
+        "title": "Verify/enrich FAANG Prep content",
+        "space": "Behavioral Interview Mastery",
+        "expectedKeywords": ["Google", "Amazon", "Meta", "Microsoft", "Apple", "Leadership Principles", "LP", "culture"],
+        "priority": "P2",
+        "note": "Content likely exists but was not verifiable. Verify after fix."
+      }
+    ]
+  },
+
+  "learnerAssessmentSummary": {
+    "dsaLearner": {
+      "status": "inconclusive",
+      "learningEffectiveness": 3.5,
+      "keyIssue": "Auth incomplete + SpaceViewerPage hooks bug prevented testing. DSA space IS enrolled and accessible per regression tests.",
+      "recommendation": "Re-test after EVAL-C2-001 fix with proper auth state"
+    },
+    "systemDesignLearner": {
+      "status": "blocked",
+      "learningEffectiveness": 0,
+      "keyIssue": "Firebase Auth rate limiting prevented login. No features tested.",
+      "recommendation": "Re-test with shared auth state (EVAL-C2-007)"
+    },
+    "lldLearner": {
+      "status": "blocked",
+      "learningEffectiveness": 1,
+      "keyIssue": "Student not enrolled in LLD class + wrong URL pattern + SpaceViewerPage hooks bug. Triple blocker.",
+      "recommendation": "Fix EVAL-C2-001, EVAL-C2-002, EVAL-C2-004 then re-test"
+    },
+    "behavioralLearner": {
+      "status": "blocked",
+      "learningEffectiveness": 2.5,
+      "keyIssue": "Student likely not enrolled in Behavioral class + wrong URL pattern + SpaceViewerPage hooks bug. Triple blocker.",
+      "recommendation": "Fix EVAL-C2-001, EVAL-C2-003, EVAL-C2-004 then re-test"
+    }
+  },
+
+  "workingWell": [
+    "A1: School code login works correctly",
+    "A3: Consumer login successful",
+    "A4: Login error messages now displayed (NEWLY FIXED)",
+    "B1: Consumer dashboard loads",
+    "B2-B4: Store Browse page works with search and cards (NEWLY FIXED)",
+    "B5-B6: Checkout and consumer spaces work",
+    "D1: Dashboard loads (with console warnings)",
+    "D3: Resume learning section visible and navigable",
+    "D6: Upcoming exams display works",
+    "D7: My Spaces grid renders correctly with navigation",
+    "G1-G2: Achievements page with 7 category filter tabs works",
+    "G3-G4: Leaderboard page and filter work (NEWLY FIXED)",
+    "G5: Study planner page loads correctly",
+    "L1: Spaces list page works",
+    "L2: Space viewer renders (for enrolled spaces)",
+    "N1: Sidebar to Leaderboard works (NEWLY FIXED)",
+    "N2: Mobile bottom navigation works",
+    "N5-N6: Notification bell and sign out work correctly",
+    "P1-P3: Practice mode works — page loads, submit works, unlimited retries",
+    "P5: Question navigator works in practice mode",
+    "R1-R3: Progress page with all 3 tabs (Overall, Exams, Spaces) works",
+    "T1: Timed test landing page displays correctly",
+    "X1-X4: Chat tutor, tests, notifications pages load correctly",
+    "X6-X7: Profile and settings pages work",
+    "E1-E4: 404 page, error boundaries, loading states all work"
+  ],
+
+  "blockedFeatures": [
+    {
+      "feature": "All LLD story points (12)",
+      "blockedBy": ["EVAL-C2-001", "EVAL-C2-002", "EVAL-C2-004"],
+      "reason": "Student not enrolled + wrong URL pattern + hooks bug",
+      "impact": "high"
+    },
+    {
+      "feature": "All Behavioral story points (12)",
+      "blockedBy": ["EVAL-C2-001", "EVAL-C2-003", "EVAL-C2-004"],
+      "reason": "Student not enrolled + wrong URL pattern + hooks bug",
+      "impact": "high"
+    },
+    {
+      "feature": "System Design learner testing",
+      "blockedBy": ["EVAL-C2-007"],
+      "reason": "Firebase Auth rate limiting",
+      "impact": "medium"
+    },
+    {
+      "feature": "Q1-Q15: All 15 Question Types (deep testing)",
+      "blockedBy": ["EVAL-C2-001", "EVAL-C2-005"],
+      "reason": "Story Point Viewer h1/content issues + space viewer crashes",
+      "impact": "high"
+    },
+    {
+      "feature": "Content quality validation for LLD/Behavioral",
+      "blockedBy": ["EVAL-C2-002", "EVAL-C2-003", "EVAL-C2-004"],
+      "reason": "Content not accessible — cannot assess quality",
+      "impact": "medium"
+    }
+  ],
+
+  "readiness": {
+    "isReady": false,
+    "progressSinceCycle1": "Significant — 4 bugs fixed, 7 tests newly passing, 0 regressions. But learner testing revealed 3 new P0 access blockers.",
+    "criticalPath": [
+      "1. Fix SpaceViewerPage hooks bug (EVAL-C2-001) — unblocks all space viewers",
+      "2. Enroll student in LLD + Behavioral classes (EVAL-C2-002, EVAL-C2-003) — unblocks 24 story points",
+      "3. Fix test URL pattern (EVAL-C2-004) — enables accurate learner testing",
+      "4. Fix Story Point Viewer h1 (EVAL-C2-005) — enables content quality testing"
+    ],
+    "estimatedCycle2Effort": "Portal Fixer: ~4 small fixes + 1 medium fix. Content Manager: blocked until access fixed."
+  },
+
+  "cycle3Recommendations": [
+    "After P0 fixes: re-run all 4 learner agents with correct URLs and enrollments",
+    "Implement auth state sharing to prevent Firebase rate limiting",
+    "Deep-test all 15 question types (Q1-Q15) once Story Point Viewer fully works",
+    "Validate content quality for all 4 spaces (DSA, System Design, LLD, Behavioral)",
+    "Test timed assessments end-to-end (need fresh test data — max attempts may be reached)",
+    "Address P2/P3 dashboard and UX issues (stat cards, level badge, breadcrumbs, theme toggle)",
+    "Run full 91-test audit to establish post-fix baseline"
+  ]
+}

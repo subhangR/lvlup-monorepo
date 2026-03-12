@@ -1,0 +1,25 @@
+{
+  "name": "@levelup/tailwind-config",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Shared Tailwind CSS configuration with LevelUp HSL theming",
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "theme.js",
+    "variables.css"
+  ],
+  "dependencies": {
+    "tailwindcss-animate": "^1.0.7"
+  },
+  "peerDependencies": {
+    "tailwindcss": "^3.4.0"
+  },
+  "keywords": [
+    "tailwind",
+    "tailwindcss",
+    "design-system",
+    "hsl",
+    "theme"
+  ]
+}

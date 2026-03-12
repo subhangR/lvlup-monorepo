@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Auto-LevelUp -- School Pamphlet</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --midnight:     #0A1628;
+      --signal-blue:  #2563EB;
+      --verdigris:    #0D9488;
+      --graphite:     #4B5563;
+      --ash:          #F3F4F6;
+      --white:        #FFFFFF;
+      --dark-surface: #111D2E;
+      --muted:        #94A3B8;
+      --subtle:       #64748B;
+      --border:       #E5E7EB;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: #E5E7EB;
+      color: var(--midnight);
+    }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      background: var(--white);
+      margin: 0 auto 12mm;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ========================================
+       ICON SYSTEM
+    ======================================== */
+    .icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .icon svg {
+      width: 24px;
+      height: 24px;
+    }
+    .icon-lg svg {
+      width: 32px;
+      height: 32px;
+    }
+
+    /* ========================================
+       PAGE 1 -- Problem & Solution
+    ======================================== */
+
+    /* Zone 1: Header (top 30%) */
+    .p1-header {
+      background: var(--midnight);
+      padding: 10mm 12mm 8mm;
+      color: var(--white);
+    }
+    .wordmark {
+      font-size: 6mm;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      margin-bottom: 6mm;
+    }
+    .wordmark span { color: var(--signal-blue); }
+    .headline {
+      font-size: 10mm;
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 4mm;
+    }
+    .headline em {
+      color: var(--signal-blue);
+      font-style: normal;
+    }
+    .sub-headline {
+      font-size: 3.5mm;
+      font-weight: 400;
+      color: var(--muted);
+      line-height: 1.5;
+      max-width: 150mm;
+    }
+
+    /* Zone 2: Problems (middle 25%) */
+    .p1-problems {
+      background: var(--ash);
+      padding: 6mm 12mm;
+    }
+    .section-label {
+      font-size: 2.8mm;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--graphite);
+      margin-bottom: 3mm;
+    }
+    .problem-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3mm;
+    }
+    .problem-card {
+      background: var(--white);
+      border-left: 2pt solid var(--verdigris);
+      border-radius: 2mm;
+      padding: 3mm 4mm;
+      display: flex;
+      gap: 2.5mm;
+      align-items: flex-start;
+    }
+    .problem-card .icon {
+      color: var(--verdigris);
+      margin-top: 0.5mm;
+    }
+    .problem-card .icon svg {
+      width: 20px;
+      height: 20px;
+    }
+    .pc-content {}
+    .pc-title {
+      font-size: 3.2mm;
+      font-weight: 700;
+      color: var(--midnight);
+      margin-bottom: 0.8mm;
+      line-height: 1.2;
+    }
+    .pc-text {
+      font-size: 2.6mm;
+      color: var(--graphite);
+      line-height: 1.45;
+    }
+
+    /* Zone 3: Two Pillars (bottom 45%) */
+    .p1-pillars {
+      flex: 1;
+      padding: 6mm 12mm;
+      display: flex;
+      flex-direction: column;
+    }
+    .pillars-heading {
+      font-size: 5mm;
+      font-weight: 700;
+      color: var(--midnight);
+      text-align: center;
+      margin-bottom: 4mm;
+      letter-spacing: -0.02em;
+    }
+    .pillars-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4mm;
+      flex: 1;
+    }
+    .pillar {
+      background: var(--ash);
+      border: 1px solid var(--border);
+      border-radius: 2mm;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .pillar-top {
+      padding: 4mm 4mm 3mm;
+      display: flex;
+      align-items: center;
+      gap: 2.5mm;
+    }
+    .pillar-a .pillar-top { border-top: 2pt solid var(--signal-blue); }
+    .pillar-b .pillar-top { border-top: 2pt solid var(--verdigris); }
+    .pillar-a .pillar-top .icon { color: var(--signal-blue); }
+    .pillar-b .pillar-top .icon { color: var(--verdigris); }
+    .pillar-info {}
+    .pillar-name {
+      font-size: 4.2mm;
+      font-weight: 800;
+      color: var(--midnight);
+      letter-spacing: -0.02em;
+    }
+    .pillar-sub {
+      font-size: 2.6mm;
+      color: var(--graphite);
+      margin-top: 0.5mm;
+    }
+    .pillar-body {
+      padding: 0 4mm 4mm;
+      flex: 1;
+    }
+    .pillar-points {
+      list-style: none;
+    }
+    .pillar-points li {
+      font-size: 2.6mm;
+      color: var(--graphite);
+      padding: 1mm 0;
+      padding-left: 3.5mm;
+      position: relative;
+      line-height: 1.4;
+    }
+    .pillar-points li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 2.5mm;
+      width: 1.5mm;
+      height: 1.5mm;
+      border-radius: 50%;
+    }
+    .pillar-a .pillar-points li::before { background: var(--signal-blue); }
+    .pillar-b .pillar-points li::before { background: var(--verdigris); }
+
+    /* Footer */
+    .page-footer {
+      background: var(--midnight);
+      padding: 2.5mm 12mm;
+      color: var(--subtle);
+      font-size: 2.5mm;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .page-footer .wordmark-sm {
+      font-size: 3mm;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: -0.02em;
+    }
+    .page-footer .wordmark-sm span { color: var(--signal-blue); }
+
+    /* ========================================
+       PAGE 2 -- Benefits & CTA
+    ======================================== */
+
+    /* Zone 1: Stats Bar */
+    .stats-bar {
+      background: var(--midnight);
+      padding: 5mm 12mm;
+      display: flex;
+      justify-content: space-around;
+    }
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-size: 7mm;
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 2.5mm;
+      color: var(--muted);
+      margin-top: 1mm;
+      font-weight: 500;
+    }
+
+    /* Zone 2: Stakeholder Grid */
+    .p2-stakeholders {
+      flex: 1;
+      padding: 6mm 12mm 4mm;
+    }
+    .p2-title {
+      font-size: 5mm;
+      font-weight: 700;
+      color: var(--midnight);
+      text-align: center;
+      margin-bottom: 4mm;
+      letter-spacing: -0.02em;
+    }
+    .stakeholder-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3mm;
+    }
+    .sh-card {
+      background: var(--ash);
+      border: 1px solid var(--border);
+      border-radius: 2mm;
+      overflow: hidden;
+    }
+    .sh-head {
+      padding: 3mm 4mm;
+      display: flex;
+      align-items: center;
+      gap: 2.5mm;
+      border-bottom: 1px solid var(--border);
+    }
+    .sh-head .icon { color: var(--signal-blue); }
+    .sh-title {
+      font-size: 3.5mm;
+      font-weight: 700;
+      color: var(--midnight);
+    }
+    .sh-body { padding: 3mm 4mm; }
+    .sh-points { list-style: none; }
+    .sh-points li {
+      font-size: 2.6mm;
+      color: var(--graphite);
+      padding: 0.8mm 0;
+      padding-left: 3.5mm;
+      position: relative;
+      line-height: 1.4;
+    }
+    .sh-points li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 2mm;
+      width: 4px;
+      height: 1px;
+      background: var(--signal-blue);
+    }
+
+    /* Zone 3: CTA */
+    .cta-section {
+      background: var(--midnight);
+      padding: 8mm 12mm;
+      color: var(--white);
+    }
+    .cta-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .cta-left {}
+    .cta-title {
+      font-size: 6mm;
+      font-weight: 800;
+      margin-bottom: 2mm;
+      letter-spacing: -0.02em;
+    }
+    .cta-sub {
+      font-size: 3.5mm;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 4mm;
+    }
+    .cta-btn {
+      display: inline-block;
+      background: var(--signal-blue);
+      color: var(--white);
+      font-size: 3.5mm;
+      font-weight: 700;
+      padding: 2.5mm 6mm;
+      border-radius: 1mm;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+    }
+    .cta-url {
+      font-size: 3mm;
+      color: var(--signal-blue);
+      margin-top: 2mm;
+      font-weight: 500;
+    }
+    .cta-right {
+      text-align: center;
+    }
+    .qr-box {
+      width: 18mm;
+      height: 18mm;
+      background: var(--white);
+      border-radius: 1.5mm;
+      margin-bottom: 2mm;
+    }
+    .cta-contact {
+      font-size: 2.5mm;
+      color: var(--subtle);
+      line-height: 1.6;
+    }
+
+    /* ========================================
+       PRINT
+    ======================================== */
+    @page {
+      size: A4;
+      margin: 0;
+    }
+    @media print {
+      body { background: white; }
+      .page { margin: 0; page-break-after: always; }
+      .page:last-child { page-break-after: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ========================================
+     PAGE 1 -- Problem & Solution
+======================================== -->
+<div class="page">
+
+  <!-- Zone 1: Header -->
+  <div class="p1-header">
+    <div class="wordmark">Auto<span>LevelUp</span></div>
+    <div class="headline">
+      Every Student<br><em>Deserves</em> to Level Up.
+    </div>
+    <div class="sub-headline">
+      AI-powered learning + intelligent exam grading -- built for schools that want every student to succeed.
+    </div>
+  </div>
+
+  <!-- Zone 2: Problems -->
+  <div class="p1-problems">
+    <div class="section-label">The Challenge</div>
+    <div class="problem-grid">
+
+      <div class="problem-card">
+        <span class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 5v14"/><path d="M4 19V7a2 2 0 0 1 2-2h6"/><path d="M20 19V7a2 2 0 0 0-2-2h-6"/><path d="M16 13v-4"/><path d="M14 11l2-2 2 2"/>
+          </svg>
+        </span>
+        <div class="pc-content">
+          <div class="pc-title">Every Student, One Speed</div>
+          <div class="pc-text">Every student in the same class learns at the same pace. Quick learners get bored. Struggling students fall further behind.</div>
+        </div>
+      </div>
+
+      <div class="problem-card">
+        <span class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 20l2-6L16 4l2 2L8 16z"/><path d="M14 6l2 2"/><line x1="12" y1="20" x2="20" y2="20"/><line x1="14" y1="17" x2="20" y2="17"/>
+          </svg>
+        </span>
+        <div class="pc-content">
+          <div class="pc-title">The Grading Mountain</div>
+          <div class="pc-text">A teacher with 5 classes spends entire weekends marking papers -- time stolen from lesson prep and family.</div>
+        </div>
+      </div>
+
+      <div class="problem-card">
+        <span class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="4 16 8 14 12 15 16 9 20 5"/><line x1="4" y1="20" x2="4" y2="4"/><line x1="4" y1="20" x2="20" y2="20"/><circle cx="20" cy="5" r="1.5"/>
+          </svg>
+        </span>
+        <div class="pc-content">
+          <div class="pc-title">Students Who Slip Through</div>
+          <div class="pc-text">The quiet student who needs help won't raise their hand. By the time anyone notices, weeks of learning have been lost.</div>
+        </div>
+      </div>
+
+      <div class="problem-card">
+        <span class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 10a6 6 0 0 1 12 0c0 4 2 6 2 6H4s2-2 2-6"/><path d="M10 20a2 2 0 0 0 4 0"/><circle cx="17" cy="6" r="1.5" fill="currentColor"/>
+          </svg>
+        </span>
+        <div class="pc-content">
+          <div class="pc-title">Parents Left in the Dark</div>
+          <div class="pc-text">Parents wait for term-end report cards. By then, catching up is a crisis, not a correction.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Zone 3: Two Pillars -->
+  <div class="p1-pillars">
+    <div class="pillars-heading">One Platform. Two Purpose-Built Products.</div>
+    <div class="pillars-row">
+
+      <div class="pillar pillar-a">
+        <div class="pillar-top">
+          <span class="icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 5v14"/><path d="M4 19V7a2 2 0 0 1 2-2h6"/><path d="M20 19V7a2 2 0 0 0-2-2h-6"/><path d="M16 13v-4"/><path d="M14 11l2-2 2 2"/>
+            </svg>
+          </span>
+          <div class="pillar-info">
+            <div class="pillar-name">LvlUp Spaces</div>
+            <div class="pillar-sub">Continuous AI-Powered Learning</div>
+          </div>
+        </div>
+        <div class="pillar-body">
+          <ul class="pillar-points">
+            <li>15 ways to learn -- quizzes, essays, coding, audio, and more</li>
+            <li>AI tutor that guides students, never just hands out answers</li>
+            <li>Difficulty adapts to each student -- always the right challenge</li>
+            <li>XP, streaks, badges, and leaderboards that make studying rewarding</li>
+            <li>Struggling students flagged before they fall behind</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="pillar pillar-b">
+        <div class="pillar-top">
+          <span class="icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 20l2-6L16 4l2 2L8 16z"/><path d="M14 6l2 2"/><line x1="12" y1="20" x2="20" y2="20"/><line x1="14" y1="17" x2="20" y2="17"/>
+            </svg>
+          </span>
+          <div class="pillar-info">
+            <div class="pillar-name">AutoGrade</div>
+            <div class="pillar-sub">Intelligent Exam Grading</div>
+          </div>
+        </div>
+        <div class="pillar-body">
+          <ul class="pillar-points">
+            <li>Scan answer sheets on any phone -- no special hardware</li>
+            <li>AI reads and grades an entire class of papers at once</li>
+            <li>Flexible grading standards that match your teaching style</li>
+            <li>Teachers override any grade with one click -- AI assists, you decide</li>
+            <li>Every student gets detailed, per-question feedback</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="wordmark-sm">Auto<span>LevelUp</span></span>
+    <span>Page 1 of 2</span>
+  </div>
+</div>
+
+
+<!-- ========================================
+     PAGE 2 -- Benefits & CTA
+======================================== -->
+<div class="page">
+
+  <!-- Zone 1: Stats Bar -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-num">15</div>
+      <div class="stat-label">Question Types</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">8 min</div>
+      <div class="stat-label">Class Set Graded</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">24/7</div>
+      <div class="stat-label">AI Tutor Available</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">4</div>
+      <div class="stat-label">Grading Styles</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">5</div>
+      <div class="stat-label">Early Warning Signs</div>
+    </div>
+  </div>
+
+  <!-- Zone 2: Stakeholder Grid -->
+  <div class="p2-stakeholders">
+    <div class="p2-title">One Platform. Every Stakeholder.</div>
+    <div class="stakeholder-grid">
+
+      <!-- Teacher -->
+      <div class="sh-card">
+        <div class="sh-head">
+          <span class="icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="10" cy="8" r="3"/><path d="M4 21v-1a6 6 0 0 1 12 0v1"/><line x1="16" y1="10" x2="21" y2="5"/><line x1="20" y1="4" x2="22" y2="6"/>
+            </svg>
+          </span>
+          <div class="sh-title">For Teachers</div>
+        </div>
+        <div class="sh-body">
+          <ul class="sh-points">
+            <li>Grade a full class exam in 8 minutes instead of an entire weekend</li>
+            <li>Struggling students flagged automatically -- before they fall behind</li>
+            <li>Per-question analytics reveal which concepts confused the most students</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Student -->
+      <div class="sh-card">
+        <div class="sh-head">
+          <span class="icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="9" r="3"/><path d="M5 21v-1a7 7 0 0 1 14 0v1"/><rect x="9.9" y="3.9" width="4.2" height="4.2" rx="0" transform="rotate(45 12 6)"/><line x1="14.5" y1="6" x2="16" y2="7.5"/>
+            </svg>
+          </span>
+          <div class="sh-title">For Students</div>
+        </div>
+        <div class="sh-body">
+          <ul class="sh-points">
+            <li>AI tutor available 24/7 -- patient, helpful, never judges</li>
+            <li>Difficulty adapts in real time so every student stays engaged</li>
+            <li>XP, streaks, badges, and leaderboards make studying genuinely rewarding</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Parent -->
+      <div class="sh-card">
+        <div class="sh-head">
+          <span class="icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 10a6 6 0 0 1 12 0c0 4 2 6 2 6H4s2-2 2-6"/><path d="M10 20a2 2 0 0 0 4 0"/><circle cx="17" cy="6" r="1.5" fill="currentColor"/>
+            </svg>
+          </span>
+          <div class="sh-title">For Parents</div>
+        </div>
+        <div class="sh-body">
+          <ul class="sh-points">
+            <li>Same-day alerts when exam scores drop -- no waiting for report cards</li>
+            <li>See strengths, weak areas, and specific recommendations per child</li>
+            <li>Side-by-side progress view for families with multiple children</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Admin -->
+      <div class="sh-card">
+        <div class="sh-head">
+          <span class="icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2l3.5 2v4L12 10 8.5 8V4z"/><path d="M12 22l-3.5-2v-4L12 14l3.5 2v4z"/><path d="M2.5 8.5L6 6.5l3.5 2v4L6 14.5l-3.5-2z"/><path d="M21.5 8.5L18 6.5l-3.5 2v4L18 14.5l3.5-2z"/><circle cx="12" cy="12" r="2.5"/>
+            </svg>
+          </span>
+          <div class="sh-title">For School Admins</div>
+        </div>
+        <div class="sh-body">
+          <ul class="sh-points">
+            <li>School-wide performance at a glance -- every class, every trend</li>
+            <li>Complete cost visibility -- know what you're spending, always</li>
+            <li>Staff permissions you control. Data exports for any report.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Zone 3: CTA -->
+  <div class="cta-section">
+    <div class="cta-content">
+      <div class="cta-left">
+        <div class="cta-title">See What Auto-LevelUp Can Do</div>
+        <div class="cta-sub">30 minutes. A live walkthrough built around your school's needs.</div>
+        <a class="cta-btn" href="https://autolevelup.in/demo">Request a Demo</a>
+        <div class="cta-url">autolevelup.in/demo</div>
+      </div>
+      <div class="cta-right">
+        <div class="qr-box"></div>
+        <div class="cta-contact">
+          hello@autolevelup.in
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span class="wordmark-sm">Auto<span>LevelUp</span></span>
+    <span>Page 2 of 2</span>
+  </div>
+</div>
+
+</body>
+</html>

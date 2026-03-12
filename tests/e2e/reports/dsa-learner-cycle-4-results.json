@@ -1,0 +1,433 @@
+{
+  "config": {
+    "configFile": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/dsa-learner-cycle-4.config.ts",
+    "rootDir": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/subhang/Desktop/Projects/auto-levleup/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "dsa-learner-cycle-4.spec.ts"
+        ],
+        "timeout": 660000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "reports/dsa-learner-cycle-4-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "dsa-learner-cycle-4.spec.ts",
+      "file": "dsa-learner-cycle-4.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "DSA Learner Cycle 4 — Deep Assessment",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 600000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 60044,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "\n=== STEP 1: AUTHENTICATE ===\n"
+                    },
+                    {
+                      "text": "  [OBS] Cached auth expired — re-logging in\n"
+                    },
+                    {
+                      "text": "  [OBS] Auth state saved to cache\n"
+                    },
+                    {
+                      "text": "  [PASS] L1: Login with school code + email works\n"
+                    },
+                    {
+                      "text": "\n=== STEP 2: SPACES LIST ===\n"
+                    },
+                    {
+                      "text": "  [OBS] Spaces page h1: \"My Spaces\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L2: Spaces page loads (h1=\"My Spaces\")\n"
+                    },
+                    {
+                      "text": "  [OBS] Space cards found: 5 — Behavioral Interview MasteryMaster behavioral interview tech | System DesignMaster the fundamentals of system design, cover | Low-Level Design & OOPMaster object-oriented design, SOLID p | Data Structures & AlgorithmsMaster data structures and algor | System DesignMaster the fundamentals of system design, cover\n"
+                    },
+                    {
+                      "text": "  [PASS] L2: DSA Space card visible (text=\"Data Structures & AlgorithmsMaster data structures\")\n"
+                    },
+                    {
+                      "text": "\n=== STEP 3: DSA SPACE VIEWER ===\n"
+                    },
+                    {
+                      "text": "  [OBS] DSA Space viewer h1: \"Data Structures & Algorithms\" (3138ms)\n"
+                    },
+                    {
+                      "text": "  [PASS] L3: DSA Space viewer has h1: \"Data Structures & Algorithms\" [C1 DSA-003 FIXED]\n"
+                    },
+                    {
+                      "text": "  [OBS] Story point links in space viewer: 6\n"
+                    },
+                    {
+                      "text": "  [PASS] L3: DSA Space viewer shows 6 story point links (partial)\n"
+                    },
+                    {
+                      "text": "  [FAIL] DSA-C4-001 (P2): DSA Space viewer shows only 6/12 story point links\n"
+                    },
+                    {
+                      "text": "\n=== STEP 4: STORY POINTS ===\n"
+                    },
+                    {
+                      "text": "\n  Testing: Arrays & Strings Foundations (standard)\n"
+                    },
+                    {
+                      "text": "  [OBS] Arrays & Strings Foundations h1: \"Arrays & Strings Foundations\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Arrays & Strings Foundations h1: \"Arrays & Strings Foundations\"\n"
+                    },
+                    {
+                      "text": "  [OBS]   Code blocks: 2\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Arrays & Strings Foundations — code blocks rendered (2 found)\n"
+                    },
+                    {
+                      "text": "  [OBS]   No syntax highlighting tokens found in Arrays & Strings Foundations\n"
+                    },
+                    {
+                      "text": "  [OBS]   Copy buttons: 0\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Arrays & Strings Foundations — Big-O notation / complexity found\n"
+                    },
+                    {
+                      "text": "  [PASS] UX1: Arrays & Strings Foundations — breadcrumbs/back navigation visible\n"
+                    },
+                    {
+                      "text": "\n  Testing: Hash Maps & Sets Mastery (standard)\n"
+                    },
+                    {
+                      "text": "  [OBS] Hash Maps & Sets Mastery h1: \"Hash Maps & Sets Mastery\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Hash Maps & Sets Mastery h1: \"Hash Maps & Sets Mastery\"\n"
+                    },
+                    {
+                      "text": "  [OBS]   Code blocks: 2\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Hash Maps & Sets Mastery — code blocks rendered (2 found)\n"
+                    },
+                    {
+                      "text": "  [OBS]   No syntax highlighting tokens found in Hash Maps & Sets Mastery\n"
+                    },
+                    {
+                      "text": "  [OBS]   Copy buttons: 0\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Hash Maps & Sets Mastery — Big-O notation / complexity found\n"
+                    },
+                    {
+                      "text": "  [PASS] UX1: Hash Maps & Sets Mastery — breadcrumbs/back navigation visible\n"
+                    },
+                    {
+                      "text": "\n  Testing: Graphs — BFS, DFS & Topological Sort (practice)\n"
+                    },
+                    {
+                      "text": "  [OBS] Graphs — BFS, DFS & Topological Sort h1: \"Graphs — BFS, DFS & Topological Sort\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Graphs — BFS, DFS & Topological Sort h1: \"Graphs — BFS, DFS & Topological Sort\"\n"
+                    },
+                    {
+                      "text": "  [OBS]   Code blocks: 2\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Graphs — BFS, DFS & Topological Sort — code blocks rendered (2 found)\n"
+                    },
+                    {
+                      "text": "  [OBS]   No syntax highlighting tokens found in Graphs — BFS, DFS & Topological Sort\n"
+                    },
+                    {
+                      "text": "  [OBS]   Copy buttons: 0\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Graphs — BFS, DFS & Topological Sort — Big-O notation / complexity found\n"
+                    },
+                    {
+                      "text": "  [PASS] UX1: Graphs — BFS, DFS & Topological Sort — breadcrumbs/back navigation visible\n"
+                    },
+                    {
+                      "text": "\n  Testing: Tries, Segment Trees & Advanced DS (standard)\n"
+                    },
+                    {
+                      "text": "  [OBS] Tries, Segment Trees & Advanced DS h1: \"Tries, Segment Trees & Advanced DS\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Tries, Segment Trees & Advanced DS h1: \"Tries, Segment Trees & Advanced DS\"\n"
+                    },
+                    {
+                      "text": "  [OBS]   Code blocks: 0\n"
+                    },
+                    {
+                      "text": "  [OBS]   No code blocks in Tries, Segment Trees & Advanced DS — may be non-code content\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Tries, Segment Trees & Advanced DS — Big-O notation / complexity found\n"
+                    },
+                    {
+                      "text": "  [PASS] UX1: Tries, Segment Trees & Advanced DS — breadcrumbs/back navigation visible\n"
+                    },
+                    {
+                      "text": "\n  Quick-checking remaining story points...\n"
+                    },
+                    {
+                      "text": "  [OBS] Quick check Linked Lists & Stack/Queue Patterns: h1=\"Linked Lists & Stack/Queue Patterns\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Linked Lists & Stack/Queue Patterns accessible (h1: \"Linked Lists & Stack/Queue Patterns\")\n"
+                    },
+                    {
+                      "text": "  [OBS] Quick check Binary Trees & BSTs: h1=\"Binary Trees & BSTs\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Binary Trees & BSTs accessible (h1: \"Binary Trees & BSTs\")\n"
+                    },
+                    {
+                      "text": "  [OBS] Quick check Advanced Graphs — Dijkstra, Union-Find, MST: h1=\"Advanced Graphs — Dijkstra, Union-Find, MST\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Advanced Graphs — Dijkstra, Union-Find, MST accessible (h1: \"Advanced Graphs — Dijkstra, Union-Find, \")\n"
+                    },
+                    {
+                      "text": "  [OBS] Quick check Dynamic Programming I — 1D & 2D: h1=\"Dynamic Programming I — 1D & 2D\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Dynamic Programming I — 1D & 2D accessible (h1: \"Dynamic Programming I — 1D & 2D\")\n"
+                    },
+                    {
+                      "text": "  [OBS] Quick check Dynamic Programming II — Advanced Patterns: h1=\"Dynamic Programming II — Advanced Patterns\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Dynamic Programming II — Advanced Patterns accessible (h1: \"Dynamic Programming II — Advanced Patter\")\n"
+                    },
+                    {
+                      "text": "  [OBS] Quick check Greedy & Backtracking Patterns: h1=\"Greedy & Backtracking Patterns\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Greedy & Backtracking Patterns accessible (h1: \"Greedy & Backtracking Patterns\")\n"
+                    },
+                    {
+                      "text": "  [OBS] Quick check DSA Comprehensive Quiz: h1=\"DSA Comprehensive Quiz\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: DSA Comprehensive Quiz accessible (h1: \"DSA Comprehensive Quiz\")\n"
+                    },
+                    {
+                      "text": "  [OBS] Quick check DSA Staff-Level Assessment: h1=\"DSA Staff-Level Assessment\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: DSA Staff-Level Assessment accessible (h1: \"DSA Staff-Level Assessment\")\n"
+                    },
+                    {
+                      "text": "  [OBS] Story points accessible: 12/12\n"
+                    },
+                    {
+                      "text": "\n=== STEP 5: PRACTICE MODE ===\n"
+                    },
+                    {
+                      "text": "  [OBS] Practice mode (Graphs) h1: \"Graphs — BFS, DFS & Topological Sort\"\n"
+                    },
+                    {
+                      "text": "  [OBS] Submit button: visible=true, disabled=true\n"
+                    },
+                    {
+                      "text": "  [PASS] P1: Practice mode — Submit Answer button visible\n"
+                    },
+                    {
+                      "text": "  [PASS] P1: Submit Answer correctly disabled before answer selection\n"
+                    },
+                    {
+                      "text": "  [OBS] Answer options: radio=12, checkbox=0, true/false=2\n"
+                    },
+                    {
+                      "text": "  [PASS] P1: Practice mode — answer options visible (14 found)\n"
+                    },
+                    {
+                      "text": "  [OBS] Submit button still disabled after selecting answer\n"
+                    },
+                    {
+                      "text": "  [OBS] Difficulty filter: 4\n"
+                    },
+                    {
+                      "text": "  [PASS] P2: Practice mode — difficulty filter visible\n"
+                    },
+                    {
+                      "text": "  [PASS] P1: Section/breadcrumb navigation visible in practice mode\n"
+                    },
+                    {
+                      "text": "  [PASS] P2: Ask AI Tutor button visible in practice mode\n"
+                    },
+                    {
+                      "text": "  [PASS] P1: Code blocks visible in practice mode content (2)\n"
+                    },
+                    {
+                      "text": "\n=== STEP 6: QUIZ MODE ===\n"
+                    },
+                    {
+                      "text": "  [OBS] Quiz h1: \"DSA Comprehensive Quiz\"\n"
+                    },
+                    {
+                      "text": "  [PASS] Q1: Quiz story point accessible: \"DSA Comprehensive Quiz\"\n"
+                    },
+                    {
+                      "text": "  [PASS] Q1: MCQ question type visible in quiz\n"
+                    },
+                    {
+                      "text": "  [PASS] Q1: MCAQ question type visible in quiz\n"
+                    },
+                    {
+                      "text": "  [PASS] Q1: Quiz submit/next button visible\n"
+                    },
+                    {
+                      "text": "\n=== STEP 7: TIMED ASSESSMENT ===\n"
+                    },
+                    {
+                      "text": "  [OBS] Timed Assessment h1: \"DSA Staff-Level Assessment\"\n"
+                    },
+                    {
+                      "text": "  [PASS] T1: Timed Assessment h1: \"DSA Staff-Level Assessment\" [C1 DSA-010 FIXED]\n"
+                    },
+                    {
+                      "text": "  [OBS] Timer elements: 0\n"
+                    },
+                    {
+                      "text": "  [OBS] Timer not visible on landing — may appear after starting test\n"
+                    },
+                    {
+                      "text": "  [FAIL] DSA-C4-002 (P2): Start button not found on timed assessment landing\n"
+                    },
+                    {
+                      "text": "  [PASS] T3: Timed Assessment landing shows instructions/metadata\n"
+                    },
+                    {
+                      "text": "\n=== STEP 8: UX CHECKS ===\n"
+                    },
+                    {
+                      "text": "  [PASS] UX1: Story point viewer responsive on mobile (375px) — h1=\"Arrays & Strings Foundations\"\n"
+                    },
+                    {
+                      "text": "  [PASS] P1: Search input visible in story point viewer\n"
+                    },
+                    {
+                      "text": "  [OBS] DSA keywords found: array, string, pointer, sliding window, complexity, O(n, O(log, hash\n"
+                    },
+                    {
+                      "text": "  [PASS] CQ1: Arrays content has DSA-relevant terms (8/11)\n"
+                    },
+                    {
+                      "text": "\n=== DSA LEARNER CYCLE 4 REPORT ===\n"
+                    },
+                    {
+                      "text": "Story Points: 12/12 accessible\n"
+                    },
+                    {
+                      "text": "Pass Rate: 95.7% (44/46)\n"
+                    },
+                    {
+                      "text": "Issues: 0 P0, 0 P1, 2 P2, 0 P3\n"
+                    },
+                    {
+                      "text": "Learning Effectiveness: 9/10\n"
+                    },
+                    {
+                      "text": "Report written: /Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/reports/learner-dsa-cycle-4.json\n"
+                    },
+                    {
+                      "text": "==================================\n\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-03-09T18:02:19.010Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "4d1ec3686c369159026f-1081fb0309fedf12c481",
+          "file": "dsa-learner-cycle-4.spec.ts",
+          "line": 205,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-03-09T18:02:18.179Z",
+    "duration": 61502.923,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

@@ -1,0 +1,131 @@
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.importFromBank = void 0;
+const admin = __importStar(require("firebase-admin"));
+const https_1 = require("firebase-functions/v2/https");
+const v2_1 = require("firebase-functions/v2");
+const auth_1 = require("../utils/auth");
+const shared_types_1 = require("@levelup/shared-types");
+const utils_1 = require("../utils");
+const rate_limit_1 = require("../utils/rate-limit");
+const firestore_1 = require("../utils/firestore");
+const shared_types_2 = require("@levelup/shared-types");
+/**
+ * Import questions from the question bank into a story point.
+ * Creates UnifiedItem copies from QuestionBankItem sources.
+ */
+exports.importFromBank = (0, https_1.onCall)({ region: 'asia-south1', cors: true }, async (request) => {
+    const callerUid = (0, auth_1.assertAuth)(request.auth);
+    const data = (0, utils_1.parseRequest)(request.data, shared_types_1.ImportFromBankRequestSchema);
+    if (!data.tenantId || !data.spaceId || !data.storyPointId || !data.questionBankItemIds?.length) {
+        throw new https_1.HttpsError('invalid-argument', 'tenantId, spaceId, storyPointId, and questionBankItemIds are required');
+    }
+    if (data.questionBankItemIds.length > 50) {
+        throw new https_1.HttpsError('invalid-argument', 'Cannot import more than 50 questions at once');
+    }
+    await (0, auth_1.assertTeacherOrAdmin)(callerUid, data.tenantId);
+    await (0, rate_limit_1.enforceRateLimit)(data.tenantId, callerUid, 'write', 30);
+    const db = admin.firestore();
+    // Verify story point exists
+    await (0, firestore_1.loadStoryPoint)(data.tenantId, data.spaceId, data.storyPointId);
+    // Load bank items
+    const bankItemRefs = data.questionBankItemIds.map((id) => db.doc(`tenants/${data.tenantId}/questionBank/${id}`));
+    const bankItemDocs = await db.getAll(...bankItemRefs);
+    // Get current max orderIndex in story point
+    const existingItems = await db
+        .collection(`tenants/${data.tenantId}/spaces/${data.spaceId}/items`)
+        .where('storyPointId', '==', data.storyPointId)
+        .orderBy('orderIndex', 'desc')
+        .limit(1)
+        .get();
+    let orderIndex = existingItems.empty ? 0 : (existingItems.docs[0].data().orderIndex ?? 0) + 1;
+    const batch = db.batch();
+    const createdIds = [];
+    for (const doc of bankItemDocs) {
+        if (!doc.exists)
+            continue;
+        const bankItemResult = shared_types_2.QuestionBankItemSchema.safeParse({ id: doc.id, ...doc.data() });
+        if (!bankItemResult.success) {
+            v2_1.logger.error('Invalid QuestionBankItem document', { docId: doc.id, errors: bankItemResult.error.flatten() });
+            continue; // Skip invalid bank items
+        }
+        const bankItem = bankItemResult.data;
+        const itemRef = db.collection(`tenants/${data.tenantId}/spaces/${data.spaceId}/items`).doc();
+        batch.set(itemRef, {
+            id: itemRef.id,
+            spaceId: data.spaceId,
+            storyPointId: data.storyPointId,
+            sectionId: data.sectionId ?? null,
+            tenantId: data.tenantId,
+            type: 'question',
+            payload: {
+                questionType: bankItem.questionType,
+                title: bankItem.title,
+                content: bankItem.content,
+                explanation: bankItem.explanation ?? null,
+                basePoints: bankItem.basePoints ?? 1,
+                difficulty: bankItem.difficulty,
+                bloomsLevel: bankItem.bloomsLevel ?? null,
+                questionData: bankItem.questionData,
+            },
+            title: bankItem.title,
+            content: bankItem.content,
+            difficulty: bankItem.difficulty,
+            topics: bankItem.topics,
+            labels: bankItem.tags,
+            orderIndex,
+            linkedQuestionId: null,
+            createdBy: callerUid,
+            createdAt: admin.firestore.FieldValue.serverTimestamp(),
+            updatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        });
+        // Update usage count on bank item
+        batch.update(doc.ref, {
+            usageCount: admin.firestore.FieldValue.increment(1),
+            lastUsedAt: admin.firestore.FieldValue.serverTimestamp(),
+        });
+        createdIds.push(itemRef.id);
+        orderIndex++;
+    }
+    await batch.commit();
+    v2_1.logger.info(`Imported ${createdIds.length} questions from bank into story point ${data.storyPointId}`);
+    return {
+        success: true,
+        importedCount: createdIds.length,
+        itemIds: createdIds,
+    };
+});
+//# sourceMappingURL=import-from-bank.js.map

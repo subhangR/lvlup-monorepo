@@ -1,0 +1,385 @@
+{
+  "config": {
+    "configFile": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/behavioral-learner-cycle-4.config.ts",
+    "rootDir": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/subhang/Desktop/Projects/auto-levleup/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "/Users/subhang/Desktop/Projects/auto-levleup/tests/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "behavioral-learner-cycle-4.spec.ts"
+        ],
+        "timeout": 660000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "reports/behavioral-learner-cycle-4-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "behavioral-learner-cycle-4.spec.ts",
+      "file": "behavioral-learner-cycle-4.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "Behavioral Learner Cycle 4 — Deep Assessment",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 600000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "chromium",
+              "projectName": "chromium",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 52230,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "\n=== STEP 1: AUTHENTICATE ===\n"
+                    },
+                    {
+                      "text": "  [OBS] Auth state saved to cache\n"
+                    },
+                    {
+                      "text": "  [PASS] L1: Login with school code + email works\n"
+                    },
+                    {
+                      "text": "\n=== STEP 2: SPACES LIST ===\n"
+                    },
+                    {
+                      "text": "  [OBS] Spaces page h1: \"My Spaces\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L2: Spaces page loads (h1=\"My Spaces\")\n"
+                    },
+                    {
+                      "text": "  [OBS] Space cards found: 5 — Behavioral Interview MasteryMaster behavioral interview tech | System DesignMaster the fundamentals of system design, cover | Low-Level Design & OOPMaster object-oriented design, SOLID p | Data Structures & AlgorithmsMaster data structures and algor | System DesignMaster the fundamentals of system design, cover\n"
+                    },
+                    {
+                      "text": "  [PASS] L2: Behavioral Interview Space card visible (text=\"Behavioral Interview MasteryMaster behavioral interview tech\")\n"
+                    },
+                    {
+                      "text": "\n=== STEP 3: BEHAVIORAL SPACE VIEWER ===\n"
+                    },
+                    {
+                      "text": "  [OBS] Behavioral Space viewer h1: \"Behavioral Interview Mastery\" (3165ms)\n"
+                    },
+                    {
+                      "text": "  [PASS] L3: Behavioral Space viewer has h1: \"Behavioral Interview Mastery\"\n"
+                    },
+                    {
+                      "text": "  [OBS] Story point links in space viewer: 10\n"
+                    },
+                    {
+                      "text": "  [PASS] L3: Behavioral Space viewer shows 10 story point links\n"
+                    },
+                    {
+                      "text": "  [FAIL] BEH-C4-001 (P2): Behavioral Space viewer shows only 10/12 story point links\n"
+                    },
+                    {
+                      "text": "  [PASS] L3: Behavioral space page shows relevant behavioral/interview content\n"
+                    },
+                    {
+                      "text": "\n=== STEP 4: STAR METHOD STORY POINT ===\n"
+                    },
+                    {
+                      "text": "  [OBS] STAR Method h1: \"STAR Method & Storytelling Framework\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: STAR Method story point accessible: \"STAR Method & Storytelling Framework\"\n"
+                    },
+                    {
+                      "text": "  [OBS] STAR keywords found: situation, task, action, result, STAR, storytelling, framework, interview, example, story\n"
+                    },
+                    {
+                      "text": "  [PASS] CQ1: STAR Method content has framework-relevant terms (10/10): situation, task, action, result, STAR, storytelling, framework, interview, example, story\n"
+                    },
+                    {
+                      "text": "  [PASS] CQ1: STAR Method — examples/sample answers visible\n"
+                    },
+                    {
+                      "text": "  [OBS] STAR Method: list items=17, sub-headers=11\n"
+                    },
+                    {
+                      "text": "  [PASS] CQ1: STAR Method has structured content (17 list items, 11 sub-headers)\n"
+                    },
+                    {
+                      "text": "  [PASS] UX1: STAR Method story point — breadcrumbs/back navigation visible\n"
+                    },
+                    {
+                      "text": "\n=== STEP 5: LEADERSHIP STORY POINT ===\n"
+                    },
+                    {
+                      "text": "  [OBS] Leadership h1: \"Leadership & Influence\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Leadership & Influence story point accessible: \"Leadership & Influence\"\n"
+                    },
+                    {
+                      "text": "  [OBS] Leadership keywords found: leadership, influence, team, mentor, decision, stakeholder, senior, staff\n"
+                    },
+                    {
+                      "text": "  [PASS] CQ2: Leadership content relevant to staff-engineer level (8/10)\n"
+                    },
+                    {
+                      "text": "\n=== STEP 6: CONFLICT RESOLUTION STORY POINT ===\n"
+                    },
+                    {
+                      "text": "  [OBS] Conflict Resolution h1: \"Conflict Resolution & Difficult Conversations\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Conflict Resolution story point accessible: \"Conflict Resolution & Difficult Conversations\"\n"
+                    },
+                    {
+                      "text": "  [OBS] Conflict keywords: conflict, disagreement, difficult, conversation, resolution, empathy\n"
+                    },
+                    {
+                      "text": "  [PASS] CQ3: Conflict Resolution content relevant (6/8)\n"
+                    },
+                    {
+                      "text": "\n=== STEP 7: QUICK CHECK REMAINING STORY POINTS ===\n"
+                    },
+                    {
+                      "text": "  [OBS] Quick check System Ownership & Technical Decision-Making: h1=\"System Ownership & Technical Decision-Making\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: System Ownership & Technical Decision-Making accessible (h1: \"System Ownership & Technical Decision-Making\")\n"
+                    },
+                    {
+                      "text": "  [OBS] Quick check Cross-Functional Collaboration: h1=\"Cross-Functional Collaboration\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Cross-Functional Collaboration accessible (h1: \"Cross-Functional Collaboration\")\n"
+                    },
+                    {
+                      "text": "  [OBS] Quick check Failure, Recovery & Growth Mindset: h1=\"Failure, Recovery & Growth Mindset\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Failure, Recovery & Growth Mindset accessible (h1: \"Failure, Recovery & Growth Mindset\")\n"
+                    },
+                    {
+                      "text": "  [OBS] Quick check Ambiguity & Prioritization: h1=\"Ambiguity & Prioritization\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Ambiguity & Prioritization accessible (h1: \"Ambiguity & Prioritization\")\n"
+                    },
+                    {
+                      "text": "  [OBS] Quick check Staff+ Level Questions: h1=\"Staff+ Level Questions\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Staff+ Level Questions accessible (h1: \"Staff+ Level Questions\")\n"
+                    },
+                    {
+                      "text": "  [OBS] Quick check Company-Specific FAANG Preparation: h1=\"Company-Specific FAANG Preparation\"\n"
+                    },
+                    {
+                      "text": "  [PASS] L4: Company-Specific FAANG Preparation accessible (h1: \"Company-Specific FAANG Preparation\")\n"
+                    },
+                    {
+                      "text": "  [OBS] Story points accessible so far: 9/9\n"
+                    },
+                    {
+                      "text": "\n=== STEP 8: MOCK INTERVIEW PRACTICE MODE ===\n"
+                    },
+                    {
+                      "text": "  [OBS] Mock Interview Practice h1: \"Mock Interview Practice\"\n"
+                    },
+                    {
+                      "text": "  [PASS] P1: Mock Interview Practice story point accessible: \"Mock Interview Practice\"\n"
+                    },
+                    {
+                      "text": "  [OBS] Text inputs: textarea=4, text=2\n"
+                    },
+                    {
+                      "text": "  [PASS] P2: Practice mode — textarea/text input available for behavioral answers\n"
+                    },
+                    {
+                      "text": "  [PASS] P2: Text input accepts STAR story content\n"
+                    },
+                    {
+                      "text": "  [OBS] Practice answer options: radio=0, checkbox=4, textarea=4\n"
+                    },
+                    {
+                      "text": "  [PASS] P2: Practice mode — choice-based options visible (radio=0, checkbox=4)\n"
+                    },
+                    {
+                      "text": "  [OBS] Submit button: visible=true\n"
+                    },
+                    {
+                      "text": "  [PASS] P1: Practice mode — Submit button visible\n"
+                    },
+                    {
+                      "text": "  [PASS] P1: Practice mode — AI evaluation/feedback visible after submit\n"
+                    },
+                    {
+                      "text": "  [PASS] P1: Next button visible after submit in practice mode\n"
+                    },
+                    {
+                      "text": "  [PASS] CQ4: Practice mode — STAR template guidance visible in content\n"
+                    },
+                    {
+                      "text": "  [PASS] P2: Ask AI Tutor button visible in practice mode\n"
+                    },
+                    {
+                      "text": "\n=== STEP 9: BEHAVIORAL QUIZ MODE ===\n"
+                    },
+                    {
+                      "text": "  [OBS] Behavioral Quiz h1: \"Behavioral Interview Concepts Quiz\"\n"
+                    },
+                    {
+                      "text": "  [PASS] Q1: Behavioral Quiz story point accessible: \"Behavioral Interview Concepts Quiz\"\n"
+                    },
+                    {
+                      "text": "  [PASS] Q1: MCQ question type in behavioral quiz\n"
+                    },
+                    {
+                      "text": "  [PASS] Q1: MCAQ question type in behavioral quiz\n"
+                    },
+                    {
+                      "text": "  [PASS] Q1: True/False question type in behavioral quiz\n"
+                    },
+                    {
+                      "text": "  [OBS] Quiz question types: MCQ=20, MCAQ=4, T/F=4, FreeText=0\n"
+                    },
+                    {
+                      "text": "  [PASS] Q1: Quiz submit/next button visible\n"
+                    },
+                    {
+                      "text": "\n=== STEP 10: BEHAVIORAL TIMED ASSESSMENT ===\n"
+                    },
+                    {
+                      "text": "  [OBS] Behavioral Timed Assessment h1: \"Behavioral Interview Timed Assessment\"\n"
+                    },
+                    {
+                      "text": "  [PASS] T1: Behavioral Timed Assessment landing has h1: \"Behavioral Interview Timed Assessment\"\n"
+                    },
+                    {
+                      "text": "  [OBS] Timer elements: 0\n"
+                    },
+                    {
+                      "text": "  [OBS] Timer not visible on landing — may appear after starting test\n"
+                    },
+                    {
+                      "text": "  [FAIL] BEH-C4-002 (P2): Start button not found on behavioral timed assessment landing\n"
+                    },
+                    {
+                      "text": "  [PASS] T3: Timed Assessment landing shows instructions/metadata\n"
+                    },
+                    {
+                      "text": "  [PASS] T2: Behavioral Timed Assessment has writing/textarea input\n"
+                    },
+                    {
+                      "text": "\n=== STEP 11: UX CHECKS ===\n"
+                    },
+                    {
+                      "text": "  [PASS] UX1: STAR Method story point responsive on mobile (375px) — h1=\"STAR Method & Storytelling Framework\"\n"
+                    },
+                    {
+                      "text": "  [PASS] UX2: Section/breadcrumb navigation visible in story point viewer\n"
+                    },
+                    {
+                      "text": "  [OBS] Behavioral content keywords on STAR page: situation, task, action, result, interview, behavioral, leadership, conflict, collaboration\n"
+                    },
+                    {
+                      "text": "  [PASS] CQ5: STAR Method page has strong behavioral content (9/9)\n"
+                    },
+                    {
+                      "text": "\n=== BEHAVIORAL LEARNER CYCLE 4 REPORT ===\n"
+                    },
+                    {
+                      "text": "Story Points: 12/12 accessible\n"
+                    },
+                    {
+                      "text": "Pass Rate: 95.3% (41/43)\n"
+                    },
+                    {
+                      "text": "Issues: 0 P0, 0 P1, 2 P2, 0 P3\n"
+                    },
+                    {
+                      "text": "Learning Effectiveness: 9/10\n"
+                    },
+                    {
+                      "text": "Report written: /Users/subhang/Desktop/Projects/auto-levleup/tests/e2e/tests/e2e/reports/learner-behavioral-cycle-4.json\n"
+                    },
+                    {
+                      "text": "==========================================\n\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-03-09T18:09:57.837Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "3dd13a0fd915987a0665-06368a49cccb7d8e300f",
+          "file": "behavioral-learner-cycle-4.spec.ts",
+          "line": 243,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-03-09T18:09:57.045Z",
+    "duration": 53500.036,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

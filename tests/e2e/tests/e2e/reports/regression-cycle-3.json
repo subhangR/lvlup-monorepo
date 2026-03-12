@@ -1,0 +1,646 @@
+{
+  "cycleNumber": 3,
+  "tester": "tm_1773068028954_fjkod1o1s",
+  "timestamp": "2026-03-09T17:48:35.126Z",
+  "previousCycle": "regression-cycle-2.json",
+  "environment": {
+    "url": "http://localhost:4570",
+    "credentials": {
+      "email": "student.test@subhang.academy",
+      "schoolCode": "SUB001"
+    },
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "fixVerification": {
+    "G5-STUDY-PLANNER": {
+      "id": "G5",
+      "feature": "Study Planner",
+      "category": "broken",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass",
+      "note": "h1=\"Study Planner\", errors=0, contentLen=832"
+    },
+    "E3-LOADING-STATES": {
+      "id": "E3",
+      "feature": "Loading States",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass",
+      "note": "cards=5, spinner=0, h1=\"My Spaces\""
+    }
+  },
+  "fixedTests": [],
+  "regressions": [
+    {
+      "id": "D1",
+      "feature": "Dashboard Load",
+      "note": "h1=\"404\"",
+      "severity": "P0"
+    },
+    {
+      "id": "D3",
+      "feature": "Resume Learning",
+      "severity": "P0"
+    },
+    {
+      "id": "D7",
+      "feature": "My Spaces Grid",
+      "note": "spaceLinks=0",
+      "severity": "P0"
+    },
+    {
+      "id": "N2",
+      "feature": "Mobile Bottom Nav",
+      "note": "navs=0",
+      "severity": "P0"
+    },
+    {
+      "id": "N1-SIDEBAR",
+      "feature": "Sidebar Navigation Links",
+      "note": "links=0",
+      "severity": "P0"
+    }
+  ],
+  "stillBroken": [
+    {
+      "id": "X8",
+      "feature": "Theme Toggle",
+      "note": "class=\"light\""
+    }
+  ],
+  "regressionTests": {
+    "totalRetested": 30,
+    "passed": 25,
+    "failed": 5,
+    "results": [
+      {
+        "id": "A1",
+        "feature": "School Code Login",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "working",
+        "result": "pass",
+        "note": "Login completed successfully"
+      },
+      {
+        "id": "D1",
+        "feature": "Dashboard Load",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "broken",
+        "result": "fail",
+        "note": "h1=\"404\""
+      },
+      {
+        "id": "D3",
+        "feature": "Resume Learning",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "broken",
+        "result": "fail"
+      },
+      {
+        "id": "D7",
+        "feature": "My Spaces Grid",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "broken",
+        "result": "fail",
+        "note": "spaceLinks=0"
+      },
+      {
+        "id": "G3",
+        "feature": "Leaderboard Page",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "working",
+        "result": "pass",
+        "note": "h1=\"Leaderboard\""
+      },
+      {
+        "id": "N1",
+        "feature": "Sidebar Navigation (8 links)",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "working",
+        "result": "pass",
+        "note": "sidebarLinks=16"
+      },
+      {
+        "id": "B2",
+        "feature": "Store Browse Page",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "working",
+        "result": "pass",
+        "note": "h1=\"Space Store\", search=1"
+      },
+      {
+        "id": "E3",
+        "feature": "Loading States",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "working",
+        "result": "pass",
+        "note": "cards=5, spinner=0, h1=\"My Spaces\""
+      },
+      {
+        "id": "L1",
+        "feature": "Spaces List (5 spaces)",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "working",
+        "result": "pass",
+        "note": "cards=5, h1=\"My Spaces\""
+      },
+      {
+        "id": "L2",
+        "feature": "Space Viewer",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "working",
+        "result": "pass",
+        "note": "h1=\"Data Structures & Algorithms\", links=12, errors=0"
+      },
+      {
+        "id": "P1",
+        "feature": "Enter Practice",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "working",
+        "result": "pass",
+        "note": "storyPoints=12, practice=5"
+      },
+      {
+        "id": "L3",
+        "feature": "Story Point Viewer",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "working",
+        "result": "pass",
+        "note": "h1=\"Arrays & Strings Foundations\", breadcrumbs=2, contentLen=3791"
+      },
+      {
+        "id": "P2",
+        "feature": "Answer Question (Practice)",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "working",
+        "result": "pass",
+        "note": "submitBtns=6"
+      },
+      {
+        "id": "P3",
+        "feature": "Retry Question",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "working",
+        "result": "pass",
+        "note": "Story point viewer loads"
+      },
+      {
+        "id": "P4",
+        "feature": "Difficulty Filter",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "working",
+        "result": "pass",
+        "note": "Practice page accessible"
+      },
+      {
+        "id": "P5",
+        "feature": "Question Navigator",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "working",
+        "result": "pass",
+        "note": "nav=0"
+      },
+      {
+        "id": "R1",
+        "feature": "Progress Page - Overall",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "working",
+        "result": "pass",
+        "note": "h1=\"My Progress\", tabs=3"
+      },
+      {
+        "id": "R2",
+        "feature": "Progress Page - Exams Tab",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "working",
+        "result": "pass",
+        "note": "tabs=3"
+      },
+      {
+        "id": "R3",
+        "feature": "Progress Page - Spaces Tab",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "working",
+        "result": "pass",
+        "note": "tabs=3"
+      },
+      {
+        "id": "G1",
+        "feature": "Achievements Page",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "working",
+        "result": "pass",
+        "note": "h1=\"Achievements\""
+      },
+      {
+        "id": "G2",
+        "feature": "Achievement Filtering",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "working",
+        "result": "pass",
+        "note": "filters=7"
+      },
+      {
+        "id": "T1",
+        "feature": "Tests Page",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "working",
+        "result": "pass",
+        "note": "h1=\"Tests\""
+      },
+      {
+        "id": "X1",
+        "feature": "Chat Tutor Page",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "working",
+        "result": "pass",
+        "note": "h1=\"Chat Tutor\""
+      },
+      {
+        "id": "X4",
+        "feature": "Notifications Page",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "working",
+        "result": "pass",
+        "note": "h1=\"Notifications\""
+      },
+      {
+        "id": "X6",
+        "feature": "Profile Page",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "working",
+        "result": "pass"
+      },
+      {
+        "id": "X7",
+        "feature": "Settings Page",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "working",
+        "result": "pass",
+        "note": "h1=\"Settings\""
+      },
+      {
+        "id": "N2",
+        "feature": "Mobile Bottom Nav",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "broken",
+        "result": "fail",
+        "note": "navs=0"
+      },
+      {
+        "id": "N1-SIDEBAR",
+        "feature": "Sidebar Navigation Links",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "broken",
+        "result": "fail",
+        "note": "links=0"
+      },
+      {
+        "id": "E1",
+        "feature": "404 Page",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "working",
+        "result": "pass"
+      },
+      {
+        "id": "E4",
+        "feature": "Error Boundaries",
+        "category": "regression",
+        "previousStatus": "working",
+        "currentStatus": "working",
+        "result": "pass"
+      }
+    ]
+  },
+  "allResults": [
+    {
+      "id": "A1",
+      "feature": "School Code Login",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass",
+      "note": "Login completed successfully"
+    },
+    {
+      "id": "D1",
+      "feature": "Dashboard Load",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "broken",
+      "result": "fail",
+      "note": "h1=\"404\""
+    },
+    {
+      "id": "D3",
+      "feature": "Resume Learning",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "broken",
+      "result": "fail"
+    },
+    {
+      "id": "D7",
+      "feature": "My Spaces Grid",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "broken",
+      "result": "fail",
+      "note": "spaceLinks=0"
+    },
+    {
+      "id": "G5",
+      "feature": "Study Planner",
+      "category": "broken",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass",
+      "note": "h1=\"Study Planner\", errors=0, contentLen=832"
+    },
+    {
+      "id": "G3",
+      "feature": "Leaderboard Page",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass",
+      "note": "h1=\"Leaderboard\""
+    },
+    {
+      "id": "N1",
+      "feature": "Sidebar Navigation (8 links)",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass",
+      "note": "sidebarLinks=16"
+    },
+    {
+      "id": "B2",
+      "feature": "Store Browse Page",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass",
+      "note": "h1=\"Space Store\", search=1"
+    },
+    {
+      "id": "E3",
+      "feature": "Loading States",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass",
+      "note": "cards=5, spinner=0, h1=\"My Spaces\""
+    },
+    {
+      "id": "L1",
+      "feature": "Spaces List (5 spaces)",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass",
+      "note": "cards=5, h1=\"My Spaces\""
+    },
+    {
+      "id": "L2",
+      "feature": "Space Viewer",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass",
+      "note": "h1=\"Data Structures & Algorithms\", links=12, errors=0"
+    },
+    {
+      "id": "P1",
+      "feature": "Enter Practice",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass",
+      "note": "storyPoints=12, practice=5"
+    },
+    {
+      "id": "L3",
+      "feature": "Story Point Viewer",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass",
+      "note": "h1=\"Arrays & Strings Foundations\", breadcrumbs=2, contentLen=3791"
+    },
+    {
+      "id": "P2",
+      "feature": "Answer Question (Practice)",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass",
+      "note": "submitBtns=6"
+    },
+    {
+      "id": "P3",
+      "feature": "Retry Question",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass",
+      "note": "Story point viewer loads"
+    },
+    {
+      "id": "P4",
+      "feature": "Difficulty Filter",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass",
+      "note": "Practice page accessible"
+    },
+    {
+      "id": "P5",
+      "feature": "Question Navigator",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass",
+      "note": "nav=0"
+    },
+    {
+      "id": "R1",
+      "feature": "Progress Page - Overall",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass",
+      "note": "h1=\"My Progress\", tabs=3"
+    },
+    {
+      "id": "R2",
+      "feature": "Progress Page - Exams Tab",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass",
+      "note": "tabs=3"
+    },
+    {
+      "id": "R3",
+      "feature": "Progress Page - Spaces Tab",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass",
+      "note": "tabs=3"
+    },
+    {
+      "id": "G1",
+      "feature": "Achievements Page",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass",
+      "note": "h1=\"Achievements\""
+    },
+    {
+      "id": "G2",
+      "feature": "Achievement Filtering",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass",
+      "note": "filters=7"
+    },
+    {
+      "id": "T1",
+      "feature": "Tests Page",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass",
+      "note": "h1=\"Tests\""
+    },
+    {
+      "id": "X1",
+      "feature": "Chat Tutor Page",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass",
+      "note": "h1=\"Chat Tutor\""
+    },
+    {
+      "id": "X4",
+      "feature": "Notifications Page",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass",
+      "note": "h1=\"Notifications\""
+    },
+    {
+      "id": "X6",
+      "feature": "Profile Page",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass"
+    },
+    {
+      "id": "X7",
+      "feature": "Settings Page",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass",
+      "note": "h1=\"Settings\""
+    },
+    {
+      "id": "X8",
+      "feature": "Theme Toggle",
+      "category": "still-broken-check",
+      "previousStatus": "broken",
+      "currentStatus": "broken",
+      "result": "fail",
+      "note": "class=\"light\""
+    },
+    {
+      "id": "N2",
+      "feature": "Mobile Bottom Nav",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "broken",
+      "result": "fail",
+      "note": "navs=0"
+    },
+    {
+      "id": "N1-SIDEBAR",
+      "feature": "Sidebar Navigation Links",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "broken",
+      "result": "fail",
+      "note": "links=0"
+    },
+    {
+      "id": "E1",
+      "feature": "404 Page",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass"
+    },
+    {
+      "id": "E4",
+      "feature": "Error Boundaries",
+      "category": "regression",
+      "previousStatus": "working",
+      "currentStatus": "working",
+      "result": "pass"
+    }
+  ],
+  "summary": {
+    "totalTests": 32,
+    "passed": 26,
+    "failed": 6,
+    "passRate": "81.3%",
+    "previousPassRate": "90.4%",
+    "regressionsFound": 5,
+    "newlyFixed": 0,
+    "stillBrokenCount": 1,
+    "verdict": "regressions-found"
+  }
+}

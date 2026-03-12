@@ -1,0 +1,71 @@
+{
+  "name": "auto-levelup",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Auto LevelUp - Intelligent student learning platform",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "functions/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "test:coverage": "turbo run test:coverage",
+    "clean": "turbo run clean",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,md}\"",
+    "test:integration": "vitest run --config tests/integration/vitest.config.ts",
+    "test:integration:rules": "vitest run --config tests/integration/vitest.config.ts tests/integration/firestore-rules.test.ts",
+    "test:integration:flows": "vitest run --config tests/integration/vitest.config.ts tests/integration/auth-flows.test.ts",
+    "prepare": "husky",
+    "seed:emulator": "tsx scripts/seed-emulator.ts",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:super-admin": "playwright test --project=super-admin",
+    "test:e2e:admin-web": "playwright test --project=admin-web",
+    "test:e2e:teacher-web": "playwright test --project=teacher-web",
+    "test:e2e:student-web": "playwright test --project=student-web",
+    "test:e2e:parent-web": "playwright test --project=parent-web",
+    "test:e2e:cross-role": "playwright test --project=cross-role",
+    "test:e2e:visual": "playwright test --project=visual-regression",
+    "test:e2e:visual:update": "playwright test --project=visual-regression --update-snapshots",
+    "test:schemas": "vitest run --config packages/shared-types/vitest.config.ts",
+    "test:ci": "turbo run test:coverage && pnpm run test:integration && pnpm run test:schemas",
+    "deploy:functions": "tsx scripts/prepare-functions-deploy.ts prepare && firebase deploy --only functions; tsx scripts/prepare-functions-deploy.ts cleanup",
+    "deploy:functions:prepare": "tsx scripts/prepare-functions-deploy.ts prepare",
+    "deploy:functions:cleanup": "tsx scripts/prepare-functions-deploy.ts cleanup"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@vitest/coverage-v8": "^4.0.18",
+    "@vitest/ui": "^4.0.18",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.2.5",
+    "prettier-plugin-tailwindcss": "^0.5.11",
+    "terser": "^5.46.0",
+    "tsx": "^4.19.0",
+    "turbo": "^2.0.0",
+    "vitest": "^4.0.18"
+  },
+  "packageManager": "pnpm@9.0.0",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{js,jsx,json,md}": [
+      "prettier --write"
+    ]
+  },
+  "dependencies": {
+    "firebase-admin": "^13.6.1"
+  }
+}

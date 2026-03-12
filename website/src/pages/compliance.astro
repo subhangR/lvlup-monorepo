@@ -1,0 +1,135 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'FERPA Compliance - Auto LevelUp',
+  description: 'Learn about Auto LevelUp\'s compliance with FERPA, COPPA, and SOC 2 Type II security standards.',
+};
+---
+
+<Layout
+  title="FERPA Compliance - Auto LevelUp"
+  description="Auto LevelUp is fully compliant with FERPA, COPPA, and SOC 2 Type II. Learn about our data protection practices for educational institutions."
+  jsonLd={jsonLd}
+  breadcrumbs={[{ name: 'Home', url: '/' }, { name: 'FERPA Compliance', url: '/compliance' }]}
+>
+  <Nav />
+  <main id="main-content">
+    <section class="pt-28 pb-20 sm:pt-36 sm:pb-28">
+      <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+        <div class="mb-4 inline-flex rounded-full bg-success/10 px-4 py-1 text-sm font-medium text-success">
+          Fully Compliant
+        </div>
+        <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">Data Privacy & Compliance</h1>
+        <p class="mt-4 text-lg text-muted-foreground">
+          Protecting student data is at the core of everything we build. Auto LevelUp meets the highest standards of educational data privacy and security.
+        </p>
+
+        <!-- Compliance badges -->
+        <div class="mt-10 grid gap-4 sm:grid-cols-3">
+          <div class="rounded-xl border border-border bg-card p-6 text-center">
+            <div class="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10">
+              <svg class="h-7 w-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+              </svg>
+            </div>
+            <h3 class="font-bold">FERPA</h3>
+            <p class="mt-1 text-xs text-muted-foreground">Family Educational Rights and Privacy Act</p>
+          </div>
+          <div class="rounded-xl border border-border bg-card p-6 text-center">
+            <div class="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-success/10">
+              <svg class="h-7 w-7 text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+              </svg>
+            </div>
+            <h3 class="font-bold">COPPA</h3>
+            <p class="mt-1 text-xs text-muted-foreground">Children's Online Privacy Protection Act</p>
+          </div>
+          <div class="rounded-xl border border-border bg-card p-6 text-center">
+            <div class="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-full bg-warning/10">
+              <svg class="h-7 w-7 text-warning" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+              </svg>
+            </div>
+            <h3 class="font-bold">SOC 2 Type II</h3>
+            <p class="mt-1 text-xs text-muted-foreground">Service Organization Control Certified</p>
+          </div>
+        </div>
+
+        <div class="mt-12 space-y-8 text-sm leading-relaxed text-muted-foreground">
+          <section>
+            <h2 class="mb-3 text-lg font-semibold text-foreground">FERPA Compliance</h2>
+            <p class="mb-3">The Family Educational Rights and Privacy Act (FERPA) protects the privacy of student education records. Auto LevelUp complies with FERPA by:</p>
+            <ul class="list-disc space-y-1 pl-6">
+              <li>Acting as a "school official" with a legitimate educational interest under FERPA</li>
+              <li>Using student education records only for the purposes authorized by the school</li>
+              <li>Maintaining direct control over the use and maintenance of education records</li>
+              <li>Never disclosing personally identifiable information from education records without authorization</li>
+              <li>Providing schools with the ability to access, review, and delete student records</li>
+              <li>Signing Data Processing Agreements (DPAs) with all educational institutions</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 class="mb-3 text-lg font-semibold text-foreground">COPPA Compliance</h2>
+            <p class="mb-3">For students under 13, we follow strict COPPA guidelines:</p>
+            <ul class="list-disc space-y-1 pl-6">
+              <li>Schools obtain verifiable parental consent before creating student accounts</li>
+              <li>We collect only the minimum information necessary for educational purposes</li>
+              <li>Student data is never used for commercial advertising or behavioral targeting</li>
+              <li>Parents can review, request changes to, or delete their child's information through their school</li>
+              <li>We provide clear notice of our data practices to schools and parents</li>
+              <li>Third-party service providers are contractually bound to maintain COPPA compliance</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 class="mb-3 text-lg font-semibold text-foreground">SOC 2 Type II Certification</h2>
+            <p class="mb-3">Our SOC 2 Type II certification validates our security controls across five trust service criteria:</p>
+            <ul class="list-disc space-y-1 pl-6">
+              <li><strong>Security:</strong> Protection against unauthorized access through encryption, access controls, and network security</li>
+              <li><strong>Availability:</strong> System uptime and performance monitoring with 99.9% SLA</li>
+              <li><strong>Processing Integrity:</strong> Accurate and complete data processing for grades and analytics</li>
+              <li><strong>Confidentiality:</strong> Protection of sensitive information including student records</li>
+              <li><strong>Privacy:</strong> Collection, use, and disposal of personal information per our privacy policy</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 class="mb-3 text-lg font-semibold text-foreground">Data Handling Practices</h2>
+            <ul class="list-disc space-y-1 pl-6">
+              <li><strong>Encryption:</strong> AES-256 at rest, TLS 1.3 in transit</li>
+              <li><strong>Access control:</strong> Role-based permissions ensure users see only authorized data</li>
+              <li><strong>Audit logging:</strong> All data access is logged and auditable</li>
+              <li><strong>Data residency:</strong> All data is stored in SOC 2 certified data centers within the United States</li>
+              <li><strong>Backup & recovery:</strong> Daily encrypted backups with 30-day retention and tested recovery procedures</li>
+              <li><strong>Incident response:</strong> 24-hour breach notification to affected schools</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 class="mb-3 text-lg font-semibold text-foreground">Parental Consent Procedures</h2>
+            <p class="mb-3">We support schools in obtaining proper parental consent:</p>
+            <ul class="list-disc space-y-1 pl-6">
+              <li>Schools can generate consent forms directly from the platform</li>
+              <li>Digital consent workflows with email verification for parents</li>
+              <li>Audit trail of all consent records</li>
+              <li>Easy opt-out process for parents who withdraw consent</li>
+              <li>Annual consent renewal reminders for schools</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 class="mb-3 text-lg font-semibold text-foreground">Questions?</h2>
+            <p>For compliance inquiries, Data Processing Agreements, or to request our SOC 2 report, <a href="/contact" class="font-medium text-primary hover:underline">contact our compliance team</a> or email <strong>compliance@autolevelup.com</strong>.</p>
+          </section>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Layout>

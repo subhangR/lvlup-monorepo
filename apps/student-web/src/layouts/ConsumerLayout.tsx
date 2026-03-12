@@ -1,0 +1,178 @@
+import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuthStore, useConsumerStore } from "@levelup/shared-stores";
+import { useNotifications, useUnreadCount, useMarkRead, useMarkAllRead } from "@levelup/shared-hooks";
+import {
+  AppShell,
+  AppSidebar,
+  NotificationBell,
+  ThemeToggle,
+  SkipToContent,
+  PageTransition,
+  RouteAnnouncer,
+  MobileBottomNav,
+  SWUpdateNotification,
+  PWAInstallBanner,
+  Button,
+  Avatar,
+  AvatarFallback,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+  type NavGroup,
+  type MobileNavItem,
+} from "@levelup/shared-ui";
+import {
+  LayoutDashboard,
+  ShoppingBag,
+  ShoppingCart,
+  User,
+  LogOut,
+  Settings,
+} from "lucide-react";
+
+export default function ConsumerLayout() {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const user = useAuthStore((s) => s.user);
+  const firebaseUser = useAuthStore((s) => s.firebaseUser);
+  const currentTenantId = useAuthStore((s) => s.currentTenantId);
+  const logout = useAuthStore((s) => s.logout);
+  const cartCount = useConsumerStore((s) => s.cart.length);
+
+  const { data: notifData, isLoading: notifsLoading } = useNotifications(
+    currentTenantId,
+    firebaseUser?.uid ?? null,
+  );
+  const unreadCount = useUnreadCount(currentTenantId, firebaseUser?.uid ?? null);
+  const markRead = useMarkRead();
+  const markAllRead = useMarkAllRead();
+
+  const navGroups: NavGroup[] = [
+    {
+      label: "",
+      items: [
+        {
+          title: "My Learning",
+          url: "/consumer",
+          icon: LayoutDashboard,
+          isActive:
+            location.pathname === "/consumer" ||
+            location.pathname === "/my-spaces",
+        },
+        {
+          title: "Space Store",
+          url: "/store",
+          icon: ShoppingBag,
+          isActive: location.pathname.startsWith("/store") && !location.pathname.includes("checkout"),
+        },
+        ...(cartCount > 0
+          ? [
+              {
+                title: `Cart (${cartCount})`,
+                url: "/store/checkout",
+                icon: ShoppingCart,
+                isActive: location.pathname === "/store/checkout",
+              },
+            ]
+          : []),
+        {
+          title: "Profile",
+          url: "/profile",
+          icon: User,
+          isActive: location.pathname === "/profile",
+        },
+      ],
+    },
+  ];
+
+  const displayName = user?.displayName ?? user?.email ?? "User";
+  const initials = displayName
+    .split(" ")
+    .map((w: string) => w.charAt(0))
+    .join("")
+    .toUpperCase()
+    .slice(0, 2);
+
+  const sidebarFooter = (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost" className="w-full justify-start gap-2 px-2">
+          <Avatar className="h-6 w-6">
+            <AvatarFallback className="text-xs">{initials}</AvatarFallback>
+          </Avatar>
+          <span className="truncate text-xs">{displayName}</span>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent side="top" align="start" className="w-56">
+        <DropdownMenuLabel className="font-normal">
+          <div className="flex flex-col space-y-1">
+            <p className="text-sm font-medium">{user?.displayName ?? "User"}</p>
+            <p className="text-xs text-muted-foreground">{user?.email}</p>
+          </div>
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuItem onClick={() => { logout(); navigate("/login"); }}>
+          <LogOut className="mr-2 h-4 w-4" /> Sign Out
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+
+  const sidebar = (
+    <AppSidebar
+      appName="LevelUp"
+      navGroups={navGroups}
+      footerContent={sidebarFooter}
+      pathname={location.pathname}
+      LinkComponent={Link}
+    />
+  );
+
+  const headerRight = (
+    <div className="flex items-center gap-2">
+      <ThemeToggle />
+      <NotificationBell
+        notifications={notifData?.notifications ?? []}
+        unreadCount={unreadCount}
+        isLoading={notifsLoading}
+        onNotificationClick={(notif) => {
+          if (!notif.isRead && currentTenantId) {
+            markRead.mutate({ tenantId: currentTenantId, notificationId: notif.id });
+          }
+          if (notif.actionUrl) navigate(notif.actionUrl);
+        }}
+        onMarkAllRead={() => {
+          if (currentTenantId) markAllRead.mutate({ tenantId: currentTenantId });
+        }}
+        onViewAll={() => navigate("/notifications")}
+      />
+    </div>
+  );
+
+  const mobileNavItems: MobileNavItem[] = [
+    { icon: LayoutDashboard, label: "Home", to: "/consumer", isActive: location.pathname === "/consumer" || location.pathname === "/my-spaces" },
+    { icon: ShoppingBag, label: "Store", to: "/store", isActive: location.pathname.startsWith("/store") && !location.pathname.includes("checkout") },
+    ...(cartCount > 0 ? [{ icon: ShoppingCart, label: "Cart", to: "/store/checkout", isActive: location.pathname === "/store/checkout", badge: cartCount }] : []),
+    { icon: User, label: "Profile", to: "/profile", isActive: location.pathname === "/profile" },
+  ];
+
+  return (
+    <>
+      <SkipToContent />
+      <AppShell sidebar={sidebar} headerRight={headerRight} hasBottomNav>
+        <RouteAnnouncer pathname={location.pathname} />
+        <div id="main-content">
+          <PageTransition pageKey={location.pathname}>
+            <Outlet />
+          </PageTransition>
+        </div>
+      </AppShell>
+      <MobileBottomNav items={mobileNavItems} LinkComponent={Link} />
+      <SWUpdateNotification />
+      <PWAInstallBanner />
+    </>
+  );
+}

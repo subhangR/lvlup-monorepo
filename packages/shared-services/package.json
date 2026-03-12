@@ -1,0 +1,74 @@
+{
+  "name": "@levelup/shared-services",
+  "version": "1.0.0",
+  "description": "Shared Firebase service layer for LevelUp unified platform",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "default": "./src/index.ts"
+    },
+    "./firebase": {
+      "types": "./dist/firebase/index.d.ts",
+      "require": "./dist/firebase/index.js",
+      "default": "./src/firebase/index.ts"
+    },
+    "./auth": {
+      "types": "./dist/auth/index.d.ts",
+      "require": "./dist/auth/index.js",
+      "default": "./src/auth/index.ts"
+    },
+    "./firestore": {
+      "types": "./dist/firestore/index.d.ts",
+      "require": "./dist/firestore/index.js",
+      "default": "./src/firestore/index.ts"
+    },
+    "./storage": {
+      "types": "./dist/storage/index.d.ts",
+      "require": "./dist/storage/index.js",
+      "default": "./src/storage/index.ts"
+    },
+    "./realtime-db": {
+      "types": "./dist/realtime-db/index.d.ts",
+      "require": "./dist/realtime-db/index.js",
+      "default": "./src/realtime-db/index.ts"
+    },
+    "./ai": {
+      "types": "./dist/ai/index.d.ts",
+      "require": "./dist/ai/index.js",
+      "default": "./src/ai/index.ts"
+    }
+  },
+  "typesVersions": {
+    "*": {
+      "ai": ["./dist/ai/index.d.ts"],
+      "firebase": ["./dist/firebase/index.d.ts"],
+      "auth": ["./dist/auth/index.d.ts"],
+      "firestore": ["./dist/firestore/index.d.ts"],
+      "storage": ["./dist/storage/index.d.ts"],
+      "realtime-db": ["./dist/realtime-db/index.d.ts"]
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:integration": "vitest run --reporter=verbose src/__tests__/*.integration.test.ts"
+  },
+  "dependencies": {
+    "@google-cloud/secret-manager": "^5.6.0",
+    "@google/generative-ai": "^0.21.0",
+    "@levelup/shared-types": "workspace:*",
+    "firebase": "^11.2.0",
+    "firebase-admin": "^13.3.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0"
+  }
+}

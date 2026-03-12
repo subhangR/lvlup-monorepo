@@ -1,0 +1,42 @@
+@import '@levelup/tailwind-config/variables.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Smooth scrolling for the whole app */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Better focus outlines for accessibility */
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* Custom recharts tooltip */
+  .recharts-tooltip-wrapper .recharts-default-tooltip {
+    background: hsl(var(--popover)) !important;
+    border: 1px solid hsl(var(--border)) !important;
+    border-radius: 0.5rem !important;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
+    padding: 0.5rem 0.75rem !important;
+  }
+
+  .recharts-tooltip-wrapper .recharts-default-tooltip .recharts-tooltip-label {
+    color: hsl(var(--foreground)) !important;
+    font-weight: 600 !important;
+    font-size: 0.8125rem !important;
+    margin-bottom: 0.25rem !important;
+  }
+
+  .recharts-tooltip-wrapper .recharts-default-tooltip .recharts-tooltip-item {
+    color: hsl(var(--muted-foreground)) !important;
+    font-size: 0.8125rem !important;
+    padding: 0 !important;
+  }
+}

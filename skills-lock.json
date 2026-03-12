@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "skills": {
+    "animate": {
+      "source": "pbakaus/impeccable",
+      "sourceType": "github",
+      "computedHash": "d9678700cc105ae1af98763fb4f85168ba398395d241aae336ef421836d9dd82"
+    },
+    "api-design": {
+      "source": "affaan-m/everything-claude-code",
+      "sourceType": "github",
+      "computedHash": "718b7be2b2c0798d4da7f79d860cc2af8ca114f55b5ff508e93c2feb468d20c2"
+    },
+    "bencium-innovative-ux-designer": {
+      "source": "bencium/bencium-claude-code-design-skill",
+      "sourceType": "github",
+      "computedHash": "a535e501e9f72e0de2d43546104f98b596119f8bbea1df915579b26da08d792d"
+    },
+    "brand-guidelines": {
+      "source": "skillcreatorai/ai-agent-skills",
+      "sourceType": "github",
+      "computedHash": "4d84a5a0c243764982ad511537c720e7ec1930bf32876b53cc2b585a18f06db9"
+    },
+    "brochure-design-generation": {
+      "source": "eachlabs/skills",
+      "sourceType": "github",
+      "computedHash": "3644f07f8354a2aca57616f76665825a1d16d42d49faeb2e655a431b0d754d9f"
+    },
+    "creative-frontend-aesthetics": {
+      "source": "seika139/dotfiles",
+      "sourceType": "github",
+      "computedHash": "d363418f17a5673a013587d2fffd74165215c0b2e93804d87e1b1de7f4c7fd61"
+    },
+    "icon-set-generator": {
+      "source": "jezweb/claude-skills",
+      "sourceType": "github",
+      "computedHash": "403c74ad43d29e9363e5fb19dc8d343d1b4f56dd6785a525ac11495b9f1ece31"
+    },
+    "svg-icon-maker": {
+      "source": "heroygt/skills",
+      "sourceType": "github",
+      "computedHash": "d96acc3a48832160dd7899f32a2ba1d6f4a565058c560fa09ad75de904f039d9"
+    },
+    "tailwindcss-advanced-design-systems": {
+      "source": "josiahsiegel/claude-plugin-marketplace",
+      "sourceType": "github",
+      "computedHash": "96736c88b894cfe09708817f7fde5945aebfc0c2cb17d54f8b066d1a0b36be0a"
+    }
+  }
+}

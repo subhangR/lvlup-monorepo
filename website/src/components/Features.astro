@@ -1,0 +1,156 @@
+---
+const roleFeatures = [
+  {
+    role: 'Schools',
+    icon: '',
+    color: 'primary',
+    tagline: 'Run a data-driven school — without a data team',
+    description: 'School-wide dashboards, staff controls, and AI cost visibility in one place',
+    features: [
+      'School-wide performance dashboard with at-risk counts',
+      'Full AI cost tracking — per exam, per month, no surprises',
+      'Granular staff permissions for every role',
+      'Data export for board reviews and audits',
+      'Bulk user management with CSV import',
+      'Complete data isolation for your school',
+    ],
+  },
+  {
+    role: 'Teachers',
+    icon: '',
+    color: 'success',
+    tagline: 'Grade less. Teach more. Know more.',
+    description: 'Get your weekends back — AI handles the grading, you handle the teaching',
+    features: [
+      'Grade an entire class exam in 8 minutes',
+      'At-risk alerts surface struggling students early',
+      'Per-question analytics show which concepts need reteaching',
+      'Build reusable question banks and rubric presets',
+      'Override any AI grade — you always have the final word',
+      '15 question types from quizzes to essays to coding',
+    ],
+  },
+  {
+    role: 'Students',
+    icon: '',
+    color: 'info',
+    tagline: 'Learning feels like leveling up',
+    description: 'A 24/7 AI tutor, adaptive challenges, and rewards that make studying feel like progress',
+    features: [
+      '24/7 AI tutor that helps without giving answers away',
+      'Difficulty that adjusts to your level automatically',
+      'XP, levels, badges, and leaderboards',
+      'Practice mode — retry without hurting your grade',
+      'Detailed exam feedback that explains where marks were lost',
+      'Streaks and achievements that reward daily effort',
+    ],
+  },
+  {
+    role: 'Parents',
+    icon: '',
+    color: 'warning',
+    tagline: 'No more waiting for the report card',
+    description: 'Real-time alerts, progress reports, and AI recommendations for every child',
+    features: [
+      'Same-day alerts when exam scores drop',
+      'See strengths, weak topics, and what to focus on next',
+      'Download PDF progress reports for tutor sessions',
+      'Side-by-side comparison for multiple children',
+      'Choose which notifications you want to receive',
+      'AI recommendations specific to your child',
+    ],
+  },
+];
+
+const colorMap: Record<string, { bg: string; border: string; text: string; badge: string }> = {
+  primary: { bg: 'bg-primary/5', border: 'border-primary/20', text: 'text-primary', badge: 'bg-primary/10' },
+  success: { bg: 'bg-success/5', border: 'border-success/20', text: 'text-success', badge: 'bg-success/10' },
+  info: { bg: 'bg-info/5', border: 'border-info/20', text: 'text-info', badge: 'bg-info/10' },
+  warning: { bg: 'bg-warning/5', border: 'border-warning/20', text: 'text-warning', badge: 'bg-warning/10' },
+};
+---
+
+<section id="features" class="py-20 sm:py-28">
+  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <!-- Section header -->
+    <div class="text-center scroll-reveal">
+      <div class="mb-4 inline-flex rounded-full bg-primary/10 px-4 py-1 text-sm font-medium text-primary">
+        Built for Every Role
+      </div>
+      <h2 class="section-heading">
+        One Platform. Every Stakeholder.
+      </h2>
+      <p class="section-subheading">
+        Auto-LevelUp gives schools, teachers, students, and parents exactly what they need —
+        all connected, all in real time.
+      </p>
+    </div>
+
+    <!-- Role cards grid -->
+    <div class="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {roleFeatures.map((role, index) => {
+        const colors = colorMap[role.color];
+        return (
+          <div
+            class={`scroll-reveal group rounded-xl border ${colors.border} ${colors.bg} p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg`}
+            style={`transition-delay: ${index * 100}ms`}
+            role="group"
+            aria-label={`${role.role} features`}
+          >
+            <!-- Role header -->
+            <div class="mb-4">
+              <div class={`flex h-10 w-10 items-center justify-center rounded-lg ${colors.badge}`}>
+                <svg class={`h-5 w-5 ${colors.text}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342" />
+                </svg>
+              </div>
+              <h3 class={`mt-3 text-xl font-bold ${colors.text}`}>{role.role}</h3>
+              <p class="mt-0.5 text-xs font-medium text-muted-foreground">{role.tagline}</p>
+              <p class="mt-1 text-sm text-muted-foreground">{role.description}</p>
+            </div>
+
+            <!-- Feature list -->
+            <ul class="space-y-2.5">
+              {role.features.map((feature) => (
+                <li class="flex items-start gap-2 text-sm">
+                  <svg class={`mt-0.5 h-4 w-4 shrink-0 ${colors.text}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span class="text-muted-foreground">{feature}</span>
+                </li>
+              ))}
+            </ul>
+
+            <!-- Learn more -->
+            <div class="mt-6">
+              <a
+                href={`/#${role.role.toLowerCase()}-detail`}
+                class={`inline-flex items-center text-sm font-medium ${colors.text} transition-colors hover:underline`}
+              >
+                Learn more
+                <svg class="ml-1 h-3 w-3 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+
+    <!-- Highlight stats -->
+    <div class="mt-20 scroll-reveal grid grid-cols-2 gap-8 rounded-2xl border border-border bg-card p-8 sm:grid-cols-4">
+      {[
+        { value: '15', label: 'Question Types' },
+        { value: '8 min', label: 'Class Grading Time' },
+        { value: '24/7', label: 'AI Tutor Availability' },
+        { value: '5', label: 'At-Risk Signals Monitored' },
+      ].map((stat) => (
+        <div class="text-center">
+          <div class="text-3xl font-extrabold text-primary sm:text-4xl">{stat.value}</div>
+          <div class="mt-1 text-sm text-muted-foreground">{stat.label}</div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

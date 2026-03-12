@@ -1,0 +1,638 @@
+import { useMemo, useState } from 'react';
+import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useAuthStore } from '@levelup/shared-stores';
+import { useSpace, useProgress } from '@levelup/shared-hooks';
+import { useStoryPoints } from '../hooks/useStoryPoints';
+import ProgressBar from '../components/common/ProgressBar';
+import {
+  Button,
+  Skeleton,
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  CelebrationBurst,
+  Tabs,
+  TabsList,
+  TabsTrigger,
+  TabsContent,
+  Card,
+  CardContent,
+} from '@levelup/shared-ui';
+import {
+  BookOpen,
+  Clock,
+  ClipboardList,
+  Dumbbell,
+  Zap,
+  ChevronRight,
+  PlayCircle,
+  Award,
+  CheckCircle2,
+  Trophy,
+  ArrowRight,
+  AlertCircle,
+  RefreshCw,
+  BarChart3,
+  Brain,
+} from 'lucide-react';
+import type { StoryPoint, StoryPointProgress } from '@levelup/shared-types';
+import SpaceReviewSection from '../components/spaces/SpaceReviewSection';
+
+export default function SpaceViewerPage() {
+  const { spaceId } = useParams<{ spaceId: string }>();
+  const navigate = useNavigate();
+  const { currentTenantId, user } = useAuthStore();
+  const userId = user?.uid ?? null;
+
+  const { data: space, isLoading: spaceLoading, isError: spaceError, refetch: refetchSpace } = useSpace(currentTenantId, spaceId ?? null);
+  const { data: storyPoints, isLoading: spLoading } = useStoryPoints(currentTenantId, spaceId ?? null);
+  const { data: progress } = useProgress(currentTenantId, userId, spaceId);
+
+  const overallPercentage = progress?.percentage ?? 0;
+  const pointsEarned = progress?.pointsEarned ?? 0;
+  const totalPoints = progress?.totalPoints ?? 0;
+  const [celebrationShown, setCelebrationShown] = useState(false);
+
+  // Find the first incomplete item for resume
+  const resumeTarget = useMemo(() => {
+    if (!storyPoints?.length || !progress) return null;
+    for (const sp of storyPoints) {
+      const spProgress = progress.storyPoints[sp.id];
+      if (!spProgress || spProgress.status !== 'completed') {
+        const isTest = sp.type === 'timed_test' || sp.type === 'test';
+        const isPractice = sp.type === 'practice';
+        const base = `/spaces/${spaceId}`;
+        if (isTest) return `${base}/test/${sp.id}`;
+        if (isPractice) return `${base}/practice/${sp.id}`;
+        return `${base}/story-points/${sp.id}`;
+      }
+    }
+    return null;
+  }, [storyPoints, progress, spaceId]);
+
+  if (spaceLoading || spLoading) {
+    return (
+      <div className="space-y-4">
+        <Skeleton className="h-8 w-48 rounded" />
+        <Skeleton className="h-4 w-full rounded" />
+        {[1, 2, 3].map((i) => (
+          <Skeleton key={i} className="h-20 rounded-lg" />
+        ))}
+      </div>
+    );
+  }
+
+  if (spaceError) {
+    return (
+      <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-8 text-center">
+        <AlertCircle className="h-10 w-10 mx-auto mb-2 text-destructive/60" />
+        <p className="text-sm font-medium text-destructive">Failed to load space</p>
+        <p className="text-xs text-muted-foreground mt-1">Check your connection and try again.</p>
+        <Button variant="outline" size="sm" onClick={() => refetchSpace()} className="mt-3 gap-1.5">
+          <RefreshCw className="h-3.5 w-3.5" /> Retry
+        </Button>
+      </div>
+    );
+  }
+
+  if (!space) {
+    return (
+      <div className="rounded-lg border bg-muted/50 p-8 text-center">
+        <BookOpen className="h-10 w-10 mx-auto mb-2 text-muted-foreground/30" />
+        <p className="text-sm text-muted-foreground">Space not found or has been removed.</p>
+        <Button variant="outline" size="sm" asChild className="mt-3">
+          <a href="/spaces">Back to Spaces</a>
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Celebration for 100% completion */}
+      <CelebrationBurst
+        trigger={overallPercentage === 100 && !celebrationShown}
+        variant="confetti"
+        onComplete={() => setCelebrationShown(true)}
+      />
+
+      {/* Header */}
+      <div>
+        <Breadcrumb>
+          <BreadcrumbList>
+            <BreadcrumbItem>
+              <BreadcrumbLink asChild><Link to="/spaces">Spaces</Link></BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbSeparator />
+            <BreadcrumbItem>
+              <BreadcrumbPage>{space.title}</BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
+        <h1 className="text-2xl font-bold mt-2">{space.title}</h1>
+        {space.description && (
+          <p className="text-sm text-muted-foreground mt-1">{space.description}</p>
+        )}
+
+        {/* Progress + Points Summary */}
+        <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:gap-6">
+          <div className="flex-1 max-w-md">
+            <ProgressBar
+              value={overallPercentage}
+              label="Overall Progress"
+              color={overallPercentage === 100 ? 'green' : 'blue'}
+              animate
+            />
+          </div>
+          <div className="flex items-center gap-4">
+            {totalPoints > 0 && (
+              <div className="flex items-center gap-2 rounded-lg border bg-card px-3 py-2">
+                <Trophy className="h-4 w-4 text-yellow-500" />
+                <div className="text-sm">
+                  <span className="font-bold">{pointsEarned}</span>
+                  <span className="text-muted-foreground">/{totalPoints} pts</span>
+                </div>
+              </div>
+            )}
+            {resumeTarget && overallPercentage < 100 && (
+              <Button
+                size="sm"
+                onClick={() => navigate(resumeTarget)}
+                className="gap-1.5"
+              >
+                <ArrowRight className="h-3.5 w-3.5" />
+                Resume
+              </Button>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Tabs: Contents / Overview */}
+      <Tabs defaultValue="contents">
+        <TabsList>
+          <TabsTrigger value="contents">Contents</TabsTrigger>
+          <TabsTrigger value="overview">
+            <BarChart3 className="h-3.5 w-3.5 mr-1" /> Overview
+          </TabsTrigger>
+          <TabsTrigger value="ai-analytics">
+            <Brain className="h-3.5 w-3.5 mr-1" /> AI Analytics
+          </TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="contents" className="space-y-3 mt-4">
+          {!storyPoints?.length ? (
+            <p className="text-sm text-muted-foreground">No content available yet.</p>
+          ) : (
+            storyPoints.map((sp, index) => (
+              <StoryPointCard
+                key={sp.id}
+                storyPoint={sp}
+                spaceId={space.id}
+                index={index}
+                total={storyPoints.length}
+                progress={progress?.storyPoints[sp.id]}
+              />
+            ))
+          )}
+        </TabsContent>
+
+        <TabsContent value="overview" className="space-y-4 mt-4">
+          <ModuleOverview storyPoints={storyPoints ?? []} progress={progress} />
+        </TabsContent>
+
+        <TabsContent value="ai-analytics" className="space-y-4 mt-4">
+          <AIAnalyticsSection
+            storyPoints={storyPoints ?? []}
+            progress={progress}
+            overallPercentage={overallPercentage}
+          />
+        </TabsContent>
+      </Tabs>
+
+      {/* Reviews */}
+      {currentTenantId && spaceId && (
+        <SpaceReviewSection
+          tenantId={currentTenantId}
+          spaceId={spaceId}
+          ratingAggregate={space.ratingAggregate}
+        />
+      )}
+    </div>
+  );
+}
+
+const typeIcons: Record<string, React.ReactNode> = {
+  standard: <BookOpen className="h-5 w-5 text-primary" />,
+  timed_test: <Clock className="h-5 w-5 text-destructive" />,
+  test: <ClipboardList className="h-5 w-5 text-destructive" />,
+  quiz: <Zap className="h-5 w-5 text-yellow-500" />,
+  practice: <Dumbbell className="h-5 w-5 text-emerald-500" />,
+};
+
+const typeLabels: Record<string, string> = {
+  standard: 'Learning',
+  timed_test: 'Timed Test',
+  test: 'Test',
+  quiz: 'Quiz',
+  practice: 'Practice',
+};
+
+function StoryPointCard({
+  storyPoint,
+  spaceId,
+  progress,
+}: {
+  storyPoint: StoryPoint;
+  spaceId: string;
+  index: number;
+  total: number;
+  progress?: StoryPointProgress;
+}) {
+  const isTest = storyPoint.type === 'timed_test' || storyPoint.type === 'test';
+  const isPractice = storyPoint.type === 'practice';
+  const isQuiz = storyPoint.type === 'quiz';
+  const percentage = progress?.percentage ?? 0;
+  const isCompleted = progress?.status === 'completed';
+
+  const linkBase = `/spaces/${spaceId}`;
+  const link = isTest
+    ? `${linkBase}/test/${storyPoint.id}`
+    : isPractice
+      ? `${linkBase}/practice/${storyPoint.id}`
+      : `${linkBase}/story-points/${storyPoint.id}`;
+
+  return (
+    <Link
+      to={link}
+      className="flex items-center gap-4 rounded-lg border bg-card p-4 hover:shadow-sm transition-shadow"
+    >
+      {/* Completion badge */}
+      <div className="flex-shrink-0">
+        {isCompleted ? (
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 dark:bg-emerald-900/30">
+            <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+          </div>
+        ) : (
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted">
+            {typeIcons[storyPoint.type] ?? typeIcons.standard}
+          </div>
+        )}
+      </div>
+
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2">
+          <h3 className="font-medium text-sm">{storyPoint.title}</h3>
+          <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+            {typeLabels[storyPoint.type] ?? storyPoint.type}
+          </span>
+        </div>
+        {storyPoint.description && (
+          <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">{storyPoint.description}</p>
+        )}
+        <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
+          {storyPoint.stats && (
+            <>
+              <span>{storyPoint.stats.totalItems} items</span>
+              <span>{storyPoint.stats.totalPoints} pts</span>
+            </>
+          )}
+          {storyPoint.assessmentConfig?.durationMinutes && (
+            <span>{storyPoint.assessmentConfig.durationMinutes} min</span>
+          )}
+          {storyPoint.difficulty && (
+            <span className="capitalize">{storyPoint.difficulty}</span>
+          )}
+        </div>
+        {/* Type-specific display */}
+        {isTest && (
+          <div className="mt-2">
+            {isCompleted ? (
+              <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+                <Award className="h-3 w-3" /> Completed — {percentage}%
+              </span>
+            ) : (
+              <span className="inline-flex items-center gap-1 text-xs font-medium text-primary">
+                <PlayCircle className="h-3 w-3" /> Start Test
+              </span>
+            )}
+          </div>
+        )}
+        {(storyPoint.type === 'standard' || isQuiz) && (
+          <div className="mt-2 max-w-xs">
+            <ProgressBar value={percentage} size="sm" showPercent={false} />
+          </div>
+        )}
+        {isPractice && storyPoint.stats && (
+          <p className="mt-1 text-xs text-muted-foreground">
+            {progress ? Math.round((progress.pointsEarned / (progress.totalPoints || 1)) * (storyPoint.stats.totalItems)) : 0}
+            /{storyPoint.stats.totalItems} solved
+          </p>
+        )}
+      </div>
+
+      {/* Points earned for this story point */}
+      {progress && progress.pointsEarned > 0 && (
+        <div className="flex-shrink-0 text-right">
+          <div className="text-sm font-bold">{progress.pointsEarned}</div>
+          <div className="text-[10px] text-muted-foreground">pts</div>
+        </div>
+      )}
+
+      <ChevronRight className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+    </Link>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Module Overview — question type analysis, difficulty breakdown
+// ---------------------------------------------------------------------------
+
+function ModuleOverview({
+  storyPoints,
+  progress,
+}: {
+  storyPoints: StoryPoint[];
+  progress: ReturnType<typeof useProgress>['data'];
+}) {
+  const typeCounts = useMemo(() => {
+    const counts: Record<string, { total: number; completed: number }> = {};
+    for (const sp of storyPoints) {
+      const label = typeLabels[sp.type] ?? sp.type;
+      if (!counts[label]) counts[label] = { total: 0, completed: 0 };
+      counts[label].total++;
+      if (progress?.storyPoints[sp.id]?.status === 'completed') {
+        counts[label].completed++;
+      }
+    }
+    return counts;
+  }, [storyPoints, progress]);
+
+  const difficultyCounts = useMemo(() => {
+    const counts: Record<string, number> = { easy: 0, medium: 0, hard: 0, expert: 0 };
+    for (const sp of storyPoints) {
+      if (sp.difficulty) counts[sp.difficulty] = (counts[sp.difficulty] ?? 0) + 1;
+    }
+    return counts;
+  }, [storyPoints]);
+
+  const totalItems = storyPoints.reduce((sum, sp) => sum + (sp.stats?.totalItems ?? 0), 0);
+  const totalPoints = storyPoints.reduce((sum, sp) => sum + (sp.stats?.totalPoints ?? 0), 0);
+
+  return (
+    <>
+      {/* Summary Stats */}
+      <div className="grid gap-3 sm:grid-cols-3">
+        <Card>
+          <CardContent className="p-4 text-center">
+            <p className="text-2xl font-bold">{storyPoints.length}</p>
+            <p className="text-xs text-muted-foreground">Modules</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4 text-center">
+            <p className="text-2xl font-bold">{totalItems}</p>
+            <p className="text-xs text-muted-foreground">Total Items</p>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="p-4 text-center">
+            <p className="text-2xl font-bold">{totalPoints}</p>
+            <p className="text-xs text-muted-foreground">Total Points</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Type Breakdown */}
+      <div className="rounded-lg border p-4">
+        <h3 className="text-sm font-semibold mb-3">Module Type Breakdown</h3>
+        <div className="space-y-2">
+          {Object.entries(typeCounts).map(([type, { total, completed }]) => (
+            <div key={type} className="flex items-center justify-between">
+              <span className="text-sm">{type}</span>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-muted-foreground">
+                  {completed}/{total} completed
+                </span>
+                <div className="h-2 w-24 rounded-full bg-muted overflow-hidden">
+                  <div
+                    className="h-full rounded-full bg-primary transition-all"
+                    style={{ width: `${total > 0 ? (completed / total) * 100 : 0}%` }}
+                  />
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Difficulty Distribution */}
+      <div className="rounded-lg border p-4">
+        <h3 className="text-sm font-semibold mb-3">Difficulty Distribution</h3>
+        <div className="flex items-end gap-3 h-24">
+          {(['easy', 'medium', 'hard', 'expert'] as const).map((level) => {
+            const count = difficultyCounts[level] ?? 0;
+            const maxCount = Math.max(...Object.values(difficultyCounts), 1);
+            const heightPct = (count / maxCount) * 100;
+            const colors: Record<string, string> = {
+              easy: 'bg-emerald-500',
+              medium: 'bg-yellow-500',
+              hard: 'bg-orange-500',
+              expert: 'bg-red-500',
+            };
+            return (
+              <div key={level} className="flex-1 flex flex-col items-center gap-1">
+                <span className="text-xs font-medium">{count}</span>
+                <div className="w-full rounded-t" style={{ height: `${Math.max(heightPct, 4)}%` }}>
+                  <div className={`w-full h-full rounded-t ${colors[level]}`} />
+                </div>
+                <span className="text-[10px] text-muted-foreground capitalize">{level}</span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// AI Analytics — dynamic insights based on progress
+// ---------------------------------------------------------------------------
+
+function AIAnalyticsSection({
+  storyPoints,
+  progress,
+  overallPercentage,
+}: {
+  storyPoints: StoryPoint[];
+  progress: ReturnType<typeof useProgress>['data'];
+  overallPercentage: number;
+}) {
+  const insights = useMemo(() => {
+    const result: { label: string; value: string; color: string }[] = [];
+
+    // Completion rate
+    const completed = storyPoints.filter(
+      (sp) => progress?.storyPoints[sp.id]?.status === 'completed',
+    ).length;
+    result.push({
+      label: 'Completion Rate',
+      value: `${storyPoints.length > 0 ? Math.round((completed / storyPoints.length) * 100) : 0}%`,
+      color: completed === storyPoints.length ? 'text-emerald-600' : 'text-primary',
+    });
+
+    // Average score
+    const scores = storyPoints
+      .map((sp) => progress?.storyPoints[sp.id])
+      .filter((p): p is StoryPointProgress => !!p && p.totalPoints > 0)
+      .map((p) => (p.pointsEarned / p.totalPoints) * 100);
+    const avgScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
+    result.push({
+      label: 'Avg Score',
+      value: `${avgScore}%`,
+      color: avgScore >= 80 ? 'text-emerald-600' : avgScore >= 50 ? 'text-yellow-600' : 'text-destructive',
+    });
+
+    // Weakest module
+    let weakest: { name: string; score: number } | null = null;
+    for (const sp of storyPoints) {
+      const p = progress?.storyPoints[sp.id];
+      if (p && p.totalPoints > 0) {
+        const score = (p.pointsEarned / p.totalPoints) * 100;
+        if (!weakest || score < weakest.score) {
+          weakest = { name: sp.title, score: Math.round(score) };
+        }
+      }
+    }
+    if (weakest) {
+      result.push({
+        label: 'Needs Attention',
+        value: `${weakest.name} (${weakest.score}%)`,
+        color: 'text-orange-600',
+      });
+    }
+
+    // Strongest module
+    let strongest: { name: string; score: number } | null = null;
+    for (const sp of storyPoints) {
+      const p = progress?.storyPoints[sp.id];
+      if (p && p.totalPoints > 0) {
+        const score = (p.pointsEarned / p.totalPoints) * 100;
+        if (!strongest || score > strongest.score) {
+          strongest = { name: sp.title, score: Math.round(score) };
+        }
+      }
+    }
+    if (strongest) {
+      result.push({
+        label: 'Strongest Area',
+        value: `${strongest.name} (${strongest.score}%)`,
+        color: 'text-emerald-600',
+      });
+    }
+
+    return result;
+  }, [storyPoints, progress]);
+
+  // Recommendations
+  const recommendations = useMemo(() => {
+    const recs: string[] = [];
+    const incomplete = storyPoints.filter(
+      (sp) => progress?.storyPoints[sp.id]?.status !== 'completed',
+    );
+
+    if (overallPercentage === 100) {
+      recs.push('Excellent work! You have completed all modules in this space.');
+    } else if (overallPercentage >= 75) {
+      recs.push(`Almost there! ${incomplete.length} module${incomplete.length > 1 ? 's' : ''} remaining.`);
+    } else if (overallPercentage >= 25) {
+      recs.push(`Good progress. Focus on completing the remaining ${incomplete.length} modules.`);
+    } else {
+      recs.push('Get started by working through the modules in order.');
+    }
+
+    // Suggest weakest areas
+    const weak = storyPoints
+      .filter((sp) => {
+        const p = progress?.storyPoints[sp.id];
+        return p && p.totalPoints > 0 && (p.pointsEarned / p.totalPoints) < 0.5;
+      })
+      .slice(0, 2);
+    if (weak.length > 0) {
+      recs.push(`Consider revisiting: ${weak.map((sp) => sp.title).join(', ')}`);
+    }
+
+    return recs;
+  }, [storyPoints, progress, overallPercentage]);
+
+  return (
+    <>
+      {/* Insights Grid */}
+      <div className="grid gap-3 sm:grid-cols-2">
+        {insights.map((insight) => (
+          <Card key={insight.label}>
+            <CardContent className="p-4">
+              <p className="text-xs text-muted-foreground">{insight.label}</p>
+              <p className={`text-lg font-bold mt-1 ${insight.color} truncate`}>
+                {insight.value}
+              </p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Per-module scores */}
+      <div className="rounded-lg border p-4">
+        <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
+          <Brain className="h-4 w-4 text-primary" /> Module Performance
+        </h3>
+        <div className="space-y-2">
+          {storyPoints.map((sp) => {
+            const p = progress?.storyPoints[sp.id];
+            const pct = p && p.totalPoints > 0 ? Math.round((p.pointsEarned / p.totalPoints) * 100) : 0;
+            const status = p?.status;
+            return (
+              <div key={sp.id} className="flex items-center gap-3">
+                <span className="text-sm flex-1 truncate">{sp.title}</span>
+                <span className={`text-xs font-medium ${
+                  status === 'completed' ? 'text-emerald-600' : 'text-muted-foreground'
+                }`}>
+                  {pct}%
+                </span>
+                <div className="h-2 w-20 rounded-full bg-muted overflow-hidden">
+                  <div
+                    className={`h-full rounded-full transition-all ${
+                      status === 'completed' ? 'bg-emerald-500' : 'bg-primary'
+                    }`}
+                    style={{ width: `${pct}%` }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Recommendations */}
+      {recommendations.length > 0 && (
+        <div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
+          <h3 className="text-sm font-semibold mb-2 flex items-center gap-2">
+            <Brain className="h-4 w-4 text-primary" /> AI Recommendations
+          </h3>
+          <ul className="space-y-1.5">
+            {recommendations.map((rec, i) => (
+              <li key={i} className="text-sm text-muted-foreground flex gap-2">
+                <span className="text-primary font-bold">·</span>
+                {rec}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </>
+  );
+}

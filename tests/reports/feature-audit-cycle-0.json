@@ -1,0 +1,155 @@
+{
+  "auditor": "app-feature-tester",
+  "timestamp": "2026-03-09T15:30:43.098Z",
+  "cycleNumber": 0,
+  "environment": {
+    "url": "http://localhost:4570",
+    "credentials": {
+      "email": "student.test@subhang.academy",
+      "schoolCode": "SUB001"
+    },
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "results": [
+    {
+      "id": "G4",
+      "category": "gamification",
+      "feature": "Leaderboard Filter",
+      "status": "partial",
+      "details": "Space filter dropdown not found",
+      "severity": "P3-cosmetic"
+    },
+    {
+      "id": "G5",
+      "category": "gamification",
+      "feature": "Study Planner",
+      "status": "partial",
+      "details": "Page loaded but heading is \"\"",
+      "severity": "P2-minor"
+    }
+  ],
+  "summary": {
+    "total": 2,
+    "working": 0,
+    "partial": 2,
+    "broken": 0,
+    "notTested": 0,
+    "passRate": "0%",
+    "criticalIssues": 0,
+    "majorIssues": 0
+  },
+  "categoryBreakdown": [
+    {
+      "category": "authentication",
+      "total": 0,
+      "working": 0,
+      "partial": 0,
+      "broken": 0,
+      "notTested": 0,
+      "passRate": "0%"
+    },
+    {
+      "category": "dashboard",
+      "total": 0,
+      "working": 0,
+      "partial": 0,
+      "broken": 0,
+      "notTested": 0,
+      "passRate": "0%"
+    },
+    {
+      "category": "learning-flow",
+      "total": 0,
+      "working": 0,
+      "partial": 0,
+      "broken": 0,
+      "notTested": 0,
+      "passRate": "0%"
+    },
+    {
+      "category": "question-types",
+      "total": 0,
+      "working": 0,
+      "partial": 0,
+      "broken": 0,
+      "notTested": 0,
+      "passRate": "0%"
+    },
+    {
+      "category": "practice-mode",
+      "total": 0,
+      "working": 0,
+      "partial": 0,
+      "broken": 0,
+      "notTested": 0,
+      "passRate": "0%"
+    },
+    {
+      "category": "timed-tests",
+      "total": 0,
+      "working": 0,
+      "partial": 0,
+      "broken": 0,
+      "notTested": 0,
+      "passRate": "0%"
+    },
+    {
+      "category": "results-analytics",
+      "total": 0,
+      "working": 0,
+      "partial": 0,
+      "broken": 0,
+      "notTested": 0,
+      "passRate": "0%"
+    },
+    {
+      "category": "gamification",
+      "total": 2,
+      "working": 0,
+      "partial": 2,
+      "broken": 0,
+      "notTested": 0,
+      "passRate": "0%"
+    },
+    {
+      "category": "auxiliary",
+      "total": 0,
+      "working": 0,
+      "partial": 0,
+      "broken": 0,
+      "notTested": 0,
+      "passRate": "0%"
+    },
+    {
+      "category": "consumer-b2c",
+      "total": 0,
+      "working": 0,
+      "partial": 0,
+      "broken": 0,
+      "notTested": 0,
+      "passRate": "0%"
+    },
+    {
+      "category": "navigation",
+      "total": 0,
+      "working": 0,
+      "partial": 0,
+      "broken": 0,
+      "notTested": 0,
+      "passRate": "0%"
+    },
+    {
+      "category": "error-states",
+      "total": 0,
+      "working": 0,
+      "partial": 0,
+      "broken": 0,
+      "notTested": 0,
+      "passRate": "0%"
+    }
+  ],
+  "blockedFeatures": []
+}

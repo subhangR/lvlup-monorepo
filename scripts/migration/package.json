@@ -1,0 +1,23 @@
+{
+  "name": "@levelup/migration-scripts",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Migration scripts for AutoGrade and LevelUp legacy data to unified /tenants/ structure",
+  "scripts": {
+    "build": "tsc --noEmit",
+    "migrate": "tsx src/run-migration.ts",
+    "migrate:autograde": "tsx src/migrate-autograde.ts",
+    "migrate:levelup": "tsx src/migrate-levelup.ts",
+    "migrate:users": "tsx src/migrate-users.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "firebase-admin": "^12.0.0",
+    "commander": "^12.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "tsx": "^4.7.0",
+    "@types/node": "^20.11.0"
+  }
+}

@@ -1,0 +1,161 @@
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { collection, getDocs, query, where, orderBy, limit, startAfter } from "firebase/firestore";
+import { getFirebaseServices } from "@levelup/shared-services";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Skeleton,
+  Button,
+  Badge,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@levelup/shared-ui";
+import { ChevronLeft, ChevronRight, ScrollText } from "lucide-react";
+
+interface AuditLogEntry {
+  id: string;
+  action: string;
+  actorEmail: string;
+  actorUid: string;
+  tenantId: string;
+  metadata: Record<string, unknown>;
+  createdAt: { seconds?: number; toDate?: () => Date };
+}
+
+const PAGE_SIZE = 20;
+
+const ACTION_LABELS: Record<string, string> = {
+  tenant_created: "Tenant Created",
+  tenant_updated: "Tenant Updated",
+  tenant_deactivated: "Tenant Deactivated",
+  tenant_reactivated: "Tenant Reactivated",
+  user_created: "User Created",
+  users_bulk_imported: "Users Bulk Imported",
+};
+
+function formatTimestamp(ts: AuditLogEntry["createdAt"]): string {
+  if (!ts) return "—";
+  const d = ts.toDate?.() ?? (ts.seconds ? new Date(ts.seconds * 1000) : null);
+  if (!d) return "—";
+  return d.toLocaleString(undefined, { month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" });
+}
+
+export function TenantAuditLogCard({ tenantId }: { tenantId: string }) {
+  const [actionFilter, setActionFilter] = useState<string>("all");
+  const [page, setPage] = useState(0);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["platform", "tenantAuditLog", tenantId, actionFilter, page],
+    queryFn: async () => {
+      const { db } = getFirebaseServices();
+      let q = query(
+        collection(db, "platformActivityLog"),
+        where("tenantId", "==", tenantId),
+        orderBy("createdAt", "desc"),
+      );
+
+      if (actionFilter !== "all") {
+        q = query(
+          collection(db, "platformActivityLog"),
+          where("tenantId", "==", tenantId),
+          where("action", "==", actionFilter),
+          orderBy("createdAt", "desc"),
+        );
+      }
+
+      q = query(q, limit(PAGE_SIZE + 1));
+
+      // For pagination beyond first page, we'd need cursors.
+      // For simplicity, fetch with offset via skip count
+      const snap = await getDocs(q);
+      const docs = snap.docs.map((d) => ({ id: d.id, ...d.data() }) as AuditLogEntry);
+      const hasMore = docs.length > PAGE_SIZE;
+      return {
+        entries: docs.slice(0, PAGE_SIZE),
+        hasMore,
+      };
+    },
+    staleTime: 30 * 1000,
+  });
+
+  return (
+    <Card>
+      <CardHeader className="pb-3">
+        <div className="flex items-center justify-between">
+          <CardTitle className="flex items-center gap-2 text-base">
+            <ScrollText className="h-4 w-4" />
+            Audit Log
+          </CardTitle>
+          <Select value={actionFilter} onValueChange={(v) => { setActionFilter(v); setPage(0); }}>
+            <SelectTrigger className="w-44 h-8 text-xs">
+              <SelectValue placeholder="All Actions" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">All Actions</SelectItem>
+              {Object.entries(ACTION_LABELS).map(([key, label]) => (
+                <SelectItem key={key} value={key}>{label}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+      </CardHeader>
+      <CardContent className="pt-0">
+        {isLoading ? (
+          <div className="space-y-3">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="flex items-center gap-3">
+                <Skeleton className="h-2 w-2 rounded-full" />
+                <div className="flex-1 space-y-1">
+                  <Skeleton className="h-3.5 w-3/4" />
+                  <Skeleton className="h-3 w-1/2" />
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : !data?.entries.length ? (
+          <div className="py-8 text-center">
+            <ScrollText className="mx-auto h-8 w-8 text-muted-foreground/50" />
+            <p className="mt-2 text-sm text-muted-foreground">No audit log entries yet</p>
+          </div>
+        ) : (
+          <>
+            <div className="space-y-0 divide-y divide-border">
+              {data.entries.map((entry) => (
+                <div key={entry.id} className="flex items-start gap-3 py-2.5">
+                  <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary/60" />
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <p className="text-sm font-medium">
+                        {ACTION_LABELS[entry.action] ?? entry.action}
+                      </p>
+                      <Badge variant="outline" className="text-[10px]">
+                        {entry.action.split("_")[0]}
+                      </Badge>
+                    </div>
+                    <p className="text-xs text-muted-foreground truncate">
+                      by {entry.actorEmail}
+                      {entry.metadata?.displayName ? ` — ${entry.metadata.displayName}` : ""}
+                      {entry.metadata?.role ? ` (${entry.metadata.role})` : ""}
+                    </p>
+                    <p className="text-xs text-muted-foreground">{formatTimestamp(entry.createdAt)}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {data.hasMore && (
+              <div className="mt-3 flex justify-center">
+                <p className="text-xs text-muted-foreground">Showing first {PAGE_SIZE} entries</p>
+              </div>
+            )}
+          </>
+        )}
+      </CardContent>
+    </Card>
+  );
+}

@@ -1,0 +1,184 @@
+{
+  "cycleNumber": 4,
+  "learner": "Behavioral Learner (tm_1773067969207_noxja982f)",
+  "timestamp": "2026-03-09T18:10:50.449Z",
+  "space": "Behavioral Interview Mastery",
+  "spaceId": "1AqFwKSf59FiIrqzaQ7i",
+  "environment": {
+    "url": "http://localhost:4570",
+    "credentials": {
+      "email": "student.test@subhang.academy",
+      "schoolCode": "SUB001"
+    },
+    "viewport": {
+      "width": 1280,
+      "height": 720
+    }
+  },
+  "testSummary": {
+    "totalChecks": 43,
+    "passed": 41,
+    "failed": 2,
+    "passRate": "95.3%",
+    "p0Issues": 0,
+    "p1Issues": 0,
+    "p2Issues": 2,
+    "p3Issues": 0
+  },
+  "workingFeatures": [
+    "L1: Login with school code + email works",
+    "L2: Spaces page loads (h1=\"My Spaces\")",
+    "L2: Behavioral Interview Space card visible (text=\"Behavioral Interview MasteryMaster behavioral interview tech\")",
+    "L3: Behavioral Space viewer has h1: \"Behavioral Interview Mastery\"",
+    "L3: Behavioral Space viewer shows 10 story point links",
+    "L3: Behavioral space page shows relevant behavioral/interview content",
+    "L4: STAR Method story point accessible: \"STAR Method & Storytelling Framework\"",
+    "CQ1: STAR Method content has framework-relevant terms (10/10): situation, task, action, result, STAR, storytelling, framework, interview, example, story",
+    "CQ1: STAR Method — examples/sample answers visible",
+    "CQ1: STAR Method has structured content (17 list items, 11 sub-headers)",
+    "UX1: STAR Method story point — breadcrumbs/back navigation visible",
+    "L4: Leadership & Influence story point accessible: \"Leadership & Influence\"",
+    "CQ2: Leadership content relevant to staff-engineer level (8/10)",
+    "L4: Conflict Resolution story point accessible: \"Conflict Resolution & Difficult Conversations\"",
+    "CQ3: Conflict Resolution content relevant (6/8)",
+    "L4: System Ownership & Technical Decision-Making accessible (h1: \"System Ownership & Technical Decision-Making\")",
+    "L4: Cross-Functional Collaboration accessible (h1: \"Cross-Functional Collaboration\")",
+    "L4: Failure, Recovery & Growth Mindset accessible (h1: \"Failure, Recovery & Growth Mindset\")",
+    "L4: Ambiguity & Prioritization accessible (h1: \"Ambiguity & Prioritization\")",
+    "L4: Staff+ Level Questions accessible (h1: \"Staff+ Level Questions\")",
+    "L4: Company-Specific FAANG Preparation accessible (h1: \"Company-Specific FAANG Preparation\")",
+    "P1: Mock Interview Practice story point accessible: \"Mock Interview Practice\"",
+    "P2: Practice mode — textarea/text input available for behavioral answers",
+    "P2: Text input accepts STAR story content",
+    "P2: Practice mode — choice-based options visible (radio=0, checkbox=4)",
+    "P1: Practice mode — Submit button visible",
+    "P1: Practice mode — AI evaluation/feedback visible after submit",
+    "P1: Next button visible after submit in practice mode",
+    "CQ4: Practice mode — STAR template guidance visible in content",
+    "P2: Ask AI Tutor button visible in practice mode",
+    "Q1: Behavioral Quiz story point accessible: \"Behavioral Interview Concepts Quiz\"",
+    "Q1: MCQ question type in behavioral quiz",
+    "Q1: MCAQ question type in behavioral quiz",
+    "Q1: True/False question type in behavioral quiz",
+    "Q1: Quiz submit/next button visible",
+    "T1: Behavioral Timed Assessment landing has h1: \"Behavioral Interview Timed Assessment\"",
+    "T3: Timed Assessment landing shows instructions/metadata",
+    "T2: Behavioral Timed Assessment has writing/textarea input",
+    "UX1: STAR Method story point responsive on mobile (375px) — h1=\"STAR Method & Storytelling Framework\"",
+    "UX2: Section/breadcrumb navigation visible in story point viewer",
+    "CQ5: STAR Method page has strong behavioral content (9/9)"
+  ],
+  "issues": [
+    {
+      "id": "BEH-C4-001",
+      "severity": "P2",
+      "category": "content",
+      "title": "Behavioral Space viewer shows only 10/12 story point links",
+      "details": "Expected 12, found 10"
+    },
+    {
+      "id": "BEH-C4-002",
+      "severity": "P2",
+      "category": "timed-assessment",
+      "title": "Start button not found on behavioral timed assessment landing",
+      "details": "At http://localhost:4570/spaces/1AqFwKSf59FiIrqzaQ7i/story-points/xBnumc8jTQje26POV6Lq"
+    }
+  ],
+  "contentAssessment": {
+    "storyPointsTested": 12,
+    "storyPointsAccessible": 12,
+    "totalStoryPoints": 12,
+    "starMethodContentFound": true,
+    "writingInputAvailable": true,
+    "aiEvaluationEnabled": true,
+    "storyTemplateGuidance": true,
+    "contentQualityNotes": [
+      "Space cards found: 5 — Behavioral Interview MasteryMaster behavioral interview tech | System DesignMaster the fundamentals of system design, cover | Low-Level Design & OOPMaster object-oriented design, SOLID p | Data Structures & AlgorithmsMaster data structures and algor | System DesignMaster the fundamentals of system design, cover",
+      "STAR Method h1: \"STAR Method & Storytelling Framework\"",
+      "STAR keywords found: situation, task, action, result, STAR, storytelling, framework, interview, example, story",
+      "STAR Method: list items=17, sub-headers=11",
+      "Leadership keywords found: leadership, influence, team, mentor, decision, stakeholder, senior, staff",
+      "Conflict keywords: conflict, disagreement, difficult, conversation, resolution, empathy",
+      "Behavioral content keywords on STAR page: situation, task, action, result, interview, behavioral, leadership, conflict, collaboration"
+    ]
+  },
+  "uxAssessment": {
+    "navigationWorking": true,
+    "loadTimesAcceptable": false,
+    "mobileResponsive": true,
+    "textRenderingSmooth": true,
+    "uxIssues": []
+  },
+  "practiceMode": {
+    "tested": true,
+    "textInputAvailable": true,
+    "submitWorks": true,
+    "aiEvaluationVisible": true,
+    "storyTemplateVisible": true,
+    "hintsVisible": false,
+    "modelAnswerVisible": false,
+    "notes": [
+      "Mock Interview: h1=\"Mock Interview Practice\", textareas=4, submit=true"
+    ]
+  },
+  "quizMode": {
+    "tested": true,
+    "questionTypesFound": [
+      "MCQ",
+      "MCAQ",
+      "TrueFalse"
+    ],
+    "resultsDisplayed": false,
+    "submitWorks": true,
+    "notes": [
+      "Quiz: h1=\"Behavioral Interview Concepts Quiz\", types=[MCQ,MCAQ,TrueFalse], mcq=20, mcaq=4"
+    ]
+  },
+  "timedAssessment": {
+    "tested": true,
+    "h1Present": true,
+    "timerVisible": false,
+    "startButtonVisible": false,
+    "writingInputAvailable": true,
+    "autoSubmit": null,
+    "analyticsShown": false,
+    "notes": [
+      "Timed test: h1=\"Behavioral Interview Timed Assessment\", timer=false, startBtn=false, writing=true"
+    ]
+  },
+  "learningEffectiveness": {
+    "score": 9,
+    "notes": "41 working features, 2 total issues (0 P0, 0 P1, 2 P2, 0 P3). Content accessible: 12/12 story points."
+  },
+  "rawObservations": [
+    "Auth state saved to cache",
+    "Spaces page h1: \"My Spaces\"",
+    "Space cards found: 5 — Behavioral Interview MasteryMaster behavioral interview tech | System DesignMaster the fundamentals of system design, cover | Low-Level Design & OOPMaster object-oriented design, SOLID p | Data Structures & AlgorithmsMaster data structures and algor | System DesignMaster the fundamentals of system design, cover",
+    "Behavioral Space viewer h1: \"Behavioral Interview Mastery\" (3165ms)",
+    "Story point links in space viewer: 10",
+    "STAR Method h1: \"STAR Method & Storytelling Framework\"",
+    "STAR keywords found: situation, task, action, result, STAR, storytelling, framework, interview, example, story",
+    "STAR Method: list items=17, sub-headers=11",
+    "Leadership h1: \"Leadership & Influence\"",
+    "Leadership keywords found: leadership, influence, team, mentor, decision, stakeholder, senior, staff",
+    "Conflict Resolution h1: \"Conflict Resolution & Difficult Conversations\"",
+    "Conflict keywords: conflict, disagreement, difficult, conversation, resolution, empathy",
+    "Quick check System Ownership & Technical Decision-Making: h1=\"System Ownership & Technical Decision-Making\"",
+    "Quick check Cross-Functional Collaboration: h1=\"Cross-Functional Collaboration\"",
+    "Quick check Failure, Recovery & Growth Mindset: h1=\"Failure, Recovery & Growth Mindset\"",
+    "Quick check Ambiguity & Prioritization: h1=\"Ambiguity & Prioritization\"",
+    "Quick check Staff+ Level Questions: h1=\"Staff+ Level Questions\"",
+    "Quick check Company-Specific FAANG Preparation: h1=\"Company-Specific FAANG Preparation\"",
+    "Story points accessible so far: 9/9",
+    "Mock Interview Practice h1: \"Mock Interview Practice\"",
+    "Text inputs: textarea=4, text=2",
+    "Practice answer options: radio=0, checkbox=4, textarea=4",
+    "Submit button: visible=true",
+    "Behavioral Quiz h1: \"Behavioral Interview Concepts Quiz\"",
+    "Quiz question types: MCQ=20, MCAQ=4, T/F=4, FreeText=0",
+    "Behavioral Timed Assessment h1: \"Behavioral Interview Timed Assessment\"",
+    "Timer elements: 0",
+    "Timer not visible on landing — may appear after starting test",
+    "Behavioral content keywords on STAR page: situation, task, action, result, interview, behavioral, leadership, conflict, collaboration"
+  ]
+}

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Hexagonal gear with teeth -->
+  <path d="M12 2l3.5 2v4L12 10 8.5 8V4z"/>
+  <path d="M12 22l-3.5-2v-4L12 14l3.5 2v4z"/>
+  <path d="M2.5 8.5L6 6.5l3.5 2v4L6 14.5l-3.5-2z"/>
+  <path d="M21.5 8.5L18 6.5l-3.5 2v4L18 14.5l3.5-2z"/>
+  <!-- Center circle -->
+  <circle cx="12" cy="12" r="2.5"/>
+</svg>

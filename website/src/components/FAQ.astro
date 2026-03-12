@@ -1,0 +1,109 @@
+---
+const faqs = [
+  {
+    question: 'What is Auto-LevelUp?',
+    answer: 'Auto-LevelUp is an AI education platform built for schools. It has two products that work together: LvlUp Spaces gives every student a personalised AI tutor and adaptive learning path. AutoGrade lets teachers scan handwritten exams with any phone and get fully graded, feedback-rich reports in minutes. Schools, teachers, students, and parents each get their own dashboard — all connected in real time.',
+  },
+  {
+    question: 'How does AutoGrade work?',
+    answer: 'A teacher photographs answer sheets using any smartphone. The AI reads the handwriting, maps each answer to the right question, and grades everything against the teacher\'s rubric — all at once, for the whole class. Every student gets a detailed report showing where marks were earned and where to improve. Teachers can review and override any grade with one click. The whole process takes about 8 minutes for a class of 40.',
+  },
+  {
+    question: 'Will this work for my school, regardless of size?',
+    answer: 'Yes. Auto-LevelUp works for a single classroom or an entire school district. Each school\'s data is fully isolated and secure. Whether you have 30 students or 3,000, the platform scales with you — and every school gets its own branding, settings, and admin controls.',
+  },
+  {
+    question: 'How does the student experience work?',
+    answer: 'Students earn XP for completing lessons, maintaining streaks, and hitting learning goals. They progress through achievement tiers — from Bronze to Diamond — and see their rank on weekly leaderboards. The AI tutor is available 24/7 to help with questions, and the difficulty adjusts automatically so every student is appropriately challenged.',
+  },
+  {
+    question: 'Can parents see how their child is doing?',
+    answer: 'Yes. Parents get real-time alerts when exam scores drop or when a child hasn\'t been active. They can see strengths, weak topics, and specific AI recommendations — not just a number on a page. Downloadable PDF progress reports make it easy to prepare for tutor sessions or parent-teacher meetings.',
+  },
+  {
+    question: 'How is student data protected?',
+    answer: 'Every school\'s data is fully isolated — no other institution can access it. All data is encrypted, and staff access is controlled through granular permissions. Schools bring their own AI credentials, so usage costs stay on their own billing account. We never sell student data.',
+  },
+  {
+    question: 'Does the AI replace teachers?',
+    answer: 'No. The AI handles the repetitive work — grading, flagging at-risk students, adjusting difficulty — so teachers can focus on the work that matters: teaching, mentoring, and making judgment calls. Teachers always have the final word. Every AI grade can be reviewed and overridden with a documented reason.',
+  },
+  {
+    question: 'How do we get started?',
+    answer: 'Book a 30-minute demo and we\'ll walk you through the platform using your school\'s context. From there, setup takes under an hour: create your school profile, import your users with a CSV, and your teachers are ready to build their first learning space or grade their first exam.',
+  },
+];
+---
+
+<section id="faq" class="bg-muted/30 py-20 sm:py-28">
+  <div class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+    <div class="text-center scroll-reveal">
+      <div class="mb-4 inline-flex rounded-full bg-info/10 px-4 py-1 text-sm font-medium text-info">
+        Got Questions?
+      </div>
+      <h2 class="section-heading">Frequently Asked Questions</h2>
+      <p class="section-subheading">
+        Everything you need to know about Auto-LevelUp.
+      </p>
+    </div>
+
+    <div class="mt-12 space-y-3">
+      {faqs.map((faq, i) => (
+        <div
+          class="scroll-reveal faq-item rounded-xl border border-border bg-card overflow-hidden"
+          style={`transition-delay: ${i * 50}ms`}
+        >
+          <button
+            class="faq-trigger flex w-full items-center justify-between px-6 py-4 text-left transition-colors hover:bg-accent/50"
+            aria-expanded="false"
+            aria-controls={`faq-answer-${i}`}
+            id={`faq-trigger-${i}`}
+          >
+            <span class="pr-4 text-sm font-semibold">{faq.question}</span>
+            <svg class="faq-chevron h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div
+            class="faq-content hidden px-6 pb-4"
+            id={`faq-answer-${i}`}
+            role="region"
+            aria-labelledby={`faq-trigger-${i}`}
+          >
+            <p class="text-sm leading-relaxed text-muted-foreground">{faq.answer}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  function initFaq() {
+    document.querySelectorAll('.faq-trigger').forEach((trigger) => {
+      trigger.addEventListener('click', () => {
+        const item = trigger.closest('.faq-item')!;
+        const content = item.querySelector('.faq-content')!;
+        const chevron = item.querySelector('.faq-chevron')!;
+        const isOpen = trigger.getAttribute('aria-expanded') === 'true';
+
+        // Close all others
+        document.querySelectorAll('.faq-item').forEach((otherItem) => {
+          if (otherItem !== item) {
+            otherItem.querySelector('.faq-content')!.classList.add('hidden');
+            otherItem.querySelector('.faq-trigger')!.setAttribute('aria-expanded', 'false');
+            otherItem.querySelector('.faq-chevron')!.classList.remove('rotate-180');
+          }
+        });
+
+        // Toggle current
+        content.classList.toggle('hidden', isOpen);
+        trigger.setAttribute('aria-expanded', String(!isOpen));
+        chevron.classList.toggle('rotate-180', !isOpen);
+      });
+    });
+  }
+
+  initFaq();
+  document.addEventListener('astro:after-swap', initFaq);
+</script>
