@@ -3,134 +3,154 @@
 ---
 
 <section class="relative overflow-hidden pt-24 pb-16 sm:pt-32 sm:pb-24 lg:pt-40 lg:pb-32">
-  <!-- Animated gradient background -->
-  <div class="absolute inset-0 -z-10">
-    <div
-      class="absolute inset-0 animate-gradient-shift bg-gradient-to-br from-primary/5 via-accent/5 to-info/10"
-      style="background-size: 200% 200%"
-    ></div>
-    <div class="absolute top-20 -left-20 h-72 w-72 rounded-full bg-primary/10 blur-3xl"></div>
-    <div class="absolute bottom-20 -right-20 h-72 w-72 rounded-full bg-info/10 blur-3xl"></div>
-    <div class="absolute top-1/2 left-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/5 blur-3xl"></div>
-  </div>
+  <!-- Dot-grid background -->
+  <div class="absolute inset-0 -z-10 hero-dot-grid"></div>
+  <!-- Top fade -->
+  <div class="absolute inset-x-0 top-0 -z-10 h-40 bg-gradient-to-b from-background to-transparent"></div>
+  <!-- Bottom fade -->
+  <div class="absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-t from-background to-transparent"></div>
+  <!-- Single accent glow -->
+  <div class="absolute top-1/3 left-1/2 -z-10 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-primary/8 blur-[100px]"></div>
 
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="text-center">
       <!-- Badge -->
-      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm font-medium text-primary">
-        <span class="relative flex h-2 w-2">
-          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/75"></span>
+      <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/8 px-4 py-1.5 text-sm font-semibold text-primary">
+        <svg class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
+        </svg>
+        AI-Powered Education Platform
+        <span class="relative flex h-2 w-2 shrink-0">
+          <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary/60"></span>
           <span class="relative inline-flex h-2 w-2 rounded-full bg-primary"></span>
         </span>
-        AI-Powered Education Platform
       </div>
 
       <!-- Heading -->
       <h1 class="mx-auto max-w-4xl text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl">
         Every Student Deserves
-        <span class="relative whitespace-nowrap">
-          <span class="hero-gradient-text relative bg-gradient-to-r from-primary via-info to-primary bg-[length:200%_auto] bg-clip-text text-transparent">
-            to Level Up
-          </span>
+        <br />
+        <span class="hero-gradient-text bg-gradient-to-r from-primary via-blue-400 to-primary bg-[length:200%_auto] bg-clip-text text-transparent">
+          to Level Up
         </span>
       </h1>
 
       <!-- Subtitle -->
       <p class="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground sm:text-xl">
         Auto-LevelUp gives every student a personalized AI tutor and adaptive learning path.
-        AutoGrade turns handwritten exam papers into fully graded, feedback-rich reports in 8 minutes.
-        One platform. Built for schools.
+        AutoGrade turns handwritten exam papers into fully graded reports in <strong class="font-semibold text-foreground">8 minutes</strong>.
       </p>
 
       <!-- CTA buttons -->
       <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+        <!-- Primary CTA -->
         <a
           href="/demo"
-          class="btn-primary px-8 py-4 text-base shadow-lg shadow-primary/25"
+          class="hero-cta-primary inline-flex items-center justify-center gap-2.5 rounded-xl bg-gray-900 px-8 py-4 text-base font-bold text-white shadow-lg transition-all duration-200 hover:bg-gray-800 hover:-translate-y-0.5 hover:shadow-xl active:translate-y-0"
         >
-          Book a Demo
-          <svg class="ml-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <svg class="h-4 w-4 shrink-0 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" />
+          </svg>
+          Book a Free Demo
+          <svg class="h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
           </svg>
         </a>
-        <a href="#how-it-works" class="btn-secondary px-8 py-4 text-base">
+
+        <!-- Secondary CTA -->
+        <a
+          href="#how-it-works"
+          class="inline-flex items-center justify-center gap-2 rounded-xl border border-border bg-white/80 px-8 py-4 text-base font-semibold text-gray-700 backdrop-blur-sm shadow-sm transition-all duration-150 hover:border-gray-300 hover:bg-white hover:text-gray-900 active:scale-[0.98]"
+        >
           See How It Works
+          <svg class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+          </svg>
         </a>
       </div>
 
+      <!-- Feature pills -->
+      <div class="mt-8 flex flex-wrap items-center justify-center gap-2.5">
+        {[
+          { icon: '⚡', text: '8-min class grading' },
+          { icon: '🤖', text: '24/7 AI tutor' },
+          { icon: '📊', text: 'Real-time parent alerts' },
+          { icon: '🏆', text: 'XP & leaderboards' },
+          { icon: '🔒', text: 'Data isolated per school' },
+        ].map((pill) => (
+          <span class="inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium text-muted-foreground shadow-sm">
+            <span aria-hidden="true">{pill.icon}</span>
+            {pill.text}
+          </span>
+        ))}
+      </div>
+
       <!-- Social proof -->
-      <div class="mt-12 flex flex-col items-center gap-6 sm:flex-row sm:justify-center">
+      <div class="mt-10 flex flex-col items-center gap-5 sm:flex-row sm:justify-center">
         <div class="flex -space-x-2">
-          {[1, 2, 3, 4, 5].map((i) => (
-            <div class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-background bg-gradient-to-br from-primary/80 to-info/80 text-xs font-bold text-white">
-              {['SK', 'MJ', 'AR', 'LP', 'TC'][i - 1]}
+          {[['SK','from-violet-500 to-purple-600'], ['MJ','from-blue-500 to-cyan-500'], ['AR','from-emerald-500 to-teal-500'], ['LP','from-orange-400 to-rose-500'], ['TC','from-primary to-blue-400']].map(([initials, grad]) => (
+            <div class={`flex h-9 w-9 items-center justify-center rounded-full border-2 border-background bg-gradient-to-br ${grad} text-[10px] font-bold text-white shadow-sm`}>
+              {initials}
             </div>
           ))}
         </div>
-        <div class="text-sm text-muted-foreground">
-          <span class="font-semibold text-foreground">Trusted by</span> schools across India
-        </div>
-        <div class="flex items-center gap-1">
-          {[1, 2, 3, 4, 5].map(() => (
-            <svg class="h-4 w-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-            </svg>
-          ))}
-          <span class="ml-1 text-sm font-medium text-muted-foreground">Loved by educators</span>
+        <div class="flex items-center gap-3 text-sm">
+          <div class="flex items-center gap-1">
+            {[1,2,3,4,5].map(() => (
+              <svg class="h-3.5 w-3.5 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+            ))}
+          </div>
+          <span class="text-muted-foreground"><span class="font-semibold text-foreground">Trusted by schools</span> across India</span>
         </div>
       </div>
 
-      <!-- Product preview - High-fidelity mockup -->
+      <!-- Product preview -->
       <div class="mt-16 scroll-reveal">
         <div class="hero-mockup relative mx-auto max-w-5xl">
-          <div class="absolute -inset-4 rounded-2xl bg-gradient-to-r from-primary/20 via-info/20 to-primary/20 blur-2xl"></div>
-          <div class="relative overflow-hidden rounded-xl border border-border bg-card shadow-2xl transition-transform duration-500" style="perspective: 1000px;">
+          <!-- Glow ring -->
+          <div class="absolute -inset-px rounded-2xl bg-gradient-to-r from-primary/30 via-blue-400/20 to-primary/30 blur-xl opacity-70"></div>
+          <div class="relative overflow-hidden rounded-xl border border-border/80 bg-card shadow-2xl ring-1 ring-border/40">
             <!-- Browser chrome -->
-            <div class="bg-muted/50 border-b border-border p-1">
-              <div class="flex items-center gap-1.5 px-3 py-2">
-                <div class="h-3 w-3 rounded-full bg-red-400/70"></div>
-                <div class="h-3 w-3 rounded-full bg-yellow-400/70"></div>
-                <div class="h-3 w-3 rounded-full bg-green-400/70"></div>
-                <div class="ml-3 flex flex-1 items-center rounded-md bg-background/60 px-3 py-1">
-                  <svg class="mr-2 h-3 w-3 text-muted-foreground/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <div class="border-b border-border bg-muted/40 px-4 py-2.5">
+              <div class="flex items-center gap-1.5">
+                <div class="h-2.5 w-2.5 rounded-full bg-red-400/80"></div>
+                <div class="h-2.5 w-2.5 rounded-full bg-yellow-400/80"></div>
+                <div class="h-2.5 w-2.5 rounded-full bg-green-400/80"></div>
+                <div class="ml-3 flex flex-1 items-center rounded-md bg-background/50 px-3 py-1 ring-1 ring-border/30">
+                  <svg class="mr-2 h-2.5 w-2.5 text-muted-foreground/50" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                   </svg>
-                  <span class="text-xs text-muted-foreground/70">app.autolevelup.com/dashboard</span>
+                  <span class="text-[11px] text-muted-foreground/60">app.autolevelup.com/dashboard</span>
                 </div>
               </div>
             </div>
             <!-- Dashboard content -->
-            <div class="aspect-[16/9] bg-gradient-to-br from-slate-50 to-slate-100 p-4 sm:p-6 lg:p-8">
+            <div class="aspect-[16/9] bg-gradient-to-br from-slate-50 to-slate-100/80 p-4 sm:p-6 lg:p-8">
               <div class="grid h-full grid-cols-12 gap-3 sm:gap-4">
                 <!-- Sidebar -->
-                <div class="col-span-3 sm:col-span-2 rounded-lg bg-white shadow-sm p-2 sm:p-3">
+                <div class="col-span-3 sm:col-span-2 rounded-lg bg-white shadow-sm p-2 sm:p-3 border border-slate-100">
                   <div class="mb-4 flex items-center gap-1.5">
-                    <div class="h-5 w-5 rounded bg-primary/20 flex items-center justify-center">
-                      <div class="h-2.5 w-2.5 rounded-sm bg-primary/60"></div>
+                    <div class="h-5 w-5 rounded-md bg-primary flex items-center justify-center">
+                      <svg class="h-3 w-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                      </svg>
                     </div>
-                    <span class="hidden sm:block text-[10px] font-semibold text-slate-700">LevelUp</span>
+                    <span class="hidden sm:block text-[10px] font-bold text-slate-800">LevelUp</span>
                   </div>
-                  <div class="space-y-1.5">
-                    <div class="flex items-center gap-1.5 rounded-md bg-primary/10 px-2 py-1.5">
-                      <div class="h-3 w-3 rounded bg-primary/30"></div>
-                      <span class="hidden sm:block text-[9px] font-medium text-primary">Dashboard</span>
-                    </div>
-                    <div class="flex items-center gap-1.5 rounded-md px-2 py-1.5">
-                      <div class="h-3 w-3 rounded bg-slate-200"></div>
-                      <span class="hidden sm:block text-[9px] text-slate-500">Students</span>
-                    </div>
-                    <div class="flex items-center gap-1.5 rounded-md px-2 py-1.5">
-                      <div class="h-3 w-3 rounded bg-slate-200"></div>
-                      <span class="hidden sm:block text-[9px] text-slate-500">Assignments</span>
-                    </div>
-                    <div class="flex items-center gap-1.5 rounded-md px-2 py-1.5">
-                      <div class="h-3 w-3 rounded bg-slate-200"></div>
-                      <span class="hidden sm:block text-[9px] text-slate-500">Grades</span>
-                    </div>
-                    <div class="flex items-center gap-1.5 rounded-md px-2 py-1.5">
-                      <div class="h-3 w-3 rounded bg-slate-200"></div>
-                      <span class="hidden sm:block text-[9px] text-slate-500">Analytics</span>
-                    </div>
+                  <div class="space-y-1">
+                    {[
+                      { label: 'Dashboard', active: true },
+                      { label: 'Students', active: false },
+                      { label: 'Grades', active: false },
+                      { label: 'Analytics', active: false },
+                    ].map((item) => (
+                      <div class={`flex items-center gap-1.5 rounded-md px-2 py-1.5 ${item.active ? 'bg-primary/10' : ''}`}>
+                        <div class={`h-2.5 w-2.5 rounded ${item.active ? 'bg-primary/50' : 'bg-slate-200'}`}></div>
+                        <span class={`hidden sm:block text-[9px] font-medium ${item.active ? 'text-primary' : 'text-slate-400'}`}>{item.label}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
                 <!-- Main content -->
@@ -138,79 +158,60 @@
                   <!-- Header row -->
                   <div class="flex items-center justify-between">
                     <div>
-                      <div class="text-[10px] sm:text-xs font-semibold text-slate-800">Good morning, Ms. Torres</div>
-                      <div class="text-[8px] sm:text-[10px] text-slate-500">Here's your class overview</div>
+                      <div class="text-[10px] sm:text-xs font-bold text-slate-800">Good morning, Ms. Torres 👋</div>
+                      <div class="text-[8px] sm:text-[10px] text-slate-400">Here's your class overview for today</div>
                     </div>
                     <div class="hidden sm:flex items-center gap-2">
-                      <div class="rounded-md bg-primary/10 px-2 py-1 text-[9px] font-medium text-primary">+ New Assignment</div>
+                      <div class="rounded-md bg-primary px-2.5 py-1 text-[9px] font-semibold text-white shadow-sm">+ New Assignment</div>
                     </div>
                   </div>
                   <!-- Metric cards -->
                   <div class="grid grid-cols-4 gap-2 sm:gap-3">
-                    <div class="rounded-lg bg-white shadow-sm p-2 sm:p-3">
-                      <div class="text-[8px] sm:text-[10px] text-slate-500">Total Students</div>
-                      <div class="text-sm sm:text-lg font-bold text-slate-800">127</div>
-                      <div class="text-[8px] text-success">+12 this month</div>
-                    </div>
-                    <div class="rounded-lg bg-white shadow-sm p-2 sm:p-3">
-                      <div class="text-[8px] sm:text-[10px] text-slate-500">Avg. Grade</div>
-                      <div class="text-sm sm:text-lg font-bold text-success">B+</div>
-                      <div class="text-[8px] text-success">+5% improvement</div>
-                    </div>
-                    <div class="rounded-lg bg-white shadow-sm p-2 sm:p-3">
-                      <div class="text-[8px] sm:text-[10px] text-slate-500">AutoGraded</div>
-                      <div class="text-sm sm:text-lg font-bold text-primary">348</div>
-                      <div class="text-[8px] text-slate-400">this semester</div>
-                    </div>
-                    <div class="rounded-lg bg-white shadow-sm p-2 sm:p-3">
-                      <div class="text-[8px] sm:text-[10px] text-slate-500">XP Leaders</div>
-                      <div class="text-sm sm:text-lg font-bold text-warning">Gold</div>
-                      <div class="text-[8px] text-warning">top tier</div>
-                    </div>
+                    {[
+                      { label: 'Students', value: '127', sub: '+12 this month', subColor: 'text-emerald-500' },
+                      { label: 'Avg. Grade', value: 'B+', sub: '+5% improvement', subColor: 'text-emerald-500' },
+                      { label: 'AutoGraded', value: '348', sub: 'this semester', subColor: 'text-slate-400' },
+                      { label: 'XP Leaders', value: '🥇', sub: 'Gold tier active', subColor: 'text-amber-500' },
+                    ].map((card) => (
+                      <div class="rounded-lg bg-white shadow-sm border border-slate-100 p-2 sm:p-3">
+                        <div class="text-[8px] sm:text-[10px] text-slate-400">{card.label}</div>
+                        <div class="text-sm sm:text-lg font-bold text-slate-800">{card.value}</div>
+                        <div class={`text-[8px] ${card.subColor}`}>{card.sub}</div>
+                      </div>
+                    ))}
                   </div>
                   <!-- Charts row -->
-                  <div class="grid grid-cols-3 gap-2 sm:gap-3 flex-1">
-                    <div class="col-span-2 rounded-lg bg-white shadow-sm p-2 sm:p-3">
-                      <div class="mb-2 text-[9px] sm:text-[10px] font-semibold text-slate-700">Grade Distribution</div>
+                  <div class="grid grid-cols-3 gap-2 sm:gap-3">
+                    <div class="col-span-2 rounded-lg bg-white shadow-sm border border-slate-100 p-2 sm:p-3">
+                      <div class="mb-2 text-[9px] sm:text-[10px] font-semibold text-slate-600">Weekly Engagement</div>
                       <div class="flex items-end gap-1 sm:gap-1.5 h-16 sm:h-20">
                         {[
-                          { h: 35, label: 'Mon', color: 'bg-primary/60' },
-                          { h: 55, label: 'Tue', color: 'bg-primary/70' },
-                          { h: 30, label: 'Wed', color: 'bg-primary/50' },
-                          { h: 70, label: 'Thu', color: 'bg-primary/80' },
-                          { h: 45, label: 'Fri', color: 'bg-primary/60' },
-                          { h: 60, label: 'Sat', color: 'bg-info/60' },
-                          { h: 80, label: 'Sun', color: 'bg-primary' },
-                        ].map((bar) => (
+                          { h: 40, color: 'bg-primary/40' },
+                          { h: 60, color: 'bg-primary/55' },
+                          { h: 35, color: 'bg-primary/40' },
+                          { h: 75, color: 'bg-primary/70' },
+                          { h: 50, color: 'bg-primary/50' },
+                          { h: 65, color: 'bg-primary/60' },
+                          { h: 85, color: 'bg-primary' },
+                        ].map((bar, i) => (
                           <div class="flex flex-1 flex-col items-center gap-0.5">
-                            <div class={`w-full rounded-t ${bar.color}`} style={`height: ${bar.h}%`}></div>
-                            <span class="text-[7px] text-slate-400">{bar.label}</span>
+                            <div class={`w-full rounded-t-sm ${bar.color} transition-all`} style={`height: ${bar.h}%`}></div>
+                            <span class="text-[6px] text-slate-300">{['M','T','W','T','F','S','S'][i]}</span>
                           </div>
                         ))}
                       </div>
                     </div>
-                    <div class="rounded-lg bg-white shadow-sm p-2 sm:p-3">
-                      <div class="mb-2 text-[9px] sm:text-[10px] font-semibold text-slate-700">Completion</div>
+                    <div class="rounded-lg bg-white shadow-sm border border-slate-100 p-2 sm:p-3">
+                      <div class="mb-1 text-[9px] sm:text-[10px] font-semibold text-slate-600">Completion</div>
                       <div class="flex items-center justify-center py-1">
-                        <div class="relative h-16 w-16 sm:h-20 sm:w-20">
+                        <div class="relative h-14 w-14 sm:h-18 sm:w-18">
                           <svg class="h-full w-full -rotate-90" viewBox="0 0 36 36">
-                            <path
-                              d="M18 2.0845a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                              fill="none"
-                              stroke="#e5e7eb"
-                              stroke-width="3"
-                            />
-                            <path
-                              d="M18 2.0845a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
-                              fill="none"
-                              stroke="hsl(142.1, 76.2%, 36.3%)"
-                              stroke-width="3"
-                              stroke-dasharray="87, 100"
-                              stroke-linecap="round"
-                            />
+                            <path d="M18 2.0845a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#f1f5f9" stroke-width="3.5" />
+                            <path d="M18 2.0845a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="hsl(142.1, 76.2%, 36.3%)" stroke-width="3.5" stroke-dasharray="87, 100" stroke-linecap="round" />
                           </svg>
-                          <div class="absolute inset-0 flex items-center justify-center">
-                            <span class="text-xs sm:text-sm font-bold text-success">87%</span>
+                          <div class="absolute inset-0 flex flex-col items-center justify-center">
+                            <span class="text-[10px] sm:text-xs font-bold text-emerald-600">87%</span>
+                            <span class="text-[6px] text-slate-400">done</span>
                           </div>
                         </div>
                       </div>
@@ -227,14 +228,19 @@
 </section>
 
 <style>
+  .hero-dot-grid {
+    background-image: radial-gradient(hsl(var(--primary) / 0.12) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
   .hero-gradient-text {
     animation: gradient-shift 6s ease infinite;
     background-size: 200% auto;
   }
 
   @keyframes gradient-shift {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
+    0%, 100% { background-position: 0% center; }
+    50% { background-position: 100% center; }
   }
 
   .hero-mockup {
@@ -246,12 +252,18 @@
     50% { transform: translateY(-8px); }
   }
 
+  .hero-cta-primary {
+    animation: hero-cta-glow 2.8s ease-in-out infinite;
+  }
+
+  @keyframes hero-cta-glow {
+    0%, 100% { box-shadow: 0 4px 24px -4px rgba(15,23,42,0.35), 0 0 0 0 rgba(15,23,42,0); }
+    50%       { box-shadow: 0 4px 24px -4px rgba(15,23,42,0.35), 0 0 0 6px rgba(15,23,42,0.12); }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .hero-gradient-text {
-      animation: none;
-    }
-    .hero-mockup {
-      animation: none;
-    }
+    .hero-gradient-text,
+    .hero-mockup,
+    .hero-cta-primary { animation: none; }
   }
 </style>

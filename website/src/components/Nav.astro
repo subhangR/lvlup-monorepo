@@ -5,14 +5,19 @@ interface NavLink {
 }
 
 const links: NavLink[] = [
-  { label: 'Features', href: '/#features' },
+  { label: 'Features',     href: '/#features' },
   { label: 'How It Works', href: '/#how-it-works' },
-  { label: 'Pricing', href: '/pricing' },
-  { label: 'FAQ', href: '/#faq' },
-  { label: 'Contact', href: '/contact' },
+  { label: 'Pricing',      href: '/pricing' },
+  { label: 'FAQ',          href: '/#faq' },
+  { label: 'Contact',      href: '/contact' },
 ];
 
 const currentPath = Astro.url.pathname;
+
+function isActive(href: string) {
+  if (href.startsWith('/#')) return false; // hash links can't be detected server-side
+  return href === currentPath;
+}
 ---
 
 <nav
@@ -24,83 +29,168 @@ const currentPath = Astro.url.pathname;
   <!-- Scroll progress bar -->
   <div
     id="scroll-progress"
-    class="absolute top-0 left-0 h-0.5 bg-primary transition-all duration-150"
+    class="absolute top-0 left-0 h-[2px] bg-gradient-to-r from-primary via-blue-400 to-primary transition-all duration-150"
     style="width: 0%"
     aria-hidden="true"
   ></div>
 
-  <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+  <div class="mx-auto flex max-w-7xl items-center justify-between px-4 py-3.5 sm:px-6 lg:px-8">
+
     <!-- Logo -->
-    <a href="/" class="flex items-center gap-2 text-xl font-bold" aria-label="Auto LevelUp Home">
-      <svg class="h-8 w-8" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <rect width="32" height="32" rx="8" fill="hsl(221.2, 83.2%, 53.3%)" />
-        <path d="M8 22L16 10L24 22H8Z" fill="white" stroke="white" stroke-width="1.5" stroke-linejoin="round" />
-        <path d="M13 18H19" stroke="hsl(221.2, 83.2%, 53.3%)" stroke-width="2" stroke-linecap="round" />
-      </svg>
-      <span>Auto<span class="text-primary">LevelUp</span></span>
+    <a href="/" class="flex items-center gap-2.5 font-bold" aria-label="Auto LevelUp Home">
+      <div class="flex h-8 w-8 items-center justify-center rounded-lg bg-gray-900 shadow-sm">
+        <svg viewBox="0 0 20 20" fill="none" class="h-4.5 w-4.5" aria-hidden="true">
+          <path d="M4 14L10 5L16 14H4Z" fill="white" stroke="white" stroke-width="0.5" stroke-linejoin="round" />
+          <path d="M7 11H13" stroke="#3b82f6" stroke-width="1.5" stroke-linecap="round" />
+        </svg>
+      </div>
+      <span class="text-[15px] tracking-tight">
+        Auto<span class="text-primary font-extrabold">LevelUp</span>
+      </span>
     </a>
 
-    <!-- Desktop links -->
-    <div class="hidden items-center gap-1 md:flex">
+    <!-- Desktop nav links -->
+    <div class="hidden items-center md:flex" role="menubar">
       {links.map((link) => {
-        const isActive = link.href === currentPath || (link.href === '/pricing' && currentPath === '/pricing') || (link.href === '/contact' && currentPath === '/contact');
+        const active = isActive(link.href);
         return (
           <a
             href={link.href}
-            class={`rounded-lg px-3 py-2 text-sm font-medium transition-colors hover:text-foreground ${isActive ? 'text-foreground bg-accent' : 'text-muted-foreground'}`}
-            {...(isActive ? { 'aria-current': 'page' } : {})}
+            role="menuitem"
+            class={`nav-link relative px-3.5 py-2 text-sm font-medium transition-colors duration-150 ${
+              active
+                ? 'text-foreground'
+                : 'text-muted-foreground hover:text-foreground'
+            }`}
+            {...(active ? { 'aria-current': 'page' } : {})}
           >
             {link.label}
+            {active && (
+              <span class="absolute bottom-0 left-1/2 h-0.5 w-4 -translate-x-1/2 rounded-full bg-primary" aria-hidden="true"></span>
+            )}
           </a>
         );
       })}
     </div>
 
-    <!-- CTA buttons -->
-    <div class="hidden items-center gap-3 md:flex">
-      <a href="https://app.autolevelup.com/login" class="btn-ghost text-sm">Log In</a>
-      <a href="https://app.autolevelup.com/signup" class="btn-primary text-sm">Get Started Free</a>
+    <!-- Desktop CTA actions -->
+    <div class="hidden items-center gap-2 md:flex">
+      <a
+        href="https://app.autolevelup.com/login"
+        class="px-3.5 py-2 text-sm font-medium text-muted-foreground transition-colors duration-150 hover:text-foreground"
+      >
+        Log In
+      </a>
+      <div class="h-4 w-px bg-border"></div>
+      <a
+        href="/demo"
+        class="inline-flex items-center gap-1.5 rounded-lg bg-gray-900 px-4 py-2 text-sm font-bold text-white shadow-sm transition-all duration-150 hover:bg-gray-800 hover:shadow-md hover:-translate-y-px active:translate-y-0"
+      >
+        <svg class="h-3.5 w-3.5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" />
+        </svg>
+        Book a Demo
+      </a>
     </div>
 
-    <!-- Mobile menu button -->
+    <!-- Mobile menu toggle -->
     <button
       id="mobile-menu-btn"
-      class="flex items-center justify-center rounded-lg p-2 text-muted-foreground md:hidden"
-      aria-label="Toggle mobile menu"
+      class="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-foreground md:hidden"
+      aria-label="Toggle menu"
       aria-expanded="false"
       aria-controls="mobile-menu"
     >
-      <svg id="menu-icon" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+      <svg id="menu-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
       </svg>
-      <svg id="close-icon" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <svg id="close-icon" class="hidden h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
       </svg>
     </button>
   </div>
 
   <!-- Mobile menu -->
-  <div id="mobile-menu" class="hidden border-t border-border bg-background/95 backdrop-blur-md md:hidden">
-    <div class="space-y-1 px-4 py-4">
-      {links.map((link) => {
-        const isActive = link.href === currentPath || (link.href === '/pricing' && currentPath === '/pricing') || (link.href === '/contact' && currentPath === '/contact');
-        return (
-          <a
-            href={link.href}
-            class={`block rounded-lg px-3 py-2 text-base font-medium hover:bg-accent hover:text-foreground ${isActive ? 'text-foreground bg-accent' : 'text-muted-foreground'}`}
-            {...(isActive ? { 'aria-current': 'page' } : {})}
-          >
-            {link.label}
-          </a>
-        );
-      })}
-      <div class="mt-4 flex flex-col gap-2 border-t border-border pt-4">
-        <a href="https://app.autolevelup.com/login" class="btn-ghost w-full text-center">Log In</a>
-        <a href="https://app.autolevelup.com/signup" class="btn-primary w-full text-center">Get Started Free</a>
+  <div
+    id="mobile-menu"
+    class="mobile-menu-panel hidden border-t border-border/60 bg-background/98 backdrop-blur-xl md:hidden"
+  >
+    <div class="px-4 py-3">
+      <!-- Nav links -->
+      <div class="space-y-0.5">
+        {links.map((link) => {
+          const active = isActive(link.href);
+          return (
+            <a
+              href={link.href}
+              class={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
+                active
+                  ? 'bg-primary/8 text-foreground'
+                  : 'text-muted-foreground hover:bg-accent/60 hover:text-foreground'
+              }`}
+              {...(active ? { 'aria-current': 'page' } : {})}
+            >
+              {active && <span class="h-1.5 w-1.5 rounded-full bg-primary flex-shrink-0" aria-hidden="true"></span>}
+              {link.label}
+            </a>
+          );
+        })}
+      </div>
+
+      <!-- Auth + CTA -->
+      <div class="mt-4 space-y-2 border-t border-border/60 pt-4">
+        <a
+          href="https://app.autolevelup.com/login"
+          class="flex w-full items-center justify-center rounded-lg border border-border bg-background px-4 py-2.5 text-sm font-semibold text-foreground transition-all hover:bg-accent"
+        >
+          Log In
+        </a>
+        <a
+          href="/demo"
+          class="flex w-full items-center justify-center gap-2 rounded-lg bg-gray-900 px-4 py-2.5 text-sm font-bold text-white shadow-sm transition-all hover:bg-gray-800"
+        >
+          <svg class="h-3.5 w-3.5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z" />
+          </svg>
+          Book a Demo
+        </a>
       </div>
     </div>
   </div>
 </nav>
+
+<style>
+  /* Hover underline animation for desktop nav links */
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    border-radius: 9999px;
+    background-color: hsl(var(--primary));
+    transform: translateX(-50%);
+    transition: width 0.2s ease;
+  }
+  .nav-link:hover::after {
+    width: 1rem;
+  }
+
+  /* Mobile menu slide-down */
+  .mobile-menu-panel {
+    animation: mobile-slide-down 0.2s ease-out;
+  }
+  @keyframes mobile-slide-down {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-menu-panel { animation: none; }
+    .nav-link::after   { transition: none; }
+  }
+</style>
 
 <script>
   function initNav() {
@@ -112,51 +202,50 @@ const currentPath = Astro.url.pathname;
     const closeIcon = document.getElementById('close-icon');
     if (!nav || !scrollProgress || !mobileMenuBtn || !mobileMenu || !menuIcon || !closeIcon) return;
 
-    // Floating nav on scroll
-    window.addEventListener('scroll', () => {
-      const scrollY = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = docHeight > 0 ? (scrollY / docHeight) * 100 : 0;
-      scrollProgress.style.width = `${progress}%`;
-
-      if (scrollY > 50) {
-        nav.classList.add('bg-background/95', 'backdrop-blur-md', 'shadow-sm');
+    // Frosted nav on scroll — adds border + background
+    function updateNavOnScroll() {
+      if (window.scrollY > 20) {
+        nav.classList.add('bg-white/90', 'backdrop-blur-xl', 'border-b', 'border-border/60', 'shadow-sm');
+        nav.classList.remove('bg-transparent');
       } else {
-        nav.classList.remove('bg-background/95', 'backdrop-blur-md', 'shadow-sm');
+        nav.classList.remove('bg-white/90', 'backdrop-blur-xl', 'border-b', 'border-border/60', 'shadow-sm');
       }
-    });
+      // Scroll progress
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
+      scrollProgress.style.width = `${progress}%`;
+    }
 
-    // Mobile menu toggle
+    window.addEventListener('scroll', updateNavOnScroll, { passive: true });
+    updateNavOnScroll(); // run on init in case page is already scrolled
+
+    // Mobile toggle
     let isOpen = false;
-    mobileMenuBtn.addEventListener('click', () => {
-      isOpen = !isOpen;
-      mobileMenu.classList.toggle('hidden', !isOpen);
-      menuIcon.classList.toggle('hidden', isOpen);
-      closeIcon.classList.toggle('hidden', !isOpen);
-      mobileMenuBtn.setAttribute('aria-expanded', String(isOpen));
-    });
 
-    // Close mobile menu on Escape
+    function openMenu() {
+      isOpen = true;
+      mobileMenu.classList.remove('hidden');
+      menuIcon.classList.add('hidden');
+      closeIcon.classList.remove('hidden');
+      mobileMenuBtn.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeMenu() {
+      isOpen = false;
+      mobileMenu.classList.add('hidden');
+      menuIcon.classList.remove('hidden');
+      closeIcon.classList.add('hidden');
+      mobileMenuBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    mobileMenuBtn.addEventListener('click', () => isOpen ? closeMenu() : openMenu());
+
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && isOpen) {
-        isOpen = false;
-        mobileMenu.classList.add('hidden');
-        menuIcon.classList.remove('hidden');
-        closeIcon.classList.add('hidden');
-        mobileMenuBtn.setAttribute('aria-expanded', 'false');
-        mobileMenuBtn.focus();
-      }
+      if (e.key === 'Escape' && isOpen) { closeMenu(); mobileMenuBtn.focus(); }
     });
 
-    // Close mobile menu on link click
     mobileMenu.querySelectorAll('a').forEach((link) => {
-      link.addEventListener('click', () => {
-        isOpen = false;
-        mobileMenu.classList.add('hidden');
-        menuIcon.classList.remove('hidden');
-        closeIcon.classList.add('hidden');
-        mobileMenuBtn.setAttribute('aria-expanded', 'false');
-      });
+      link.addEventListener('click', closeMenu);
     });
   }
 

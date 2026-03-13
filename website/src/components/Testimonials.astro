@@ -3,222 +3,222 @@ const testimonials = [
   {
     quote: 'We used to spend the first two weeks after exams just on grading. Now our teachers get results back to students the same day. The at-risk alerts alone have changed how we intervene — we catch problems in weeks, not months.',
     name: 'Dr. Meera Sharma',
-    role: 'Principal, Delhi Public School',
+    role: 'Principal',
+    org: 'Delhi Public School',
     initials: 'MS',
+    grad: 'from-violet-500 to-purple-600',
+    tag: 'Principal',
+    tagColor: 'bg-purple-50 text-purple-700 border-purple-200',
+    featured: true,
   },
   {
     quote: 'I grade 120 answer sheets in under 15 minutes now. The feedback each student gets is more detailed than what I could write by hand for 10. And I still override anything I disagree with — the AI respects my judgment.',
     name: 'Rajesh Iyer',
-    role: 'Physics Teacher, Kendriya Vidyalaya',
+    role: 'Physics Teacher',
+    org: 'Kendriya Vidyalaya',
     initials: 'RI',
+    grad: 'from-blue-500 to-cyan-500',
+    tag: 'Teacher',
+    tagColor: 'bg-blue-50 text-blue-700 border-blue-200',
+    featured: false,
   },
   {
-    quote: 'My daughter\'s school started using Auto-LevelUp last term. For the first time, I know exactly which topics she\'s struggling with — not at the end of the year, but the same week. That changed everything for us.',
+    quote: 'My daughter\'s school started using Auto-LevelUp last term. For the first time, I know exactly which topics she\'s struggling with — not at the end of the year, but the same week.',
     name: 'Anita Deshmukh',
-    role: 'Parent, Class 9 student',
+    role: 'Parent',
+    org: 'Class 9 student',
     initials: 'AD',
+    grad: 'from-emerald-500 to-teal-500',
+    tag: 'Parent',
+    tagColor: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+    featured: false,
   },
   {
-    quote: 'As a principal, what sold me was the cost visibility. I know exactly what the AI costs us per exam, per month. No surprise invoices. And the staff permission system means I control who does what.',
+    quote: 'What sold me was the cost visibility. I know exactly what the AI costs us per exam, per month. No surprise invoices. And the permission system means I control who does what.',
     name: 'Suresh Menon',
-    role: 'Director, Orchid International School',
+    role: 'Director',
+    org: 'Orchid International School',
     initials: 'SM',
+    grad: 'from-orange-400 to-rose-500',
+    tag: 'Principal',
+    tagColor: 'bg-orange-50 text-orange-700 border-orange-200',
+    featured: false,
   },
   {
-    quote: 'The students actually want to study now. They check their XP, compare streaks with friends, and compete on the leaderboard. I\'ve never had a class this engaged in daily practice before Auto-LevelUp.',
+    quote: 'The students actually want to study now. They check their XP, compare streaks with friends, and compete on the leaderboard. I\'ve never had a class this engaged in daily practice.',
     name: 'Kavita Nair',
-    role: 'Maths Teacher, Ryan International',
+    role: 'Maths Teacher',
+    org: 'Ryan International',
     initials: 'KN',
+    grad: 'from-pink-500 to-rose-500',
+    tag: 'Teacher',
+    tagColor: 'bg-pink-50 text-pink-700 border-pink-200',
+    featured: false,
   },
   {
     quote: 'I used to be scared to ask questions in class. Now I just ask the AI tutor — it doesn\'t judge me, and it helps me figure things out on my own. My grades went up two levels this term.',
     name: 'Arjun Reddy',
-    role: 'Student, Class 10',
+    role: 'Student',
+    org: 'Class 10',
     initials: 'AR',
+    grad: 'from-amber-400 to-orange-500',
+    tag: 'Student',
+    tagColor: 'bg-amber-50 text-amber-700 border-amber-200',
+    featured: false,
   },
 ];
+
+const featured = testimonials[0];
+const rest = testimonials.slice(1);
 ---
 
-<section id="testimonials" class="py-20 sm:py-28">
+<section id="testimonials" class="relative overflow-hidden bg-slate-50 py-20 sm:py-28">
+  <!-- subtle top/bottom blend -->
+  <div class="absolute inset-x-0 top-0 h-20 bg-gradient-to-b from-background to-transparent"></div>
+  <div class="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-background to-transparent"></div>
+
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+
+    <!-- Header -->
     <div class="text-center scroll-reveal">
-      <div class="mb-4 inline-flex rounded-full bg-warning/10 px-4 py-1 text-sm font-medium text-warning">
+      <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-4 py-1.5 text-sm font-semibold text-amber-700">
+        <svg class="h-3.5 w-3.5 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+        </svg>
         Loved by Educators
       </div>
-      <h2 class="section-heading">What Our Community Says</h2>
+      <h2 class="section-heading">Real Results, Real Schools</h2>
       <p class="section-subheading">
-        Hear from the schools, teachers, students, and parents who use Auto-LevelUp every day.
+        From principals to students — hear how Auto-LevelUp is changing classrooms across India.
       </p>
     </div>
 
-    <!-- Testimonial carousel -->
-    <div
-      class="relative mt-16"
-      role="region"
-      aria-label="Customer testimonials"
-      aria-roledescription="carousel"
-    >
-      <div
-        id="testimonial-track"
-        class="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scroll-smooth"
-        style="scrollbar-width: none; -ms-overflow-style: none;"
-        aria-live="polite"
-      >
-        {testimonials.map((t, i) => (
-          <div
-            class="min-w-[320px] max-w-[400px] flex-shrink-0 snap-center scroll-reveal rounded-xl border border-border bg-card p-6 shadow-sm transition-all hover:shadow-md"
-            style={`transition-delay: ${i * 100}ms`}
-            role="group"
-            aria-label={`Testimonial from ${t.name}`}
-          >
-            <!-- Stars -->
-            <div class="mb-4 flex gap-0.5" aria-label="5 out of 5 stars">
-              {[1, 2, 3, 4, 5].map(() => (
-                <svg class="h-4 w-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+    <!-- Featured quote -->
+    <div class="mt-14 scroll-reveal">
+      <div class="relative overflow-hidden rounded-2xl bg-gray-900 p-8 sm:p-12">
+        <!-- bg glows -->
+        <div class="absolute -top-24 -left-24 h-64 w-64 rounded-full bg-violet-500/20 blur-[80px]" aria-hidden="true"></div>
+        <div class="absolute -bottom-16 -right-16 h-48 w-48 rounded-full bg-blue-500/15 blur-[60px]" aria-hidden="true"></div>
+        <!-- large quote mark -->
+        <div class="absolute top-6 right-8 text-[8rem] leading-none text-white/5 select-none font-serif" aria-hidden="true">"</div>
+
+        <div class="relative flex flex-col gap-8 lg:flex-row lg:items-center">
+          <!-- Quote text -->
+          <div class="flex-1">
+            <div class="mb-5 flex gap-1" aria-label="5 out of 5 stars">
+              {[1,2,3,4,5].map(() => (
+                <svg class="h-4 w-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                 </svg>
               ))}
             </div>
-
-            <!-- Quote -->
-            <blockquote class="mb-6 text-sm leading-relaxed text-muted-foreground">
-              "{t.quote}"
+            <blockquote class="text-xl font-medium leading-relaxed text-white sm:text-2xl">
+              "{featured.quote}"
             </blockquote>
+          </div>
 
-            <!-- Author -->
-            <div class="flex items-center gap-3">
-              <div class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary to-info text-sm font-bold text-white">
-                {t.initials}
-              </div>
-              <div>
-                <div class="text-sm font-semibold">{t.name}</div>
-                <div class="text-xs text-muted-foreground">{t.role}</div>
-              </div>
+          <!-- Author -->
+          <div class="flex shrink-0 flex-row items-center gap-4 lg:flex-col lg:items-start lg:border-l lg:border-white/10 lg:pl-10">
+            <div class={`flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${featured.grad} text-base font-bold text-white shadow-lg`}>
+              {featured.initials}
+            </div>
+            <div>
+              <div class="font-bold text-white">{featured.name}</div>
+              <div class="mt-0.5 text-sm text-gray-400">{featured.role}</div>
+              <div class="mt-0.5 text-xs text-gray-500">{featured.org}</div>
+              <span class={`mt-2 inline-block rounded-full border px-2.5 py-0.5 text-xs font-semibold ${featured.tagColor}`}>
+                {featured.tag}
+              </span>
             </div>
           </div>
-        ))}
-      </div>
-
-      <!-- Nav buttons + dot indicators -->
-      <div class="mt-6 flex flex-col items-center gap-4">
-        <!-- Dots -->
-        <div id="testimonial-dots" class="flex items-center gap-2" role="tablist" aria-label="Testimonial navigation">
-          {testimonials.map((_, i) => (
-            <button
-              class="testimonial-dot h-2.5 w-2.5 rounded-full bg-border transition-all hover:bg-primary/50"
-              data-index={i}
-              role="tab"
-              aria-selected={i === 0 ? 'true' : 'false'}
-              aria-label={`Go to testimonial ${i + 1}`}
-            ></button>
-          ))}
-        </div>
-
-        <!-- Prev/Next buttons -->
-        <div class="flex items-center gap-3">
-          <button
-            id="testimonial-prev"
-            class="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card shadow-sm transition-colors hover:bg-accent"
-            aria-label="Previous testimonial"
-          >
-            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          <button
-            id="testimonial-next"
-            class="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card shadow-sm transition-colors hover:bg-accent"
-            aria-label="Next testimonial"
-          >
-            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
         </div>
       </div>
     </div>
+
+    <!-- Infinite marquee -->
+    <div class="mt-8 overflow-hidden" aria-label="More testimonials">
+      <!-- Edge fades -->
+      <div class="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-gradient-to-r from-slate-50 to-transparent" aria-hidden="true"></div>
+      <div class="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-gradient-to-l from-slate-50 to-transparent" aria-hidden="true"></div>
+
+      <div class="marquee-outer relative overflow-hidden">
+        <div class="marquee-track flex gap-5 w-max">
+          {[...rest, ...rest].map((t, i) => (
+            <div
+              class="group relative flex w-[300px] shrink-0 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-200 hover:shadow-md hover:border-slate-300 hover:-translate-y-0.5"
+              aria-hidden={i >= rest.length ? 'true' : 'false'}
+            >
+              <div class={`absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r ${t.grad} opacity-0 transition-opacity group-hover:opacity-100`} aria-hidden="true"></div>
+
+              <div class="mb-3 flex items-center justify-between">
+                <div class="flex gap-0.5">
+                  {[1,2,3,4,5].map(() => (
+                    <svg class="h-3 w-3 text-amber-400" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <span class={`rounded-full border px-2 py-0.5 text-[10px] font-semibold ${t.tagColor}`}>{t.tag}</span>
+              </div>
+
+              <div class="mb-1.5 text-3xl leading-none text-slate-200 select-none font-serif" aria-hidden="true">"</div>
+              <blockquote class="flex-1 text-xs leading-relaxed text-slate-600">{t.quote}</blockquote>
+
+              <div class="mt-4 flex items-center gap-2.5 border-t border-slate-100 pt-3">
+                <div class={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${t.grad} text-[10px] font-bold text-white`}>{t.initials}</div>
+                <div class="min-w-0">
+                  <div class="truncate text-xs font-semibold text-slate-800">{t.name}</div>
+                  <div class="truncate text-[10px] text-slate-500">{t.role}, {t.org}</div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom social proof bar -->
+    <!-- spacer after marquee -->
+    <div class="mt-8"></div>
+    <div class="mt-12 scroll-reveal">
+      <div class="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+        <!-- Avatar stack -->
+        <div class="flex -space-x-2">
+          {testimonials.map((t) => (
+            <div class={`flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-gradient-to-br ${t.grad} text-[9px] font-bold text-white shadow-sm`}>
+              {t.initials}
+            </div>
+          ))}
+        </div>
+        <!-- Stars -->
+        <div class="flex items-center gap-1">
+          {[1,2,3,4,5].map(() => (
+            <svg class="h-4 w-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+            </svg>
+          ))}
+        </div>
+        <p class="text-sm text-slate-500">
+          <span class="font-semibold text-slate-800">4.9 / 5</span> from educators across 500+ schools
+        </p>
+      </div>
+    </div>
+
   </div>
 </section>
 
 <style>
-  #testimonial-track::-webkit-scrollbar {
-    display: none;
+  .marquee-track {
+    animation: marquee-scroll 32s linear infinite;
   }
-  .testimonial-dot[aria-selected="true"] {
-    background-color: hsl(var(--primary));
-    width: 1.25rem;
-    border-radius: 9999px;
+  @keyframes marquee-scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .marquee-outer:hover .marquee-track {
+    animation-play-state: paused;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-track { animation: none; }
   }
 </style>
-
-<script>
-  function initTestimonials() {
-    const track = document.getElementById('testimonial-track')!;
-    const prev = document.getElementById('testimonial-prev')!;
-    const next = document.getElementById('testimonial-next')!;
-    const dots = document.querySelectorAll('.testimonial-dot');
-    if (!track || !prev || !next) return;
-
-    const scrollAmount = 340;
-    let isPaused = false;
-
-    function updateDots() {
-      const scrollLeft = track.scrollLeft;
-      const cardWidth = 340;
-      const activeIndex = Math.round(scrollLeft / cardWidth);
-      dots.forEach((dot, i) => {
-        dot.setAttribute('aria-selected', i === activeIndex ? 'true' : 'false');
-      });
-    }
-
-    function scrollNext() {
-      const maxScroll = track.scrollWidth - track.clientWidth;
-      if (track.scrollLeft >= maxScroll - 10) {
-        track.scrollTo({ left: 0, behavior: 'smooth' });
-      } else {
-        track.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-      }
-    }
-
-    function startAutoPlay() {
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (prefersReducedMotion) return;
-
-      setInterval(() => {
-        if (!isPaused) scrollNext();
-      }, 5000);
-    }
-
-    prev.addEventListener('click', () => {
-      track.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-    });
-
-    next.addEventListener('click', () => {
-      scrollNext();
-    });
-
-    dots.forEach((dot) => {
-      dot.addEventListener('click', () => {
-        const index = Number(dot.getAttribute('data-index'));
-        track.scrollTo({ left: index * scrollAmount, behavior: 'smooth' });
-      });
-    });
-
-    track.addEventListener('scroll', updateDots);
-
-    // Pause on hover / focus
-    const carousel = track.closest('[role="region"]');
-    if (carousel) {
-      carousel.addEventListener('mouseenter', () => { isPaused = true; });
-      carousel.addEventListener('mouseleave', () => { isPaused = false; });
-      carousel.addEventListener('focusin', () => { isPaused = true; });
-      carousel.addEventListener('focusout', () => { isPaused = false; });
-    }
-
-    startAutoPlay();
-    updateDots();
-  }
-
-  initTestimonials();
-  document.addEventListener('astro:after-swap', initTestimonials);
-</script>

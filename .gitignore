@@ -67,3 +67,5 @@ functions/*/package.json.bak
 
 # Turbo
 .turbo
+
+package-lock.json

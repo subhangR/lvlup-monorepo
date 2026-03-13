@@ -1,8 +1,8 @@
 ---
 const roleFeatures = [
   {
+    num: '01',
     role: 'Schools',
-    icon: '',
     color: 'primary',
     tagline: 'Run a data-driven school — without a data team',
     description: 'School-wide dashboards, staff controls, and AI cost visibility in one place',
@@ -16,8 +16,8 @@ const roleFeatures = [
     ],
   },
   {
+    num: '02',
     role: 'Teachers',
-    icon: '',
     color: 'success',
     tagline: 'Grade less. Teach more. Know more.',
     description: 'Get your weekends back — AI handles the grading, you handle the teaching',
@@ -31,8 +31,8 @@ const roleFeatures = [
     ],
   },
   {
+    num: '03',
     role: 'Students',
-    icon: '',
     color: 'info',
     tagline: 'Learning feels like leveling up',
     description: 'A 24/7 AI tutor, adaptive challenges, and rewards that make studying feel like progress',
@@ -46,8 +46,8 @@ const roleFeatures = [
     ],
   },
   {
+    num: '04',
     role: 'Parents',
-    icon: '',
     color: 'warning',
     tagline: 'No more waiting for the report card',
     description: 'Real-time alerts, progress reports, and AI recommendations for every child',
@@ -62,11 +62,18 @@ const roleFeatures = [
   },
 ];
 
-const colorMap: Record<string, { bg: string; border: string; text: string; badge: string }> = {
-  primary: { bg: 'bg-primary/5', border: 'border-primary/20', text: 'text-primary', badge: 'bg-primary/10' },
-  success: { bg: 'bg-success/5', border: 'border-success/20', text: 'text-success', badge: 'bg-success/10' },
-  info: { bg: 'bg-info/5', border: 'border-info/20', text: 'text-info', badge: 'bg-info/10' },
-  warning: { bg: 'bg-warning/5', border: 'border-warning/20', text: 'text-warning', badge: 'bg-warning/10' },
+const colorMap: Record<string, { bg: string; border: string; text: string; badge: string; num: string }> = {
+  primary: { bg: 'bg-primary/5', border: 'border-primary/20', text: 'text-primary', badge: 'bg-primary/10', num: 'text-primary/30' },
+  success: { bg: 'bg-success/5', border: 'border-success/20', text: 'text-success', badge: 'bg-success/10', num: 'text-success/30' },
+  info:    { bg: 'bg-info/5',    border: 'border-info/20',    text: 'text-info',    badge: 'bg-info/10',    num: 'text-info/30'    },
+  warning: { bg: 'bg-warning/5', border: 'border-warning/20', text: 'text-warning', badge: 'bg-warning/10', num: 'text-warning/30' },
+};
+
+const icons: Record<string, string> = {
+  primary: `<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3.75h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008zm0 3h.008v.008h-.008v-.008z" />`,
+  success: `<path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342" />`,
+  info:    `<path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342" />`,
+  warning: `<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />`,
 };
 ---
 
@@ -74,12 +81,14 @@ const colorMap: Record<string, { bg: string; border: string; text: string; badge
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <!-- Section header -->
     <div class="text-center scroll-reveal">
-      <div class="mb-4 inline-flex rounded-full bg-primary/10 px-4 py-1 text-sm font-medium text-primary">
+      <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/6 px-4 py-1.5 text-sm font-medium text-primary">
+        <svg class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
+        </svg>
         Built for Every Role
       </div>
-      <h2 class="section-heading">
-        One Platform. Every Stakeholder.
-      </h2>
+      <h2 class="section-heading">One Platform. Every Stakeholder.</h2>
       <p class="section-subheading">
         Auto-LevelUp gives schools, teachers, students, and parents exactly what they need —
         all connected, all in real time.
@@ -87,48 +96,53 @@ const colorMap: Record<string, { bg: string; border: string; text: string; badge
     </div>
 
     <!-- Role cards grid -->
-    <div class="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
       {roleFeatures.map((role, index) => {
         const colors = colorMap[role.color];
         return (
           <div
-            class={`scroll-reveal group rounded-xl border ${colors.border} ${colors.bg} p-6 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg`}
-            style={`transition-delay: ${index * 100}ms`}
+            class={`scroll-reveal group relative rounded-2xl border ${colors.border} ${colors.bg} p-6 transition-all duration-200 hover:-translate-y-1.5 hover:shadow-xl`}
+            style={`transition-delay: ${index * 80}ms`}
             role="group"
             aria-label={`${role.role} features`}
           >
+            <!-- Large background number -->
+            <div class={`absolute top-4 right-4 text-6xl font-black leading-none select-none pointer-events-none ${colors.num}`} aria-hidden="true">
+              {role.num}
+            </div>
+
             <!-- Role header -->
-            <div class="mb-4">
-              <div class={`flex h-10 w-10 items-center justify-center rounded-lg ${colors.badge}`}>
+            <div class="mb-5 relative">
+              <div class={`flex h-11 w-11 items-center justify-center rounded-xl ${colors.badge}`}>
                 <svg class={`h-5 w-5 ${colors.text}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342" />
+                  <Fragment set:html={icons[role.color]} />
                 </svg>
               </div>
               <h3 class={`mt-3 text-xl font-bold ${colors.text}`}>{role.role}</h3>
-              <p class="mt-0.5 text-xs font-medium text-muted-foreground">{role.tagline}</p>
-              <p class="mt-1 text-sm text-muted-foreground">{role.description}</p>
+              <p class="mt-0.5 text-xs font-semibold text-muted-foreground">{role.tagline}</p>
+              <p class="mt-1.5 text-sm text-muted-foreground leading-relaxed">{role.description}</p>
             </div>
 
             <!-- Feature list -->
-            <ul class="space-y-2.5">
+            <ul class="space-y-2.5 relative">
               {role.features.map((feature) => (
                 <li class="flex items-start gap-2 text-sm">
-                  <svg class={`mt-0.5 h-4 w-4 shrink-0 ${colors.text}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <svg class={`mt-0.5 h-4 w-4 shrink-0 ${colors.text}`} fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
                   </svg>
-                  <span class="text-muted-foreground">{feature}</span>
+                  <span class="text-muted-foreground leading-snug">{feature}</span>
                 </li>
               ))}
             </ul>
 
             <!-- Learn more -->
-            <div class="mt-6">
+            <div class="mt-6 relative">
               <a
                 href={`/#${role.role.toLowerCase()}-detail`}
-                class={`inline-flex items-center text-sm font-medium ${colors.text} transition-colors hover:underline`}
+                class={`inline-flex items-center text-sm font-semibold ${colors.text} transition-all group-hover:gap-2`}
               >
                 Learn more
-                <svg class="ml-1 h-3 w-3 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                <svg class="ml-1 h-3.5 w-3.5 transition-transform duration-150 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
                 </svg>
               </a>
@@ -138,19 +152,64 @@ const colorMap: Record<string, { bg: string; border: string; text: string; badge
       })}
     </div>
 
-    <!-- Highlight stats -->
-    <div class="mt-20 scroll-reveal grid grid-cols-2 gap-8 rounded-2xl border border-border bg-card p-8 sm:grid-cols-4">
-      {[
-        { value: '15', label: 'Question Types' },
-        { value: '8 min', label: 'Class Grading Time' },
-        { value: '24/7', label: 'AI Tutor Availability' },
-        { value: '5', label: 'At-Risk Signals Monitored' },
-      ].map((stat) => (
-        <div class="text-center">
-          <div class="text-3xl font-extrabold text-primary sm:text-4xl">{stat.value}</div>
-          <div class="mt-1 text-sm text-muted-foreground">{stat.label}</div>
-        </div>
-      ))}
+    <!-- Stats row -->
+    <div class="mt-16 scroll-reveal overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
+      <div class="grid grid-cols-2 divide-y divide-border sm:grid-cols-4 sm:divide-y-0 sm:divide-x">
+        {[
+          { value: 15,    suffix: '',    label: 'Question Types',          sub: 'from MCQ to essays to code' },
+          { value: 8,     suffix: ' min', label: 'Class Grading Time',     sub: 'for a full class of 40' },
+          { value: 24,    suffix: '/7',  label: 'AI Tutor Availability',   sub: 'always-on support' },
+          { value: 500,   suffix: '+',   label: 'Schools Onboarded',       sub: 'across India' },
+        ].map((stat) => (
+          <div class="group flex flex-col items-center justify-center p-8 text-center transition-colors hover:bg-primary/3">
+            <div class="flex items-baseline gap-0.5">
+              <span
+                class="stat-counter text-4xl font-extrabold text-primary sm:text-5xl"
+                data-target={stat.value}
+              >
+                0
+              </span>
+              <span class="text-2xl font-bold text-primary sm:text-3xl">{stat.suffix}</span>
+            </div>
+            <div class="mt-1.5 text-sm font-semibold">{stat.label}</div>
+            <div class="mt-0.5 text-xs text-muted-foreground">{stat.sub}</div>
+          </div>
+        ))}
+      </div>
     </div>
   </div>
 </section>
+
+<script>
+  function initStatCounters() {
+    const counters = document.querySelectorAll('.stat-counter');
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target as HTMLElement;
+        const target = parseInt(el.dataset.target ?? '0', 10);
+        observer.unobserve(el);
+
+        if (prefersReducedMotion) { el.textContent = String(target); return; }
+
+        const duration = 1400;
+        const start = performance.now();
+
+        function tick(now: number) {
+          const progress = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          el.textContent = String(Math.round(eased * target));
+          if (progress < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      });
+    }, { threshold: 0.3 });
+
+    counters.forEach((el) => observer.observe(el));
+  }
+
+  initStatCounters();
+  document.addEventListener('astro:after-swap', initStatCounters);
+</script>
