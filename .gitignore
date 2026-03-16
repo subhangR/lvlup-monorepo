@@ -62,6 +62,9 @@ functions/*/package.json.bak
 *.temp
 .cache
 
+# Astro generated
+.astro
+
 # Vercel
 .vercel
 

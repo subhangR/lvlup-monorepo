@@ -33,6 +33,9 @@ Thumbs.db
 firebase-debug.log
 firestore-debug.log
 
+# Astro generated
+website/.astro
+
 # Misc
 *.log
 *.tsbuildinfo
