@@ -14,7 +14,7 @@ import {
   Alert,
   AlertDescription,
 } from "@levelup/shared-ui";
-import { AlertCircle, LogIn } from "lucide-react";
+import { AlertCircle, Loader2, LogIn } from "lucide-react";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -41,9 +41,7 @@ export default function LoginPage() {
     <Card className="border-0 shadow-lg lg:border">
       <CardHeader className="space-y-1 pb-4">
         <CardTitle className="text-2xl">Welcome back</CardTitle>
-        <CardDescription>
-          Sign in to your admin account to continue
-        </CardDescription>
+        <CardDescription>Sign in to your admin account to continue</CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4" id="login-form">
@@ -84,14 +82,12 @@ export default function LoginPage() {
         </form>
       </CardContent>
       <CardFooter>
-        <Button
-          type="submit"
-          form="login-form"
-          className="w-full h-10"
-          disabled={loading}
-        >
+        <Button type="submit" form="login-form" className="h-10 w-full" disabled={loading}>
           {loading ? (
-            "Signing in..."
+            <>
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+              Signing in...
+            </>
           ) : (
             <>
               <LogIn className="mr-2 h-4 w-4" />

@@ -1,4 +1,4 @@
-import type { FillBlanksData } from '@levelup/shared-types';
+import type { FillBlanksData } from "@levelup/shared-types";
 
 interface FillBlanksAnswererProps {
   data: FillBlanksData;
@@ -7,16 +7,26 @@ interface FillBlanksAnswererProps {
   disabled?: boolean;
 }
 
-export default function FillBlanksAnswerer({ data, value = {}, onChange, disabled }: FillBlanksAnswererProps) {
+export default function FillBlanksAnswerer({
+  data,
+  value = {},
+  onChange,
+  disabled,
+}: FillBlanksAnswererProps) {
   const handleBlankChange = (blankId: string, text: string) => {
     onChange({ ...value, [blankId]: text });
   };
 
   // Split textWithBlanks by blank placeholders like {{blank_id}}
+  if (!data.textWithBlanks) {
+    return (
+      <p className="text-muted-foreground text-sm">No fill-in-the-blanks content configured.</p>
+    );
+  }
   const parts = data.textWithBlanks.split(/(\{\{[^}]+\}\})/g);
 
   return (
-    <div className="leading-relaxed text-sm">
+    <div className="text-sm leading-relaxed">
       {parts.map((part, index) => {
         const match = part.match(/^\{\{(.+)\}\}$/);
         if (match) {
@@ -25,11 +35,11 @@ export default function FillBlanksAnswerer({ data, value = {}, onChange, disable
             <input
               key={blankId}
               type="text"
-              value={value[blankId] ?? ''}
+              value={value[blankId] ?? ""}
               onChange={(e) => handleBlankChange(blankId, e.target.value)}
               disabled={disabled}
               placeholder="___"
-              className="inline-block w-32 mx-1 border-b-2 border-input bg-transparent px-1 text-sm text-center focus-visible:ring-2 focus-visible:ring-ring focus:outline-none disabled:opacity-60"
+              className="border-input focus-visible:ring-ring mx-1 inline-block w-32 border-b-2 bg-transparent px-1 text-center text-sm focus:outline-none focus-visible:ring-2 disabled:opacity-60"
             />
           );
         }

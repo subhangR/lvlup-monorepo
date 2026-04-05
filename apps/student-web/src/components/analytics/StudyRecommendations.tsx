@@ -1,5 +1,5 @@
-import type { TestAnalytics } from '@levelup/shared-types';
-import { Lightbulb, BookOpen, Target, Brain, Clock, PartyPopper } from 'lucide-react';
+import type { TestAnalytics } from "@levelup/shared-types";
+import { Lightbulb, BookOpen, Target, Brain, PartyPopper } from "lucide-react";
 
 interface Recommendation {
   icon: typeof Lightbulb;
@@ -14,12 +14,12 @@ interface Props {
 }
 
 const BLOOMS_DESCRIPTIONS: Record<string, string> = {
-  remember: 'recalling facts and basic concepts',
-  understand: 'explaining ideas or concepts',
-  apply: 'using information in new situations',
-  analyze: 'drawing connections among ideas',
-  evaluate: 'justifying a stand or decision',
-  create: 'producing new or original work',
+  remember: "recalling facts and basic concepts",
+  understand: "explaining ideas or concepts",
+  apply: "using information in new situations",
+  analyze: "drawing connections among ideas",
+  evaluate: "justifying a stand or decision",
+  create: "producing new or original work",
 };
 
 export default function StudyRecommendations({ analytics, maxItems = 5 }: Props) {
@@ -77,7 +77,7 @@ export default function StudyRecommendations({ analytics, maxItems = 5 }: Props)
   // Time-based recommendations
   if (analytics.topicBreakdown && analytics.timePerQuestion && analytics.averageTimePerQuestion) {
     const avgTime = analytics.averageTimePerQuestion;
-    for (const [topic, data] of Object.entries(analytics.topicBreakdown)) {
+    for (const [_topic, data] of Object.entries(analytics.topicBreakdown)) {
       if (data.total === 0) continue;
       // Calculate average time for this topic's questions (simplified check)
       const pct = data.correct / data.total;
@@ -95,8 +95,8 @@ export default function StudyRecommendations({ analytics, maxItems = 5 }: Props)
   // All areas > 70% — show congratulatory message
   if (display.length === 0) {
     return (
-      <div className="rounded-lg border bg-emerald-50/50 dark:bg-emerald-950/20 p-4 text-center">
-        <PartyPopper className="h-8 w-8 mx-auto mb-2 text-emerald-500" />
+      <div className="rounded-lg border bg-emerald-50/50 p-4 text-center dark:bg-emerald-950/20">
+        <PartyPopper className="mx-auto mb-2 h-8 w-8 text-emerald-500" />
         <p className="font-medium text-emerald-700 dark:text-emerald-300">Great job!</p>
         <p className="text-sm text-emerald-600/80 dark:text-emerald-400/80">
           You&apos;re performing well across all areas. Keep it up!
@@ -110,16 +110,13 @@ export default function StudyRecommendations({ analytics, maxItems = 5 }: Props)
       {display.map((rec, idx) => {
         const Icon = rec.icon;
         return (
-          <div
-            key={idx}
-            className="flex items-start gap-3 rounded-lg border p-3"
-          >
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900/30 flex-shrink-0">
+          <div key={idx} className="flex items-start gap-3 rounded-lg border p-3">
+            <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-amber-100 dark:bg-amber-900/30">
               <Icon className="h-4 w-4 text-amber-600 dark:text-amber-400" />
             </div>
             <div>
               <p className="text-sm font-medium">{rec.title}</p>
-              <p className="text-xs text-muted-foreground">{rec.description}</p>
+              <p className="text-muted-foreground text-xs">{rec.description}</p>
             </div>
           </div>
         );

@@ -1,6 +1,6 @@
-import * as admin from 'firebase-admin';
-import { onDocumentDeleted } from 'firebase-functions/v2/firestore';
-import { logger } from 'firebase-functions/v2';
+import * as admin from "firebase-admin";
+import { onDocumentDeleted } from "firebase-functions/v2/firestore";
+import { logger } from "firebase-functions/v2";
 
 /**
  * Firestore trigger: cascade delete when a space is deleted.
@@ -16,8 +16,8 @@ import { logger } from 'firebase-functions/v2';
  */
 export const onSpaceDeleted = onDocumentDeleted(
   {
-    document: 'tenants/{tenantId}/spaces/{spaceId}',
-    region: 'asia-south1',
+    document: "tenants/{tenantId}/spaces/{spaceId}",
+    region: "asia-south1",
   },
   async (event) => {
     const { tenantId, spaceId } = event.params;
@@ -29,9 +29,7 @@ export const onSpaceDeleted = onDocumentDeleted(
     await deleteCollection(db, `tenants/${tenantId}/spaces/${spaceId}/storyPoints`);
 
     // Delete items (and their answerKeys)
-    const itemsSnap = await db
-      .collection(`tenants/${tenantId}/spaces/${spaceId}/items`)
-      .get();
+    const itemsSnap = await db.collection(`tenants/${tenantId}/spaces/${spaceId}/items`).get();
 
     for (const itemDoc of itemsSnap.docs) {
       // Delete answerKeys subcollection first
@@ -45,27 +43,31 @@ export const onSpaceDeleted = onDocumentDeleted(
     // Delete test sessions for this space
     const sessionsSnap = await db
       .collection(`tenants/${tenantId}/digitalTestSessions`)
-      .where('spaceId', '==', spaceId)
+      .where("spaceId", "==", spaceId)
       .get();
 
     if (!sessionsSnap.empty) {
       await deleteDocs(db, sessionsSnap.docs);
     }
 
-    // Delete space progress
+    // Delete space progress (including storyPointProgress subcollections)
     const progressSnap = await db
       .collection(`tenants/${tenantId}/spaceProgress`)
-      .where('spaceId', '==', spaceId)
+      .where("spaceId", "==", spaceId)
       .get();
 
     if (!progressSnap.empty) {
+      for (const progressDoc of progressSnap.docs) {
+        // Delete storyPointProgress subcollection first
+        await deleteCollection(db, `${progressDoc.ref.path}/storyPointProgress`);
+      }
       await deleteDocs(db, progressSnap.docs);
     }
 
     // Delete chat sessions for this space
     const chatSnap = await db
       .collection(`tenants/${tenantId}/chatSessions`)
-      .where('spaceId', '==', spaceId)
+      .where("spaceId", "==", spaceId)
       .get();
 
     if (!chatSnap.empty) {
@@ -77,26 +79,23 @@ export const onSpaceDeleted = onDocumentDeleted(
       const rtdb = admin.database();
       await rtdb.ref(`leaderboards/${tenantId}/${spaceId}`).remove();
     } catch (err) {
-      logger.warn('Failed to clean up RTDB leaderboard', err);
+      logger.warn("Failed to clean up RTDB leaderboard", err);
     }
 
     // Update tenant stats
     await db.doc(`tenants/${tenantId}`).update({
-      'stats.totalSpaces': admin.firestore.FieldValue.increment(-1),
+      "stats.totalSpaces": admin.firestore.FieldValue.increment(-1),
       updatedAt: admin.firestore.FieldValue.serverTimestamp(),
     });
 
     logger.info(`Cascade delete complete for space ${spaceId}`);
-  },
+  }
 );
 
 /**
  * Delete all documents in a collection using chunked batches (max 450 per batch).
  */
-async function deleteCollection(
-  db: admin.firestore.Firestore,
-  path: string,
-): Promise<void> {
+async function deleteCollection(db: admin.firestore.Firestore, path: string): Promise<void> {
   const snapshot = await db.collection(path).limit(450).get();
   if (snapshot.empty) return;
 
@@ -117,7 +116,7 @@ async function deleteCollection(
  */
 async function deleteDocs(
   db: admin.firestore.Firestore,
-  docs: admin.firestore.QueryDocumentSnapshot[],
+  docs: admin.firestore.QueryDocumentSnapshot[]
 ): Promise<void> {
   for (let i = 0; i < docs.length; i += 450) {
     const chunk = docs.slice(i, i + 450);

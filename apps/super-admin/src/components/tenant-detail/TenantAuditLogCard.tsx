@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { collection, getDocs, query, where, orderBy, limit, startAfter } from "firebase/firestore";
+import { collection, getDocs, query, where, orderBy, limit } from "firebase/firestore";
 import { getFirebaseServices } from "@levelup/shared-services";
 import {
   Card,
@@ -8,7 +8,6 @@ import {
   CardHeader,
   CardTitle,
   Skeleton,
-  Button,
   Badge,
   Select,
   SelectContent,
@@ -16,7 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@levelup/shared-ui";
-import { ChevronLeft, ChevronRight, ScrollText } from "lucide-react";
+import { ScrollText } from "lucide-react";
 
 interface AuditLogEntry {
   id: string;
@@ -43,7 +42,13 @@ function formatTimestamp(ts: AuditLogEntry["createdAt"]): string {
   if (!ts) return "—";
   const d = ts.toDate?.() ?? (ts.seconds ? new Date(ts.seconds * 1000) : null);
   if (!d) return "—";
-  return d.toLocaleString(undefined, { month: "short", day: "numeric", year: "numeric", hour: "2-digit", minute: "2-digit" });
+  return d.toLocaleString(undefined, {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
 
 export function TenantAuditLogCard({ tenantId }: { tenantId: string }) {
@@ -57,7 +62,7 @@ export function TenantAuditLogCard({ tenantId }: { tenantId: string }) {
       let q = query(
         collection(db, "platformActivityLog"),
         where("tenantId", "==", tenantId),
-        orderBy("createdAt", "desc"),
+        orderBy("createdAt", "desc")
       );
 
       if (actionFilter !== "all") {
@@ -65,7 +70,7 @@ export function TenantAuditLogCard({ tenantId }: { tenantId: string }) {
           collection(db, "platformActivityLog"),
           where("tenantId", "==", tenantId),
           where("action", "==", actionFilter),
-          orderBy("createdAt", "desc"),
+          orderBy("createdAt", "desc")
         );
       }
 
@@ -92,14 +97,22 @@ export function TenantAuditLogCard({ tenantId }: { tenantId: string }) {
             <ScrollText className="h-4 w-4" />
             Audit Log
           </CardTitle>
-          <Select value={actionFilter} onValueChange={(v) => { setActionFilter(v); setPage(0); }}>
-            <SelectTrigger className="w-44 h-8 text-xs">
+          <Select
+            value={actionFilter}
+            onValueChange={(v) => {
+              setActionFilter(v);
+              setPage(0);
+            }}
+          >
+            <SelectTrigger className="h-8 w-44 text-xs">
               <SelectValue placeholder="All Actions" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Actions</SelectItem>
               {Object.entries(ACTION_LABELS).map(([key, label]) => (
-                <SelectItem key={key} value={key}>{label}</SelectItem>
+                <SelectItem key={key} value={key}>
+                  {label}
+                </SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -120,15 +133,15 @@ export function TenantAuditLogCard({ tenantId }: { tenantId: string }) {
           </div>
         ) : !data?.entries.length ? (
           <div className="py-8 text-center">
-            <ScrollText className="mx-auto h-8 w-8 text-muted-foreground/50" />
-            <p className="mt-2 text-sm text-muted-foreground">No audit log entries yet</p>
+            <ScrollText className="text-muted-foreground/50 mx-auto h-8 w-8" />
+            <p className="text-muted-foreground mt-2 text-sm">No audit log entries yet</p>
           </div>
         ) : (
           <>
-            <div className="space-y-0 divide-y divide-border">
+            <div className="divide-border space-y-0 divide-y">
               {data.entries.map((entry) => (
                 <div key={entry.id} className="flex items-start gap-3 py-2.5">
-                  <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary/60" />
+                  <span className="bg-primary/60 mt-1.5 h-2 w-2 shrink-0 rounded-full" />
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2">
                       <p className="text-sm font-medium">
@@ -138,19 +151,21 @@ export function TenantAuditLogCard({ tenantId }: { tenantId: string }) {
                         {entry.action.split("_")[0]}
                       </Badge>
                     </div>
-                    <p className="text-xs text-muted-foreground truncate">
+                    <p className="text-muted-foreground truncate text-xs">
                       by {entry.actorEmail}
                       {entry.metadata?.displayName ? ` — ${entry.metadata.displayName}` : ""}
                       {entry.metadata?.role ? ` (${entry.metadata.role})` : ""}
                     </p>
-                    <p className="text-xs text-muted-foreground">{formatTimestamp(entry.createdAt)}</p>
+                    <p className="text-muted-foreground text-xs">
+                      {formatTimestamp(entry.createdAt)}
+                    </p>
                   </div>
                 </div>
               ))}
             </div>
             {data.hasMore && (
               <div className="mt-3 flex justify-center">
-                <p className="text-xs text-muted-foreground">Showing first {PAGE_SIZE} entries</p>
+                <p className="text-muted-foreground text-xs">Showing first {PAGE_SIZE} entries</p>
               </div>
             )}
           </>

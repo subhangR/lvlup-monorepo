@@ -1,6 +1,11 @@
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore, useConsumerStore } from "@levelup/shared-stores";
-import { useNotifications, useUnreadCount, useMarkRead, useMarkAllRead } from "@levelup/shared-hooks";
+import {
+  useNotifications,
+  useUnreadCount,
+  useMarkRead,
+  useMarkAllRead,
+} from "@levelup/shared-hooks";
 import {
   AppShell,
   AppSidebar,
@@ -24,14 +29,7 @@ import {
   type NavGroup,
   type MobileNavItem,
 } from "@levelup/shared-ui";
-import {
-  LayoutDashboard,
-  ShoppingBag,
-  ShoppingCart,
-  User,
-  LogOut,
-  Settings,
-} from "lucide-react";
+import { LayoutDashboard, ShoppingBag, ShoppingCart, User, LogOut } from "lucide-react";
 
 export default function ConsumerLayout() {
   const location = useLocation();
@@ -44,7 +42,7 @@ export default function ConsumerLayout() {
 
   const { data: notifData, isLoading: notifsLoading } = useNotifications(
     currentTenantId,
-    firebaseUser?.uid ?? null,
+    firebaseUser?.uid ?? null
   );
   const unreadCount = useUnreadCount(currentTenantId, firebaseUser?.uid ?? null);
   const markRead = useMarkRead();
@@ -58,15 +56,14 @@ export default function ConsumerLayout() {
           title: "My Learning",
           url: "/consumer",
           icon: LayoutDashboard,
-          isActive:
-            location.pathname === "/consumer" ||
-            location.pathname === "/my-spaces",
+          isActive: location.pathname === "/consumer" || location.pathname === "/my-spaces",
         },
         {
           title: "Space Store",
           url: "/store",
           icon: ShoppingBag,
-          isActive: location.pathname.startsWith("/store") && !location.pathname.includes("checkout"),
+          isActive:
+            location.pathname.startsWith("/store") && !location.pathname.includes("checkout"),
         },
         ...(cartCount > 0
           ? [
@@ -110,11 +107,16 @@ export default function ConsumerLayout() {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium">{user?.displayName ?? "User"}</p>
-            <p className="text-xs text-muted-foreground">{user?.email}</p>
+            <p className="text-muted-foreground text-xs">{user?.email}</p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => { logout(); navigate("/login"); }}>
+        <DropdownMenuItem
+          onClick={() => {
+            logout();
+            navigate("/login");
+          }}
+        >
           <LogOut className="mr-2 h-4 w-4" /> Sign Out
         </DropdownMenuItem>
       </DropdownMenuContent>
@@ -153,9 +155,29 @@ export default function ConsumerLayout() {
   );
 
   const mobileNavItems: MobileNavItem[] = [
-    { icon: LayoutDashboard, label: "Home", to: "/consumer", isActive: location.pathname === "/consumer" || location.pathname === "/my-spaces" },
-    { icon: ShoppingBag, label: "Store", to: "/store", isActive: location.pathname.startsWith("/store") && !location.pathname.includes("checkout") },
-    ...(cartCount > 0 ? [{ icon: ShoppingCart, label: "Cart", to: "/store/checkout", isActive: location.pathname === "/store/checkout", badge: cartCount }] : []),
+    {
+      icon: LayoutDashboard,
+      label: "Home",
+      to: "/consumer",
+      isActive: location.pathname === "/consumer" || location.pathname === "/my-spaces",
+    },
+    {
+      icon: ShoppingBag,
+      label: "Store",
+      to: "/store",
+      isActive: location.pathname.startsWith("/store") && !location.pathname.includes("checkout"),
+    },
+    ...(cartCount > 0
+      ? [
+          {
+            icon: ShoppingCart,
+            label: "Cart",
+            to: "/store/checkout",
+            isActive: location.pathname === "/store/checkout",
+            badge: cartCount,
+          },
+        ]
+      : []),
     { icon: User, label: "Profile", to: "/profile", isActive: location.pathname === "/profile" },
   ];
 

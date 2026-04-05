@@ -378,7 +378,7 @@ const jsonLd = {
     'https://script.google.com/macros/s/AKfycbz1jjcjiEsgGtHRBboA8T7ASowoWinyvykYeYIgKDdE5E5Iykx32kpjTR1YMDr5Uv6cOA/exec';
 
   function initDemoForm() {
-    const form = document.getElementById('demo-form');
+    const form = document.getElementById('demo-form') as HTMLFormElement | null;
     const submitBtn = document.getElementById('submit-btn');
     const submitText = document.getElementById('submit-text');
     const submitSpinner = document.getElementById('submit-spinner');
@@ -390,8 +390,9 @@ const jsonLd = {
     if (!form || !submitBtn) return;
     if (form.dataset.initialized) return;
     form.dataset.initialized = 'true';
+    const _submitBtn = submitBtn;
 
-    function showError(field) {
+    function showError(field: string) {
       const el = document.querySelector(`[data-error="${field}"]`);
       const input = document.getElementById(field);
       if (el) el.classList.remove('hidden');
@@ -409,28 +410,28 @@ const jsonLd = {
         el.classList.remove('border-destructive');
         el.classList.add('border-input');
       });
-      errorSummary.classList.add('hidden');
+      errorSummary?.classList.add('hidden');
     }
 
-    function validateEmail(email) {
+    function validateEmail(email: string) {
       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     }
 
-    function setLoading(loading) {
+    function setLoading(loading: boolean) {
       if (loading) {
-        submitText.textContent = 'Booking…';
-        submitSpinner.classList.remove('hidden');
-        submitSpinner.classList.add('flex');
-        submitIcon.classList.add('hidden');
-        shimmer.classList.remove('hidden');
-        submitBtn.setAttribute('disabled', 'true');
+        if (submitText) submitText.textContent = 'Booking…';
+        submitSpinner?.classList.remove('hidden');
+        submitSpinner?.classList.add('flex');
+        submitIcon?.classList.add('hidden');
+        shimmer?.classList.remove('hidden');
+        _submitBtn.setAttribute('disabled', 'true');
       } else {
-        submitText.textContent = 'Book My Free Demo';
-        submitSpinner.classList.add('hidden');
-        submitSpinner.classList.remove('flex');
-        submitIcon.classList.remove('hidden');
-        shimmer.classList.add('hidden');
-        submitBtn.removeAttribute('disabled');
+        if (submitText) submitText.textContent = 'Book My Free Demo';
+        submitSpinner?.classList.add('hidden');
+        submitSpinner?.classList.remove('flex');
+        submitIcon?.classList.remove('hidden');
+        shimmer?.classList.add('hidden');
+        _submitBtn.removeAttribute('disabled');
       }
     }
 
@@ -439,18 +440,19 @@ const jsonLd = {
       hideErrors();
 
       const data = new FormData(form);
+      const str = (key: string) => (data.get(key) as string | null) ?? '';
       let valid = true;
-      const invalidFields = [];
+      const invalidFields: string[] = [];
 
       for (const field of ['firstName', 'lastName', 'email', 'organization', 'role']) {
-        if (!data.get(field)?.trim()) {
+        if (!str(field).trim()) {
           showError(field);
           invalidFields.push(field);
           valid = false;
         }
       }
 
-      const email = data.get('email')?.trim();
+      const email = str('email').trim();
       if (email && !validateEmail(email)) {
         showError('email');
         if (!invalidFields.includes('email')) invalidFields.push('email');
@@ -458,7 +460,7 @@ const jsonLd = {
       }
 
       if (!valid) {
-        errorSummary.classList.remove('hidden');
+        errorSummary?.classList.remove('hidden');
         const firstEl = document.getElementById(invalidFields[0]);
         if (firstEl) { firstEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); firstEl.focus(); }
         return;
@@ -468,24 +470,26 @@ const jsonLd = {
 
       // Collect checked interests
       const interests = Array.from(form.querySelectorAll('input[name="interests"]:checked'))
-        .map((el) => el.value)
+        .map((el) => (el as HTMLInputElement).value)
         .join(', ');
 
       // Pack all demo-specific fields into message (sheet only has these columns)
-      const messageParts = [];
-      if (data.get('phone')?.trim())        messageParts.push('Phone: ' + data.get('phone').trim());
-      if (data.get('schoolSize'))           messageParts.push('School size: ' + data.get('schoolSize'));
-      if (data.get('preferredTime'))        messageParts.push('Preferred time: ' + data.get('preferredTime'));
+      const messageParts: string[] = [];
+      const phone = str('phone').trim();
+      if (phone)                            messageParts.push('Phone: ' + phone);
+      if (str('schoolSize'))               messageParts.push('School size: ' + str('schoolSize'));
+      if (str('preferredTime'))            messageParts.push('Preferred time: ' + str('preferredTime'));
       if (interests)                        messageParts.push('Interests: ' + interests);
-      if (data.get('message')?.trim())      messageParts.push('Notes: ' + data.get('message').trim());
+      const msgNote = str('message').trim();
+      if (msgNote)                          messageParts.push('Notes: ' + msgNote);
       const message = messageParts.join(' | ') || 'Demo request';
 
       const params = new URLSearchParams({
-        firstName:    data.get('firstName')?.trim()    ?? '',
-        lastName:     data.get('lastName')?.trim()     ?? '',
-        email:        data.get('email')?.trim()        ?? '',
-        organization: data.get('organization')?.trim() ?? '',
-        role:         data.get('role')                 ?? '',
+        firstName:    str('firstName').trim(),
+        lastName:     str('lastName').trim(),
+        email:        str('email').trim(),
+        organization: str('organization').trim(),
+        role:         str('role'),
         inquiryType:  'demo',
         message:      message,
       });
@@ -500,7 +504,7 @@ const jsonLd = {
       } finally {
         setLoading(false);
         form.classList.add('hidden');
-        successMsg.classList.remove('hidden');
+        successMsg?.classList.remove('hidden');
       }
     });
 

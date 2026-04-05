@@ -3,9 +3,9 @@
  * Covers: startTestSession, submitTestSession, evaluateAnswer, recordItemAttempt
  */
 
-import { httpsCallable } from 'firebase/functions';
-import { getFirebaseServices } from '../firebase';
-import type { UnifiedEvaluationResult } from '@levelup/shared-types';
+import { httpsCallable } from "firebase/functions";
+import { getFirebaseServices } from "../firebase";
+import type { UnifiedEvaluationResult } from "@levelup/shared-types";
 
 // ---------------------------------------------------------------------------
 // Request / Response types
@@ -38,7 +38,7 @@ export interface EvaluateAnswerRequest {
   storyPointId: string;
   itemId: string;
   answer: unknown;
-  mode: 'practice' | 'quiz';
+  mode: "practice" | "quiz";
 }
 
 export interface RecordItemAttemptRequest {
@@ -52,6 +52,20 @@ export interface RecordItemAttemptRequest {
   correct: boolean;
   timeSpent?: number;
   feedback?: string;
+  /** Student's answer for persistence (displayed on revisit). */
+  answer?: unknown;
+  /** Compact evaluation result for persistence (displayed on revisit). */
+  evaluationData?: {
+    score: number;
+    maxScore: number;
+    correctness: number;
+    percentage: number;
+    strengths: string[];
+    weaknesses: string[];
+    missingConcepts: string[];
+    summary?: { keyTakeaway: string; overallComment: string };
+    mistakeClassification?: "Conceptual" | "Silly Error" | "Knowledge Gap" | "None";
+  };
 }
 
 export interface RecordItemAttemptResponse {
@@ -68,33 +82,33 @@ function getCallable<Req, Res>(name: string) {
 }
 
 export async function callStartTestSession(
-  data: StartTestSessionRequest,
+  data: StartTestSessionRequest
 ): Promise<StartTestSessionResponse> {
-  const fn = getCallable<StartTestSessionRequest, StartTestSessionResponse>('startTestSession');
+  const fn = getCallable<StartTestSessionRequest, StartTestSessionResponse>("startTestSession");
   const result = await fn(data);
   return result.data;
 }
 
 export async function callSubmitTestSession(
-  data: SubmitTestSessionRequest,
+  data: SubmitTestSessionRequest
 ): Promise<SubmitTestSessionResponse> {
-  const fn = getCallable<SubmitTestSessionRequest, SubmitTestSessionResponse>('submitTestSession');
+  const fn = getCallable<SubmitTestSessionRequest, SubmitTestSessionResponse>("submitTestSession");
   const result = await fn(data);
   return result.data;
 }
 
 export async function callEvaluateAnswer(
-  data: EvaluateAnswerRequest,
+  data: EvaluateAnswerRequest
 ): Promise<UnifiedEvaluationResult> {
-  const fn = getCallable<EvaluateAnswerRequest, UnifiedEvaluationResult>('evaluateAnswer');
+  const fn = getCallable<EvaluateAnswerRequest, UnifiedEvaluationResult>("evaluateAnswer");
   const result = await fn(data);
   return result.data;
 }
 
 export async function callRecordItemAttempt(
-  data: RecordItemAttemptRequest,
+  data: RecordItemAttemptRequest
 ): Promise<RecordItemAttemptResponse> {
-  const fn = getCallable<RecordItemAttemptRequest, RecordItemAttemptResponse>('recordItemAttempt');
+  const fn = getCallable<RecordItemAttemptRequest, RecordItemAttemptResponse>("recordItemAttempt");
   const result = await fn(data);
   return result.data;
 }

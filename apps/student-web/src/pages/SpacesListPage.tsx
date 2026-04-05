@@ -1,15 +1,21 @@
-import { Link } from 'react-router-dom';
-import { useAuthStore } from '@levelup/shared-stores';
-import { useSpaces, useProgress } from '@levelup/shared-hooks';
-import ProgressBar from '../components/common/ProgressBar';
-import { BookOpen, AlertCircle, RefreshCw, Star } from 'lucide-react';
-import { Skeleton, Button } from '@levelup/shared-ui';
-import type { Space } from '@levelup/shared-types';
+import { Link } from "react-router-dom";
+import { useAuthStore } from "@levelup/shared-stores";
+import { useSpaces, useAllSpaceProgress } from "@levelup/shared-hooks";
+import ProgressBar from "../components/common/ProgressBar";
+import { BookOpen, AlertCircle, RefreshCw, Star } from "lucide-react";
+import { Skeleton, Button } from "@levelup/shared-ui";
+import type { Space } from "@levelup/shared-types";
 
 export default function SpacesListPage() {
   const { currentTenantId, user, currentMembership } = useAuthStore();
   const classIds = currentMembership?.permissions?.managedClassIds;
-  const { data: spaces, isLoading, isError, refetch } = useSpaces(currentTenantId, { status: 'published', classIds });
+  const {
+    data: spaces,
+    isLoading,
+    isError,
+    refetch,
+  } = useSpaces(currentTenantId, { status: "published", classIds });
+  const { data: allProgress } = useAllSpaceProgress(currentTenantId, user?.uid ?? null);
 
   if (isLoading) {
     return (
@@ -26,10 +32,10 @@ export default function SpacesListPage() {
     return (
       <div className="space-y-4">
         <h1 className="text-2xl font-bold">My Spaces</h1>
-        <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-8 text-center">
-          <AlertCircle className="h-10 w-10 mx-auto mb-2 text-destructive/60" />
-          <p className="text-sm font-medium text-destructive">Failed to load spaces</p>
-          <p className="text-xs text-muted-foreground mt-1">Check your connection and try again.</p>
+        <div className="border-destructive/30 bg-destructive/5 rounded-lg border p-8 text-center">
+          <AlertCircle className="text-destructive/60 mx-auto mb-2 h-10 w-10" />
+          <p className="text-destructive text-sm font-medium">Failed to load spaces</p>
+          <p className="text-muted-foreground mt-1 text-xs">Check your connection and try again.</p>
           <Button variant="outline" size="sm" onClick={() => refetch()} className="mt-3 gap-1.5">
             <RefreshCw className="h-3.5 w-3.5" /> Retry
           </Button>
@@ -42,15 +48,21 @@ export default function SpacesListPage() {
     <div className="space-y-4">
       <h1 className="text-2xl font-bold">My Spaces</h1>
       {!spaces?.length ? (
-        <div className="rounded-lg border bg-muted/50 p-8 text-center text-muted-foreground">
-          <BookOpen className="h-10 w-10 mx-auto mb-2 text-muted-foreground/30" />
+        <div className="bg-muted/50 text-muted-foreground rounded-lg border p-8 text-center">
+          <BookOpen className="text-muted-foreground/30 mx-auto mb-2 h-10 w-10" />
           <p className="font-medium">No spaces assigned yet</p>
-          <p className="text-xs mt-1">Your teacher will assign learning spaces to your class. Check back soon!</p>
+          <p className="mt-1 text-xs">
+            Your teacher will assign learning spaces to your class. Check back soon!
+          </p>
         </div>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           {spaces.map((space) => (
-            <SpaceCard key={space.id} space={space} tenantId={currentTenantId!} userId={user?.uid ?? ''} />
+            <SpaceCard
+              key={space.id}
+              space={space}
+              percentage={allProgress?.[space.id]?.percentage ?? 0}
+            />
           ))}
         </div>
       )}
@@ -58,14 +70,11 @@ export default function SpacesListPage() {
   );
 }
 
-function SpaceCard({ space, tenantId, userId }: { space: Space; tenantId: string; userId: string }) {
-  const { data: progress } = useProgress(tenantId, userId, space.id);
-  const percentage = progress?.percentage ?? 0;
-
+function SpaceCard({ space, percentage }: { space: Space; percentage: number }) {
   return (
     <Link
       to={`/spaces/${space.id}`}
-      className="block rounded-lg border bg-card p-4 hover:shadow-md transition-shadow"
+      className="bg-card block rounded-lg border p-4 transition-shadow hover:shadow-md"
     >
       {space.thumbnailUrl && (
         <img
@@ -73,14 +82,14 @@ function SpaceCard({ space, tenantId, userId }: { space: Space; tenantId: string
           alt=""
           loading="lazy"
           decoding="async"
-          className="w-full h-32 object-cover rounded-md mb-3"
+          className="mb-3 h-32 w-full rounded-md object-cover"
         />
       )}
-      <h3 className="font-semibold text-sm line-clamp-1">{space.title}</h3>
+      <h3 className="line-clamp-1 text-sm font-semibold">{space.title}</h3>
       {space.description && (
-        <p className="text-xs text-muted-foreground line-clamp-2 mt-1">{space.description}</p>
+        <p className="text-muted-foreground mt-1 line-clamp-2 text-xs">{space.description}</p>
       )}
-      <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
+      <div className="text-muted-foreground mt-2 flex items-center gap-3 text-xs">
         {space.subject && <span>{space.subject}</span>}
         {space.stats && (
           <>
@@ -96,7 +105,7 @@ function SpaceCard({ space, tenantId, userId }: { space: Space; tenantId: string
         )}
       </div>
       <div className="mt-3">
-        <ProgressBar value={percentage} size="sm" color={percentage === 100 ? 'green' : 'blue'} />
+        <ProgressBar value={percentage} size="sm" color={percentage === 100 ? "green" : "blue"} />
       </div>
     </Link>
   );

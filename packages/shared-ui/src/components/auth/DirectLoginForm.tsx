@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -10,12 +11,7 @@ export interface DirectLoginFormProps {
   onSuccess?: () => void;
 }
 
-export function DirectLoginForm({
-  title,
-  subtitle,
-  login,
-  onSuccess,
-}: DirectLoginFormProps) {
+export function DirectLoginForm({ title, subtitle, login, onSuccess }: DirectLoginFormProps) {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [showPassword, setShowPassword] = React.useState(false);
@@ -38,17 +34,15 @@ export function DirectLoginForm({
   };
 
   return (
-    <div className="rounded-lg border bg-card p-6 shadow-card">
+    <div className="bg-card shadow-card rounded-lg border p-6">
       <div className="mb-6 text-center">
         <h1 className="text-2xl font-bold">{title}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{subtitle}</p>
+        <p className="text-muted-foreground mt-1 text-sm">{subtitle}</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
-          <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-            {error}
-          </div>
+          <div className="bg-destructive/10 text-destructive rounded-md p-3 text-sm">{error}</div>
         )}
 
         <div className="space-y-2">
@@ -70,7 +64,7 @@ export function DirectLoginForm({
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="text-xs text-muted-foreground hover:text-foreground"
+              className="text-muted-foreground hover:text-foreground text-xs"
             >
               {showPassword ? "Hide" : "Show"}
             </button>
@@ -86,6 +80,7 @@ export function DirectLoginForm({
         </div>
 
         <Button type="submit" className="w-full" disabled={loading}>
+          {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           {loading ? "Signing in..." : "Sign In"}
         </Button>
       </form>

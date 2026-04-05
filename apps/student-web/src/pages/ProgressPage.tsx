@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { useAuthStore } from '@levelup/shared-stores';
-import { useSpaces, useProgress, useStudentProgressSummary } from '@levelup/shared-hooks';
-import { Link } from 'react-router-dom';
-import ProgressBar from '../components/common/ProgressBar';
+import { useState } from "react";
+import { useAuthStore } from "@levelup/shared-stores";
+import { useSpaces, useAllSpaceProgress, useStudentProgressSummary } from "@levelup/shared-hooks";
+import { Link } from "react-router-dom";
+import ProgressBar from "../components/common/ProgressBar";
 import {
   Skeleton,
   ProgressRing,
@@ -17,19 +17,20 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@levelup/shared-ui';
-import { BarChart3, BookOpen, Award, ClipboardList, Target } from 'lucide-react';
-import type { Space } from '@levelup/shared-types';
+} from "@levelup/shared-ui";
+import { BarChart3, BookOpen, Award, ClipboardList, Target } from "lucide-react";
+import type { Space } from "@levelup/shared-types";
 
-type TabId = 'overall' | 'exams' | 'spaces';
+type TabId = "overall" | "exams" | "spaces";
 
 export default function ProgressPage() {
   const { currentTenantId, user, currentMembership } = useAuthStore();
   const userId = user?.uid ?? null;
   const classIds = currentMembership?.permissions?.managedClassIds;
-  const { data: spaces, isLoading } = useSpaces(currentTenantId, { status: 'published', classIds });
+  const { data: spaces, isLoading } = useSpaces(currentTenantId, { status: "published", classIds });
+  const { data: allProgress } = useAllSpaceProgress(currentTenantId, userId);
   const { data: summary } = useStudentProgressSummary(currentTenantId, userId);
-  const [activeTab, setActiveTab] = useState<TabId>('overall');
+  const [activeTab, setActiveTab] = useState<TabId>("overall");
 
   if (isLoading) {
     return (
@@ -45,7 +46,7 @@ export default function ProgressPage() {
   return (
     <div className="space-y-6">
       <div className="flex items-center gap-2">
-        <BarChart3 className="h-6 w-6 text-primary" />
+        <BarChart3 className="text-primary h-6 w-6" />
         <h1 className="text-2xl font-bold">My Progress</h1>
       </div>
 
@@ -81,36 +82,31 @@ export default function ProgressPage() {
 
                 {/* Subject breakdown */}
                 {Object.keys(summary.autograde.subjectBreakdown).length > 0 && (
-                  <div className="rounded-lg border bg-card p-5">
-                    <h3 className="font-semibold text-sm mb-3">Exam Performance by Subject</h3>
+                  <div className="bg-card rounded-lg border p-5">
+                    <h3 className="mb-3 text-sm font-semibold">Exam Performance by Subject</h3>
                     <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-                      {Object.entries(summary.autograde.subjectBreakdown).map(
-                        ([subject, data]) => (
-                          <div
-                            key={subject}
-                            className="flex items-center gap-3 rounded-md border p-3"
-                          >
-                            <ProgressRing
-                              value={data.avgScore * 100}
-                              size={50}
-                              strokeWidth={5}
-                            />
-                            <div>
-                              <p className="text-sm font-medium">{subject}</p>
-                              <p className="text-xs text-muted-foreground">
-                                {data.examCount} exam{data.examCount !== 1 ? 's' : ''}
-                              </p>
-                            </div>
+                      {Object.entries(summary.autograde.subjectBreakdown).map(([subject, data]) => (
+                        <div
+                          key={subject}
+                          className="flex items-center gap-3 rounded-md border p-3"
+                        >
+                          <ProgressRing value={data.avgScore * 100} size={50} strokeWidth={5} />
+                          <div>
+                            <p className="text-sm font-medium">{subject}</p>
+                            <p className="text-muted-foreground text-xs">
+                              {data.examCount} exam{data.examCount !== 1 ? "s" : ""}
+                            </p>
                           </div>
-                        ),
-                      )}
+                        </div>
+                      ))}
                     </div>
                   </div>
                 )}
               </>
             ) : (
               <p className="text-muted-foreground text-sm">
-                No overall progress data yet. Complete exams and spaces to see your combined metrics.
+                No overall progress data yet. Complete exams and spaces to see your combined
+                metrics.
               </p>
             )}
           </div>
@@ -140,10 +136,10 @@ export default function ProgressPage() {
                           <span
                             className={`font-medium ${
                               exam.percentage >= 70
-                                ? 'text-emerald-600 dark:text-emerald-400'
+                                ? "text-emerald-600 dark:text-emerald-400"
                                 : exam.percentage >= 40
-                                  ? 'text-yellow-600 dark:text-yellow-400'
-                                  : 'text-destructive'
+                                  ? "text-yellow-600 dark:text-yellow-400"
+                                  : "text-destructive"
                             }`}
                           >
                             {Math.round(exam.percentage)}%
@@ -170,8 +166,7 @@ export default function ProgressPage() {
                 <SpaceProgressCard
                   key={space.id}
                   space={space}
-                  tenantId={currentTenantId!}
-                  userId={userId!}
+                  progress={allProgress?.[space.id] ?? null}
                 />
               ))
             )}
@@ -184,47 +179,47 @@ export default function ProgressPage() {
 
 function SpaceProgressCard({
   space,
-  tenantId,
-  userId,
+  progress,
 }: {
   space: Space;
-  tenantId: string;
-  userId: string;
+  progress: import("@levelup/shared-types").SpaceProgress | null;
 }) {
-  const { data: progress } = useProgress(tenantId, userId, space.id);
-
   const percentage = progress?.percentage ?? 0;
   const pointsEarned = progress?.pointsEarned ?? 0;
   const totalPoints = progress?.totalPoints ?? 0;
-  const status = progress?.status ?? 'not_started';
+  const status = progress?.status ?? "not_started";
   const spCount = Object.keys(progress?.storyPoints ?? {}).length;
   const completedSPs = Object.values(progress?.storyPoints ?? {}).filter(
-    (sp) => sp.status === 'completed',
+    (sp) => sp.status === "completed"
   ).length;
 
   return (
     <Link
       to={`/spaces/${space.id}`}
-      className="block rounded-lg border bg-card p-4 hover:shadow-sm transition-shadow"
+      className="bg-card block rounded-lg border p-4 transition-shadow hover:shadow-sm"
     >
-      <div className="flex items-center justify-between mb-2">
-        <h3 className="font-semibold text-sm">{space.title}</h3>
+      <div className="mb-2 flex items-center justify-between">
+        <h3 className="text-sm font-semibold">{space.title}</h3>
         <span
           className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-            status === 'completed'
-              ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-400'
-              : status === 'in_progress'
-                ? 'bg-primary/10 text-primary'
-                : 'bg-muted text-muted-foreground'
+            status === "completed"
+              ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400"
+              : status === "in_progress"
+                ? "bg-primary/10 text-primary"
+                : "bg-muted text-muted-foreground"
           }`}
         >
-          {status === 'not_started' ? 'Not Started' : status === 'in_progress' ? 'In Progress' : 'Completed'}
+          {status === "not_started"
+            ? "Not Started"
+            : status === "in_progress"
+              ? "In Progress"
+              : "Completed"}
         </span>
       </div>
 
-      <ProgressBar value={percentage} color={status === 'completed' ? 'green' : 'blue'} />
+      <ProgressBar value={percentage} color={status === "completed" ? "green" : "blue"} />
 
-      <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
+      <div className="text-muted-foreground mt-2 flex items-center gap-4 text-xs">
         <span className="flex items-center gap-1">
           <Award className="h-3 w-3" /> {pointsEarned}/{totalPoints} pts
         </span>

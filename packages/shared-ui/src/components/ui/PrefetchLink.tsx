@@ -1,6 +1,5 @@
-import { useCallback, useRef, type AnchorHTMLAttributes } from 'react';
-import { Link, type LinkProps } from 'react-router-dom';
-import { cn } from '../../lib/utils';
+import { useCallback, useRef } from "react";
+import { Link, type LinkProps } from "react-router-dom";
 
 /** Map of route paths to their lazy import functions */
 export type PrefetchMap = Record<string, () => Promise<unknown>>;
@@ -40,7 +39,7 @@ export function PrefetchLink({
   const timerRef = useRef<ReturnType<typeof setTimeout>>();
 
   const handleMouseEnter = useCallback(() => {
-    const path = typeof to === 'string' ? to : to.pathname ?? '';
+    const path = typeof to === "string" ? to : (to.pathname ?? "");
     timerRef.current = setTimeout(() => {
       prefetchRoute(path, prefetchMap);
     }, prefetchDelay);
@@ -53,7 +52,7 @@ export function PrefetchLink({
   }, []);
 
   const handleFocus = useCallback(() => {
-    const path = typeof to === 'string' ? to : to.pathname ?? '';
+    const path = typeof to === "string" ? to : (to.pathname ?? "");
     prefetchRoute(path, prefetchMap);
   }, [to, prefetchMap]);
 

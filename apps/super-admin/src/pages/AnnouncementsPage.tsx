@@ -8,10 +8,6 @@ import {
   Label,
   Textarea,
   Badge,
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
   Dialog,
   DialogContent,
   DialogHeader,
@@ -118,9 +114,7 @@ export default function AnnouncementsPage() {
       title: a.title,
       body: a.body,
       expiresAt: a.expiresAt
-        ? new Date((a.expiresAt as { seconds: number }).seconds * 1000)
-            .toISOString()
-            .split("T")[0]
+        ? new Date((a.expiresAt as { seconds: number }).seconds * 1000).toISOString().split("T")[0]
         : "",
     });
     setDialogOpen(true);
@@ -170,11 +164,7 @@ export default function AnnouncementsPage() {
     try {
       await callSaveAnnouncement({ id, data: { status: newStatus } });
       queryClient.invalidateQueries({ queryKey: ["platform", "announcements"] });
-      toast.success(
-        newStatus === "published"
-          ? "Announcement published"
-          : "Announcement archived",
-      );
+      toast.success(newStatus === "published" ? "Announcement published" : "Announcement archived");
     } catch (err) {
       toast.error("Failed to update status", {
         description: err instanceof Error ? err.message : "Please try again",
@@ -214,10 +204,7 @@ export default function AnnouncementsPage() {
         }
       />
 
-      <Tabs
-        value={statusFilter}
-        onValueChange={(v) => setStatusFilter(v as StatusTab)}
-      >
+      <Tabs value={statusFilter} onValueChange={(v) => setStatusFilter(v as StatusTab)}>
         <TabsList>
           {statusTabs.map((tab) => (
             <TabsTrigger key={tab} value={tab} className="capitalize">
@@ -228,7 +215,7 @@ export default function AnnouncementsPage() {
 
         {statusTabs.map((tab) => (
           <TabsContent key={tab} value={tab}>
-            <div className="rounded-lg border bg-card">
+            <div className="bg-card rounded-lg border">
               <Table>
                 <TableHeader>
                   <TableRow className="bg-muted/50 hover:bg-muted/50">
@@ -269,13 +256,11 @@ export default function AnnouncementsPage() {
                     <TableRow>
                       <TableCell colSpan={6} className="h-48">
                         <div className="flex flex-col items-center justify-center text-center">
-                          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-                            <Megaphone className="h-6 w-6 text-muted-foreground" />
+                          <div className="bg-muted flex h-12 w-12 items-center justify-center rounded-full">
+                            <Megaphone className="text-muted-foreground h-6 w-6" />
                           </div>
-                          <h3 className="mt-3 text-sm font-semibold">
-                            No announcements found
-                          </h3>
-                          <p className="mt-1 text-xs text-muted-foreground max-w-sm">
+                          <h3 className="mt-3 text-sm font-semibold">No announcements found</h3>
+                          <p className="text-muted-foreground mt-1 max-w-sm text-xs">
                             {statusFilter !== "all"
                               ? "No announcements match this status filter."
                               : "Create your first announcement to get started."}
@@ -289,15 +274,11 @@ export default function AnnouncementsPage() {
                         <TableCell>
                           <div>
                             <p className="font-medium">{a.title}</p>
-                            <p className="text-xs text-muted-foreground line-clamp-1">
-                              {a.body}
-                            </p>
+                            <p className="text-muted-foreground line-clamp-1 text-xs">{a.body}</p>
                           </div>
                         </TableCell>
                         <TableCell>
-                          <Badge variant={statusBadgeVariant(a.status)}>
-                            {a.status}
-                          </Badge>
+                          <Badge variant={statusBadgeVariant(a.status)}>{a.status}</Badge>
                         </TableCell>
                         <TableCell>
                           <span className="text-sm">{a.authorName}</span>
@@ -329,9 +310,7 @@ export default function AnnouncementsPage() {
                                   variant="ghost"
                                   size="sm"
                                   className="h-7 px-2 text-green-600 hover:text-green-700"
-                                  onClick={() =>
-                                    handleStatusChange(a.id, "published")
-                                  }
+                                  onClick={() => handleStatusChange(a.id, "published")}
                                 >
                                   <Send className="mr-1 h-3 w-3" />
                                   Publish
@@ -343,9 +322,7 @@ export default function AnnouncementsPage() {
                                 variant="ghost"
                                 size="sm"
                                 className="h-7 px-2 text-amber-600 hover:text-amber-700"
-                                onClick={() =>
-                                  handleStatusChange(a.id, "archived")
-                                }
+                                onClick={() => handleStatusChange(a.id, "archived")}
                               >
                                 <Archive className="mr-1 h-3 w-3" />
                                 Archive
@@ -354,7 +331,7 @@ export default function AnnouncementsPage() {
                             <Button
                               variant="ghost"
                               size="sm"
-                              className="h-7 px-2 text-destructive hover:text-destructive"
+                              className="text-destructive hover:text-destructive h-7 px-2"
                               onClick={() => setDeleteTarget(a)}
                             >
                               <Trash2 className="h-3 w-3" />
@@ -391,9 +368,7 @@ export default function AnnouncementsPage() {
       >
         <DialogContent className="max-w-lg">
           <DialogHeader>
-            <DialogTitle>
-              {editingId ? "Edit Announcement" : "New Announcement"}
-            </DialogTitle>
+            <DialogTitle>{editingId ? "Edit Announcement" : "New Announcement"}</DialogTitle>
             <DialogDescription>
               {editingId
                 ? "Update the announcement details."
@@ -407,9 +382,7 @@ export default function AnnouncementsPage() {
                 id="ann-title"
                 placeholder="Announcement title"
                 value={formData.title}
-                onChange={(e) =>
-                  setFormData((p) => ({ ...p, title: e.target.value }))
-                }
+                onChange={(e) => setFormData((p) => ({ ...p, title: e.target.value }))}
                 maxLength={200}
               />
             </div>
@@ -419,9 +392,7 @@ export default function AnnouncementsPage() {
                 id="ann-body"
                 placeholder="Write the announcement body..."
                 value={formData.body}
-                onChange={(e) =>
-                  setFormData((p) => ({ ...p, body: e.target.value }))
-                }
+                onChange={(e) => setFormData((p) => ({ ...p, body: e.target.value }))}
                 rows={5}
                 maxLength={5000}
               />
@@ -432,9 +403,7 @@ export default function AnnouncementsPage() {
                 id="ann-expires"
                 type="date"
                 value={formData.expiresAt}
-                onChange={(e) =>
-                  setFormData((p) => ({ ...p, expiresAt: e.target.value }))
-                }
+                onChange={(e) => setFormData((p) => ({ ...p, expiresAt: e.target.value }))}
               />
             </div>
           </div>
@@ -454,27 +423,20 @@ export default function AnnouncementsPage() {
               onClick={handleSave}
               disabled={saving || !formData.title.trim() || !formData.body.trim()}
             >
-              {saving
-                ? "Saving..."
-                : editingId
-                  ? "Update"
-                  : "Create Draft"}
+              {saving ? "Saving..." : editingId ? "Update" : "Create Draft"}
             </Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
       {/* Delete Confirmation */}
-      <AlertDialog
-        open={!!deleteTarget}
-        onOpenChange={(o) => !o && setDeleteTarget(null)}
-      >
+      <AlertDialog open={!!deleteTarget} onOpenChange={(o) => !o && setDeleteTarget(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Announcement</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete &quot;{deleteTarget?.title}&quot;? This
-              action cannot be undone.
+              Are you sure you want to delete &quot;{deleteTarget?.title}&quot;? This action cannot
+              be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

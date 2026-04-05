@@ -1,15 +1,14 @@
-import type { KeyboardEvent } from 'react';
-import { cn } from '../../lib/utils';
-import type { AchievementTier, AchievementCategory } from '@levelup/shared-types';
-import { AchievementBadge } from './AchievementBadge';
-import { Card, CardContent } from '../ui/card';
+import { cn } from "../../lib/utils";
+import type { AchievementTier, AchievementCategory } from "@levelup/shared-types";
+import { AchievementBadge } from "./AchievementBadge";
+import { Card, CardContent } from "../ui/card";
 
 export interface AchievementCardProps {
   icon: string;
   title: string;
   description: string;
   tier: AchievementTier;
-  rarity: 'common' | 'uncommon' | 'rare' | 'epic' | 'legendary';
+  rarity: "common" | "uncommon" | "rare" | "epic" | "legendary";
   category: AchievementCategory;
   pointsReward: number;
   earned?: boolean;
@@ -20,12 +19,12 @@ export interface AchievementCardProps {
 }
 
 const categoryLabels: Record<AchievementCategory, string> = {
-  learning: 'Learning',
-  consistency: 'Consistency',
-  excellence: 'Excellence',
-  exploration: 'Exploration',
-  social: 'Social',
-  milestone: 'Milestone',
+  learning: "Learning",
+  consistency: "Consistency",
+  excellence: "Excellence",
+  exploration: "Exploration",
+  social: "Social",
+  milestone: "Milestone",
 };
 
 export function AchievementCard({
@@ -42,7 +41,7 @@ export function AchievementCard({
   onActivate,
 }: AchievementCardProps) {
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (onActivate && (e.key === 'Enter' || e.key === ' ')) {
+    if (onActivate && (e.key === "Enter" || e.key === " ")) {
       e.preventDefault();
       onActivate();
     }
@@ -51,13 +50,14 @@ export function AchievementCard({
   return (
     <Card
       className={cn(
-        'transition-all hover:shadow-md',
-        earned && 'ring-1 ring-primary/20',
-        onActivate && 'cursor-pointer focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
-        className,
+        "transition-all hover:shadow-md",
+        earned && "ring-primary/20 ring-1",
+        onActivate &&
+          "focus-visible:ring-ring cursor-pointer focus-visible:outline-none focus-visible:ring-2",
+        className
       )}
       role="article"
-      aria-label={`${title} achievement, ${tier} tier, ${earned ? 'earned' : 'locked'}${earned && earnedAt ? `, earned ${new Date(earnedAt).toLocaleDateString()}` : ''}`}
+      aria-label={`${title} achievement, ${tier} tier, ${earned ? "earned" : "locked"}${earned && earnedAt ? `, earned ${new Date(earnedAt).toLocaleDateString()}` : ""}`}
       tabIndex={onActivate ? 0 : undefined}
       onClick={onActivate}
       onKeyDown={handleKeyDown}
@@ -73,28 +73,25 @@ export function AchievementCard({
         />
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <h3 className={cn('font-semibold', !earned && 'text-muted-foreground')}>
-              {title}
-            </h3>
-            <span className="shrink-0 rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+            <h3 className={cn("font-semibold", !earned && "text-muted-foreground")}>{title}</h3>
+            <span className="bg-muted text-muted-foreground shrink-0 rounded px-1.5 py-0.5 text-[10px] font-medium">
               {categoryLabels[category]}
             </span>
           </div>
-          <p className="mt-0.5 text-sm text-muted-foreground">{description}</p>
-          <div className="mt-2 flex items-center gap-3 text-xs text-muted-foreground">
+          <p className="text-muted-foreground mt-0.5 text-sm">{description}</p>
+          <div className="text-muted-foreground mt-2 flex items-center gap-3 text-xs">
             <span className="capitalize">{tier}</span>
             <span>+{pointsReward} XP</span>
             {earned && earnedAt && (
               <span>
-                Earned {new Date(earnedAt).toLocaleDateString(undefined, {
-                  month: 'short',
-                  day: 'numeric',
+                Earned{" "}
+                {new Date(earnedAt).toLocaleDateString(undefined, {
+                  month: "short",
+                  day: "numeric",
                 })}
               </span>
             )}
-            {!earned && (
-              <span className="italic">Locked</span>
-            )}
+            {!earned && <span className="italic">Locked</span>}
           </div>
         </div>
       </CardContent>

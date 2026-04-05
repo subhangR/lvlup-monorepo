@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -41,7 +42,7 @@ export function CredentialsStep({
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="flex items-center justify-between rounded-md bg-muted p-3 text-sm">
+      <div className="bg-muted flex items-center justify-between rounded-md p-3 text-sm">
         <span className="font-medium">{schoolName}</span>
         <button
           type="button"
@@ -53,13 +54,11 @@ export function CredentialsStep({
       </div>
 
       {error && (
-        <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-          {error}
-        </div>
+        <div className="bg-destructive/10 text-destructive rounded-md p-3 text-sm">{error}</div>
       )}
 
       {showRollNumberToggle && (
-        <div className="flex gap-2 rounded-md bg-muted p-1">
+        <div className="bg-muted flex gap-2 rounded-md p-1">
           <button
             type="button"
             onClick={() => {
@@ -102,9 +101,7 @@ export function CredentialsStep({
           value={credential}
           onChange={(e) => setCredential(e.target.value)}
           placeholder={
-            loginMethod === "roll-number"
-              ? "Enter your roll number"
-              : "Enter your email"
+            loginMethod === "roll-number" ? "Enter your roll number" : "Enter your email"
           }
           autoFocus
         />
@@ -116,7 +113,7 @@ export function CredentialsStep({
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
-            className="text-xs text-muted-foreground hover:text-foreground"
+            className="text-muted-foreground hover:text-foreground text-xs"
           >
             {showPassword ? "Hide" : "Show"}
           </button>
@@ -132,13 +129,14 @@ export function CredentialsStep({
       </div>
 
       <Button type="submit" className="w-full" disabled={loading}>
+        {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
         {loading ? "Signing in..." : "Sign In"}
       </Button>
 
       <p className="text-center text-sm">
         <button
           type="button"
-          className="text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+          className="text-muted-foreground hover:text-foreground underline-offset-4 hover:underline"
         >
           Forgot password?
         </button>

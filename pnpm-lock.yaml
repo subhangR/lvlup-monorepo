@@ -536,12 +536,9 @@ importers:
 
   functions/analytics:
     dependencies:
-      '@levelup/functions-shared':
-        specifier: workspace:*
-        version: link:../shared
       '@levelup/shared-types':
-        specifier: file:.local-deps/shared-types
-        version: file:functions/analytics/.local-deps/shared-types
+        specifier: workspace:*
+        version: link:../../packages/shared-types
       firebase-admin:
         specifier: ^13.0.0
         version: 13.6.1
@@ -551,9 +548,6 @@ importers:
       pdfkit:
         specifier: ^0.17.2
         version: 0.17.2
-      zod:
-        specifier: ^4.3.6
-        version: 4.3.6
     devDependencies:
       '@types/pdfkit':
         specifier: ^0.17.5
@@ -628,9 +622,6 @@ importers:
       firebase-functions:
         specifier: ^6.0.0
         version: 6.6.0(firebase-admin@13.6.1)
-      zod:
-        specifier: ^4.3.6
-        version: 4.3.6
     devDependencies:
       '@vitest/coverage-v8':
         specifier: ^2.0.0
@@ -657,11 +648,11 @@ importers:
         specifier: workspace:*
         version: link:../shared
       '@levelup/shared-services':
-        specifier: file:.local-deps/shared-services
-        version: file:functions/levelup/.local-deps/shared-services
+        specifier: workspace:*
+        version: link:../../packages/shared-services
       '@levelup/shared-types':
-        specifier: file:.local-deps/shared-types
-        version: file:functions/levelup/.local-deps/shared-types
+        specifier: workspace:*
+        version: link:../../packages/shared-types
       firebase-admin:
         specifier: ^13.0.0
         version: 13.6.1
@@ -2465,17 +2456,8 @@ packages:
   '@js-sdsl/ordered-map@4.4.2':
     resolution: {integrity: sha512-iUKgm52T8HOE/makSxjqoWhe95ZJA1/G1sYsGev2JDKUSS14KAgg1LHb+Ba+IPow0xflbnSkOsZcO08C7w1gYw==}
 
-  '@levelup/shared-services@file:functions/levelup/.local-deps/shared-services':
-    resolution: {directory: functions/levelup/.local-deps/shared-services, type: directory}
-
-  '@levelup/shared-types@file:functions/analytics/.local-deps/shared-types':
-    resolution: {directory: functions/analytics/.local-deps/shared-types, type: directory}
-
   '@levelup/shared-types@file:functions/identity/.local-deps/shared-types':
     resolution: {directory: functions/identity/.local-deps/shared-types, type: directory}
-
-  '@levelup/shared-types@file:functions/levelup/.local-deps/shared-types':
-    resolution: {directory: functions/levelup/.local-deps/shared-types, type: directory}
 
   '@napi-rs/canvas-android-arm64@0.1.92':
     resolution: {integrity: sha512-rDOtq53ujfOuevD5taxAuIFALuf1QsQWZe1yS/N4MtT+tNiDBEdjufvQRPWZ11FubL2uwgP8ApYU3YOaNu1ZsQ==}
@@ -10182,27 +10164,7 @@ snapshots:
 
   '@js-sdsl/ordered-map@4.4.2': {}
 
-  '@levelup/shared-services@file:functions/levelup/.local-deps/shared-services':
-    dependencies:
-      '@google-cloud/secret-manager': 5.6.0
-      '@google/generative-ai': 0.21.0
-      '@levelup/shared-types': file:functions/levelup/.local-deps/shared-types
-      firebase: 11.10.0
-      firebase-admin: 13.6.1
-    transitivePeerDependencies:
-      - '@react-native-async-storage/async-storage'
-      - encoding
-      - supports-color
-
-  '@levelup/shared-types@file:functions/analytics/.local-deps/shared-types':
-    dependencies:
-      zod: 4.3.6
-
   '@levelup/shared-types@file:functions/identity/.local-deps/shared-types':
-    dependencies:
-      zod: 4.3.6
-
-  '@levelup/shared-types@file:functions/levelup/.local-deps/shared-types':
     dependencies:
       zod: 4.3.6
 

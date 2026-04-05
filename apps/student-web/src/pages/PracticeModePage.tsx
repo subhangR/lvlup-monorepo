@@ -1,17 +1,17 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import { useAuthStore } from '@levelup/shared-stores';
-import { useSpace, useRealtimeDB, useRecordItemAttempt, useApiError } from '@levelup/shared-hooks';
-import { realtimeDBService } from '@levelup/shared-services';
-import { useStoryPoints } from '../hooks/useStoryPoints';
-import { useStoryPointItems } from '../hooks/useSpaceItems';
-import { useEvaluateAnswer } from '../hooks/useEvaluateAnswer';
-import { QuestionAnswerer } from '../components/questions';
-import { autoEvaluateClient } from '../utils/auto-evaluate-client';
-import ChatTutorPanel from '../components/chat/ChatTutorPanel';
-import ProgressBar from '../components/common/ProgressBar';
-import type { UnifiedEvaluationResult, UnifiedItem } from '@levelup/shared-types';
-import { Dumbbell, CheckCircle2, XCircle, Minus, Filter } from 'lucide-react';
+import { useState, useEffect, useCallback } from "react";
+import { useParams, Link } from "react-router-dom";
+import { useAuthStore } from "@levelup/shared-stores";
+import { useSpace, useRealtimeDB, useRecordItemAttempt, useApiError } from "@levelup/shared-hooks";
+import { realtimeDBService } from "@levelup/shared-services";
+import { useStoryPoints } from "../hooks/useStoryPoints";
+import { useStoryPointItems } from "../hooks/useSpaceItems";
+import { useEvaluateAnswer } from "../hooks/useEvaluateAnswer";
+import { QuestionAnswerer } from "../components/questions";
+import { autoEvaluateClient } from "../utils/auto-evaluate-client";
+import ChatTutorPanel from "../components/chat/ChatTutorPanel";
+import ProgressBar from "../components/common/ProgressBar";
+import type { UnifiedEvaluationResult, UnifiedItem } from "@levelup/shared-types";
+import { Dumbbell, CheckCircle2, XCircle, Minus, Filter } from "lucide-react";
 import {
   Button,
   Badge,
@@ -22,7 +22,7 @@ import {
   BreadcrumbLink,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from '@levelup/shared-ui';
+} from "@levelup/shared-ui";
 
 interface PracticeProgressData {
   evaluations: Record<string, UnifiedEvaluationResult>;
@@ -36,13 +36,17 @@ export default function PracticeModePage() {
 
   const { data: space } = useSpace(currentTenantId, spaceId ?? null);
   const { data: storyPoints } = useStoryPoints(currentTenantId, spaceId ?? null);
-  const { data: items, isLoading } = useStoryPointItems(currentTenantId, spaceId ?? null, storyPointId ?? null);
+  const { data: items, isLoading } = useStoryPointItems(
+    currentTenantId,
+    spaceId ?? null,
+    storyPointId ?? null
+  );
   const evaluateAnswer = useEvaluateAnswer();
-  const recordAttempt = useRecordItemAttempt();
+  const recordAttempt = useRecordItemAttempt(userId);
   const { handleError } = useApiError();
 
   const storyPoint = storyPoints?.find((sp) => sp.id === storyPointId);
-  const questions = items?.filter((i) => i.type === 'question') ?? [];
+  const questions = items?.filter((i) => i.type === "question") ?? [];
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [evaluations, setEvaluations] = useState<Record<string, UnifiedEvaluationResult>>({});
@@ -57,19 +61,17 @@ export default function PracticeModePage() {
         e.preventDefault();
       }
     };
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, [evaluations]);
 
   // Load persisted practice progress from RTDB
-  const rtdbPath = userId && spaceId
-    ? `practice/${userId}/${spaceId}`
-    : null;
+  const rtdbPath = userId && spaceId ? `practice/${userId}/${spaceId}` : null;
 
   const { data: persistedProgress } = useRealtimeDB<PracticeProgressData>(
-    currentTenantId ?? '',
-    rtdbPath ?? '',
-    { disabled: !currentTenantId || !rtdbPath },
+    currentTenantId ?? "",
+    rtdbPath ?? "",
+    { disabled: !currentTenantId || !rtdbPath }
   );
 
   // Restore evaluations from RTDB on initial load
@@ -87,14 +89,16 @@ export default function PracticeModePage() {
     (newEvaluations: Record<string, UnifiedEvaluationResult>) => {
       if (!currentTenantId || !userId || !spaceId) return;
       const path = `practice/${userId}/${spaceId}`;
-      realtimeDBService.setData(currentTenantId, path, {
-        evaluations: newEvaluations,
-        updatedAt: Date.now(),
-      }).catch((err: unknown) => {
-        handleError(err, 'Failed to save practice progress');
-      });
+      realtimeDBService
+        .setData(currentTenantId, path, {
+          evaluations: newEvaluations,
+          updatedAt: Date.now(),
+        })
+        .catch((err: unknown) => {
+          handleError(err, "Failed to save practice progress");
+        });
     },
-    [currentTenantId, userId, spaceId],
+    [currentTenantId, userId, spaceId]
   );
 
   // Reset currentIndex when difficulty filter changes
@@ -107,9 +111,7 @@ export default function PracticeModePage() {
     : questions;
 
   const currentQuestion = filteredQuestions[currentIndex];
-  const totalSolved = Object.values(evaluations).filter(
-    (e) => e.correctness >= 1,
-  ).length;
+  const totalSolved = Object.values(evaluations).filter((e) => e.correctness >= 1).length;
 
   const handleSubmit = async (item: UnifiedItem, answer: unknown) => {
     if (!currentTenantId || !spaceId || !storyPointId) return;
@@ -128,7 +130,7 @@ export default function PracticeModePage() {
           storyPointId,
           itemId: item.id,
           answer,
-          mode: 'practice',
+          mode: "practice",
         });
       }
 
@@ -144,13 +146,25 @@ export default function PracticeModePage() {
         spaceId,
         storyPointId,
         itemId: item.id,
-        itemType: 'question',
+        itemType: "question",
         score: evaluationResult.score,
         maxScore: evaluationResult.maxScore,
         correct: evaluationResult.correctness >= 1,
+        answer,
+        evaluationData: {
+          score: evaluationResult.score,
+          maxScore: evaluationResult.maxScore,
+          correctness: evaluationResult.correctness,
+          percentage: evaluationResult.percentage,
+          strengths: evaluationResult.strengths ?? [],
+          weaknesses: evaluationResult.weaknesses ?? [],
+          missingConcepts: evaluationResult.missingConcepts ?? [],
+          summary: evaluationResult.summary,
+          mistakeClassification: evaluationResult.mistakeClassification,
+        },
       });
     } catch (err) {
-      handleError(err, 'Failed to evaluate answer');
+      handleError(err, "Failed to evaluate answer");
     }
   };
 
@@ -159,20 +173,24 @@ export default function PracticeModePage() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6">
+    <div className="mx-auto max-w-3xl space-y-6">
       {/* Breadcrumb */}
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink asChild><Link to="/spaces">Spaces</Link></BreadcrumbLink>
+            <BreadcrumbLink asChild>
+              <Link to="/spaces">Spaces</Link>
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbLink asChild><Link to={`/spaces/${spaceId}`}>{space?.title ?? 'Space'}</Link></BreadcrumbLink>
+            <BreadcrumbLink asChild>
+              <Link to={`/spaces/${spaceId}`}>{space?.title ?? "Space"}</Link>
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage>{storyPoint?.title ?? 'Practice'}</BreadcrumbPage>
+            <BreadcrumbPage>{storyPoint?.title ?? "Practice"}</BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
@@ -183,12 +201,14 @@ export default function PracticeModePage() {
           <Dumbbell className="h-6 w-6 text-emerald-500" />
           <div>
             <h1 className="text-xl font-bold">{storyPoint?.title}</h1>
-            <p className="text-sm text-muted-foreground">Practice Mode — Unlimited retries</p>
+            <p className="text-muted-foreground text-sm">Practice Mode — Unlimited retries</p>
           </div>
         </div>
         <div className="text-right">
-          <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">{totalSolved}/{filteredQuestions.length}</p>
-          <p className="text-xs text-muted-foreground">Solved</p>
+          <p className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">
+            {totalSolved}/{filteredQuestions.length}
+          </p>
+          <p className="text-muted-foreground text-xs">Solved</p>
         </div>
       </div>
 
@@ -202,12 +222,12 @@ export default function PracticeModePage() {
 
       {/* Filters */}
       <div className="flex items-center gap-2">
-        <Filter className="h-4 w-4 text-muted-foreground" />
-        <span className="text-xs text-muted-foreground">Difficulty:</span>
-        {['easy', 'medium', 'hard'].map((d) => (
+        <Filter className="text-muted-foreground h-4 w-4" />
+        <span className="text-muted-foreground text-xs">Difficulty:</span>
+        {["easy", "medium", "hard"].map((d) => (
           <Badge
             key={d}
-            variant={difficultyFilter === d ? 'default' : 'secondary'}
+            variant={difficultyFilter === d ? "default" : "secondary"}
             className="cursor-pointer capitalize"
             onClick={() => setDifficultyFilter(difficultyFilter === d ? null : d)}
           >
@@ -217,7 +237,11 @@ export default function PracticeModePage() {
       </div>
 
       {/* Question navigator mini */}
-      <div className="flex flex-wrap gap-1.5" role="navigation" aria-label="Practice question navigator">
+      <div
+        className="flex flex-wrap gap-1.5"
+        role="navigation"
+        aria-label="Practice question navigator"
+      >
         {filteredQuestions.map((q, idx) => {
           const eval_ = evaluations[q.id];
           const isCorrect = eval_ != null && eval_.correctness >= 1;
@@ -228,15 +252,15 @@ export default function PracticeModePage() {
             <button
               key={q.id}
               onClick={() => setCurrentIndex(idx)}
-              aria-label={`Question ${idx + 1}: ${isCorrect ? 'Correct' : isIncorrect ? 'Incorrect' : 'Not attempted'}`}
-              aria-current={isCurrent ? 'step' : undefined}
-              className={`h-10 w-10 sm:h-8 sm:w-8 rounded text-xs font-medium ${
+              aria-label={`Question ${idx + 1}: ${isCorrect ? "Correct" : isIncorrect ? "Incorrect" : "Not attempted"}`}
+              aria-current={isCurrent ? "step" : undefined}
+              className={`h-10 w-10 rounded text-xs font-medium sm:h-8 sm:w-8 ${
                 isCorrect
-                  ? 'bg-emerald-500 text-white'
+                  ? "bg-emerald-500 text-white"
                   : isIncorrect
-                    ? 'bg-red-400 text-white'
-                    : 'bg-muted text-muted-foreground'
-              } ${isCurrent ? 'ring-2 ring-primary ring-offset-1' : ''}`}
+                    ? "bg-red-400 text-white"
+                    : "bg-muted text-muted-foreground"
+              } ${isCurrent ? "ring-primary ring-2 ring-offset-1" : ""}`}
             >
               {idx + 1}
             </button>
@@ -246,20 +270,19 @@ export default function PracticeModePage() {
 
       {/* Current Question */}
       {currentQuestion ? (
-        <div className="rounded-lg border bg-card p-5">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-sm text-muted-foreground">
+        <div className="bg-card rounded-lg border p-5">
+          <div className="mb-3 flex items-center justify-between">
+            <span className="text-muted-foreground text-sm">
               Question {currentIndex + 1} of {filteredQuestions.length}
             </span>
-            {evaluations[currentQuestion.id] && (
-              evaluations[currentQuestion.id].correctness >= 1 ? (
+            {evaluations[currentQuestion.id] &&
+              (evaluations[currentQuestion.id].correctness >= 1 ? (
                 <CheckCircle2 className="h-5 w-5 text-emerald-500" />
               ) : evaluations[currentQuestion.id].correctness === 0 ? (
-                <XCircle className="h-5 w-5 text-destructive" />
+                <XCircle className="text-destructive h-5 w-5" />
               ) : (
                 <Minus className="h-5 w-5 text-yellow-500" />
-              )
-            )}
+              ))}
           </div>
 
           <QuestionAnswerer
@@ -273,7 +296,7 @@ export default function PracticeModePage() {
           />
         </div>
       ) : (
-        <p className="text-sm text-muted-foreground">No questions match the filter.</p>
+        <p className="text-muted-foreground text-sm">No questions match the filter.</p>
       )}
 
       {/* Navigation */}

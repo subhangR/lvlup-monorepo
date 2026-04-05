@@ -1,7 +1,7 @@
-import { useState, useMemo, useRef } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import { useCurrentTenantId } from '@levelup/shared-stores';
-import { useSpace } from '@levelup/shared-hooks';
+import { useState, useMemo, useRef } from "react";
+import { useParams, useNavigate, Link } from "react-router-dom";
+import { useCurrentTenantId } from "@levelup/shared-stores";
+import { useSpace } from "@levelup/shared-hooks";
 import {
   Button,
   Skeleton,
@@ -12,27 +12,19 @@ import {
   BreadcrumbLink,
   BreadcrumbPage,
   BreadcrumbSeparator,
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
   Switch,
   Label,
-} from '@levelup/shared-ui';
-import {
-  ArrowLeft,
-  Clock,
-  Eye,
-  ChevronLeft,
-  ChevronRight,
-  CheckCircle,
-  XCircle,
-} from 'lucide-react';
-import { collection, getDocs, query, orderBy, where } from 'firebase/firestore';
-import { getFirebaseServices } from '@levelup/shared-services';
-import type { StoryPoint, UnifiedItem, QuestionPayload, StoryPointSection } from '@levelup/shared-types';
-import { useEffect } from 'react';
+} from "@levelup/shared-ui";
+import { Clock, Eye, ChevronLeft, ChevronRight, CheckCircle } from "lucide-react";
+import { collection, getDocs, query, orderBy, where } from "firebase/firestore";
+import { getFirebaseServices } from "@levelup/shared-services";
+import type {
+  StoryPoint,
+  UnifiedItem,
+  QuestionPayload,
+  StoryPointSection,
+} from "@levelup/shared-types";
+import { useEffect } from "react";
 
 export default function TestPreviewPage() {
   const { spaceId, storyPointId } = useParams<{ spaceId: string; storyPointId: string }>();
@@ -67,8 +59,8 @@ export default function TestPreviewPage() {
         const itemsCol = collection(db, `tenants/${tenantId}/spaces/${spaceId}/items`);
         const itemsQ = query(
           itemsCol,
-          where('storyPointId', '==', storyPointId),
-          orderBy('orderIndex', 'asc'),
+          where("storyPointId", "==", storyPointId),
+          orderBy("orderIndex", "asc")
         );
         const itemsSnap = await getDocs(itemsQ);
         setItems(itemsSnap.docs.map((d) => ({ id: d.id, ...d.data() }) as UnifiedItem));
@@ -81,10 +73,7 @@ export default function TestPreviewPage() {
     load();
   }, [tenantId, spaceId, storyPointId]);
 
-  const questionItems = useMemo(
-    () => items.filter((i) => i.type === 'question'),
-    [items],
-  );
+  const questionItems = useMemo(() => items.filter((i) => i.type === "question"), [items]);
 
   const currentItem = questionItems[currentIndex] ?? null;
   const payload = currentItem?.payload as QuestionPayload | undefined;
@@ -98,7 +87,7 @@ export default function TestPreviewPage() {
 
   if (loading) {
     return (
-      <div className="max-w-3xl mx-auto space-y-4">
+      <div className="mx-auto max-w-3xl space-y-4">
         <Skeleton className="h-8 w-48" />
         <Skeleton className="h-64 w-full" />
       </div>
@@ -107,7 +96,7 @@ export default function TestPreviewPage() {
 
   if (!storyPoint || questionItems.length === 0) {
     return (
-      <div className="max-w-3xl mx-auto text-center py-12">
+      <div className="mx-auto max-w-3xl py-12 text-center">
         <p className="text-muted-foreground">No questions found in this story point.</p>
         <Button variant="link" onClick={() => navigate(`/spaces/${spaceId}/edit`)}>
           Back to Editor
@@ -117,10 +106,10 @@ export default function TestPreviewPage() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto space-y-4">
+    <div className="mx-auto max-w-3xl space-y-4">
       {/* Preview Banner */}
-      <div className="rounded-md bg-blue-500/10 border border-blue-200 dark:border-blue-800 p-3 flex items-center gap-3">
-        <Eye className="h-5 w-5 text-blue-600 flex-shrink-0" />
+      <div className="flex items-center gap-3 rounded-md border border-blue-200 bg-blue-500/10 p-3 dark:border-blue-800">
+        <Eye className="h-5 w-5 flex-shrink-0 text-blue-600" />
         <div className="flex-1">
           <p className="text-sm font-medium text-blue-700 dark:text-blue-300">
             Preview Mode — answers are not saved
@@ -129,11 +118,7 @@ export default function TestPreviewPage() {
             This simulates the student experience. No test session is created.
           </p>
         </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => navigate(`/spaces/${spaceId}/edit`)}
-        >
+        <Button variant="outline" size="sm" onClick={() => navigate(`/spaces/${spaceId}/edit`)}>
           Exit Preview
         </Button>
       </div>
@@ -142,12 +127,14 @@ export default function TestPreviewPage() {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink asChild><Link to="/spaces">Spaces</Link></BreadcrumbLink>
+            <BreadcrumbLink asChild>
+              <Link to="/spaces">Spaces</Link>
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link to={`/spaces/${spaceId}/edit`}>{space?.title ?? 'Space'}</Link>
+              <Link to={`/spaces/${spaceId}/edit`}>{space?.title ?? "Space"}</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
@@ -158,30 +145,26 @@ export default function TestPreviewPage() {
       </Breadcrumb>
 
       {/* Timer & Progress Bar */}
-      <div className="flex items-center justify-between py-2 border-b sticky top-0 bg-background z-10">
+      <div className="bg-background sticky top-0 z-10 flex items-center justify-between border-b py-2">
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium">
             Q{currentIndex + 1}/{questionItems.length}
           </span>
           {currentSection && (
-            <span className="text-xs text-muted-foreground px-2 py-0.5 bg-muted rounded">
+            <span className="text-muted-foreground bg-muted rounded px-2 py-0.5 text-xs">
               {currentSection.title}
             </span>
           )}
         </div>
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
+          <div className="text-muted-foreground flex items-center gap-1.5 text-sm">
             <Clock className="h-4 w-4" />
-            <span>{storyPoint.assessmentConfig?.durationMinutes ?? '--'} min</span>
+            <span>{storyPoint.assessmentConfig?.durationMinutes ?? "--"} min</span>
             <span className="text-xs">({elapsedMinutes}m elapsed)</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <Switch
-              checked={showAnswers}
-              onCheckedChange={setShowAnswers}
-              id="show-answers"
-            />
-            <Label htmlFor="show-answers" className="text-xs cursor-pointer">
+            <Switch checked={showAnswers} onCheckedChange={setShowAnswers} id="show-answers" />
+            <Label htmlFor="show-answers" className="cursor-pointer text-xs">
               Show Answers
             </Label>
           </div>
@@ -194,12 +177,12 @@ export default function TestPreviewPage() {
           <button
             key={q.id}
             onClick={() => setCurrentIndex(idx)}
-            className={`h-8 w-8 text-xs rounded border transition-colors ${
+            className={`h-8 w-8 rounded border text-xs transition-colors ${
               idx === currentIndex
-                ? 'bg-primary text-primary-foreground border-primary'
+                ? "bg-primary text-primary-foreground border-primary"
                 : answers[q.id] !== undefined
-                  ? 'bg-emerald-100 dark:bg-emerald-900/30 border-emerald-300'
-                  : 'bg-background hover:bg-muted'
+                  ? "border-emerald-300 bg-emerald-100 dark:bg-emerald-900/30"
+                  : "bg-background hover:bg-muted"
             }`}
           >
             {idx + 1}
@@ -209,49 +192,53 @@ export default function TestPreviewPage() {
 
       {/* Question Content */}
       {currentItem && (
-        <div className="rounded-lg border p-6 space-y-4">
+        <div className="space-y-4 rounded-lg border p-6">
           <div className="flex items-center gap-2">
             <Badge variant="outline" className="text-xs capitalize">
-              {payload?.questionType?.replace(/[-_]/g, ' ') ?? 'question'}
+              {payload?.questionType?.replace(/[-_]/g, " ") ?? "question"}
             </Badge>
             {currentItem.difficulty && (
               <Badge
                 variant="outline"
                 className={`text-xs ${
-                  currentItem.difficulty === 'easy'
-                    ? 'border-emerald-300 text-emerald-700'
-                    : currentItem.difficulty === 'hard'
-                      ? 'border-red-300 text-red-700'
-                      : 'border-amber-300 text-amber-700'
+                  currentItem.difficulty === "easy"
+                    ? "border-emerald-300 text-emerald-700"
+                    : currentItem.difficulty === "hard"
+                      ? "border-red-300 text-red-700"
+                      : "border-amber-300 text-amber-700"
                 }`}
               >
                 {currentItem.difficulty}
               </Badge>
             )}
             {payload?.basePoints && (
-              <span className="text-xs text-muted-foreground">{payload.basePoints} pts</span>
+              <span className="text-muted-foreground text-xs">{payload.basePoints} pts</span>
             )}
           </div>
 
-          <div className="text-sm whitespace-pre-wrap">
-            {currentItem.title && <h3 className="font-medium mb-2">{currentItem.title}</h3>}
+          <div className="whitespace-pre-wrap text-sm">
+            {currentItem.title && <h3 className="mb-2 font-medium">{currentItem.title}</h3>}
             <p>{payload?.content ?? currentItem.content}</p>
           </div>
 
           {/* MCQ Options Preview */}
-          {(payload?.questionType === 'mcq' || payload?.questionType === 'mcaq') && (
+          {(payload?.questionType === "mcq" || payload?.questionType === "mcaq") && (
             <div className="space-y-2">
-              {((payload?.questionData as Record<string, unknown>)?.options as Array<{ id: string; text: string; isCorrect?: boolean }> | undefined)?.map((opt, idx) => (
+              {(
+                (payload?.questionData as Record<string, unknown>)?.options as
+                  | Array<{ id: string; text: string; isCorrect?: boolean }>
+                  | undefined
+              )?.map((opt, idx) => (
                 <div
                   key={opt.id ?? idx}
-                  className={`flex items-center gap-2 rounded border p-3 text-sm cursor-pointer transition-colors ${
+                  className={`flex cursor-pointer items-center gap-2 rounded border p-3 text-sm transition-colors ${
                     showAnswers && opt.isCorrect
-                      ? 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-300'
-                      : 'hover:bg-muted'
+                      ? "border-emerald-300 bg-emerald-50 dark:bg-emerald-950/30"
+                      : "hover:bg-muted"
                   }`}
                   onClick={() => setAnswers((prev) => ({ ...prev, [currentItem.id]: opt.id }))}
                 >
-                  <span className="h-5 w-5 rounded-full border flex items-center justify-center text-xs flex-shrink-0">
+                  <span className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full border text-xs">
                     {String.fromCharCode(65 + idx)}
                   </span>
                   <span className="flex-1">{opt.text}</span>
@@ -264,23 +251,27 @@ export default function TestPreviewPage() {
           )}
 
           {/* True/False Preview */}
-          {payload?.questionType === 'true-false' && (
+          {payload?.questionType === "true-false" && (
             <div className="flex gap-3">
-              {['True', 'False'].map((val) => {
-                const isCorrect = showAnswers &&
-                  ((payload?.questionData as Record<string, unknown>)?.correctAnswer === (val === 'True'));
+              {["True", "False"].map((val) => {
+                const isCorrect =
+                  showAnswers &&
+                  (payload?.questionData as Record<string, unknown>)?.correctAnswer ===
+                    (val === "True");
                 return (
                   <button
                     key={val}
-                    className={`flex-1 rounded border p-3 text-sm text-center transition-colors ${
+                    className={`flex-1 rounded border p-3 text-center text-sm transition-colors ${
                       isCorrect
-                        ? 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-300'
-                        : 'hover:bg-muted'
+                        ? "border-emerald-300 bg-emerald-50 dark:bg-emerald-950/30"
+                        : "hover:bg-muted"
                     }`}
-                    onClick={() => setAnswers((prev) => ({ ...prev, [currentItem.id]: val === 'True' }))}
+                    onClick={() =>
+                      setAnswers((prev) => ({ ...prev, [currentItem.id]: val === "True" }))
+                    }
                   >
                     {val}
-                    {isCorrect && <CheckCircle className="h-4 w-4 text-emerald-500 inline ml-2" />}
+                    {isCorrect && <CheckCircle className="ml-2 inline h-4 w-4 text-emerald-500" />}
                   </button>
                 );
               })}
@@ -289,8 +280,8 @@ export default function TestPreviewPage() {
 
           {/* Show explanation when answers are revealed */}
           {showAnswers && payload?.explanation && (
-            <div className="rounded bg-blue-50 dark:bg-blue-950/30 p-3 text-sm">
-              <p className="font-medium text-blue-700 dark:text-blue-300 mb-1">Explanation</p>
+            <div className="rounded bg-blue-50 p-3 text-sm dark:bg-blue-950/30">
+              <p className="mb-1 font-medium text-blue-700 dark:text-blue-300">Explanation</p>
               <p className="text-blue-600/80 dark:text-blue-400/80">{payload.explanation}</p>
             </div>
           )}
@@ -307,7 +298,7 @@ export default function TestPreviewPage() {
         >
           <ChevronLeft className="h-4 w-4" /> Previous
         </Button>
-        <span className="text-sm text-muted-foreground">
+        <span className="text-muted-foreground text-sm">
           {currentIndex + 1} / {questionItems.length}
         </span>
         <Button

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from "vitest";
 
 // ── Stable mocks ────────────────────────────────────────────────────────────
 const mockGet = vi.fn();
@@ -14,72 +14,84 @@ const stableDb: any = {
   batch: vi.fn(() => mockBatch),
 };
 
-vi.mock('firebase-admin', () => {
+vi.mock("firebase-admin", () => {
   const fsFn: any = () => stableDb;
-  fsFn.FieldValue = { serverTimestamp: vi.fn(() => 'SERVER_TIMESTAMP') };
-  return { default: { firestore: fsFn, initializeApp: vi.fn() }, firestore: fsFn, initializeApp: vi.fn() };
+  fsFn.FieldValue = { serverTimestamp: vi.fn(() => "SERVER_TIMESTAMP") };
+  return {
+    default: { firestore: fsFn, initializeApp: vi.fn() },
+    firestore: fsFn,
+    initializeApp: vi.fn(),
+  };
 });
 
-vi.mock('firebase-functions/v2/auth', () => ({
-  onAuthUserDeleted: vi.fn((_opts: any, handler: any) => handler),
-}));
+const handlerContainer = vi.hoisted(() => ({ handler: null as any }));
 
-vi.mock('firebase-functions/v2', () => ({
+vi.mock("firebase-functions/v1", () => {
+  const chain = {
+    region: () => ({
+      auth: {
+        user: () => ({
+          onDelete: (handler: any) => {
+            handlerContainer.handler = handler;
+            return handler;
+          },
+        }),
+      },
+    }),
+  };
+  return { default: chain, ...chain };
+});
+
+vi.mock("firebase-functions/v2", () => ({
   logger: { info: vi.fn(), warn: vi.fn(), error: vi.fn() },
 }));
 
-vi.mock('../../utils/tenant-stats', () => ({
-  updateTenantStats: vi.fn(),
+vi.mock("../../utils/firestore-helpers", () => ({
+  updateTenantStats: vi.fn().mockResolvedValue(undefined),
 }));
 
-import { onUserDeleted } from '../../triggers/on-user-deleted';
-const handler = onUserDeleted as any;
+// Import triggers the mock setup, capturing the handler
+import "../../triggers/on-user-deleted";
 
-describe('onUserDeleted', () => {
+describe("onUserDeleted", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it('should soft-delete user doc and deactivate memberships', async () => {
-    const event = {
-      data: { uid: 'user-1', email: 'test@example.com' },
-    };
+  it("should soft-delete user doc and deactivate memberships", async () => {
+    const user = { uid: "user-1", email: "test@example.com" };
 
     // Memberships query
     mockGet.mockResolvedValueOnce({
       docs: [
         {
-          id: 'mem-1',
-          ref: { path: 'userMemberships/mem-1' },
-          data: () => ({ tenantId: 'tenant-1', role: 'teacher', status: 'active' }),
+          id: "mem-1",
+          ref: { path: "userMemberships/mem-1" },
+          data: () => ({ tenantId: "tenant-1", role: "teacher", status: "active" }),
         },
         {
-          id: 'mem-2',
-          ref: { path: 'userMemberships/mem-2' },
-          data: () => ({ tenantId: 'tenant-1', role: 'student', status: 'active' }),
+          id: "mem-2",
+          ref: { path: "userMemberships/mem-2" },
+          data: () => ({ tenantId: "tenant-1", role: "student", status: "active" }),
         },
       ],
+      size: 2,
     });
 
-    await handler(event);
+    await handlerContainer.handler(user);
 
-    // User doc should be soft-deleted
-    expect(mockUpdate).toHaveBeenCalled();
     // Memberships should be batch-deactivated
     expect(mockBatch.update).toHaveBeenCalled();
     expect(mockBatch.commit).toHaveBeenCalled();
   });
 
-  it('should handle user with no memberships', async () => {
-    const event = {
-      data: { uid: 'user-2', email: 'lone@example.com' },
-    };
+  it("should handle user with no memberships", async () => {
+    const user = { uid: "user-2", email: "lone@example.com" };
 
-    mockGet.mockResolvedValueOnce({ docs: [] });
+    mockGet.mockResolvedValueOnce({ docs: [], size: 0 });
 
-    await handler(event);
+    await handlerContainer.handler(user);
 
-    expect(mockUpdate).toHaveBeenCalled(); // Still soft-delete user doc
-    expect(mockBatch.commit).not.toHaveBeenCalled(); // No batch needed
+    expect(mockBatch.commit).toHaveBeenCalled(); // batch still commits (user doc update is in batch)
   });
 });

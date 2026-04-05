@@ -23,8 +23,8 @@ import type {
   GroupOptionsData,
   GroupOptionsGroup,
   UnifiedEvaluationResult,
-} from '@levelup/shared-types';
-import { AUTO_EVALUATABLE_TYPES } from '@levelup/shared-types';
+} from "@levelup/shared-types";
+import { AUTO_EVALUATABLE_TYPES } from "@levelup/shared-types";
 
 export function isAutoEvaluatableType(questionType: string): boolean {
   return (AUTO_EVALUATABLE_TYPES as readonly string[]).includes(questionType);
@@ -45,11 +45,11 @@ function buildResult(score: number, maxScore: number, correct: boolean): Unified
     maxScore,
     correctness: maxScore > 0 ? score / maxScore : 0,
     percentage: maxScore > 0 ? (score / maxScore) * 100 : 0,
-    strengths: correct ? ['Correct answer'] : [],
-    weaknesses: correct ? [] : ['Incorrect answer'],
+    strengths: correct ? ["Correct answer"] : [],
+    weaknesses: correct ? [] : ["Incorrect answer"],
     missingConcepts: [],
     confidence: 1,
-    mistakeClassification: correct ? 'None' : undefined,
+    mistakeClassification: correct ? "None" : undefined,
     gradedAt: nowTimestamp(),
   };
 }
@@ -62,7 +62,7 @@ function evaluateMCQ(answer: unknown, qData: MCQData, maxScore: number): Unified
 
 function evaluateMCAQ(answer: unknown, qData: MCAQData, maxScore: number): UnifiedEvaluationResult {
   const correctIds = new Set(
-    (qData.options || []).filter((o: MCQOption) => o.isCorrect).map((o: MCQOption) => o.id),
+    (qData.options || []).filter((o: MCQOption) => o.isCorrect).map((o: MCQOption) => o.id)
   );
   const selectedIds = new Set(Array.isArray(answer) ? answer : []);
 
@@ -80,12 +80,20 @@ function evaluateMCAQ(answer: unknown, qData: MCAQData, maxScore: number): Unifi
   return buildResult(Math.round(score * 100) / 100, maxScore, isCorrect);
 }
 
-function evaluateTrueFalse(answer: unknown, qData: TrueFalseData, maxScore: number): UnifiedEvaluationResult {
+function evaluateTrueFalse(
+  answer: unknown,
+  qData: TrueFalseData,
+  maxScore: number
+): UnifiedEvaluationResult {
   const isCorrect = answer === qData.correctAnswer;
   return buildResult(isCorrect ? maxScore : 0, maxScore, isCorrect);
 }
 
-function evaluateNumerical(answer: unknown, qData: NumericalData, maxScore: number): UnifiedEvaluationResult {
+function evaluateNumerical(
+  answer: unknown,
+  qData: NumericalData,
+  maxScore: number
+): UnifiedEvaluationResult {
   const studentAnswer = parseFloat(answer as string);
   if (isNaN(studentAnswer)) return buildResult(0, maxScore, false);
 
@@ -96,14 +104,18 @@ function evaluateNumerical(answer: unknown, qData: NumericalData, maxScore: numb
   return buildResult(isCorrect ? maxScore : 0, maxScore, isCorrect);
 }
 
-function evaluateFillBlanks(answer: unknown, qData: FillBlanksData, maxScore: number): UnifiedEvaluationResult {
+function evaluateFillBlanks(
+  answer: unknown,
+  qData: FillBlanksData,
+  maxScore: number
+): UnifiedEvaluationResult {
   const blanks: FillBlank[] = qData.blanks || [];
   if (blanks.length === 0) return buildResult(0, maxScore, false);
 
   const answerMap = answer as Record<string, string> | undefined;
   let correctCount = 0;
   for (const blank of blanks) {
-    const studentAnswer = answerMap?.[blank.id] ?? '';
+    const studentAnswer = answerMap?.[blank.id] ?? "";
     const caseSensitive = blank.caseSensitive ?? false;
     const normalize = (s: string) => (caseSensitive ? s.trim() : s.trim().toLowerCase());
 
@@ -117,7 +129,11 @@ function evaluateFillBlanks(answer: unknown, qData: FillBlanksData, maxScore: nu
   return buildResult(Math.round(score * 100) / 100, maxScore, correctCount === blanks.length);
 }
 
-function evaluateFillBlanksDD(answer: unknown, qData: FillBlanksDDData, maxScore: number): UnifiedEvaluationResult {
+function evaluateFillBlanksDD(
+  answer: unknown,
+  qData: FillBlanksDDData,
+  maxScore: number
+): UnifiedEvaluationResult {
   const blanks: FillBlanksDDBlank[] = qData.blanks || [];
   if (blanks.length === 0) return buildResult(0, maxScore, false);
 
@@ -133,23 +149,51 @@ function evaluateFillBlanksDD(answer: unknown, qData: FillBlanksDDData, maxScore
   return buildResult(Math.round(score * 100) / 100, maxScore, correctCount === blanks.length);
 }
 
-function evaluateMatching(answer: unknown, qData: MatchingData, maxScore: number): UnifiedEvaluationResult {
+function evaluateMatching(
+  answer: unknown,
+  qData: MatchingData,
+  maxScore: number
+): UnifiedEvaluationResult {
+  const answerMap = answer as Record<string, string> | undefined;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const legacy = qData as any;
+
+  // Legacy leftItems/rightItems/correctPairs format (from seed data)
+  if (Array.isArray(legacy.leftItems) && Array.isArray(legacy.correctPairs)) {
+    const correctPairs: { leftId: string; rightId: string }[] = legacy.correctPairs;
+    if (correctPairs.length === 0) return buildResult(0, maxScore, false);
+
+    let correctCount = 0;
+    for (const cp of correctPairs) {
+      if (answerMap?.[cp.leftId] === cp.rightId) correctCount++;
+    }
+    const score = (correctCount / correctPairs.length) * maxScore;
+    return buildResult(
+      Math.round(score * 100) / 100,
+      maxScore,
+      correctCount === correctPairs.length
+    );
+  }
+
+  // Standard pairs format: answer maps leftPairId → rightPairId (same pair = correct)
   const pairs: MatchingPair[] = qData.pairs || [];
   if (pairs.length === 0) return buildResult(0, maxScore, false);
 
-  const answerMap = answer as Record<string, string> | undefined;
   let correctCount = 0;
   for (const pair of pairs) {
-    if (answerMap?.[pair.id] === pair.right || answerMap?.[pair.left] === pair.right) {
-      correctCount++;
-    }
+    if (answerMap?.[pair.id] === pair.id) correctCount++;
   }
 
   const score = (correctCount / pairs.length) * maxScore;
   return buildResult(Math.round(score * 100) / 100, maxScore, correctCount === pairs.length);
 }
 
-function evaluateJumbled(answer: unknown, qData: JumbledData, maxScore: number): UnifiedEvaluationResult {
+function evaluateJumbled(
+  answer: unknown,
+  qData: JumbledData,
+  maxScore: number
+): UnifiedEvaluationResult {
   const correctOrder: string[] = qData.correctOrder || [];
   const studentOrder: string[] = Array.isArray(answer) ? answer : [];
 
@@ -162,7 +206,11 @@ function evaluateJumbled(answer: unknown, qData: JumbledData, maxScore: number):
   return buildResult(isCorrect ? maxScore : 0, maxScore, isCorrect);
 }
 
-function evaluateGroupOptions(answer: unknown, qData: GroupOptionsData, maxScore: number): UnifiedEvaluationResult {
+function evaluateGroupOptions(
+  answer: unknown,
+  qData: GroupOptionsData,
+  maxScore: number
+): UnifiedEvaluationResult {
   const groups: GroupOptionsGroup[] = qData.groups || [];
   if (groups.length === 0) return buildResult(0, maxScore, false);
 
@@ -197,7 +245,7 @@ function evaluateGroupOptions(answer: unknown, qData: GroupOptionsData, maxScore
  */
 export function autoEvaluateClient(
   item: UnifiedItem,
-  answer: unknown,
+  answer: unknown
 ): UnifiedEvaluationResult | null {
   const payload = item.payload as QuestionPayload;
   const questionType = payload?.questionType as QuestionType;
@@ -212,23 +260,23 @@ export function autoEvaluateClient(
   const maxScore = item.meta?.totalPoints ?? payload?.basePoints ?? 1;
 
   switch (questionType) {
-    case 'mcq':
+    case "mcq":
       return evaluateMCQ(answer, qData as MCQData, maxScore);
-    case 'mcaq':
+    case "mcaq":
       return evaluateMCAQ(answer, qData as MCAQData, maxScore);
-    case 'true-false':
+    case "true-false":
       return evaluateTrueFalse(answer, qData as TrueFalseData, maxScore);
-    case 'numerical':
+    case "numerical":
       return evaluateNumerical(answer, qData as NumericalData, maxScore);
-    case 'fill-blanks':
+    case "fill-blanks":
       return evaluateFillBlanks(answer, qData as FillBlanksData, maxScore);
-    case 'fill-blanks-dd':
+    case "fill-blanks-dd":
       return evaluateFillBlanksDD(answer, qData as FillBlanksDDData, maxScore);
-    case 'matching':
+    case "matching":
       return evaluateMatching(answer, qData as MatchingData, maxScore);
-    case 'jumbled':
+    case "jumbled":
       return evaluateJumbled(answer, qData as JumbledData, maxScore);
-    case 'group-options':
+    case "group-options":
       return evaluateGroupOptions(answer, qData as GroupOptionsData, maxScore);
     default:
       return null;

@@ -1,25 +1,23 @@
-import { useEffect, useRef } from 'react';
-import type { UnifiedItem, MaterialPayload, RichContentBlock, ItemAttachment } from '@levelup/shared-types';
-import { File, ExternalLink, ImageIcon, Music } from 'lucide-react';
+import { useState } from "react";
+import type {
+  UnifiedItem,
+  MaterialPayload,
+  RichContentBlock,
+  ItemAttachment,
+} from "@levelup/shared-types";
+import { File, ExternalLink, Music, CheckCircle2 } from "lucide-react";
+import ImageLightbox, { type LightboxImage } from "../common/ImageLightbox";
 
 interface MaterialViewerProps {
   item: UnifiedItem;
-  /** Called once when the material is considered "viewed/completed". */
+  /** Called when the student explicitly marks the material as complete. */
   onComplete?: (itemId: string) => void;
+  /** Whether this material is already completed in progress. */
+  isCompleted?: boolean;
 }
 
-export default function MaterialViewer({ item, onComplete }: MaterialViewerProps) {
+export default function MaterialViewer({ item, onComplete, isCompleted }: MaterialViewerProps) {
   const payload = item.payload as MaterialPayload;
-  const completedRef = useRef(false);
-
-  // Mark material as completed on mount (user opened/viewed it).
-  // Uses a ref to ensure the callback fires at most once per mount.
-  useEffect(() => {
-    if (onComplete && !completedRef.current) {
-      completedRef.current = true;
-      onComplete(item.id);
-    }
-  }, [item.id, onComplete]);
 
   return (
     <div className="space-y-4">
@@ -27,30 +25,70 @@ export default function MaterialViewer({ item, onComplete }: MaterialViewerProps
       {item.attachments && item.attachments.length > 0 && (
         <AttachmentList attachments={item.attachments} />
       )}
+      {onComplete && (
+        <div className="flex justify-end pt-2">
+          {isCompleted ? (
+            <div className="inline-flex items-center gap-2 rounded-lg bg-emerald-50 px-4 py-2 text-sm font-medium text-emerald-600 dark:bg-emerald-950/30 dark:text-emerald-400">
+              <CheckCircle2 className="h-4 w-4" />
+              Completed
+            </div>
+          ) : (
+            <button
+              onClick={() => onComplete(item.id)}
+              className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors"
+            >
+              <CheckCircle2 className="h-4 w-4" />
+              Mark as Complete
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 }
 
 function AttachmentList({ attachments }: { attachments: ItemAttachment[] }) {
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+  const imageAttachments: LightboxImage[] = attachments
+    .filter((a) => a.type === "image")
+    .map((a) => ({ url: a.url, alt: a.fileName }));
+
+  let imageCounter = -1;
+
   return (
     <div className="space-y-2">
-      <h4 className="text-sm font-medium text-muted-foreground">Attachments</h4>
+      <h4 className="text-muted-foreground text-sm font-medium">Attachments</h4>
       <div className="grid gap-2 sm:grid-cols-2">
         {attachments.map((att) => {
-          if (att.type === 'image') {
+          if (att.type === "image") {
+            imageCounter++;
+            const idx = imageCounter;
             return (
-              <a key={att.id} href={att.url} target="_blank" rel="noopener noreferrer" className="block">
-                <img src={att.url} alt={att.fileName} loading="lazy" decoding="async" className="rounded-lg border w-full object-cover max-h-48" />
-                <p className="mt-1 text-xs text-muted-foreground truncate">{att.fileName}</p>
-              </a>
+              <button
+                key={att.id}
+                type="button"
+                onClick={() => setLightboxIndex(idx)}
+                className="group block cursor-zoom-in text-left"
+              >
+                <img
+                  src={att.url}
+                  alt={att.fileName}
+                  loading="lazy"
+                  decoding="async"
+                  className="w-full rounded-lg border bg-white object-contain dark:bg-zinc-900"
+                />
+                <p className="text-muted-foreground group-hover:text-foreground mt-1 truncate text-xs transition-colors">
+                  {att.fileName}
+                </p>
+              </button>
             );
           }
-          if (att.type === 'audio') {
+          if (att.type === "audio") {
             return (
               <div key={att.id} className="rounded-lg border p-3">
-                <div className="flex items-center gap-2 mb-2">
+                <div className="mb-2 flex items-center gap-2">
                   <Music className="h-4 w-4 text-purple-500" />
-                  <span className="text-sm truncate">{att.fileName}</span>
+                  <span className="truncate text-sm">{att.fileName}</span>
                 </div>
                 <audio controls className="w-full" src={att.url} />
               </div>
@@ -62,46 +100,56 @@ function AttachmentList({ attachments }: { attachments: ItemAttachment[] }) {
               href={att.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 rounded-lg border p-3 hover:bg-muted transition-colors"
+              className="hover:bg-muted flex items-center gap-2 rounded-lg border p-3 transition-colors"
             >
               <File className="h-4 w-4 text-red-500" />
-              <span className="text-sm flex-1 truncate">{att.fileName}</span>
-              <span className="text-xs text-muted-foreground">{(att.size / 1024).toFixed(0)}KB</span>
+              <span className="flex-1 truncate text-sm">{att.fileName}</span>
+              <span className="text-muted-foreground text-xs">
+                {(att.size / 1024).toFixed(0)}KB
+              </span>
             </a>
           );
         })}
       </div>
+      {lightboxIndex !== null && (
+        <ImageLightbox
+          images={imageAttachments}
+          currentIndex={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+          onNavigate={setLightboxIndex}
+        />
+      )}
     </div>
   );
 }
 
 function MaterialContent({ payload, title }: { payload: MaterialPayload; title?: string }) {
   switch (payload.materialType) {
-    case 'text':
-      return <TextMaterial content={payload.content ?? ''} title={title} />;
-    case 'video':
+    case "text":
+      return <TextMaterial content={payload.content ?? ""} title={title} />;
+    case "video":
       return <VideoMaterial url={payload.url} duration={payload.duration} title={title} />;
-    case 'pdf':
+    case "pdf":
       return <PDFMaterial url={payload.url} title={title} downloadable={payload.downloadable} />;
-    case 'link':
+    case "link":
       return <LinkMaterial url={payload.url} title={title} />;
-    case 'interactive':
+    case "interactive":
       return <InteractiveMaterial url={payload.url} title={title} />;
-    case 'story':
-      return <TextMaterial content={payload.content ?? ''} title={title} />;
-    case 'rich':
+    case "story":
+      return <TextMaterial content={payload.content ?? ""} title={title} />;
+    case "rich":
       return <RichMaterial richContent={payload.richContent} title={title} />;
     default:
-      return <p className="text-sm text-muted-foreground">Unsupported material type</p>;
+      return <p className="text-muted-foreground text-sm">Unsupported material type</p>;
   }
 }
 
 function TextMaterial({ content, title }: { content: string; title?: string }) {
-  const isHtml = content.startsWith('<') || content.includes('<p>') || content.includes('<h');
+  const isHtml = content.startsWith("<") || content.includes("<p>") || content.includes("<h");
 
   return (
     <div>
-      {title && <h3 className="text-base font-semibold mb-2">{title}</h3>}
+      {title && <h3 className="mb-2 text-base font-semibold">{title}</h3>}
       {isHtml ? (
         <div className="prose prose-sm max-w-none" dangerouslySetInnerHTML={{ __html: content }} />
       ) : (
@@ -111,30 +159,38 @@ function TextMaterial({ content, title }: { content: string; title?: string }) {
   );
 }
 
-function VideoMaterial({ url, duration, title }: { url?: string; duration?: number; title?: string }) {
-  if (!url) return <p className="text-sm text-muted-foreground">No video URL provided</p>;
+function VideoMaterial({
+  url,
+  duration,
+  title,
+}: {
+  url?: string;
+  duration?: number;
+  title?: string;
+}) {
+  if (!url) return <p className="text-muted-foreground text-sm">No video URL provided</p>;
 
   // Detect YouTube
   const youtubeMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
 
   return (
     <div>
-      {title && <h3 className="text-base font-semibold mb-2">{title}</h3>}
+      {title && <h3 className="mb-2 text-base font-semibold">{title}</h3>}
       {youtubeMatch ? (
-        <div className="aspect-video rounded-lg overflow-hidden">
+        <div className="aspect-video overflow-hidden rounded-lg">
           <iframe
             src={`https://www.youtube.com/embed/${youtubeMatch[1]}`}
-            className="w-full h-full"
+            className="h-full w-full"
             allowFullScreen
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            title={title || 'Video content'}
+            title={title || "Video content"}
           />
         </div>
       ) : (
         <video src={url} controls className="w-full rounded-lg" />
       )}
       {duration && (
-        <p className="mt-1 text-xs text-muted-foreground">
+        <p className="text-muted-foreground mt-1 text-xs">
           Duration: {Math.floor(duration / 60)}m {duration % 60}s
         </p>
       )}
@@ -142,21 +198,32 @@ function VideoMaterial({ url, duration, title }: { url?: string; duration?: numb
   );
 }
 
-function PDFMaterial({ url, title, downloadable }: { url?: string; title?: string; downloadable?: boolean }) {
-  if (!url) return <p className="text-sm text-muted-foreground">No PDF URL provided</p>;
+function PDFMaterial({
+  url,
+  title,
+  downloadable,
+}: {
+  url?: string;
+  title?: string;
+  downloadable?: boolean;
+}) {
+  if (!url) return <p className="text-muted-foreground text-sm">No PDF URL provided</p>;
 
   return (
     <div>
-      {title && <h3 className="text-base font-semibold mb-2">{title}</h3>}
-      <div className="rounded-lg border overflow-hidden" style={{ height: '60vh', minHeight: '300px' }}>
-        <iframe src={url} className="w-full h-full" title={title || 'PDF document'} />
+      {title && <h3 className="mb-2 text-base font-semibold">{title}</h3>}
+      <div
+        className="overflow-hidden rounded-lg border"
+        style={{ height: "60vh", minHeight: "300px" }}
+      >
+        <iframe src={url} className="h-full w-full" title={title || "PDF document"} />
       </div>
       {downloadable && (
         <a
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-2 inline-flex items-center gap-1 text-sm text-primary hover:underline"
+          className="text-primary mt-2 inline-flex items-center gap-1 text-sm hover:underline"
         >
           <File className="h-4 w-4" /> Download PDF
         </a>
@@ -166,16 +233,16 @@ function PDFMaterial({ url, title, downloadable }: { url?: string; title?: strin
 }
 
 function LinkMaterial({ url, title }: { url?: string; title?: string }) {
-  if (!url) return <p className="text-sm text-muted-foreground">No URL provided</p>;
+  if (!url) return <p className="text-muted-foreground text-sm">No URL provided</p>;
 
   return (
     <div>
-      {title && <h3 className="text-base font-semibold mb-2">{title}</h3>}
+      {title && <h3 className="mb-2 text-base font-semibold">{title}</h3>}
       <a
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className="inline-flex items-center gap-2 rounded-lg border p-4 text-primary hover:bg-primary/10"
+        className="text-primary hover:bg-primary/10 inline-flex items-center gap-2 rounded-lg border p-4"
       >
         <ExternalLink className="h-5 w-5" />
         <span className="text-sm font-medium">{url}</span>
@@ -185,43 +252,78 @@ function LinkMaterial({ url, title }: { url?: string; title?: string }) {
 }
 
 function InteractiveMaterial({ url, title }: { url?: string; title?: string }) {
-  if (!url) return <p className="text-sm text-muted-foreground">No interactive URL</p>;
+  if (!url) return <p className="text-muted-foreground text-sm">No interactive URL</p>;
 
   return (
     <div>
-      {title && <h3 className="text-base font-semibold mb-2">{title}</h3>}
-      <div className="rounded-lg border overflow-hidden" style={{ height: '60vh', minHeight: '300px' }}>
-        <iframe src={url} className="w-full h-full" sandbox="allow-scripts allow-same-origin" title={title || 'Interactive content'} />
+      {title && <h3 className="mb-2 text-base font-semibold">{title}</h3>}
+      <div
+        className="overflow-hidden rounded-lg border"
+        style={{ height: "60vh", minHeight: "300px" }}
+      >
+        <iframe
+          src={url}
+          className="h-full w-full"
+          sandbox="allow-scripts allow-same-origin"
+          title={title || "Interactive content"}
+        />
       </div>
     </div>
   );
 }
 
 function RichMaterial({ richContent, title }: { richContent?: RichContentBlock; title?: string }) {
-  if (!richContent) return <p className="text-sm text-muted-foreground">No content</p>;
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  if (!richContent) return <p className="text-muted-foreground text-sm">No content</p>;
+
+  // Collect all image blocks for lightbox navigation
+  const imageBlocks: LightboxImage[] = [];
+  if (richContent.coverImage) {
+    imageBlocks.push({
+      url: richContent.coverImage,
+      alt: title ? `Cover image for ${title}` : "Article cover image",
+    });
+  }
+  for (const block of richContent.blocks) {
+    if (block.type === "image") {
+      imageBlocks.push({
+        url: block.content,
+        alt: ((block.metadata as Record<string, unknown>)?.caption as string) || "Content image",
+      });
+    }
+  }
+
+  let imageBlockCounter = richContent.coverImage ? 0 : -1;
 
   return (
-    <article className="max-w-2xl mx-auto">
+    <article className="mx-auto max-w-2xl">
       {richContent.coverImage && (
-        <img
-          src={richContent.coverImage}
-          alt={title ? `Cover image for ${title}` : 'Article cover image'}
-          loading="eager"
-          decoding="async"
-          className="w-full rounded-lg mb-4 object-cover"
-          style={{ maxHeight: '300px' }}
-        />
+        <button type="button" onClick={() => setLightboxIndex(0)} className="w-full cursor-zoom-in">
+          <img
+            src={richContent.coverImage}
+            alt={title ? `Cover image for ${title}` : "Article cover image"}
+            loading="eager"
+            decoding="async"
+            className="mb-4 w-full rounded-lg object-cover"
+            style={{ maxHeight: "300px" }}
+          />
+        </button>
       )}
       {(richContent.title || title) && (
-        <h2 className="text-xl font-bold mb-1">{richContent.title || title}</h2>
+        <h2 className="mb-1 text-xl font-bold">{richContent.title || title}</h2>
       )}
-      {richContent.subtitle && (
-        <p className="text-muted-foreground mb-3">{richContent.subtitle}</p>
-      )}
+      {richContent.subtitle && <p className="text-muted-foreground mb-3">{richContent.subtitle}</p>}
       {richContent.author && (
-        <div className="flex items-center gap-2 mb-4 text-sm text-muted-foreground">
+        <div className="text-muted-foreground mb-4 flex items-center gap-2 text-sm">
           {richContent.author.avatar && (
-            <img src={richContent.author.avatar} alt={`${richContent.author.name}'s avatar`} loading="lazy" decoding="async" className="w-6 h-6 rounded-full" />
+            <img
+              src={richContent.author.avatar}
+              alt={`${richContent.author.name}'s avatar`}
+              loading="lazy"
+              decoding="async"
+              className="h-6 w-6 rounded-full"
+            />
           )}
           <span>{richContent.author.name}</span>
           {richContent.readingTime && <span>· {richContent.readingTime} min read</span>}
@@ -230,47 +332,109 @@ function RichMaterial({ richContent, title }: { richContent?: RichContentBlock; 
       <div className="space-y-3">
         {richContent.blocks.map((block) => {
           switch (block.type) {
-            case 'heading':
-              return <h3 key={block.id} className="text-lg font-semibold mt-4">{block.content}</h3>;
-            case 'paragraph':
-              return <p key={block.id} className="text-sm leading-relaxed">{block.content}</p>;
-            case 'image':
-              return <img key={block.id} src={block.content} alt={block.caption || 'Content image'} loading="lazy" decoding="async" className="w-full rounded-lg" />;
-            case 'code':
+            case "heading":
               return (
-                <pre key={block.id} className="rounded bg-zinc-900 dark:bg-zinc-950 text-zinc-100 p-3 text-xs overflow-x-auto">
+                <h3 key={block.id} className="mt-4 text-lg font-semibold">
+                  {block.content}
+                </h3>
+              );
+            case "paragraph":
+              return (
+                <p key={block.id} className="text-sm leading-relaxed">
+                  {block.content}
+                </p>
+              );
+            case "image": {
+              imageBlockCounter++;
+              const idx = imageBlockCounter;
+              return (
+                <figure key={block.id} className="my-2">
+                  <button
+                    type="button"
+                    onClick={() => setLightboxIndex(idx)}
+                    className="w-full cursor-zoom-in"
+                  >
+                    <img
+                      src={block.content}
+                      alt={
+                        ((block.metadata as Record<string, unknown>)?.caption as string) ||
+                        "Content image"
+                      }
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full rounded-lg border bg-white object-contain dark:bg-zinc-900"
+                    />
+                  </button>
+                  {(block.metadata as Record<string, unknown>)?.caption && (
+                    <figcaption className="text-muted-foreground mt-1 text-center text-xs">
+                      {(block.metadata as Record<string, unknown>).caption as string}
+                    </figcaption>
+                  )}
+                </figure>
+              );
+            }
+            case "code":
+              return (
+                <pre
+                  key={block.id}
+                  className="overflow-x-auto rounded bg-zinc-900 p-3 text-xs text-zinc-100 dark:bg-zinc-950"
+                >
                   <code>{block.content}</code>
                 </pre>
               );
-            case 'quote':
+            case "quote":
               return (
-                <blockquote key={block.id} className="border-l-4 border-border pl-4 italic text-sm text-muted-foreground">
+                <blockquote
+                  key={block.id}
+                  className="border-border text-muted-foreground border-l-4 pl-4 text-sm italic"
+                >
                   {block.content}
                 </blockquote>
               );
-            case 'list':
+            case "list": {
+              const listItems: string[] =
+                ((block.metadata as Record<string, unknown>)?.items as string[]) ??
+                (block.content ? block.content.split("\n").filter(Boolean) : []);
+              const isOrdered = (block.metadata as Record<string, unknown>)?.listType === "ordered";
+              const ListTag = isOrdered ? "ol" : "ul";
               return (
-                <ul key={block.id} className="list-disc pl-6 text-sm space-y-1">
-                  {block.content.split('\n').map((line, i) => (
+                <ListTag
+                  key={block.id}
+                  className={`${isOrdered ? "list-decimal" : "list-disc"} space-y-1 pl-6 text-sm`}
+                >
+                  {listItems.map((line, i) => (
                     <li key={i}>{line}</li>
                   ))}
-                </ul>
+                </ListTag>
               );
-            case 'divider':
+            }
+            case "divider":
               return <hr key={block.id} className="border-gray-200" />;
             default:
-              return <p key={block.id} className="text-sm">{block.content}</p>;
+              return (
+                <p key={block.id} className="text-sm">
+                  {block.content}
+                </p>
+              );
           }
         })}
       </div>
       {richContent.tags && richContent.tags.length > 0 && (
-        <div className="flex gap-1 mt-4">
+        <div className="mt-4 flex gap-1">
           {richContent.tags.map((tag) => (
-            <span key={tag} className="rounded-full bg-muted px-2 py-0.5 text-xs">
+            <span key={tag} className="bg-muted rounded-full px-2 py-0.5 text-xs">
               {tag}
             </span>
           ))}
         </div>
+      )}
+      {lightboxIndex !== null && (
+        <ImageLightbox
+          images={imageBlocks}
+          currentIndex={lightboxIndex}
+          onClose={() => setLightboxIndex(null)}
+          onNavigate={setLightboxIndex}
+        />
       )}
     </article>
   );

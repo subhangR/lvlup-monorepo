@@ -5,7 +5,7 @@ export type {
   SpaceAccessType,
   SpaceStats,
   ContentVersion,
-} from './space';
+} from "./space";
 
 export type {
   StoryPoint,
@@ -14,13 +14,9 @@ export type {
   AssessmentConfig,
   AdaptiveConfig,
   StoryPointStats,
-} from './story-point';
+} from "./story-point";
 
-export type {
-  Agent,
-  AgentType,
-  EvaluationObjective,
-} from './agent';
+export type { Agent, AgentType, EvaluationObjective } from "./agent";
 
 export type {
   DigitalTestSession,
@@ -30,33 +26,24 @@ export type {
   TestAnalytics,
   AnalyticsBreakdownEntry,
   QuestionStatus,
-} from './test-session';
+} from "./test-session";
 
-export type {
-  QuestionBankItem,
-  QuestionBankFilter,
-} from './question-bank';
+export type { QuestionBankItem, QuestionBankFilter } from "./question-bank";
 
 export type {
   SpaceProgress,
   StoryPointProgress,
+  StoryPointProgressDoc,
   ItemProgressEntry,
+  AttemptRecord,
   QuestionProgressData,
+  StoredEvaluation,
   ProgressStatus,
   QuestionProgressStatus,
-} from './progress';
+} from "./progress";
 
-export type {
-  ChatSession,
-  ChatMessage,
-  ChatMessageRole,
-} from './chat';
+export type { ChatSession, ChatMessage, ChatMessageRole } from "./chat";
 
-export type {
-  AnswerKey,
-} from './answer-key';
+export type { AnswerKey } from "./answer-key";
 
-export type {
-  SpaceReview,
-  SpaceRatingAggregate,
-} from './space-review';
+export type { SpaceReview, SpaceRatingAggregate } from "./space-review";

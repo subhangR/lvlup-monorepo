@@ -5,7 +5,7 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://autolevelup.com',
   integrations: [
-    tailwind(),
+    tailwind({ applyBaseStyles: false }),
     sitemap({
       filter: (page) => !page.includes('/thank-you'),
       serialize: (item) => {

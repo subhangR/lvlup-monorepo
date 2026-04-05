@@ -85,8 +85,6 @@ import {
   History,
   Clock,
   Eye,
-  Keyboard,
-  CheckSquare,
 } from "lucide-react";
 import SpaceSettingsPanel from "../../components/spaces/SpaceSettingsPanel";
 import StoryPointEditor from "../../components/spaces/StoryPointEditor";
@@ -116,7 +114,7 @@ type EditorTab = "settings" | "content" | "rubric" | "agents" | "versions";
 
 function SortableItem({
   item,
-  storyPointId,
+  storyPointId: _storyPointId,
   onEdit,
   onDelete,
   selected,
@@ -129,8 +127,7 @@ function SortableItem({
   selected?: boolean;
   onToggleSelect?: () => void;
 }) {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: item.id });
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: item.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -141,7 +138,7 @@ function SortableItem({
     <div
       ref={setNodeRef}
       style={style}
-      className="flex items-center gap-2 rounded-md border bg-background px-3 py-2"
+      className="bg-background flex items-center gap-2 rounded-md border px-3 py-2"
     >
       {onToggleSelect && (
         <Checkbox
@@ -151,7 +148,12 @@ function SortableItem({
           className="h-4 w-4"
         />
       )}
-      <button {...attributes} {...listeners} className="cursor-grab text-muted-foreground hover:text-foreground" aria-label="Drag to reorder">
+      <button
+        {...attributes}
+        {...listeners}
+        className="text-muted-foreground hover:text-foreground cursor-grab"
+        aria-label="Drag to reorder"
+      >
         <GripVertical className="h-3.5 w-3.5" />
       </button>
       {item.type === "question" ? (
@@ -159,12 +161,9 @@ function SortableItem({
       ) : (
         <FileText className="h-4 w-4 text-green-500" />
       )}
-      <button
-        onClick={onEdit}
-        className="flex-1 text-left text-sm hover:text-primary"
-      >
+      <button onClick={onEdit} className="hover:text-primary flex-1 text-left text-sm">
         {item.title || "Untitled"}
-        <span className="ml-2 text-xs text-muted-foreground capitalize">
+        <span className="text-muted-foreground ml-2 text-xs capitalize">
           {item.type === "question"
             ? (item.payload as QuestionPayload).questionType
             : (item.payload as MaterialPayload).materialType}
@@ -173,7 +172,7 @@ function SortableItem({
       <Button
         variant="ghost"
         size="icon"
-        className="h-7 w-7 hover:bg-destructive/10 hover:text-destructive"
+        className="hover:bg-destructive/10 hover:text-destructive h-7 w-7"
         onClick={onDelete}
         aria-label="Delete"
       >
@@ -198,34 +197,36 @@ function SortableStoryPoint({
   onEdit: () => void;
   onPreview?: () => void;
 }) {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: sp.id });
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: sp.id });
 
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
   };
 
-  const isTest = sp.type === 'timed_test' || sp.type === 'test' || sp.type === 'quiz';
+  const isTest = sp.type === "timed_test" || sp.type === "test" || sp.type === "quiz";
 
   return (
-    <div ref={setNodeRef} style={style} className="rounded-lg border bg-card">
+    <div ref={setNodeRef} style={style} className="bg-card rounded-lg border">
       <div className="flex items-center gap-2 px-4 py-3">
-        <button {...attributes} {...listeners} className="cursor-grab text-muted-foreground hover:text-foreground" aria-label="Drag to reorder">
+        <button
+          {...attributes}
+          {...listeners}
+          className="text-muted-foreground hover:text-foreground cursor-grab"
+          aria-label="Drag to reorder"
+        >
           <GripVertical className="h-4 w-4" />
         </button>
-        <button onClick={onToggle} className="flex items-center gap-2 flex-1 text-left" aria-label="Toggle details">
-          {isExpanded ? (
-            <ChevronDown className="h-4 w-4" />
-          ) : (
-            <ChevronRight className="h-4 w-4" />
-          )}
-          <span className="font-medium text-sm">{sp.title}</span>
-          <span className="text-xs text-muted-foreground capitalize ml-2">
-            {sp.type}
-          </span>
+        <button
+          onClick={onToggle}
+          className="flex flex-1 items-center gap-2 text-left"
+          aria-label="Toggle details"
+        >
+          {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronRight className="h-4 w-4" />}
+          <span className="text-sm font-medium">{sp.title}</span>
+          <span className="text-muted-foreground ml-2 text-xs capitalize">{sp.type}</span>
         </button>
-        <div className="flex items-center gap-2 text-xs text-muted-foreground">
+        <div className="text-muted-foreground flex items-center gap-2 text-xs">
           <span>{sp.stats?.totalItems ?? 0} items</span>
           {sp.stats?.totalQuestions != null && sp.stats.totalQuestions > 0 && (
             <span>{sp.stats.totalQuestions} Q</span>
@@ -236,19 +237,36 @@ function SortableStoryPoint({
           {sp.stats?.totalPoints != null && sp.stats.totalPoints > 0 && (
             <span>{sp.stats.totalPoints} pts</span>
           )}
-          {sp.difficulty && (
-            <span className="capitalize">{sp.difficulty}</span>
-          )}
+          {sp.difficulty && <span className="capitalize">{sp.difficulty}</span>}
         </div>
         {isTest && onPreview && (
-          <Button variant="ghost" size="icon" className="h-7 w-7" onClick={onPreview} aria-label="Preview as student" title="Preview as Student">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-7 w-7"
+            onClick={onPreview}
+            aria-label="Preview as student"
+            title="Preview as Student"
+          >
             <Eye className="h-3.5 w-3.5" />
           </Button>
         )}
-        <Button variant="ghost" size="icon" className="h-7 w-7" onClick={onEdit} aria-label="Edit settings">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-7 w-7"
+          onClick={onEdit}
+          aria-label="Edit settings"
+        >
           <Settings2 className="h-3.5 w-3.5" />
         </Button>
-        <Button variant="ghost" size="icon" className="h-7 w-7 hover:bg-destructive/10 hover:text-destructive" onClick={onDelete} aria-label="Delete">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="hover:bg-destructive/10 hover:text-destructive h-7 w-7"
+          onClick={onDelete}
+          aria-label="Delete"
+        >
           <Trash2 className="h-3.5 w-3.5" />
         </Button>
       </div>
@@ -288,7 +306,7 @@ export default function SpaceEditorPage() {
   const versionsLoaded = useRef(false);
   const [previewOpen, setPreviewOpen] = useState(false);
   const [selectedItems, setSelectedItems] = useState<Set<string>>(new Set());
-  const [bulkSelectSP, setBulkSelectSP] = useState<string | null>(null);
+  const [_bulkSelectSP, _setBulkSelectSP] = useState<string | null>(null);
 
   // Confirmation dialog state
   const [confirmDialog, setConfirmDialog] = useState<{
@@ -313,9 +331,7 @@ export default function SpaceEditorPage() {
         const colRef = collection(db, `tenants/${tenantId}/spaces/${spaceId}/storyPoints`);
         const q = query(colRef, orderBy("orderIndex", "asc"));
         const snap = await getDocs(q);
-        setStoryPoints(
-          snap.docs.map((d) => ({ id: d.id, ...d.data() }) as StoryPoint)
-        );
+        setStoryPoints(snap.docs.map((d) => ({ id: d.id, ...d.data() }) as StoryPoint));
       } catch (err) {
         handleError(err, "Failed to load story points");
       }
@@ -329,21 +345,16 @@ export default function SpaceEditorPage() {
       if (!tenantId || !spaceId) return;
       try {
         const { db } = getFirebaseServices();
-        const colRef = collection(
-          db,
-          `tenants/${tenantId}/spaces/${spaceId}/items`
-        );
+        const colRef = collection(db, `tenants/${tenantId}/spaces/${spaceId}/items`);
         const q = query(
           colRef,
           where("storyPointId", "==", storyPointId),
-          orderBy("orderIndex", "asc"),
+          orderBy("orderIndex", "asc")
         );
         const snap = await getDocs(q);
         setItems((prev) => ({
           ...prev,
-          [storyPointId]: snap.docs.map(
-            (d) => ({ id: d.id, ...d.data() }) as UnifiedItem
-          ),
+          [storyPointId]: snap.docs.map((d) => ({ id: d.id, ...d.data() }) as UnifiedItem),
         }));
       } catch (err) {
         handleError(err, "Failed to load items");
@@ -562,10 +573,10 @@ export default function SpaceEditorPage() {
       const { db } = getFirebaseServices();
       const batch = writeBatch(db);
       reordered.forEach((sp, idx) => {
-        batch.update(
-          doc(db, `tenants/${tenantId}/spaces/${spaceId}/storyPoints`, sp.id),
-          { orderIndex: idx, updatedAt: serverTimestamp() }
-        );
+        batch.update(doc(db, `tenants/${tenantId}/spaces/${spaceId}/storyPoints`, sp.id), {
+          orderIndex: idx,
+          updatedAt: serverTimestamp(),
+        });
       });
       await batch.commit();
     } catch (err) {
@@ -594,10 +605,10 @@ export default function SpaceEditorPage() {
       const { db } = getFirebaseServices();
       const batch = writeBatch(db);
       reordered.forEach((item, idx) => {
-        batch.update(
-          doc(db, `tenants/${tenantId}/spaces/${spaceId}/items`, item.id),
-          { orderIndex: idx, updatedAt: serverTimestamp() }
-        );
+        batch.update(doc(db, `tenants/${tenantId}/spaces/${spaceId}/items`, item.id), {
+          orderIndex: idx,
+          updatedAt: serverTimestamp(),
+        });
       });
       await batch.commit();
     } catch (err) {
@@ -693,9 +704,7 @@ export default function SpaceEditorPage() {
       });
       setItems((prev) => ({
         ...prev,
-        [editingItemSPId]: (prev[editingItemSPId] ?? []).map((i) =>
-          i.id === item.id ? item : i
-        ),
+        [editingItemSPId]: (prev[editingItemSPId] ?? []).map((i) => (i.id === item.id ? item : i)),
       }));
       setEditingItem(null);
       setEditingItemSPId(null);
@@ -750,7 +759,7 @@ export default function SpaceEditorPage() {
 
   if (!space) {
     return (
-      <div className="text-center py-24">
+      <div className="py-24 text-center">
         <p className="text-muted-foreground">Space not found</p>
         <Button variant="link" onClick={() => navigate("/spaces")} className="mt-3">
           Back to Spaces
@@ -764,9 +773,7 @@ export default function SpaceEditorPage() {
       {/* Confirmation Dialog */}
       <ConfirmDialog
         open={confirmDialog.open}
-        onOpenChange={(open) =>
-          setConfirmDialog((prev) => ({ ...prev, open }))
-        }
+        onOpenChange={(open) => setConfirmDialog((prev) => ({ ...prev, open }))}
         title={confirmDialog.title}
         description={confirmDialog.description}
         confirmLabel={confirmDialog.confirmLabel}
@@ -781,7 +788,9 @@ export default function SpaceEditorPage() {
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink asChild><Link to="/spaces">Spaces</Link></BreadcrumbLink>
+            <BreadcrumbLink asChild>
+              <Link to="/spaces">Spaces</Link>
+            </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
@@ -792,16 +801,19 @@ export default function SpaceEditorPage() {
 
       {/* Header */}
       <div className="flex items-center gap-4">
-        <Button variant="ghost" size="icon" onClick={() => navigate("/spaces")} aria-label="Go back">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => navigate("/spaces")}
+          aria-label="Go back"
+        >
           <ArrowLeft className="h-5 w-5" />
         </Button>
         <div className="flex-1">
           <h1 className="text-xl font-bold">{space.title}</h1>
-          <div className="flex items-center gap-2 mt-0.5">
+          <div className="mt-0.5 flex items-center gap-2">
             <StatusBadge status={space.status} />
-            <span className="text-xs text-muted-foreground capitalize">
-              {space.type}
-            </span>
+            <span className="text-muted-foreground text-xs capitalize">{space.type}</span>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -813,23 +825,38 @@ export default function SpaceEditorPage() {
               onClick={handlePublish}
               size="sm"
               disabled={publishSpace.isPending}
-              className="bg-green-600 hover:bg-green-700 text-white"
+              className="bg-green-600 text-white hover:bg-green-700"
             >
               <Globe className="h-3.5 w-3.5" /> Publish
             </Button>
           )}
           {space.status === "published" && (
             <>
-              <Button variant="outline" size="sm" onClick={handleUnpublish} disabled={updateSpace.isPending}>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleUnpublish}
+                disabled={updateSpace.isPending}
+              >
                 Unpublish
               </Button>
-              <Button variant="outline" size="sm" onClick={handleArchive} disabled={archiveSpace.isPending}>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleArchive}
+                disabled={archiveSpace.isPending}
+              >
                 <Archive className="h-3.5 w-3.5" /> Archive
               </Button>
             </>
           )}
           {space.status === "archived" && (
-            <Button variant="outline" size="sm" onClick={handleUnpublish} disabled={updateSpace.isPending}>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleUnpublish}
+              disabled={updateSpace.isPending}
+            >
               Restore to Draft
             </Button>
           )}
@@ -863,31 +890,28 @@ export default function SpaceEditorPage() {
 
         {/* Settings tab */}
         <TabsContent value="settings" className="mt-4">
-          <SpaceSettingsPanel
-            space={space}
-            onSave={handleSaveSettings}
-            saving={saving}
-          />
+          <SpaceSettingsPanel space={space} onSave={handleSaveSettings} saving={saving} />
         </TabsContent>
 
         {/* Content tab - Story Points */}
         <TabsContent value="content" className="mt-4">
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h2 className="text-lg font-semibold">
-                Story Points ({storyPoints.length})
-              </h2>
-              <Button onClick={handleAddStoryPoint} size="sm" disabled={createStoryPoint.isPending} title="Add Story Point (Ctrl+N)">
+              <h2 className="text-lg font-semibold">Story Points ({storyPoints.length})</h2>
+              <Button
+                onClick={handleAddStoryPoint}
+                size="sm"
+                disabled={createStoryPoint.isPending}
+                title="Add Story Point (Ctrl+N)"
+              >
                 <Plus className="h-3.5 w-3.5" /> Add Story Point
               </Button>
             </div>
 
             {storyPoints.length === 0 ? (
               <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-12">
-                <List className="h-8 w-8 text-muted-foreground" />
-                <p className="mt-2 text-sm text-muted-foreground">
-                  No story points yet
-                </p>
+                <List className="text-muted-foreground h-8 w-8" />
+                <p className="text-muted-foreground mt-2 text-sm">No story points yet</p>
                 <Button onClick={handleAddStoryPoint} size="sm" className="mt-3">
                   <Plus className="h-3 w-3" /> Add Story Point
                 </Button>
@@ -908,14 +932,12 @@ export default function SpaceEditorPage() {
                         <SortableStoryPoint
                           sp={sp}
                           isExpanded={expandedSP === sp.id}
-                          onToggle={() =>
-                            setExpandedSP((prev) =>
-                              prev === sp.id ? null : sp.id
-                            )
-                          }
+                          onToggle={() => setExpandedSP((prev) => (prev === sp.id ? null : sp.id))}
                           onDelete={() => handleDeleteStoryPoint(sp.id)}
                           onEdit={() => setEditingSP(sp)}
-                          onPreview={() => navigate(`/spaces/${spaceId}/story-points/${sp.id}/preview`)}
+                          onPreview={() =>
+                            navigate(`/spaces/${spaceId}/story-points/${sp.id}/preview`)
+                          }
                         />
 
                         {/* Expanded: show items */}
@@ -955,101 +977,121 @@ export default function SpaceEditorPage() {
                             </DndContext>
 
                             {/* Bulk actions */}
-                            {selectedItems.size > 0 && (items[sp.id] ?? []).some((i) => selectedItems.has(i.id)) && (
-                              <div className="flex items-center gap-2 rounded-md bg-muted px-3 py-2">
-                                <span className="text-xs font-medium">
-                                  {(items[sp.id] ?? []).filter((i) => selectedItems.has(i.id)).length} selected
-                                </span>
-                                <Button
-                                  variant="destructive"
-                                  size="sm"
-                                  onClick={() => {
-                                    const toDelete = (items[sp.id] ?? []).filter((i) => selectedItems.has(i.id));
-                                    setConfirmDialog({
-                                      open: true,
-                                      title: "Delete Selected Items",
-                                      description: `Are you sure you want to delete ${toDelete.length} item(s)? This action cannot be undone.`,
-                                      confirmLabel: "Delete All",
-                                      onConfirm: async () => {
-                                        if (!tenantId || !spaceId) return;
+                            {selectedItems.size > 0 &&
+                              (items[sp.id] ?? []).some((i) => selectedItems.has(i.id)) && (
+                                <div className="bg-muted flex items-center gap-2 rounded-md px-3 py-2">
+                                  <span className="text-xs font-medium">
+                                    {
+                                      (items[sp.id] ?? []).filter((i) => selectedItems.has(i.id))
+                                        .length
+                                    }{" "}
+                                    selected
+                                  </span>
+                                  <Button
+                                    variant="destructive"
+                                    size="sm"
+                                    onClick={() => {
+                                      const toDelete = (items[sp.id] ?? []).filter((i) =>
+                                        selectedItems.has(i.id)
+                                      );
+                                      setConfirmDialog({
+                                        open: true,
+                                        title: "Delete Selected Items",
+                                        description: `Are you sure you want to delete ${toDelete.length} item(s)? This action cannot be undone.`,
+                                        confirmLabel: "Delete All",
+                                        onConfirm: async () => {
+                                          if (!tenantId || !spaceId) return;
+                                          try {
+                                            for (const it of toDelete) {
+                                              await deleteItem.mutateAsync({
+                                                id: it.id,
+                                                tenantId,
+                                                spaceId,
+                                                storyPointId: sp.id,
+                                              });
+                                            }
+                                            setItems((prev) => ({
+                                              ...prev,
+                                              [sp.id]: (prev[sp.id] ?? []).filter(
+                                                (i) => !selectedItems.has(i.id)
+                                              ),
+                                            }));
+                                            setSelectedItems(new Set());
+                                            sonnerToast.success(`Deleted ${toDelete.length} items`);
+                                          } catch (err) {
+                                            handleError(err, "Failed to delete items");
+                                          }
+                                        },
+                                      });
+                                    }}
+                                  >
+                                    <Trash2 className="h-3 w-3" /> Delete
+                                  </Button>
+                                  {storyPoints.length > 1 && (
+                                    <Select
+                                      onValueChange={async (targetSpId) => {
+                                        if (!tenantId || !spaceId || targetSpId === sp.id) return;
+                                        const toMove = (items[sp.id] ?? []).filter((i) =>
+                                          selectedItems.has(i.id)
+                                        );
                                         try {
-                                          for (const it of toDelete) {
+                                          for (const it of toMove) {
+                                            // Delete from current SP and create in target SP
                                             await deleteItem.mutateAsync({
                                               id: it.id,
                                               tenantId,
                                               spaceId,
                                               storyPointId: sp.id,
                                             });
+                                            await createItem.mutateAsync({
+                                              tenantId,
+                                              spaceId,
+                                              storyPointId: targetSpId,
+                                              data: {
+                                                type: it.type,
+                                                payload: it.payload,
+                                                title: it.title,
+                                                content: it.content,
+                                                difficulty: it.difficulty,
+                                                topics: it.topics,
+                                                labels: it.labels,
+                                              },
+                                            });
                                           }
-                                          setItems((prev) => ({
-                                            ...prev,
-                                            [sp.id]: (prev[sp.id] ?? []).filter((i) => !selectedItems.has(i.id)),
-                                          }));
+                                          await loadItems(sp.id);
+                                          if (expandedSP === targetSpId || items[targetSpId]) {
+                                            await loadItems(targetSpId);
+                                          }
                                           setSelectedItems(new Set());
-                                          sonnerToast.success(`Deleted ${toDelete.length} items`);
+                                          sonnerToast.success(`Moved ${toMove.length} items`);
                                         } catch (err) {
-                                          handleError(err, "Failed to delete items");
+                                          handleError(err, "Failed to move items");
                                         }
-                                      },
-                                    });
-                                  }}
-                                >
-                                  <Trash2 className="h-3 w-3" /> Delete
-                                </Button>
-                                {storyPoints.length > 1 && (
-                                  <Select
-                                    onValueChange={async (targetSpId) => {
-                                      if (!tenantId || !spaceId || targetSpId === sp.id) return;
-                                      const toMove = (items[sp.id] ?? []).filter((i) => selectedItems.has(i.id));
-                                      try {
-                                        for (const it of toMove) {
-                                          // Delete from current SP and create in target SP
-                                          await deleteItem.mutateAsync({ id: it.id, tenantId, spaceId, storyPointId: sp.id });
-                                          await createItem.mutateAsync({
-                                            tenantId,
-                                            spaceId,
-                                            storyPointId: targetSpId,
-                                            data: {
-                                              type: it.type,
-                                              payload: it.payload,
-                                              title: it.title,
-                                              content: it.content,
-                                              difficulty: it.difficulty,
-                                              topics: it.topics,
-                                              labels: it.labels,
-                                            },
-                                          });
-                                        }
-                                        await loadItems(sp.id);
-                                        if (expandedSP === targetSpId || items[targetSpId]) {
-                                          await loadItems(targetSpId);
-                                        }
-                                        setSelectedItems(new Set());
-                                        sonnerToast.success(`Moved ${toMove.length} items`);
-                                      } catch (err) {
-                                        handleError(err, "Failed to move items");
-                                      }
-                                    }}
+                                      }}
+                                    >
+                                      <SelectTrigger className="h-8 w-40 text-xs">
+                                        <SelectValue placeholder="Move to..." />
+                                      </SelectTrigger>
+                                      <SelectContent>
+                                        {storyPoints
+                                          .filter((s) => s.id !== sp.id)
+                                          .map((s) => (
+                                            <SelectItem key={s.id} value={s.id}>
+                                              {s.title}
+                                            </SelectItem>
+                                          ))}
+                                      </SelectContent>
+                                    </Select>
+                                  )}
+                                  <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={() => setSelectedItems(new Set())}
                                   >
-                                    <SelectTrigger className="h-8 w-40 text-xs">
-                                      <SelectValue placeholder="Move to..." />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                      {storyPoints
-                                        .filter((s) => s.id !== sp.id)
-                                        .map((s) => (
-                                          <SelectItem key={s.id} value={s.id}>
-                                            {s.title}
-                                          </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                  </Select>
-                                )}
-                                <Button variant="ghost" size="sm" onClick={() => setSelectedItems(new Set())}>
-                                  Clear
-                                </Button>
-                              </div>
-                            )}
+                                    Clear
+                                  </Button>
+                                </div>
+                              )}
 
                             <div className="flex gap-2">
                               <Button
@@ -1071,7 +1113,7 @@ export default function SpaceEditorPage() {
                               <Button
                                 variant="outline"
                                 size="sm"
-                                className="border-dashed border-primary/40 text-primary"
+                                className="border-primary/40 text-primary border-dashed"
                                 onClick={() => setImportBankSPId(sp.id)}
                               >
                                 <Library className="h-3 w-3" /> Import from Bank
@@ -1113,32 +1155,36 @@ export default function SpaceEditorPage() {
               </div>
             ) : versions.length === 0 ? (
               <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-12">
-                <History className="h-8 w-8 text-muted-foreground" />
-                <p className="mt-2 text-sm text-muted-foreground">No version history yet</p>
-                <p className="text-xs text-muted-foreground">Changes will be tracked when you publish, archive, or edit content.</p>
+                <History className="text-muted-foreground h-8 w-8" />
+                <p className="text-muted-foreground mt-2 text-sm">No version history yet</p>
+                <p className="text-muted-foreground text-xs">
+                  Changes will be tracked when you publish, archive, or edit content.
+                </p>
               </div>
             ) : (
               <div className="relative">
-                <div className="absolute left-4 top-0 bottom-0 w-px bg-border" />
+                <div className="bg-border absolute bottom-0 left-4 top-0 w-px" />
                 <div className="space-y-1">
                   {versions.map((v) => (
-                    <div key={v.id} className="relative flex items-start gap-4 pl-10 py-2">
-                      <div className="absolute left-2.5 top-3 h-3 w-3 rounded-full border-2 border-background bg-primary" />
-                      <div className="flex-1 min-w-0">
+                    <div key={v.id} className="relative flex items-start gap-4 py-2 pl-10">
+                      <div className="border-background bg-primary absolute left-2.5 top-3 h-3 w-3 rounded-full border-2" />
+                      <div className="min-w-0 flex-1">
                         <p className="text-sm font-medium">{v.changeSummary}</p>
-                        <div className="flex items-center gap-2 mt-0.5">
-                          <span className="inline-flex items-center rounded-full bg-muted px-2 py-0.5 text-xs capitalize">
+                        <div className="mt-0.5 flex items-center gap-2">
+                          <span className="bg-muted inline-flex items-center rounded-full px-2 py-0.5 text-xs capitalize">
                             {v.changeType}
                           </span>
-                          <span className="text-xs text-muted-foreground capitalize">{v.entityType}</span>
+                          <span className="text-muted-foreground text-xs capitalize">
+                            {v.entityType}
+                          </span>
                           {v.changedAt && (
-                            <span className="flex items-center gap-1 text-xs text-muted-foreground">
+                            <span className="text-muted-foreground flex items-center gap-1 text-xs">
                               <Clock className="h-3 w-3" />
                               {new Date(v.changedAt._seconds * 1000).toLocaleDateString(undefined, {
-                                month: 'short',
-                                day: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit',
+                                month: "short",
+                                day: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
                               })}
                             </span>
                           )}
@@ -1154,10 +1200,16 @@ export default function SpaceEditorPage() {
       </Tabs>
 
       {/* Item Editor Sheet */}
-      <Sheet open={!!editingItem} onOpenChange={(open) => {
-        if (!open) { setEditingItem(null); setEditingItemSPId(null); }
-      }}>
-        <SheetContent className="w-full sm:max-w-2xl overflow-y-auto" aria-describedby={undefined}>
+      <Sheet
+        open={!!editingItem}
+        onOpenChange={(open) => {
+          if (!open) {
+            setEditingItem(null);
+            setEditingItemSPId(null);
+          }
+        }}
+      >
+        <SheetContent className="w-full overflow-y-auto sm:max-w-2xl" aria-describedby={undefined}>
           <SheetHeader>
             <SheetTitle>Edit Item</SheetTitle>
           </SheetHeader>
@@ -1168,7 +1220,10 @@ export default function SpaceEditorPage() {
                 tenantId={tenantId ?? undefined}
                 spaceId={spaceId}
                 onSave={handleSaveItem}
-                onCancel={() => { setEditingItem(null); setEditingItemSPId(null); }}
+                onCancel={() => {
+                  setEditingItem(null);
+                  setEditingItemSPId(null);
+                }}
               />
             </div>
           )}
@@ -1176,10 +1231,13 @@ export default function SpaceEditorPage() {
       </Sheet>
 
       {/* Story Point Editor Sheet */}
-      <Sheet open={!!editingSP} onOpenChange={(open) => {
-        if (!open) setEditingSP(null);
-      }}>
-        <SheetContent className="w-full sm:max-w-xl overflow-y-auto" aria-describedby={undefined}>
+      <Sheet
+        open={!!editingSP}
+        onOpenChange={(open) => {
+          if (!open) setEditingSP(null);
+        }}
+      >
+        <SheetContent className="w-full overflow-y-auto sm:max-w-xl" aria-describedby={undefined}>
           <SheetHeader>
             <SheetTitle>Edit Story Point</SheetTitle>
           </SheetHeader>
@@ -1199,7 +1257,9 @@ export default function SpaceEditorPage() {
       {tenantId && spaceId && importBankSPId && (
         <QuestionBankImportDialog
           open={!!importBankSPId}
-          onOpenChange={(open) => { if (!open) setImportBankSPId(null); }}
+          onOpenChange={(open) => {
+            if (!open) setImportBankSPId(null);
+          }}
           tenantId={tenantId}
           spaceId={spaceId}
           storyPointId={importBankSPId}
@@ -1211,38 +1271,39 @@ export default function SpaceEditorPage() {
 
       {/* Content Preview Dialog */}
       <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
-        <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto">
+        <DialogContent className="max-h-[85vh] max-w-3xl overflow-y-auto">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               <Eye className="h-5 w-5" /> Student Preview — {space.title}
             </DialogTitle>
           </DialogHeader>
-          <div className="space-y-6 mt-4">
+          <div className="mt-4 space-y-6">
             {storyPoints.map((sp) => (
               <div key={sp.id} className="space-y-3">
-                <h3 className="text-lg font-semibold border-b pb-2">{sp.title}</h3>
-                {sp.description && <p className="text-sm text-muted-foreground">{sp.description}</p>}
+                <h3 className="border-b pb-2 text-lg font-semibold">{sp.title}</h3>
+                {sp.description && (
+                  <p className="text-muted-foreground text-sm">{sp.description}</p>
+                )}
                 <div className="space-y-4 pl-4">
                   {(items[sp.id] ?? []).map((it) => (
                     <div key={it.id} className="rounded-lg border p-4">
-                      {it.title && <h4 className="font-medium mb-2">{it.title}</h4>}
-                      {it.content && (
-                        <RichTextViewer content={it.content} className="mb-3" />
-                      )}
+                      {it.title && <h4 className="mb-2 font-medium">{it.title}</h4>}
+                      {it.content && <RichTextViewer content={it.content} className="mb-3" />}
                       {it.type === "question" && (
-                        <p className="text-xs text-muted-foreground capitalize">
-                          {(it.payload as QuestionPayload).questionType?.replace(/[-_]/g, " ")} question
+                        <p className="text-muted-foreground text-xs capitalize">
+                          {(it.payload as QuestionPayload).questionType?.replace(/[-_]/g, " ")}{" "}
+                          question
                         </p>
                       )}
                       {it.type === "material" && (
-                        <p className="text-xs text-muted-foreground capitalize">
+                        <p className="text-muted-foreground text-xs capitalize">
                           {(it.payload as MaterialPayload).materialType} material
                         </p>
                       )}
                       {it.attachments && it.attachments.length > 0 && (
-                        <div className="flex gap-2 mt-2 flex-wrap">
+                        <div className="mt-2 flex flex-wrap gap-2">
                           {it.attachments.map((att) => (
-                            <span key={att.id} className="text-xs rounded bg-muted px-2 py-1">
+                            <span key={att.id} className="bg-muted rounded px-2 py-1 text-xs">
                               {att.fileName}
                             </span>
                           ))}
@@ -1251,13 +1312,15 @@ export default function SpaceEditorPage() {
                     </div>
                   ))}
                   {(!items[sp.id] || items[sp.id].length === 0) && (
-                    <p className="text-sm text-muted-foreground italic">No items loaded. Expand this story point first.</p>
+                    <p className="text-muted-foreground text-sm italic">
+                      No items loaded. Expand this story point first.
+                    </p>
                   )}
                 </div>
               </div>
             ))}
             {storyPoints.length === 0 && (
-              <p className="text-sm text-muted-foreground">No story points to preview.</p>
+              <p className="text-muted-foreground text-sm">No story points to preview.</p>
             )}
           </div>
         </DialogContent>

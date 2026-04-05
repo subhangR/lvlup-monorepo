@@ -5,7 +5,6 @@ import type {
   StoryPointSection,
   AssessmentConfig,
   AssessmentSchedule,
-  RetryConfig,
 } from "@levelup/shared-types";
 import { ArrowLeft, Save, Plus, Trash2 } from "lucide-react";
 import {
@@ -40,12 +39,8 @@ export default function StoryPointEditor({ storyPoint, onSave, onCancel }: Props
   const [description, setDescription] = useState(storyPoint.description ?? "");
   const [type, setType] = useState<StoryPointType>(storyPoint.type);
   const [difficulty, setDifficulty] = useState(storyPoint.difficulty ?? "medium");
-  const [estimatedTime, setEstimatedTime] = useState(
-    storyPoint.estimatedTimeMinutes ?? 0
-  );
-  const [sections, setSections] = useState<StoryPointSection[]>(
-    storyPoint.sections ?? []
-  );
+  const [estimatedTime, setEstimatedTime] = useState(storyPoint.estimatedTimeMinutes ?? 0);
+  const [sections, setSections] = useState<StoryPointSection[]>(storyPoint.sections ?? []);
   const [assessmentConfig, setAssessmentConfig] = useState<AssessmentConfig>(
     storyPoint.assessmentConfig ?? {}
   );
@@ -61,7 +56,7 @@ export default function StoryPointEditor({ storyPoint, onSave, onCancel }: Props
         title,
         description: description || undefined,
         type,
-        difficulty: difficulty as StoryPoint['difficulty'],
+        difficulty: difficulty as StoryPoint["difficulty"],
         estimatedTimeMinutes: estimatedTime || undefined,
         sections,
         assessmentConfig: isAssessment ? assessmentConfig : undefined,
@@ -87,9 +82,7 @@ export default function StoryPointEditor({ storyPoint, onSave, onCancel }: Props
   };
 
   const updateSection = (idx: number, updates: Partial<StoryPointSection>) => {
-    setSections((prev) =>
-      prev.map((s, i) => (i === idx ? { ...s, ...updates } : s))
-    );
+    setSections((prev) => prev.map((s, i) => (i === idx ? { ...s, ...updates } : s)));
   };
 
   return (
@@ -248,9 +241,7 @@ export default function StoryPointEditor({ storyPoint, onSave, onCancel }: Props
               <div className="flex items-center gap-2">
                 <Switch
                   checked={assessmentConfig.shuffleOptions ?? false}
-                  onCheckedChange={(v) =>
-                    setAssessmentConfig((p) => ({ ...p, shuffleOptions: v }))
-                  }
+                  onCheckedChange={(v) => setAssessmentConfig((p) => ({ ...p, shuffleOptions: v }))}
                   id="shuffle-options"
                 />
                 <Label htmlFor="shuffle-options" className="cursor-pointer text-sm">
@@ -274,7 +265,7 @@ export default function StoryPointEditor({ storyPoint, onSave, onCancel }: Props
             {/* Schedule */}
             <div className="space-y-3 border-t pt-4">
               <h4 className="text-sm font-medium">Schedule (Optional)</h4>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-muted-foreground text-xs">
                 Set availability windows. Students can only start tests within this window.
               </p>
               <div className="grid gap-4 sm:grid-cols-2">
@@ -282,10 +273,16 @@ export default function StoryPointEditor({ storyPoint, onSave, onCancel }: Props
                   <Label>Available From</Label>
                   <Input
                     type="datetime-local"
-                    value={assessmentConfig.schedule?.startAt
-                      ? new Date((assessmentConfig.schedule.startAt as unknown as { seconds: number }).seconds * 1000)
-                          .toISOString().slice(0, 16)
-                      : ""}
+                    value={
+                      assessmentConfig.schedule?.startAt
+                        ? new Date(
+                            (assessmentConfig.schedule.startAt as unknown as { seconds: number })
+                              .seconds * 1000
+                          )
+                            .toISOString()
+                            .slice(0, 16)
+                        : ""
+                    }
                     onChange={(e) => {
                       const val = e.target.value;
                       setAssessmentConfig((p) => ({
@@ -293,7 +290,10 @@ export default function StoryPointEditor({ storyPoint, onSave, onCancel }: Props
                         schedule: {
                           ...p.schedule,
                           startAt: val
-                            ? ({ seconds: Math.floor(new Date(val).getTime() / 1000), nanoseconds: 0 } as unknown as AssessmentSchedule['startAt'])
+                            ? ({
+                                seconds: Math.floor(new Date(val).getTime() / 1000),
+                                nanoseconds: 0,
+                              } as unknown as AssessmentSchedule["startAt"])
                             : undefined,
                         },
                       }));
@@ -305,10 +305,16 @@ export default function StoryPointEditor({ storyPoint, onSave, onCancel }: Props
                   <Label>Available Until</Label>
                   <Input
                     type="datetime-local"
-                    value={assessmentConfig.schedule?.endAt
-                      ? new Date((assessmentConfig.schedule.endAt as unknown as { seconds: number }).seconds * 1000)
-                          .toISOString().slice(0, 16)
-                      : ""}
+                    value={
+                      assessmentConfig.schedule?.endAt
+                        ? new Date(
+                            (assessmentConfig.schedule.endAt as unknown as { seconds: number })
+                              .seconds * 1000
+                          )
+                            .toISOString()
+                            .slice(0, 16)
+                        : ""
+                    }
                     onChange={(e) => {
                       const val = e.target.value;
                       setAssessmentConfig((p) => ({
@@ -316,7 +322,10 @@ export default function StoryPointEditor({ storyPoint, onSave, onCancel }: Props
                         schedule: {
                           ...p.schedule,
                           endAt: val
-                            ? ({ seconds: Math.floor(new Date(val).getTime() / 1000), nanoseconds: 0 } as unknown as AssessmentSchedule['endAt'])
+                            ? ({
+                                seconds: Math.floor(new Date(val).getTime() / 1000),
+                                nanoseconds: 0,
+                              } as unknown as AssessmentSchedule["endAt"])
                             : undefined,
                         },
                       }));
@@ -347,9 +356,7 @@ export default function StoryPointEditor({ storyPoint, onSave, onCancel }: Props
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={() =>
-                    setAssessmentConfig((p) => ({ ...p, schedule: undefined }))
-                  }
+                  onClick={() => setAssessmentConfig((p) => ({ ...p, schedule: undefined }))}
                 >
                   Clear Schedule
                 </Button>
@@ -377,7 +384,7 @@ export default function StoryPointEditor({ storyPoint, onSave, onCancel }: Props
                     min={0}
                     className="mt-1"
                   />
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <p className="text-muted-foreground mt-1 text-xs">
                     Minimum wait between attempts
                   </p>
                 </div>
@@ -413,8 +420,8 @@ export default function StoryPointEditor({ storyPoint, onSave, onCancel }: Props
                       adaptiveConfig: {
                         ...p.adaptiveConfig,
                         enabled: v,
-                        initialDifficulty: p.adaptiveConfig?.initialDifficulty ?? 'medium',
-                        difficultyAdjustment: p.adaptiveConfig?.difficultyAdjustment ?? 'gradual',
+                        initialDifficulty: p.adaptiveConfig?.initialDifficulty ?? "medium",
+                        difficultyAdjustment: p.adaptiveConfig?.difficultyAdjustment ?? "gradual",
                       },
                     }))
                   }
@@ -429,18 +436,20 @@ export default function StoryPointEditor({ storyPoint, onSave, onCancel }: Props
                   <div>
                     <Label>Initial Difficulty</Label>
                     <Select
-                      value={assessmentConfig.adaptiveConfig?.initialDifficulty ?? 'medium'}
+                      value={assessmentConfig.adaptiveConfig?.initialDifficulty ?? "medium"}
                       onValueChange={(v) =>
                         setAssessmentConfig((p) => ({
                           ...p,
                           adaptiveConfig: {
                             ...p.adaptiveConfig!,
-                            initialDifficulty: v as 'easy' | 'medium' | 'hard',
+                            initialDifficulty: v as "easy" | "medium" | "hard",
                           },
                         }))
                       }
                     >
-                      <SelectTrigger className="mt-1"><SelectValue /></SelectTrigger>
+                      <SelectTrigger className="mt-1">
+                        <SelectValue />
+                      </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="easy">Easy</SelectItem>
                         <SelectItem value="medium">Medium</SelectItem>
@@ -451,18 +460,20 @@ export default function StoryPointEditor({ storyPoint, onSave, onCancel }: Props
                   <div>
                     <Label>Adjustment Mode</Label>
                     <Select
-                      value={assessmentConfig.adaptiveConfig?.difficultyAdjustment ?? 'gradual'}
+                      value={assessmentConfig.adaptiveConfig?.difficultyAdjustment ?? "gradual"}
                       onValueChange={(v) =>
                         setAssessmentConfig((p) => ({
                           ...p,
                           adaptiveConfig: {
                             ...p.adaptiveConfig!,
-                            difficultyAdjustment: v as 'gradual' | 'aggressive',
+                            difficultyAdjustment: v as "gradual" | "aggressive",
                           },
                         }))
                       }
                     >
-                      <SelectTrigger className="mt-1"><SelectValue /></SelectTrigger>
+                      <SelectTrigger className="mt-1">
+                        <SelectValue />
+                      </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="gradual">Gradual (3 consecutive)</SelectItem>
                         <SelectItem value="aggressive">Aggressive (2 consecutive)</SelectItem>
@@ -545,7 +556,7 @@ export default function StoryPointEditor({ storyPoint, onSave, onCancel }: Props
                 variant="ghost"
                 size="icon"
                 onClick={() => removeSection(idx)}
-                className="h-8 w-8 text-muted-foreground hover:text-destructive"
+                className="text-muted-foreground hover:text-destructive h-8 w-8"
                 aria-label="Remove section"
               >
                 <Trash2 className="h-3.5 w-3.5" />

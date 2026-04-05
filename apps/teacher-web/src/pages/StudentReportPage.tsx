@@ -1,12 +1,11 @@
-import { useParams } from 'react-router-dom';
-import { useAuthStore } from '@levelup/shared-stores';
+import { useParams } from "react-router-dom";
+import { useAuthStore } from "@levelup/shared-stores";
 import {
   useStudent,
   useStudentProgressSummary,
-  useSpaces,
   useExams,
   useSubmissions,
-} from '@levelup/shared-hooks';
+} from "@levelup/shared-hooks";
 import {
   Card,
   CardContent,
@@ -19,18 +18,10 @@ import {
   Skeleton,
   FadeIn,
   DownloadPDFButton,
-} from '@levelup/shared-ui';
-import { callGenerateReport } from '@levelup/shared-services';
-import type { BarChartItem } from '@levelup/shared-ui';
-import {
-  User,
-  Target,
-  ClipboardList,
-  BookOpen,
-  Flame,
-  TrendingUp,
-  Award,
-} from 'lucide-react';
+} from "@levelup/shared-ui";
+import { callGenerateReport } from "@levelup/shared-services";
+import type { BarChartItem } from "@levelup/shared-ui";
+import { User, Target, ClipboardList, BookOpen, Flame, TrendingUp, Award } from "lucide-react";
 
 export default function StudentReportPage() {
   const { studentId } = useParams<{ studentId: string }>();
@@ -40,14 +31,14 @@ export default function StudentReportPage() {
   const { data: student, isLoading: studentLoading } = useStudent(tenantId, studentId ?? null);
   const { data: summary, isLoading: summaryLoading } = useStudentProgressSummary(
     tenantId,
-    studentId ?? null,
+    studentId ?? null
   );
   const { data: submissions } = useSubmissions(tenantId);
   const { data: exams } = useExams(tenantId);
 
   const studentSubmissions = submissions?.filter((s) => s.studentId === studentId) ?? [];
   const gradedSubmissions = studentSubmissions.filter(
-    (s) => s.status === 'grading_complete' || s.status === 'reviewed',
+    (s) => s.status === "grading_complete" || s.status === "reviewed"
   );
 
   const isLoading = studentLoading || summaryLoading;
@@ -69,9 +60,9 @@ export default function StudentReportPage() {
   const subjectScores: Record<string, { total: number; count: number }> = {};
   for (const sub of gradedSubmissions) {
     const exam = exams?.find((e) => e.id === sub.examId);
-    const subject = exam?.subject ?? 'Other';
+    const subject = exam?.subject ?? "Other";
     if (!subjectScores[subject]) subjectScores[subject] = { total: 0, count: 0 };
-    const pct = (sub.totalScore ?? 0) / (exam?.totalMarks || 1) * 100;
+    const pct = ((sub.totalScore ?? 0) / (exam?.totalMarks || 1)) * 100;
     subjectScores[subject].total += pct;
     subjectScores[subject].count += 1;
   }
@@ -84,39 +75,42 @@ export default function StudentReportPage() {
     <div className="space-y-6">
       {/* Header */}
       <FadeIn>
-      <div className="flex items-center gap-4">
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10" aria-hidden="true">
-          <User className="h-6 w-6 text-primary" />
-        </div>
-        <div className="flex-1">
-          <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold">
-              {student?.displayName ?? student?.name ?? 'Student Report'}
-            </h1>
-            {tenantId && studentId && (
-              <DownloadPDFButton
-                onGenerate={async () => {
-                  const res = await callGenerateReport({
-                    tenantId: tenantId!,
-                    type: 'student-report',
-                    studentId: studentId!,
-                  });
-                  return { downloadUrl: res.pdfUrl };
-                }}
-                label="Download PDF"
-              />
-            )}
+        <div className="flex items-center gap-4">
+          <div
+            className="bg-primary/10 flex h-12 w-12 items-center justify-center rounded-full"
+            aria-hidden="true"
+          >
+            <User className="text-primary h-6 w-6" />
           </div>
-          <div className="flex items-center gap-3 text-sm text-muted-foreground">
-            {student?.rollNo && <span>Roll: {student.rollNo}</span>}
-            {student?.grade && <span>Grade {student.grade}</span>}
-            {student?.section && <span>Sec {student.section}</span>}
-            {summary && (
-              <AtRiskBadge isAtRisk={summary.isAtRisk} reasons={summary.atRiskReasons} />
-            )}
+          <div className="flex-1">
+            <div className="flex items-center justify-between">
+              <h1 className="text-2xl font-bold">
+                {student?.displayName ?? student?.name ?? "Student Report"}
+              </h1>
+              {tenantId && studentId && (
+                <DownloadPDFButton
+                  onGenerate={async () => {
+                    const res = await callGenerateReport({
+                      tenantId: tenantId!,
+                      type: "student-report",
+                      studentId: studentId!,
+                    });
+                    return { downloadUrl: res.pdfUrl };
+                  }}
+                  label="Download PDF"
+                />
+              )}
+            </div>
+            <div className="text-muted-foreground flex items-center gap-3 text-sm">
+              {student?.rollNo && <span>Roll: {student.rollNo}</span>}
+              {student?.grade && <span>Grade {student.grade}</span>}
+              {student?.section && <span>Sec {student.section}</span>}
+              {summary && (
+                <AtRiskBadge isAtRisk={summary.isAtRisk} reasons={summary.atRiskReasons} />
+              )}
+            </div>
           </div>
         </div>
-      </div>
       </FadeIn>
 
       {/* Score Cards */}
@@ -139,11 +133,7 @@ export default function StudentReportPage() {
             suffix={`(${summary.levelup.completedSpaces}/${summary.levelup.totalSpaces})`}
             icon={BookOpen}
           />
-          <ScoreCard
-            label="Current Streak"
-            value={`${summary.levelup.streakDays}d`}
-            icon={Flame}
-          />
+          <ScoreCard label="Current Streak" value={`${summary.levelup.streakDays}d`} icon={Flame} />
         </div>
       )}
 
@@ -153,7 +143,7 @@ export default function StudentReportPage() {
         {summary && (
           <Card>
             <CardHeader>
-              <CardTitle className="text-sm flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2 text-sm">
                 <TrendingUp className="h-4 w-4" />
                 Performance Overview
               </CardTitle>
@@ -188,7 +178,7 @@ export default function StudentReportPage() {
         {subjectChartData.length > 0 && (
           <Card>
             <CardHeader>
-              <CardTitle className="text-sm flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2 text-sm">
                 <Award className="h-4 w-4" />
                 Subject Performance
               </CardTitle>
@@ -210,7 +200,7 @@ export default function StudentReportPage() {
             <div className="grid gap-4 md:grid-cols-2">
               {summary.strengthAreas.length > 0 && (
                 <div>
-                  <p className="text-xs font-medium text-muted-foreground mb-2">Strengths</p>
+                  <p className="text-muted-foreground mb-2 text-xs font-medium">Strengths</p>
                   <div className="flex flex-wrap gap-1.5">
                     {summary.strengthAreas.map((s) => (
                       <span
@@ -225,12 +215,14 @@ export default function StudentReportPage() {
               )}
               {summary.weaknessAreas.length > 0 && (
                 <div>
-                  <p className="text-xs font-medium text-muted-foreground mb-2">Needs Improvement</p>
+                  <p className="text-muted-foreground mb-2 text-xs font-medium">
+                    Needs Improvement
+                  </p>
                   <div className="flex flex-wrap gap-1.5">
                     {summary.weaknessAreas.map((w) => (
                       <span
                         key={w}
-                        className="rounded-full bg-red-500/10 px-2.5 py-1 text-xs text-destructive"
+                        className="text-destructive rounded-full bg-red-500/10 px-2.5 py-1 text-xs"
                       >
                         {w}
                       </span>
@@ -252,23 +244,20 @@ export default function StudentReportPage() {
           <CardContent className="p-0">
             <div className="divide-y">
               {summary.autograde.recentExams.map((exam) => (
-                <div
-                  key={exam.examId}
-                  className="flex items-center justify-between px-6 py-3"
-                >
+                <div key={exam.examId} className="flex items-center justify-between px-6 py-3">
                   <div>
                     <p className="text-sm font-medium">{exam.examTitle}</p>
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-muted-foreground text-xs">
                       {exam.score}/{exam.maxScore} marks
                     </p>
                   </div>
                   <span
                     className={`text-sm font-semibold ${
                       exam.percentage >= 70
-                        ? 'text-emerald-600 dark:text-emerald-400'
+                        ? "text-emerald-600 dark:text-emerald-400"
                         : exam.percentage >= 40
-                          ? 'text-yellow-600 dark:text-yellow-400'
-                          : 'text-destructive'
+                          ? "text-yellow-600 dark:text-yellow-400"
+                          : "text-destructive"
                     }`}
                   >
                     {Math.round(exam.percentage)}%

@@ -1,6 +1,7 @@
-import { useState, type FormEvent } from 'react';
-import { lookupTenantByCode } from '@levelup/shared-services';
-import { Button, Input } from '@levelup/shared-ui';
+import { useState, type FormEvent } from "react";
+import { lookupTenantByCode } from "@levelup/shared-services";
+import { Button, Input } from "@levelup/shared-ui";
+import { Loader2 } from "lucide-react";
 
 interface SchoolCodeFormProps {
   onCodeVerified: (code: string, name: string) => void;
@@ -8,35 +9,35 @@ interface SchoolCodeFormProps {
 }
 
 export function SchoolCodeForm({ onCodeVerified, onSwitchToConsumer }: SchoolCodeFormProps) {
-  const [schoolCode, setSchoolCode] = useState('');
-  const [codeError, setCodeError] = useState('');
+  const [schoolCode, setSchoolCode] = useState("");
+  const [codeError, setCodeError] = useState("");
   const [codeLoading, setCodeLoading] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setCodeError('');
+    setCodeError("");
     setCodeLoading(true);
 
     try {
       const code = schoolCode.trim();
       if (!code) {
-        setCodeError('Please enter a school code.');
+        setCodeError("Please enter a school code.");
         return;
       }
 
       const tenant = await lookupTenantByCode(code);
       if (!tenant) {
-        setCodeError('Invalid school code. Please try again.');
+        setCodeError("Invalid school code. Please try again.");
         return;
       }
-      if (tenant.status !== 'active') {
-        setCodeError('This school is currently inactive.');
+      if (tenant.status !== "active") {
+        setCodeError("This school is currently inactive.");
         return;
       }
 
       onCodeVerified(code, tenant.name);
     } catch {
-      setCodeError('Failed to look up school code. Please try again.');
+      setCodeError("Failed to look up school code. Please try again.");
     } finally {
       setCodeLoading(false);
     }
@@ -46,7 +47,7 @@ export function SchoolCodeForm({ onCodeVerified, onSwitchToConsumer }: SchoolCod
     <>
       <form onSubmit={handleSubmit} className="space-y-4">
         {codeError && (
-          <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
+          <div className="bg-destructive/10 text-destructive rounded-md p-3 text-sm">
             {codeError}
           </div>
         )}
@@ -67,7 +68,8 @@ export function SchoolCodeForm({ onCodeVerified, onSwitchToConsumer }: SchoolCod
         </div>
 
         <Button type="submit" disabled={codeLoading} className="w-full">
-          {codeLoading ? 'Validating...' : 'Continue'}
+          {codeLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {codeLoading ? "Validating..." : "Continue"}
         </Button>
       </form>
 
