@@ -10,7 +10,7 @@ import {
   FadeIn,
 } from "@levelup/shared-ui";
 import type { StudentProgressSummary } from "@levelup/shared-types";
-import { Users, Target, ClipboardList, BookOpen, Flame, Star } from "lucide-react";
+import { Users } from "lucide-react";
 import { useLinkedStudents } from "../hooks/useLinkedStudents";
 import { useStudentNames } from "../hooks/useStudentNames";
 import { getInitials, getStudentDisplayName } from "../lib/helpers";
@@ -65,16 +65,11 @@ const METRICS: MetricRow[] = [
 export default function ChildComparisonPage() {
   const user = useCurrentUser();
   const tenantId = useCurrentTenantId();
-  const { data: linkedStudents, isLoading } = useLinkedStudents(
-    tenantId,
-    user?.uid ?? null,
-  );
+  const { data: linkedStudents, isLoading } = useLinkedStudents(tenantId, user?.uid ?? null);
 
   const studentIds = linkedStudents?.map((s) => s.uid) ?? [];
   const summaryResults = useStudentSummaries(tenantId, studentIds);
-  const summaries = summaryResults
-    .map((r) => r.data)
-    .filter(Boolean) as StudentProgressSummary[];
+  const summaries = summaryResults.map((r) => r.data).filter(Boolean) as StudentProgressSummary[];
   const { data: studentNames } = useStudentNames(tenantId, studentIds);
 
   if (isLoading) return <ComparisonSkeleton />;
@@ -84,9 +79,7 @@ export default function ChildComparisonPage() {
       <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-bold">Compare Children</h1>
-          <p className="text-sm text-muted-foreground">
-            Side-by-side performance comparison
-          </p>
+          <p className="text-muted-foreground text-sm">Side-by-side performance comparison</p>
         </div>
         <EmptyState
           icon={Users}
@@ -101,7 +94,7 @@ export default function ChildComparisonPage() {
   const subjectChartData = summaries.map((s) => {
     const name = getStudentDisplayName(
       studentNames,
-      linkedStudents?.find((ls) => ls.uid === s.studentId),
+      linkedStudents?.find((ls) => ls.uid === s.studentId)
     );
     return {
       label: name.split(" ")[0] ?? name,
@@ -114,7 +107,7 @@ export default function ChildComparisonPage() {
       <FadeIn>
         <div>
           <h1 className="text-2xl font-bold">Compare Children</h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             Side-by-side performance comparison across all metrics
           </p>
         </div>
@@ -129,14 +122,14 @@ export default function ChildComparisonPage() {
 
             return (
               <Card key={student.id}>
-                <CardContent className="p-4 space-y-4">
+                <CardContent className="space-y-4 p-4">
                   {/* Avatar + Name */}
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 text-sm font-semibold text-primary">
+                    <div className="bg-primary/10 text-primary flex h-10 w-10 items-center justify-center rounded-full text-sm font-semibold">
                       {getInitials(name)}
                     </div>
                     <div className="min-w-0">
-                      <p className="font-medium truncate">{name}</p>
+                      <p className="truncate font-medium">{name}</p>
                     </div>
                   </div>
 
@@ -157,7 +150,9 @@ export default function ChildComparisonPage() {
                       {METRICS.map((metric) => {
                         const val = metric.getValue(s);
                         const allVals = summaries.map(metric.getValue);
-                        const isBest = val === Math.max(...allVals) && allVals.filter((v) => v === val).length === 1;
+                        const isBest =
+                          val === Math.max(...allVals) &&
+                          allVals.filter((v) => v === val).length === 1;
 
                         return (
                           <div
@@ -174,9 +169,7 @@ export default function ChildComparisonPage() {
                       })}
                     </div>
                   ) : (
-                    <p className="text-sm text-muted-foreground text-center">
-                      No data yet
-                    </p>
+                    <p className="text-muted-foreground text-center text-sm">No data yet</p>
                   )}
                 </CardContent>
               </Card>

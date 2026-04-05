@@ -1,0 +1,82 @@
+[
+  {
+    "index": 1,
+    "files": {
+      "png": "diagram-01.png",
+      "svg": "diagram-01.svg"
+    },
+    "caption": "Bit.ly Non-Functional Requirements",
+    "context": "Here is what you might write on the whiteboard:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/5RYoohUD8Vib.b937f3d1.svg"
+  },
+  {
+    "index": 2,
+    "files": {
+      "png": "diagram-02.png",
+      "svg": "diagram-02.svg"
+    },
+    "caption": "Bit.ly Entities",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/LG0t5RfKYYIJ.05f0d01f.svg"
+  },
+  {
+    "index": 3,
+    "files": {
+      "png": "diagram-03.png",
+      "svg": "diagram-03.svg"
+    },
+    "caption": "Create a short url",
+    "context": "We'll outline the core components necessary to make this happen at a high-level.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/EW8kyEH1zLy7.5f0c82e0.svg"
+  },
+  {
+    "index": 4,
+    "files": {
+      "png": "diagram-04.png",
+      "svg": "diagram-04.svg"
+    },
+    "caption": "Redirect to original url",
+    "context": "2) Users should be able to access the original URL by using the shortened URL",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/1CwDXU_9BOFt.9c283c3d.svg"
+  },
+  {
+    "index": 5,
+    "files": {
+      "png": "diagram-05.png",
+      "svg": "diagram-05.svg"
+    },
+    "caption": "Hash Function",
+    "context": "Let's view a quick example of this in some pseudo code.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/B0FOC0HsRNDX.693b8708.svg"
+  },
+  {
+    "index": 6,
+    "files": {
+      "png": "diagram-06.png",
+      "svg": "diagram-06.svg"
+    },
+    "caption": "Unique Counter with Base62 Encoding",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/2V-Fetq6KkBW.9b13d046.svg"
+  },
+  {
+    "index": 7,
+    "files": {
+      "png": "diagram-07.png",
+      "svg": "diagram-07.svg"
+    },
+    "caption": "In-Memory Cache",
+    "context": "Memory: Can support millions of reads per second\nSSD: ~100,000 IOPS (Input/Output Operations Per Second)\nHDD: ~100-200 IOPS",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/Kj7w8jXEtJLS.69ad9d32.svg"
+  },
+  {
+    "index": 8,
+    "files": {
+      "png": "diagram-08.png",
+      "svg": "diagram-08.svg"
+    },
+    "caption": "Final Design",
+    "context": "But what about our counter?",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/7dUdrQcQqo9j.2272b53f.svg"
+  }
+]

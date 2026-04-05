@@ -2,7 +2,7 @@ import { useState, type FormEvent } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuthStore } from "@levelup/shared-stores";
 import { lookupTenantByCode } from "@levelup/shared-services";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { Button, Input, Label, Card, CardContent } from "@levelup/shared-ui";
 
 export default function LoginPage() {
@@ -67,15 +67,13 @@ export default function LoginPage() {
       <CardContent className="p-6">
         <div className="mb-6 text-center">
           <h1 className="text-2xl font-bold">Teacher Portal</h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Sign in to your teaching dashboard
-          </p>
+          <p className="text-muted-foreground mt-1 text-sm">Sign in to your teaching dashboard</p>
         </div>
 
         {step === "school-code" ? (
           <form onSubmit={handleSchoolCodeSubmit} className="space-y-4">
             {codeError && (
-              <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
+              <div className="bg-destructive/10 text-destructive rounded-md p-3 text-sm">
                 {codeError}
               </div>
             )}
@@ -94,12 +92,13 @@ export default function LoginPage() {
             </div>
 
             <Button type="submit" disabled={codeLoading} className="w-full">
+              {codeLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {codeLoading ? "Validating..." : "Continue"}
             </Button>
           </form>
         ) : (
           <form onSubmit={handleLogin} className="space-y-4">
-            <div className="rounded-md bg-muted p-3 text-sm">
+            <div className="bg-muted rounded-md p-3 text-sm">
               <span className="font-medium">{schoolName}</span>
               <Button
                 type="button"
@@ -116,7 +115,7 @@ export default function LoginPage() {
             </div>
 
             {error && (
-              <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
+              <div className="bg-destructive/10 text-destructive rounded-md p-3 text-sm">
                 {error}
               </div>
             )}
@@ -160,6 +159,7 @@ export default function LoginPage() {
             </div>
 
             <Button type="submit" disabled={loading} className="w-full">
+              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {loading ? "Signing in..." : "Sign In"}
             </Button>
           </form>

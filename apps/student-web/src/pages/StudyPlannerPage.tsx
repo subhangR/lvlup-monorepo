@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { useCurrentUser, useCurrentTenantId } from '@levelup/shared-stores';
-import { useStudyGoals, useStudentProgressSummary, useSpaces } from '@levelup/shared-hooks';
+import { useState } from "react";
+import { useCurrentUser, useCurrentTenantId } from "@levelup/shared-stores";
+import { useStudyGoals, useStudentProgressSummary, useSpaces } from "@levelup/shared-hooks";
 import {
   StudyGoalCard,
   Card,
@@ -25,9 +25,9 @@ import {
   AnimatedList,
   AnimatedListItem,
   EmptyState,
-} from '@levelup/shared-ui';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
-import { getFirebaseServices } from '@levelup/shared-services';
+} from "@levelup/shared-ui";
+import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { getFirebaseServices } from "@levelup/shared-services";
 import {
   Target,
   Plus,
@@ -35,7 +35,7 @@ import {
   CheckCircle2,
   Clock,
   BookOpen,
-} from 'lucide-react';
+} from "lucide-react";
 
 function WeekCalendarStrip({
   goals,
@@ -81,7 +81,7 @@ function WeekCalendarStrip({
           <button
             key={dateStr}
             onClick={() => onDayClick(isSelected ? null : dateStr)}
-            className={`flex flex-col items-center gap-1 rounded-lg border px-3 py-2 text-xs transition-colors min-w-[3.5rem] ${
+            className={`flex min-w-[3.5rem] flex-col items-center gap-1 rounded-lg border px-3 py-2 text-xs transition-colors ${
               isSelected
                 ? "border-primary bg-primary/5 text-primary"
                 : isToday
@@ -98,11 +98,7 @@ function WeekCalendarStrip({
             {goalCount > 0 && (
               <div className="flex gap-0.5">
                 {Array.from({ length: Math.min(goalCount, 3) }).map((_, j) => (
-                  <div
-                    key={j}
-                    className="h-1.5 w-1.5 rounded-full bg-primary"
-                    aria-hidden="true"
-                  />
+                  <div key={j} className="bg-primary h-1.5 w-1.5 rounded-full" aria-hidden="true" />
                 ))}
               </div>
             )}
@@ -119,12 +115,13 @@ export default function StudyPlannerPage() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedDay, setSelectedDay] = useState<string | null>(null);
 
-  const { data: goals, isLoading: goalsLoading, refetch } = useStudyGoals(
-    tenantId,
-    user?.uid ?? null,
-  );
+  const {
+    data: goals,
+    isLoading: goalsLoading,
+    refetch,
+  } = useStudyGoals(tenantId, user?.uid ?? null);
   const { data: summary } = useStudentProgressSummary(tenantId, user?.uid ?? null);
-  const { data: spaces } = useSpaces(tenantId, { status: 'published' });
+  const { data: _spaces } = useSpaces(tenantId, { status: "published" });
 
   const activeGoals = goals?.filter((g) => !g.completed) ?? [];
   const completedGoals = goals?.filter((g) => g.completed) ?? [];
@@ -143,50 +140,50 @@ export default function StudyPlannerPage() {
   return (
     <div className="space-y-6">
       <FadeIn>
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold flex items-center gap-2">
-            <Target className="h-6 w-6 text-primary" aria-hidden="true" />
-            Study Planner
-          </h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Set goals and track your learning progress
-          </p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="flex items-center gap-2 text-2xl font-bold">
+              <Target className="text-primary h-6 w-6" aria-hidden="true" />
+              Study Planner
+            </h1>
+            <p className="text-muted-foreground mt-1 text-sm">
+              Set goals and track your learning progress
+            </p>
+          </div>
+          <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+            <DialogTrigger asChild>
+              <Button size="sm" className="gap-1">
+                <Plus className="h-4 w-4" />
+                New Goal
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Create Study Goal</DialogTitle>
+              </DialogHeader>
+              <NewGoalForm
+                tenantId={tenantId}
+                userId={user?.uid ?? ""}
+                onCreated={() => {
+                  setDialogOpen(false);
+                  refetch();
+                }}
+              />
+            </DialogContent>
+          </Dialog>
         </div>
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-          <DialogTrigger asChild>
-            <Button size="sm" className="gap-1">
-              <Plus className="h-4 w-4" />
-              New Goal
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Create Study Goal</DialogTitle>
-            </DialogHeader>
-            <NewGoalForm
-              tenantId={tenantId}
-              userId={user?.uid ?? ''}
-              onCreated={() => {
-                setDialogOpen(false);
-                refetch();
-              }}
-            />
-          </DialogContent>
-        </Dialog>
-      </div>
       </FadeIn>
 
       {/* Weekly Overview */}
       <div className="grid gap-4 md:grid-cols-3">
         <Card>
           <CardContent className="flex items-center gap-3 p-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
-              <Target className="h-5 w-5 text-primary" />
+            <div className="bg-primary/10 flex h-10 w-10 items-center justify-center rounded-full">
+              <Target className="text-primary h-5 w-5" />
             </div>
             <div>
               <p className="text-2xl font-bold">{activeGoals.length}</p>
-              <p className="text-xs text-muted-foreground">Active Goals</p>
+              <p className="text-muted-foreground text-xs">Active Goals</p>
             </div>
           </CardContent>
         </Card>
@@ -197,7 +194,7 @@ export default function StudyPlannerPage() {
             </div>
             <div>
               <p className="text-2xl font-bold">{thisWeekGoals.length}</p>
-              <p className="text-xs text-muted-foreground">Due This Week</p>
+              <p className="text-muted-foreground text-xs">Due This Week</p>
             </div>
           </CardContent>
         </Card>
@@ -208,7 +205,7 @@ export default function StudyPlannerPage() {
             </div>
             <div>
               <p className="text-2xl font-bold">{completedGoals.length}</p>
-              <p className="text-xs text-muted-foreground">Completed</p>
+              <p className="text-muted-foreground text-xs">Completed</p>
             </div>
           </CardContent>
         </Card>
@@ -223,28 +220,26 @@ export default function StudyPlannerPage() {
           <CardContent>
             <div className="grid gap-4 sm:grid-cols-3">
               <div className="flex items-center gap-2">
-                <BookOpen className="h-4 w-4 text-muted-foreground" />
+                <BookOpen className="text-muted-foreground h-4 w-4" />
                 <div>
                   <p className="text-sm font-medium">
                     {summary.levelup.completedSpaces}/{summary.levelup.totalSpaces}
                   </p>
-                  <p className="text-xs text-muted-foreground">Spaces Completed</p>
+                  <p className="text-muted-foreground text-xs">Spaces Completed</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <Clock className="h-4 w-4 text-muted-foreground" />
+                <Clock className="text-muted-foreground h-4 w-4" />
                 <div>
                   <p className="text-sm font-medium">{summary.levelup.streakDays} days</p>
-                  <p className="text-xs text-muted-foreground">Current Streak</p>
+                  <p className="text-muted-foreground text-xs">Current Streak</p>
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-muted-foreground" />
+                <CheckCircle2 className="text-muted-foreground h-4 w-4" />
                 <div>
-                  <p className="text-sm font-medium">
-                    {summary.autograde.completedExams} exams
-                  </p>
-                  <p className="text-xs text-muted-foreground">Exams Completed</p>
+                  <p className="text-sm font-medium">{summary.autograde.completedExams} exams</p>
+                  <p className="text-muted-foreground text-xs">Exams Completed</p>
                 </div>
               </div>
             </div>
@@ -265,12 +260,12 @@ export default function StudyPlannerPage() {
 
       {/* Active Goals */}
       <div>
-        <div className="flex items-center justify-between mb-3">
+        <div className="mb-3 flex items-center justify-between">
           <h2 className="text-lg font-semibold">Active Goals</h2>
           {selectedDay && (
             <button
               onClick={() => setSelectedDay(null)}
-              className="text-xs text-primary hover:underline"
+              className="text-primary text-xs hover:underline"
             >
               Clear filter
             </button>
@@ -310,7 +305,7 @@ export default function StudyPlannerPage() {
       {/* Completed Goals */}
       {completedGoals.length > 0 && (
         <div>
-          <h2 className="text-lg font-semibold mb-3">Completed</h2>
+          <h2 className="mb-3 text-lg font-semibold">Completed</h2>
           <div className="grid gap-3 md:grid-cols-2">
             {completedGoals.slice(0, 6).map((goal) => (
               <StudyGoalCard
@@ -340,14 +335,14 @@ function NewGoalForm({
   userId: string;
   onCreated: () => void;
 }) {
-  const [title, setTitle] = useState('');
-  const [targetType, setTargetType] = useState('spaces');
-  const [targetCount, setTargetCount] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [title, setTitle] = useState("");
+  const [targetType, setTargetType] = useState("spaces");
+  const [targetCount, setTargetCount] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [saving, setSaving] = useState(false);
-  const [dateError, setDateError] = useState('');
+  const [dateError, setDateError] = useState("");
 
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split("T")[0];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -355,10 +350,10 @@ function NewGoalForm({
 
     // Validate end date is after today
     if (endDate <= today) {
-      setDateError('Due date must be in the future');
+      setDateError("Due date must be in the future");
       return;
     }
-    setDateError('');
+    setDateError("");
 
     setSaving(true);
     try {
@@ -371,7 +366,7 @@ function NewGoalForm({
         targetType,
         targetCount: parseInt(targetCount, 10),
         currentCount: 0,
-        startDate: new Date().toISOString().split('T')[0],
+        startDate: new Date().toISOString().split("T")[0],
         endDate,
         completed: false,
         createdAt: serverTimestamp(),
@@ -429,16 +424,17 @@ function NewGoalForm({
           id="end-date"
           type="date"
           value={endDate}
-          onChange={(e) => { setEndDate(e.target.value); setDateError(''); }}
+          onChange={(e) => {
+            setEndDate(e.target.value);
+            setDateError("");
+          }}
           min={today}
           required
         />
-        {dateError && (
-          <p className="text-xs text-destructive mt-1">{dateError}</p>
-        )}
+        {dateError && <p className="text-destructive mt-1 text-xs">{dateError}</p>}
       </div>
       <Button type="submit" disabled={saving} className="w-full">
-        {saving ? 'Creating...' : 'Create Goal'}
+        {saving ? "Creating..." : "Create Goal"}
       </Button>
     </form>
   );

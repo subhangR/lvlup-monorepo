@@ -1,0 +1,132 @@
+[
+  {
+    "index": 1,
+    "files": {
+      "png": "diagram-01.png",
+      "svg": "diagram-01.svg"
+    },
+    "caption": "Non-Functional Requirements",
+    "context": "Here's how it might look on a whiteboard:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/zp3zpO7Ek9lI.b71d2dfe.svg"
+  },
+  {
+    "index": 2,
+    "files": {
+      "png": "diagram-02.png",
+      "svg": "diagram-02.svg"
+    },
+    "caption": "Defining the Core Entities",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/hJ6o8BvbSJCx.cc186190.svg"
+  },
+  {
+    "index": 3,
+    "files": {
+      "png": "diagram-03.png",
+      "svg": "diagram-03.svg"
+    },
+    "caption": "Users can create a profile with preferences (e.g. age range, interests) and specify a maximum distance.",
+    "context": "We can do this with a simple client-server-database architecture.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/bYb6M3ZlcXJH.559f048b.svg"
+  },
+  {
+    "index": 4,
+    "files": {
+      "png": "diagram-04.png",
+      "svg": "diagram-04.svg"
+    },
+    "caption": "Users can view a stack of potential matches",
+    "context": "The simple query would look something like this:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/8yjA7JyWXA3k.332de20b.svg"
+  },
+  {
+    "index": 5,
+    "files": {
+      "png": "diagram-05.png",
+      "svg": "diagram-05.svg"
+    },
+    "caption": "Users can swipe right / left on profiles one-by-one, to express \"yes\" or \"no\" on other users",
+    "context": "Swipe Service: Persists swipes and checks for matches.\nSwipe Database: Stores swipe data for users.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/BnQllznhg_1i.8fb9b48d.svg"
+  },
+  {
+    "index": 6,
+    "files": {
+      "png": "diagram-06.png",
+      "svg": "diagram-06.svg"
+    },
+    "caption": "Users get a match notification if they mutually swipe on each other",
+    "context": "To do this, we're just going to rely on device native push notifications like Apple Push Notification Service (APNS) or Firebase Cloud Messaging (FCM).",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/zmj0ayCtsFXI.c5cf3e88.svg"
+  },
+  {
+    "index": 7,
+    "files": {
+      "png": "diagram-07.png",
+      "svg": "diagram-07.svg"
+    },
+    "caption": "Redis for Atomic Operations",
+    "context": "Key: \"swipes:123:456\"\nValue: {\n    \"123_swipe\": \"right\", // or yes/no\n    \"456_swipe\": \"left\"   // or yes/no\n}",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/EMaQPWZiKpdO.8d3f8190.svg"
+  },
+  {
+    "index": 8,
+    "files": {
+      "png": "diagram-08.png",
+      "svg": "diagram-08.svg"
+    },
+    "caption": "Use of Indexed Databases for Real-Time Querying",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/u7Ms1FS-MiGO.179a6cae.svg"
+  },
+  {
+    "index": 9,
+    "files": {
+      "png": "diagram-09.png",
+      "svg": "diagram-09.svg"
+    },
+    "caption": "Pre-computation and Caching",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/fAZ0snFbFvt1.94e1128b.svg"
+  },
+  {
+    "index": 10,
+    "files": {
+      "png": "diagram-10.png",
+      "svg": "diagram-10.svg"
+    },
+    "caption": "Combination of Pre-computation and Indexed Database",
+    "context": "We can also trigger the refresh of the stack when a user has a few profiles left to swipe through. This way, as far as the user is concerned, the stack seemed infinite.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/ODyh_uI5oq7N.1f3474d7.svg"
+  },
+  {
+    "index": 11,
+    "files": {
+      "png": "diagram-11.png",
+      "svg": "diagram-11.svg"
+    },
+    "caption": "Cache + DB Query + Contains Check",
+    "context": "Ping the backend to generate a new feed for the user.\nRequest that feed once the backend is done generating the feed.\nFilter out any profiles that the user eventually swipes on.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/kxglcSx8O6DK.7ec1ea4b.svg"
+  },
+  {
+    "index": 12,
+    "files": {
+      "png": "diagram-12.png",
+      "svg": "diagram-12.svg"
+    },
+    "caption": "Cache + Contains Check + Bloom Filter",
+    "context": "this approach skews somewhat \"over-engineered\", but is a legit usecase for a bloom filter to support feed building for users with large swipe histories.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/D0jopO0KGVvY.a307c2f1.svg"
+  },
+  {
+    "index": 13,
+    "files": {
+      "png": "diagram-13.png",
+      "svg": "diagram-13.svg"
+    },
+    "caption": "Final Design",
+    "context": "Final Design",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/jO6rGghzbZot.ad8c3844.svg"
+  }
+]

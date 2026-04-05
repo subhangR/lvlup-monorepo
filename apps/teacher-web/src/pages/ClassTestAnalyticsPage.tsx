@@ -1,14 +1,7 @@
 import { useState, useMemo } from "react";
 import { useCurrentTenantId } from "@levelup/shared-stores";
 import { useClasses, useSpaces, useExams, useExamAnalytics } from "@levelup/shared-hooks";
-import {
-  BarChart3,
-  Users,
-  Target,
-  TrendingUp,
-  AlertTriangle,
-  BookOpen,
-} from "lucide-react";
+import { BarChart3, Users, Target, TrendingUp, AlertTriangle, BookOpen } from "lucide-react";
 import {
   ScoreCard,
   Badge,
@@ -39,26 +32,27 @@ export default function ClassTestAnalyticsPage() {
   // Filter exams and spaces by class
   const classExams = useMemo(
     () => exams.filter((e: Exam) => activeClassId && e.classIds?.includes(activeClassId)),
-    [exams, activeClassId],
+    [exams, activeClassId]
   );
 
   const classSpaces = useMemo(
-    () => spaces.filter((s: Space) => activeClassId && s.classIds?.includes(activeClassId) && s.status === "published"),
-    [spaces, activeClassId],
+    () =>
+      spaces.filter(
+        (s: Space) =>
+          activeClassId && s.classIds?.includes(activeClassId) && s.status === "published"
+      ),
+    [spaces, activeClassId]
   );
 
   // Count tests (timed_test / test type story points) across spaces
   const gradedExams = classExams.filter(
-    (e: Exam) => e.status === "graded" || e.status === "results_released",
+    (e: Exam) => e.status === "graded" || e.status === "results_released"
   );
 
   // Exam analytics for the first graded exam (to show aggregate)
   const [selectedExamId, setSelectedExamId] = useState<string | null>(null);
   const activeExamId = selectedExamId || gradedExams[0]?.id || null;
-  const { data: analytics, isLoading: analyticsLoading } = useExamAnalytics(
-    tenantId,
-    activeExamId,
-  );
+  const { data: analytics, isLoading: analyticsLoading } = useExamAnalytics(tenantId, activeExamId);
 
   // Compute class aggregate stats
   const classStats = useMemo(() => {
@@ -87,9 +81,7 @@ export default function ClassTestAnalyticsPage() {
   }, [classExams, gradedExams, classSpaces]);
 
   // Build class breakdown from analytics
-  const classBreakdown = analytics?.classBreakdown
-    ? Object.entries(analytics.classBreakdown)
-    : [];
+  const _classBreakdown = analytics?.classBreakdown ? Object.entries(analytics.classBreakdown) : [];
 
   // Topic weaknesses
   const weakTopics = analytics?.topicPerformance
@@ -103,7 +95,7 @@ export default function ClassTestAnalyticsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Class Test Analytics</h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             Test performance and student insights per class
           </p>
         </div>
@@ -119,7 +111,9 @@ export default function ClassTestAnalyticsPage() {
           </SelectTrigger>
           <SelectContent>
             {classes.length === 0 && (
-              <SelectItem value="__none__" disabled>No classes</SelectItem>
+              <SelectItem value="__none__" disabled>
+                No classes
+              </SelectItem>
             )}
             {classes.map((c) => (
               <SelectItem key={c.id} value={c.id}>
@@ -170,7 +164,9 @@ export default function ClassTestAnalyticsPage() {
 
           {analyticsLoading ? (
             <div className="grid gap-4 md:grid-cols-4">
-              {[1, 2, 3, 4].map((i) => <Skeleton key={i} className="h-24 rounded-lg" />)}
+              {[1, 2, 3, 4].map((i) => (
+                <Skeleton key={i} className="h-24 rounded-lg" />
+              ))}
             </div>
           ) : analytics ? (
             <>
@@ -195,8 +191,8 @@ export default function ClassTestAnalyticsPage() {
 
               {/* Weak Topics Alert */}
               {weakTopics.length > 0 && (
-                <div className="rounded-lg border border-amber-200 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/20 p-4">
-                  <div className="flex items-center gap-2 mb-2">
+                <div className="rounded-lg border border-amber-200 bg-amber-50 p-4 dark:border-amber-800 dark:bg-amber-950/20">
+                  <div className="mb-2 flex items-center gap-2">
                     <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400" />
                     <span className="text-sm font-semibold text-amber-700 dark:text-amber-400">
                       Topics Needing Attention
@@ -218,15 +214,23 @@ export default function ClassTestAnalyticsPage() {
 
               {/* Student Performance Distribution */}
               {analytics.scoreDistribution.buckets.length > 0 && (
-                <div className="rounded-lg border bg-card p-4">
-                  <h3 className="text-sm font-semibold mb-3">Score Distribution</h3>
-                  <div className="flex items-end gap-1 h-32">
+                <div className="bg-card rounded-lg border p-4">
+                  <h3 className="mb-3 text-sm font-semibold">Score Distribution</h3>
+                  <div className="flex h-32 items-end gap-1">
                     {analytics.scoreDistribution.buckets.map((bucket, i) => {
-                      const maxCount = Math.max(...analytics.scoreDistribution.buckets.map((b) => b.count), 1);
+                      const maxCount = Math.max(
+                        ...analytics.scoreDistribution.buckets.map((b) => b.count),
+                        1
+                      );
                       const height = (bucket.count / maxCount) * 100;
-                      const color = bucket.min >= 70 ? "bg-emerald-500" : bucket.min >= 40 ? "bg-amber-500" : "bg-red-500";
+                      const color =
+                        bucket.min >= 70
+                          ? "bg-emerald-500"
+                          : bucket.min >= 40
+                            ? "bg-amber-500"
+                            : "bg-red-500";
                       return (
-                        <div key={i} className="flex-1 flex flex-col items-center gap-1">
+                        <div key={i} className="flex flex-1 flex-col items-center gap-1">
                           {bucket.count > 0 && (
                             <span className="text-[10px] font-medium">{bucket.count}</span>
                           )}
@@ -234,7 +238,7 @@ export default function ClassTestAnalyticsPage() {
                             className={`w-full rounded-t ${color}`}
                             style={{ height: `${Math.max(height, 2)}%` }}
                           />
-                          <span className="text-[10px] text-muted-foreground">{bucket.min}%</span>
+                          <span className="text-muted-foreground text-[10px]">{bucket.min}%</span>
                         </div>
                       );
                     })}
@@ -244,7 +248,7 @@ export default function ClassTestAnalyticsPage() {
 
               {/* Per-Question Analysis Table */}
               {Object.keys(analytics.questionAnalytics).length > 0 && (
-                <div className="rounded-lg border bg-card">
+                <div className="bg-card rounded-lg border">
                   <div className="border-b px-4 py-3">
                     <h3 className="text-sm font-semibold">Question-Level Insights</h3>
                   </div>
@@ -265,28 +269,43 @@ export default function ClassTestAnalyticsPage() {
                           <TableRow key={q.questionId}>
                             <TableCell className="font-medium">Q{q.questionId}</TableCell>
                             <TableCell>
-                              <span className={
-                                q.avgPercentage >= 70 ? "text-green-600" :
-                                q.avgPercentage >= 40 ? "text-amber-600" : "text-red-600"
-                              }>
+                              <span
+                                className={
+                                  q.avgPercentage >= 70
+                                    ? "text-green-600"
+                                    : q.avgPercentage >= 40
+                                      ? "text-amber-600"
+                                      : "text-red-600"
+                                }
+                              >
                                 {Math.round(q.avgPercentage)}%
                               </span>
                             </TableCell>
                             <TableCell>
-                              <Badge variant={
-                                q.difficultyIndex >= 0.7 ? "secondary" :
-                                q.difficultyIndex >= 0.4 ? "outline" : "destructive"
-                              }>
-                                {q.difficultyIndex >= 0.7 ? "Easy" :
-                                 q.difficultyIndex >= 0.4 ? "Medium" : "Hard"}
+                              <Badge
+                                variant={
+                                  q.difficultyIndex >= 0.7
+                                    ? "secondary"
+                                    : q.difficultyIndex >= 0.4
+                                      ? "outline"
+                                      : "destructive"
+                                }
+                              >
+                                {q.difficultyIndex >= 0.7
+                                  ? "Easy"
+                                  : q.difficultyIndex >= 0.4
+                                    ? "Medium"
+                                    : "Hard"}
                               </Badge>
                             </TableCell>
                             <TableCell>
                               <span className="text-xs">
-                                {q.discriminationIndex != null ? q.discriminationIndex.toFixed(2) : "--"}
+                                {q.discriminationIndex != null
+                                  ? q.discriminationIndex.toFixed(2)
+                                  : "--"}
                               </span>
                             </TableCell>
-                            <TableCell className="text-xs text-muted-foreground max-w-[200px] truncate">
+                            <TableCell className="text-muted-foreground max-w-[200px] truncate text-xs">
                               {q.commonMistakes?.slice(0, 2).join("; ") || "--"}
                             </TableCell>
                           </TableRow>
@@ -298,8 +317,8 @@ export default function ClassTestAnalyticsPage() {
             </>
           ) : (
             <div className="rounded-lg border border-dashed p-8 text-center">
-              <BarChart3 className="h-8 w-8 mx-auto text-muted-foreground/30" />
-              <p className="mt-2 text-sm text-muted-foreground">No analytics data yet.</p>
+              <BarChart3 className="text-muted-foreground/30 mx-auto h-8 w-8" />
+              <p className="text-muted-foreground mt-2 text-sm">No analytics data yet.</p>
             </div>
           )}
         </div>
@@ -307,8 +326,8 @@ export default function ClassTestAnalyticsPage() {
 
       {gradedExams.length === 0 && (
         <div className="rounded-lg border border-dashed p-12 text-center">
-          <BarChart3 className="h-10 w-10 mx-auto text-muted-foreground/30" />
-          <p className="mt-3 text-sm text-muted-foreground">
+          <BarChart3 className="text-muted-foreground/30 mx-auto h-10 w-10" />
+          <p className="text-muted-foreground mt-3 text-sm">
             No graded exams for this class yet. Analytics appear after exam results are released.
           </p>
         </div>

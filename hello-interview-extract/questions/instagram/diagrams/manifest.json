@@ -1,0 +1,122 @@
+[
+  {
+    "index": 1,
+    "files": {
+      "png": "diagram-01.png",
+      "svg": "diagram-01.svg"
+    },
+    "caption": "IG Requirements",
+    "context": "Here's how it might look on your whiteboard:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/CzUYE-iTRCtb.e05504c9.svg"
+  },
+  {
+    "index": 2,
+    "files": {
+      "png": "diagram-02.png",
+      "svg": "diagram-02.svg"
+    },
+    "caption": "IG Entities",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/HTd2xaT9geUP.8c022d08.svg"
+  },
+  {
+    "index": 3,
+    "files": {
+      "png": "diagram-03.png",
+      "svg": "diagram-03.svg"
+    },
+    "caption": "Create Post",
+    "context": "We can lay out the core components necessary to handle this request while making the initial assumption that our media is small enough to be uploaded directly via a single request.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/W9d2MWvi7HR7.d98f7716.svg"
+  },
+  {
+    "index": 4,
+    "files": {
+      "png": "diagram-04.png",
+      "svg": "diagram-04.svg"
+    },
+    "caption": "Followers",
+    "context": "Importantly, this is a unidirectional relationship. For example, I follow @leomessi, but he (sadly) doesn't follow me back. Thus, I'll see his posts in my feed, but he won't see mine.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/h_hHnG2LS_4E.6160e23e.svg"
+  },
+  {
+    "index": 5,
+    "files": {
+      "png": "diagram-05.png",
+      "svg": "diagram-05.svg"
+    },
+    "caption": "Feed Generation",
+    "context": "3) Users should be able to see a chronological feed of posts from the users they follow",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/LCF1r18AyvBv.627ea8a3.svg"
+  },
+  {
+    "index": 6,
+    "files": {
+      "png": "diagram-06.png",
+      "svg": "diagram-06.svg"
+    },
+    "caption": "Feed Generation with Simple Cache",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/YUqOIghWyt4a.0503aef8.svg"
+  },
+  {
+    "index": 7,
+    "files": {
+      "png": "diagram-07.png",
+      "svg": "diagram-07.svg"
+    },
+    "caption": "Precomputed Feeds",
+    "context": "A much better approach is to precompute the feeds. Instead of generating the feed when the user requests it (fan-out on read), we generate it when a user posts (fan-out on write).",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/BNyN6jJ50YWB.cbe0d57d.svg"
+  },
+  {
+    "index": 8,
+    "files": {
+      "png": "diagram-08.png",
+      "svg": "diagram-08.svg"
+    },
+    "caption": "Upload",
+    "context": "There are two main ways to handle the post metadata update after upload completion:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/IWaC_rTcexs0.d696bab5.svg"
+  },
+  {
+    "index": 9,
+    "files": {
+      "png": "diagram-09.png",
+      "svg": "diagram-09.svg"
+    },
+    "caption": "Direct S3 Serving",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/QknYCZ33yhvZ.6d0db3c5.svg"
+  },
+  {
+    "index": 10,
+    "files": {
+      "png": "diagram-10.png",
+      "svg": "diagram-10.svg"
+    },
+    "caption": "Global CDN Distribution",
+    "context": "This way, instead of our Singaporean user waiting seconds to load an image originally stored on the US East Coast, they can load it from a server in the region closest to them.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/LwtPHEQb4LUM.5fb54537.svg"
+  },
+  {
+    "index": 11,
+    "files": {
+      "png": "diagram-11.png",
+      "svg": "diagram-11.svg"
+    },
+    "caption": "CDN with Dynamic Media Optimization",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/sOm9c9LhdJ_6.6b61b3b7.svg"
+  },
+  {
+    "index": 12,
+    "files": {
+      "png": "diagram-12.png",
+      "svg": "diagram-12.svg"
+    },
+    "caption": "Final Design",
+    "context": "After all is said and done, you might have a design that looks something like this:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/sOm9c9LhdJ_6.6b61b3b7.svg"
+  }
+]

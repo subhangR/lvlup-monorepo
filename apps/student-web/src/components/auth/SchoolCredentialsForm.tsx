@@ -1,15 +1,10 @@
-import { useState, type FormEvent } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuthStore } from '@levelup/shared-stores';
-import {
-  Button,
-  Input,
-  Tabs,
-  TabsList,
-  TabsTrigger,
-} from '@levelup/shared-ui';
+import { useState, type FormEvent } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useAuthStore } from "@levelup/shared-stores";
+import { Button, Input, Tabs, TabsList, TabsTrigger } from "@levelup/shared-ui";
+import { Loader2 } from "lucide-react";
 
-type LoginMethod = 'email' | 'roll-number';
+type LoginMethod = "email" | "roll-number";
 
 interface SchoolCredentialsFormProps {
   schoolCode: string;
@@ -17,15 +12,19 @@ interface SchoolCredentialsFormProps {
   onBack: () => void;
 }
 
-export function SchoolCredentialsForm({ schoolCode, schoolName, onBack }: SchoolCredentialsFormProps) {
+export function SchoolCredentialsForm({
+  schoolCode,
+  schoolName,
+  onBack,
+}: SchoolCredentialsFormProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const { loginWithSchoolCode, loading, error, clearError } = useAuthStore();
-  const from = (location.state as { from?: { pathname: string } })?.from?.pathname || '/';
+  const from = (location.state as { from?: { pathname: string } })?.from?.pathname || "/";
 
-  const [loginMethod, setLoginMethod] = useState<LoginMethod>('roll-number');
-  const [credential, setCredential] = useState('');
-  const [password, setPassword] = useState('');
+  const [loginMethod, setLoginMethod] = useState<LoginMethod>("roll-number");
+  const [credential, setCredential] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -41,7 +40,7 @@ export function SchoolCredentialsForm({ schoolCode, schoolName, onBack }: School
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="rounded-md bg-muted p-3 text-sm">
+      <div className="bg-muted rounded-md p-3 text-sm">
         <span className="font-medium">{schoolName}</span>
         <Button
           type="button"
@@ -58,16 +57,14 @@ export function SchoolCredentialsForm({ schoolCode, schoolName, onBack }: School
       </div>
 
       {error && (
-        <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-          {error}
-        </div>
+        <div className="bg-destructive/10 text-destructive rounded-md p-3 text-sm">{error}</div>
       )}
 
       <Tabs
         value={loginMethod}
         onValueChange={(v) => {
           setLoginMethod(v as LoginMethod);
-          setCredential('');
+          setCredential("");
         }}
       >
         <TabsList className="w-full">
@@ -82,19 +79,17 @@ export function SchoolCredentialsForm({ schoolCode, schoolName, onBack }: School
 
       <div className="space-y-2">
         <label htmlFor="credential" className="text-sm font-medium">
-          {loginMethod === 'roll-number' ? 'Roll Number' : 'Email'}
+          {loginMethod === "roll-number" ? "Roll Number" : "Email"}
         </label>
         <Input
           id="credential"
-          type={loginMethod === 'email' ? 'email' : 'text'}
+          type={loginMethod === "email" ? "email" : "text"}
           required
           autoFocus
           value={credential}
           onChange={(e) => setCredential(e.target.value)}
           placeholder={
-            loginMethod === 'roll-number'
-              ? 'Enter your roll number'
-              : 'student@school.com'
+            loginMethod === "roll-number" ? "Enter your roll number" : "student@school.com"
           }
         />
       </div>
@@ -114,7 +109,8 @@ export function SchoolCredentialsForm({ schoolCode, schoolName, onBack }: School
       </div>
 
       <Button type="submit" disabled={loading} className="w-full">
-        {loading ? 'Signing in...' : 'Sign In'}
+        {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+        {loading ? "Signing in..." : "Sign In"}
       </Button>
     </form>
   );

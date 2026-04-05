@@ -1,0 +1,22 @@
+[
+  {
+    "index": 1,
+    "files": {
+      "png": "diagram-01.png",
+      "svg": "diagram-01.svg"
+    },
+    "caption": "Coordination",
+    "context": "Conceptually, the architecture is simple: API handlers produce tasks, workers consume them, and something sits in between to coordinate the handoff.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/RIo7i09UNjrX.c2bf5bf6.svg"
+  },
+  {
+    "index": 2,
+    "files": {
+      "png": "diagram-02.png",
+      "svg": "diagram-02.svg"
+    },
+    "caption": "Coordination Decision Tree",
+    "context": "When you spot async processing in an interview, run through this decision tree:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/3FmlXBquRsJA.a868c535.svg"
+  }
+]

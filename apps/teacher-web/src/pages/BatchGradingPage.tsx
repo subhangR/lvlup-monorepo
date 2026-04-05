@@ -17,7 +17,7 @@ import {
   AnimatedListItem,
   Badge,
 } from "@levelup/shared-ui";
-import type { Submission, Exam } from "@levelup/shared-types";
+import type { Submission } from "@levelup/shared-types";
 import {
   CheckSquare,
   ChevronLeft,
@@ -43,9 +43,17 @@ const PAGE_SIZE = 10;
 function getStatusBadge(status: string) {
   switch (status) {
     case "grading_complete":
-      return <Badge variant="outline" className="text-amber-600 border-amber-300">Auto-Graded</Badge>;
+      return (
+        <Badge variant="outline" className="border-amber-300 text-amber-600">
+          Auto-Graded
+        </Badge>
+      );
     case "needs_review":
-      return <Badge variant="outline" className="text-blue-600 border-blue-300">Needs Review</Badge>;
+      return (
+        <Badge variant="outline" className="border-blue-300 text-blue-600">
+          Needs Review
+        </Badge>
+      );
     case "flagged":
       return <Badge variant="destructive">Flagged</Badge>;
     default:
@@ -72,14 +80,15 @@ export default function BatchGradingPage() {
         s.status === "grading_complete" ||
         s.status === "needs_review" ||
         s.status === "flagged" ||
-        s.status === "submitted",
+        s.status === "submitted"
     );
 
     let filtered = pending;
     if (filter !== "all") {
       filtered = filtered.filter((s) => {
         if (filter === "auto_graded") return s.status === "grading_complete";
-        if (filter === "needs_review") return s.status === "needs_review" || s.status === "submitted";
+        if (filter === "needs_review")
+          return s.status === "needs_review" || s.status === "submitted";
         if (filter === "flagged") return s.status === "flagged";
         return true;
       });
@@ -93,14 +102,11 @@ export default function BatchGradingPage() {
   }, [submissions, filter, examFilter]);
 
   const totalPages = Math.ceil(pendingSubmissions.length / PAGE_SIZE);
-  const currentPageItems = pendingSubmissions.slice(
-    page * PAGE_SIZE,
-    (page + 1) * PAGE_SIZE,
-  );
+  const currentPageItems = pendingSubmissions.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
 
   const getExamTitle = useCallback(
     (examId: string) => exams?.find((e) => e.id === examId)?.title ?? examId,
-    [exams],
+    [exams]
   );
 
   const handleApprove = useCallback(
@@ -116,10 +122,10 @@ export default function BatchGradingPage() {
         {
           onSuccess: () => toast.success("Submission approved"),
           onError: () => toast.error("Failed to approve submission"),
-        },
+        }
       );
     },
-    [tenantId, gradeQuestion],
+    [tenantId, gradeQuestion]
   );
 
   const uniqueExams = useMemo(() => {
@@ -128,19 +134,17 @@ export default function BatchGradingPage() {
   }, [submissions, exams]);
 
   const reviewed = (submissions ?? []).filter(
-    (s) => s.status === "reviewed" || s.status === "released",
+    (s) => s.status === "reviewed" || s.status === "released"
   ).length;
 
   return (
     <div className="space-y-6">
       <FadeIn>
         <div className="flex items-center gap-3">
-          <CheckSquare className="h-6 w-6 text-primary" aria-hidden="true" />
+          <CheckSquare className="text-primary h-6 w-6" aria-hidden="true" />
           <div>
             <h1 className="text-2xl font-bold">Batch Grading</h1>
-            <p className="text-sm text-muted-foreground">
-              Review and approve pending submissions
-            </p>
+            <p className="text-muted-foreground text-sm">Review and approve pending submissions</p>
           </div>
         </div>
       </FadeIn>
@@ -166,10 +170,13 @@ export default function BatchGradingPage() {
       <FadeIn delay={0.1}>
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2">
-            <Filter className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
+            <Filter className="text-muted-foreground h-4 w-4" aria-hidden="true" />
             <Select
               value={filter}
-              onValueChange={(v) => { setFilter(v as GradingFilter); setPage(0); }}
+              onValueChange={(v) => {
+                setFilter(v as GradingFilter);
+                setPage(0);
+              }}
             >
               <SelectTrigger className="w-[160px]">
                 <SelectValue />
@@ -185,7 +192,10 @@ export default function BatchGradingPage() {
           </div>
           <Select
             value={examFilter}
-            onValueChange={(v) => { setExamFilter(v); setPage(0); }}
+            onValueChange={(v) => {
+              setExamFilter(v);
+              setPage(0);
+            }}
           >
             <SelectTrigger className="w-[200px]">
               <SelectValue placeholder="All Exams" />
@@ -221,14 +231,14 @@ export default function BatchGradingPage() {
             <AnimatedListItem key={sub.id}>
               <Card>
                 <CardContent className="flex items-center justify-between p-4">
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <p className="text-sm font-medium truncate">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <p className="truncate text-sm font-medium">
                         {sub.studentName ?? sub.studentId}
                       </p>
                       {getStatusBadge(sub.status)}
                     </div>
-                    <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
+                    <div className="text-muted-foreground mt-1 flex items-center gap-3 text-xs">
                       <span>{getExamTitle(sub.examId)}</span>
                       {sub.totalScore !== undefined && (
                         <span className="font-medium">
@@ -243,7 +253,7 @@ export default function BatchGradingPage() {
                       )}
                     </div>
                   </div>
-                  <div className="flex items-center gap-2 ml-3">
+                  <div className="ml-3 flex items-center gap-2">
                     <Button
                       size="sm"
                       variant="outline"
@@ -251,7 +261,7 @@ export default function BatchGradingPage() {
                       onClick={() => handleApprove(sub)}
                       disabled={gradeQuestion.isPending}
                     >
-                      <CheckCircle2 className="h-3.5 w-3.5 mr-1" aria-hidden="true" />
+                      <CheckCircle2 className="mr-1 h-3.5 w-3.5" aria-hidden="true" />
                       Approve
                     </Button>
                     {sub.status === "flagged" && (
@@ -279,7 +289,7 @@ export default function BatchGradingPage() {
           >
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <span className="text-sm text-muted-foreground">
+          <span className="text-muted-foreground text-sm">
             {page + 1} / {totalPages}
           </span>
           <Button

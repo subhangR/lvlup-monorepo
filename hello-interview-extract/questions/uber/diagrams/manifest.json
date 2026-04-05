@@ -1,0 +1,102 @@
+[
+  {
+    "index": 1,
+    "files": {
+      "png": "diagram-01.png",
+      "svg": "diagram-01.svg"
+    },
+    "caption": "Uber Requirements",
+    "context": "Below the line (out of scope)",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/D5z8XF10EO9s.a1bffe51.svg"
+  },
+  {
+    "index": 2,
+    "files": {
+      "png": "diagram-02.png",
+      "svg": "diagram-02.svg"
+    },
+    "caption": "Uber Core Entities",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/vELvvF0cPiLq.eb01a8dc.svg"
+  },
+  {
+    "index": 3,
+    "files": {
+      "png": "diagram-03.png",
+      "svg": "diagram-03.svg"
+    },
+    "caption": "Uber Simple Fare Estimation",
+    "context": "Lets lay out the necessary components for communicating between the client and our microservices, adding our first service, \"Ride Service\" which will handle fare estimations",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/djumalvJ67oy.07599ebb.svg"
+  },
+  {
+    "index": 4,
+    "files": {
+      "png": "diagram-04.png",
+      "svg": "diagram-04.svg"
+    },
+    "caption": "Riders should be able to request a ride based on the estimated fare",
+    "context": "We don't need to add any new services at all, we just need to add a Ride table to our Database.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/i60di8SMHkZ0.0a641112.svg"
+  },
+  {
+    "index": 5,
+    "files": {
+      "png": "diagram-05.png",
+      "svg": "diagram-05.svg"
+    },
+    "caption": "Upon request, riders should be matched with a driver who is nearby and available",
+    "context": "Now we need to introduce some new components in order to facilitate driver matching.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/bYJolUkOr9cB.0da5456b.svg"
+  },
+  {
+    "index": 6,
+    "files": {
+      "png": "diagram-06.png",
+      "svg": "diagram-06.svg"
+    },
+    "caption": "Uber Simple Driver Accept",
+    "context": "We only need to add one additional service to our existing design.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/0yNJk6wmNU4P.e31911e8.svg"
+  },
+  {
+    "index": 7,
+    "files": {
+      "png": "diagram-07.png",
+      "svg": "diagram-07.svg"
+    },
+    "caption": "Real-Time In-Memory Geospatial Data Store",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/39MKsicabM4Z.3c5f81e2.svg"
+  },
+  {
+    "index": 8,
+    "files": {
+      "png": "diagram-08.png",
+      "svg": "diagram-08.svg"
+    },
+    "caption": "Distributed Lock with TTL",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/w1oLKDU9Bc_c.fd856613.svg"
+  },
+  {
+    "index": 9,
+    "files": {
+      "png": "diagram-09.png",
+      "svg": "diagram-09.svg"
+    },
+    "caption": "Queue with Dynamic Scaling",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/zksUbdcb65X0.061266f7.svg"
+  },
+  {
+    "index": 10,
+    "files": {
+      "png": "diagram-10.png",
+      "svg": "diagram-10.svg"
+    },
+    "caption": "Uber Final",
+    "context": "After applying the \"Great\" solutions, your updated whiteboard should look something like this:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/l08JLmmtAjTe.f3f9fff9.svg"
+  }
+]

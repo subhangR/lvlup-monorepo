@@ -1,0 +1,233 @@
+{
+  "spaceId": "zRMBmxWdz2yEENbwg1Ka",
+  "tenantId": "tenant_subhang",
+  "totalDiagramsUploaded": 1101,
+  "totalItemsUpdated": 530,
+  "topics": [
+    {
+      "slug": "distributed-cache",
+      "storyPointId": "Vt1KbhgsdVC4XQhuCKO2",
+      "diagramCount": 10,
+      "materialsUpdated": 2,
+      "questionsUpdated": 18,
+      "errorCount": 0
+    },
+    {
+      "slug": "distributed-rate-limiter",
+      "storyPointId": "rcaQ0ePafYPn11qsx2Ql",
+      "diagramCount": 10,
+      "materialsUpdated": 3,
+      "questionsUpdated": 17,
+      "errorCount": 0
+    },
+    {
+      "slug": "job-scheduler",
+      "storyPointId": "DnYKCbEnPxDkaNPj8tKY",
+      "diagramCount": 11,
+      "materialsUpdated": 3,
+      "questionsUpdated": 15,
+      "errorCount": 0
+    },
+    {
+      "slug": "metrics-monitoring",
+      "storyPointId": "Mrtmlu7UdH9HtJLXOBYe",
+      "diagramCount": 14,
+      "materialsUpdated": 3,
+      "questionsUpdated": 19,
+      "errorCount": 0
+    },
+    {
+      "slug": "top-k",
+      "storyPointId": "PZKrLdpJOgmEdzktZbWh",
+      "diagramCount": 17,
+      "materialsUpdated": 3,
+      "questionsUpdated": 16,
+      "errorCount": 0
+    },
+    {
+      "slug": "web-crawler",
+      "storyPointId": "nKxvgaJLUEGhxiYbDH53",
+      "diagramCount": 6,
+      "materialsUpdated": 3,
+      "questionsUpdated": 14,
+      "errorCount": 0
+    },
+    {
+      "slug": "ad-click-aggregator",
+      "storyPointId": "lCyyCQmJOKlszrklMsgb",
+      "diagramCount": 9,
+      "materialsUpdated": 3,
+      "questionsUpdated": 15,
+      "errorCount": 0
+    },
+    {
+      "slug": "fb-news-feed",
+      "storyPointId": "rDYQMQ9osw3TZOOZQ7sX",
+      "diagramCount": 11,
+      "materialsUpdated": 3,
+      "questionsUpdated": 15,
+      "errorCount": 0
+    },
+    {
+      "slug": "fb-live-comments",
+      "storyPointId": "FhzuAqcBUyvgDr1v6nn4",
+      "diagramCount": 9,
+      "materialsUpdated": 3,
+      "questionsUpdated": 16,
+      "errorCount": 0
+    },
+    {
+      "slug": "fb-post-search",
+      "storyPointId": "jfEuqPfxMxvneDJVEZtd",
+      "diagramCount": 17,
+      "materialsUpdated": 3,
+      "questionsUpdated": 17,
+      "errorCount": 0
+    },
+    {
+      "slug": "instagram",
+      "storyPointId": "nbQR9ReabwPddSlknkBY",
+      "diagramCount": 12,
+      "materialsUpdated": 3,
+      "questionsUpdated": 19,
+      "errorCount": 0
+    },
+    {
+      "slug": "whatsapp",
+      "storyPointId": "VUND1DJvaS4fI8DtjK2u",
+      "diagramCount": 11,
+      "materialsUpdated": 3,
+      "questionsUpdated": 14,
+      "errorCount": 0
+    },
+    {
+      "slug": "youtube",
+      "storyPointId": "oR3Qg6uIHyyUFxkCAEz1",
+      "diagramCount": 10,
+      "materialsUpdated": 3,
+      "questionsUpdated": 15,
+      "errorCount": 0
+    },
+    {
+      "slug": "dropbox",
+      "storyPointId": "nL2aahHoMG7cRs0wdKXy",
+      "diagramCount": 10,
+      "materialsUpdated": 3,
+      "questionsUpdated": 14,
+      "errorCount": 0
+    },
+    {
+      "slug": "google-docs",
+      "storyPointId": "ktHOfg9RdXVhfZL9QOP8",
+      "diagramCount": 12,
+      "materialsUpdated": 3,
+      "questionsUpdated": 17,
+      "errorCount": 0
+    },
+    {
+      "slug": "google-news",
+      "storyPointId": "vHQ0pnRtLjHwAOkkO6Gh",
+      "diagramCount": 11,
+      "materialsUpdated": 3,
+      "questionsUpdated": 15,
+      "errorCount": 0
+    },
+    {
+      "slug": "leetcode",
+      "storyPointId": "yVwEe3m0lLPI2SebLqTa",
+      "diagramCount": 12,
+      "materialsUpdated": 3,
+      "questionsUpdated": 19,
+      "errorCount": 0
+    },
+    {
+      "slug": "payment-system",
+      "storyPointId": "zizyZf92PIQZWlVV8u7l",
+      "diagramCount": 11,
+      "materialsUpdated": 3,
+      "questionsUpdated": 14,
+      "errorCount": 0
+    },
+    {
+      "slug": "robinhood",
+      "storyPointId": "sUiUaHiJiMDYEXhSYTk5",
+      "diagramCount": 12,
+      "materialsUpdated": 3,
+      "questionsUpdated": 16,
+      "errorCount": 0
+    },
+    {
+      "slug": "online-auction",
+      "storyPointId": "TK9Fa4LxZpRYMBNRtmVM",
+      "diagramCount": 10,
+      "materialsUpdated": 3,
+      "questionsUpdated": 14,
+      "errorCount": 0
+    },
+    {
+      "slug": "ticketmaster",
+      "storyPointId": "QmNyc9oTAP94sfcsR3iM",
+      "diagramCount": 10,
+      "materialsUpdated": 3,
+      "questionsUpdated": 12,
+      "errorCount": 0
+    },
+    {
+      "slug": "camelcamelcamel",
+      "storyPointId": "1N1is2eRDa60tzh5e87g",
+      "diagramCount": 12,
+      "materialsUpdated": 3,
+      "questionsUpdated": 17,
+      "errorCount": 0
+    },
+    {
+      "slug": "uber",
+      "storyPointId": "0qnGUBbRHgfgIVE4ZG35",
+      "diagramCount": 10,
+      "materialsUpdated": 3,
+      "questionsUpdated": 19,
+      "errorCount": 0
+    },
+    {
+      "slug": "tinder",
+      "storyPointId": "XtFgnM1G1r0SARtjGuXO",
+      "diagramCount": 13,
+      "materialsUpdated": 3,
+      "questionsUpdated": 17,
+      "errorCount": 0
+    },
+    {
+      "slug": "gopuff",
+      "storyPointId": "faMSL9rKs9E5aeRYGdQX",
+      "diagramCount": 14,
+      "materialsUpdated": 3,
+      "questionsUpdated": 18,
+      "errorCount": 0
+    },
+    {
+      "slug": "strava",
+      "storyPointId": "OU3GYGHtjJ575NBUj2Bi",
+      "diagramCount": 9,
+      "materialsUpdated": 3,
+      "questionsUpdated": 17,
+      "errorCount": 0
+    },
+    {
+      "slug": "yelp",
+      "storyPointId": "D8Md5sFWvjCpfKRszNzZ",
+      "diagramCount": 10,
+      "materialsUpdated": 3,
+      "questionsUpdated": 11,
+      "errorCount": 0
+    },
+    {
+      "slug": "bitly",
+      "storyPointId": "d8vRdRqlGMnUBFU7W2FC",
+      "diagramCount": 8,
+      "materialsUpdated": 3,
+      "questionsUpdated": 17,
+      "errorCount": 0
+    }
+  ],
+  "completedAt": "2026-03-26T18:00:24.890Z"
+}

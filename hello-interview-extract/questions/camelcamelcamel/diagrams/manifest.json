@@ -1,0 +1,122 @@
+[
+  {
+    "index": 1,
+    "files": {
+      "png": "diagram-01.png",
+      "svg": "diagram-01.svg"
+    },
+    "caption": "CamelCamelCamel Requirements",
+    "context": "Here is how your requirements might look on the whiteboard:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/jE1H3ZvbQjXQ.a9f70f87.svg"
+  },
+  {
+    "index": 2,
+    "files": {
+      "png": "diagram-02.png",
+      "svg": "diagram-02.svg"
+    },
+    "caption": "CamelCamelCamel Entities",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/jHK8aOmwnakt.dc4c77d8.svg"
+  },
+  {
+    "index": 3,
+    "files": {
+      "png": "diagram-03.png",
+      "svg": "diagram-03.svg"
+    },
+    "caption": "CamelCamelCamel High Level Design - Price History",
+    "context": "1) Users should be able to view price history for Amazon products (via website or Chrome extension)",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/DHC6uLJGUwRP.c24a9244.svg"
+  },
+  {
+    "index": 4,
+    "files": {
+      "png": "diagram-04.png",
+      "svg": "diagram-04.svg"
+    },
+    "caption": "CamelCamelCamel High Level Design - Subscriptions",
+    "context": "2) Users should be able to subscribe to price drop notifications with thresholds (via website or Chrome extension)",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/TbqZvhy15P14.9d1988de.svg"
+  },
+  {
+    "index": 5,
+    "files": {
+      "png": "diagram-05.png",
+      "svg": "diagram-05.svg"
+    },
+    "caption": "Naive Web Crawler",
+    "context": "From an implementation perspective, this is largely what we designed in Design a Web Crawler.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/jo9rXBvSINPh.2c17c705.svg"
+  },
+  {
+    "index": 6,
+    "files": {
+      "png": "diagram-06.png",
+      "svg": "diagram-06.svg"
+    },
+    "caption": "Pareto",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/Zg0AglDaKCB4.fb86af0d.svg"
+  },
+  {
+    "index": 7,
+    "files": {
+      "png": "diagram-07.png",
+      "svg": "diagram-07.svg"
+    },
+    "caption": "Priority Queue",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/It5SBFcC1iyd.f470eb7b.svg"
+  },
+  {
+    "index": 8,
+    "files": {
+      "png": "diagram-08.png",
+      "svg": "diagram-08.svg"
+    },
+    "caption": "Extension Crowdsource",
+    "context": "Remember that Chrome extension with 1 million users we mentioned earlier? It turns out to be more than just a convenience feature, it's actually our secret weapon for data collection.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/sT02U_12w8lU.0bfbba45.svg"
+  },
+  {
+    "index": 9,
+    "files": {
+      "png": "diagram-09.png",
+      "svg": "diagram-09.svg"
+    },
+    "caption": "Database Change Data Capture",
+    "context": "3) How do we efficiently process price changes and notify subscribed users?",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/KEo3VHVIm-fN.602a8d0c.svg"
+  },
+  {
+    "index": 10,
+    "files": {
+      "png": "diagram-10.png",
+      "svg": "diagram-10.svg"
+    },
+    "caption": "Scheduled Pre-Aggregation",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/-_AGvWOURjZg.c9f9da9d.svg"
+  },
+  {
+    "index": 11,
+    "files": {
+      "png": "diagram-11.png",
+      "svg": "diagram-11.svg"
+    },
+    "caption": "TimescaleDB",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/B2qJ9T-c9hT3.1e8d7c50.svg"
+  },
+  {
+    "index": 12,
+    "files": {
+      "png": "diagram-12.png",
+      "svg": "diagram-12.svg"
+    },
+    "caption": "Final Design",
+    "context": "As for the final diagram, I'll admit the drawing got a little out of hand with all the crossing arrows. But we end up with a final design that looks something like this!",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/B2qJ9T-c9hT3.1e8d7c50.svg"
+  }
+]

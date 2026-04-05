@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from "vitest";
 
 // ── Stable mocks ────────────────────────────────────────────────────────────
 const mockGet = vi.fn();
@@ -16,15 +16,19 @@ const stableDb: any = {
   batch: vi.fn(() => mockBatch),
 };
 
-vi.mock('firebase-admin', () => {
+vi.mock("firebase-admin", () => {
   const fsFn: any = () => stableDb;
   fsFn.FieldValue = {
-    serverTimestamp: vi.fn(() => 'SERVER_TIMESTAMP'),
+    serverTimestamp: vi.fn(() => "SERVER_TIMESTAMP"),
   };
-  return { default: { firestore: fsFn, initializeApp: vi.fn() }, firestore: fsFn, initializeApp: vi.fn() };
+  return {
+    default: { firestore: fsFn, initializeApp: vi.fn() },
+    firestore: fsFn,
+    initializeApp: vi.fn(),
+  };
 });
 
-vi.mock('firebase-functions/v2/https', () => ({
+vi.mock("firebase-functions/v2/https", () => ({
   onCall: vi.fn((_opts: any, handler: any) => handler),
   HttpsError: class HttpsError extends Error {
     code: string;
@@ -35,86 +39,96 @@ vi.mock('firebase-functions/v2/https', () => ({
   },
 }));
 
-vi.mock('firebase-functions/v2', () => ({
+vi.mock("firebase-functions/v2", () => ({
   logger: { info: vi.fn(), warn: vi.fn(), error: vi.fn() },
 }));
 
-vi.mock('../../utils/auth', () => ({
-  assertSuperAdmin: vi.fn(),
+const mockGetUser = vi.fn().mockResolvedValue({ isSuperAdmin: true });
+
+vi.mock("../../utils", () => ({
+  getUser: (...args: any[]) => mockGetUser(...args),
+  parseRequest: vi.fn((data: any) => data),
+  logTenantAction: vi.fn().mockResolvedValue(undefined),
+  writePlatformActivity: vi.fn().mockResolvedValue(undefined),
 }));
 
-vi.mock('../../utils/rate-limit', () => ({
-  enforceRateLimit: vi.fn(),
+vi.mock("../../utils/rate-limit", () => ({
+  enforceRateLimit: vi.fn().mockResolvedValue(undefined),
 }));
 
-vi.mock('../../utils/tenant-actions', () => ({
-  logTenantAction: vi.fn(),
-}));
-
-import { deactivateTenant } from '../../callable/deactivate-tenant';
+import { deactivateTenant } from "../../callable/deactivate-tenant";
 const handler = deactivateTenant as any;
 
 function makeRequest(data: Record<string, unknown>, auth?: { uid: string } | null) {
   return {
     data,
-    auth: auth === null ? undefined : (auth ?? { uid: 'superadmin-1', token: { isSuperAdmin: true } }),
+    auth:
+      auth === null ? undefined : (auth ?? { uid: "superadmin-1", token: { isSuperAdmin: true } }),
     rawRequest: {} as any,
   };
 }
 
-describe('deactivateTenant', () => {
+describe("deactivateTenant", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it('should throw unauthenticated when no auth', async () => {
-    await expect(handler(makeRequest({ tenantId: 'tenant-1' }, null))).rejects.toThrow();
+  it("should throw unauthenticated when no auth", async () => {
+    await expect(handler(makeRequest({ tenantId: "tenant-1" }, null))).rejects.toThrow();
   });
 
-  it('should throw when tenant not found', async () => {
+  it("should throw when tenant not found", async () => {
     mockGet.mockResolvedValueOnce({ exists: false });
-    await expect(handler(makeRequest({ tenantId: 'nonexistent' }))).rejects.toThrow();
+    await expect(handler(makeRequest({ tenantId: "nonexistent" }))).rejects.toThrow();
   });
 
-  it('should throw when tenant already deactivated', async () => {
+  it("should throw when tenant already deactivated", async () => {
     mockGet.mockResolvedValueOnce({
       exists: true,
-      data: () => ({ status: 'deactivated' }),
+      data: () => ({ status: "deactivated" }),
     });
-    await expect(handler(makeRequest({ tenantId: 'tenant-1' }))).rejects.toThrow();
+    await expect(handler(makeRequest({ tenantId: "tenant-1" }))).rejects.toThrow();
   });
 
-  it('should deactivate tenant and suspend memberships', async () => {
+  it("should deactivate tenant and suspend memberships", async () => {
     // Tenant exists and is active
     mockGet.mockResolvedValueOnce({
       exists: true,
-      data: () => ({ status: 'active', name: 'Test School' }),
+      data: () => ({ status: "active", name: "Test School" }),
     });
 
     // Active memberships
     mockGet.mockResolvedValueOnce({
       docs: [
-        { id: 'mem-1', ref: { path: 'userMemberships/mem-1' }, data: () => ({ status: 'active', role: 'teacher' }) },
-        { id: 'mem-2', ref: { path: 'userMemberships/mem-2' }, data: () => ({ status: 'active', role: 'student' }) },
+        {
+          id: "mem-1",
+          ref: { path: "userMemberships/mem-1" },
+          data: () => ({ status: "active", role: "teacher" }),
+        },
+        {
+          id: "mem-2",
+          ref: { path: "userMemberships/mem-2" },
+          data: () => ({ status: "active", role: "student" }),
+        },
       ],
     });
 
-    const result = await handler(makeRequest({ tenantId: 'tenant-1', reason: 'Non-payment' }));
+    const result = await handler(makeRequest({ tenantId: "tenant-1", reason: "Non-payment" }));
 
     expect(result).toMatchObject({ success: true });
     expect(mockUpdate).toHaveBeenCalled();
     expect(mockBatch.commit).toHaveBeenCalled();
   });
 
-  it('should handle tenant with no active memberships', async () => {
+  it("should handle tenant with no active memberships", async () => {
     mockGet.mockResolvedValueOnce({
       exists: true,
-      data: () => ({ status: 'active' }),
+      data: () => ({ status: "active" }),
     });
 
     mockGet.mockResolvedValueOnce({ docs: [] });
 
-    const result = await handler(makeRequest({ tenantId: 'tenant-1' }));
+    const result = await handler(makeRequest({ tenantId: "tenant-1" }));
     expect(result).toMatchObject({ success: true });
   });
 });

@@ -1,0 +1,112 @@
+[
+  {
+    "index": 1,
+    "files": {
+      "png": "diagram-01.png",
+      "svg": "diagram-01.svg"
+    },
+    "caption": "Facebook News Feed Requirements",
+    "context": "Here's how it might look on your whiteboard:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/0T5jOOhg98yD.b63b5c4e.svg"
+  },
+  {
+    "index": 2,
+    "files": {
+      "png": "diagram-02.png",
+      "svg": "diagram-02.svg"
+    },
+    "caption": "Core Entities",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/UqWfiTe_Sdv5.c5656a98.svg"
+  },
+  {
+    "index": 3,
+    "files": {
+      "png": "diagram-03.png",
+      "svg": "diagram-03.svg"
+    },
+    "caption": "Simple Post Creation",
+    "context": "Users hit our API gateway with a new post request, this gets passed to one of the post service endpoints which creates an insert event that is sent to our database. Easy.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/GSvCEXs3aSaa.bdda0086.svg"
+  },
+  {
+    "index": 4,
+    "files": {
+      "png": "diagram-04.png",
+      "svg": "diagram-04.svg"
+    },
+    "caption": "Following Service",
+    "context": "This allows us to query for the important pieces:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/T50TalHjNI6j.7ec690fa.svg"
+  },
+  {
+    "index": 5,
+    "files": {
+      "png": "diagram-05.png",
+      "svg": "diagram-05.svg"
+    },
+    "caption": "Naive Feed Service",
+    "context": "We'll start by adding a feed service to do this work. It's going to be read-heavy and have very different query patterns than the Post and Follow services, so separating it out makes sense.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/JnvQzzz5V0Jr.f5386555.svg"
+  },
+  {
+    "index": 6,
+    "files": {
+      "png": "diagram-06.png",
+      "svg": "diagram-06.svg"
+    },
+    "caption": "Adding a Feed Table",
+    "context": "1) How do we handle users who are following a large number of users?",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/AFCdTqxylRfd.cd64a113.svg"
+  },
+  {
+    "index": 7,
+    "files": {
+      "png": "diagram-07.png",
+      "svg": "diagram-07.svg"
+    },
+    "caption": "Async Workers for Post Creates",
+    "context": "Any queue will work here so long as it support at-least-once delivery of messages and is highly scalable. Amazon's Simple Queue Service (SQS) will work great here.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/_IOUCHcjJT2r.0b0ef99e.svg"
+  },
+  {
+    "index": 8,
+    "files": {
+      "png": "diagram-08.png",
+      "svg": "diagram-08.svg"
+    },
+    "caption": "Async Workers for Post Creates",
+    "context": "A great option would extend on Async Workers outlined above. We'll create async feed workers that are working off a shared queue to write to our precomputed feeds.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/zgd45nfdWhjT.997a5aa0.svg"
+  },
+  {
+    "index": 9,
+    "files": {
+      "png": "diagram-09.png",
+      "svg": "diagram-09.svg"
+    },
+    "caption": "Distributed Post Cache",
+    "context": "When posts are edited (not created!) we simply invalidate the cache for that post ID.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/Wp8y4I3a0LZl.673ac583.svg"
+  },
+  {
+    "index": 10,
+    "files": {
+      "png": "diagram-10.png",
+      "svg": "diagram-10.svg"
+    },
+    "caption": "Hot key issue",
+    "context": "We can use Redis for this and key off the post ID so we can evenly distribute posts across our cluster.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/I3pRXtpMO9wN.07150acc.svg"
+  },
+  {
+    "index": 11,
+    "files": {
+      "png": "diagram-11.png",
+      "svg": "diagram-11.svg"
+    },
+    "caption": "Redundant Post Cache",
+    "context": "Both solve the problem, but this solution means we have N times the throughput for a hot key without any additional coordination required.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/wgNaIlU3icyI.a15f4f8d.svg"
+  }
+]

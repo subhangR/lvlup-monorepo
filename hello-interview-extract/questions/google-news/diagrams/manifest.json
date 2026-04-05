@@ -1,0 +1,112 @@
+[
+  {
+    "index": 1,
+    "files": {
+      "png": "diagram-01.png",
+      "svg": "diagram-01.svg"
+    },
+    "caption": "IG Requirements",
+    "context": "Below the line (out of scope):",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/G83AvuACS4D3.33ef2d7e.svg"
+  },
+  {
+    "index": 2,
+    "files": {
+      "png": "diagram-02.png",
+      "svg": "diagram-02.svg"
+    },
+    "caption": "News Feed Entities",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/qY4TRWzoBrzZ.20ebe711.svg"
+  },
+  {
+    "index": 3,
+    "files": {
+      "png": "diagram-03.png",
+      "svg": "diagram-03.svg"
+    },
+    "caption": "Data Collection",
+    "context": "Now that we have data flowing in, we need to serve it to users. For this, we'll add a Feed Service that handles user requests:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/n5GGz5zQHFCT.ff10ecb0.svg"
+  },
+  {
+    "index": 4,
+    "files": {
+      "png": "diagram-04.png",
+      "svg": "diagram-04.svg"
+    },
+    "caption": "Query Articles",
+    "context": "Data Collection",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/_6KcdjkOaU0y.524053c9.svg"
+  },
+  {
+    "index": 5,
+    "files": {
+      "png": "diagram-05.png",
+      "svg": "diagram-05.svg"
+    },
+    "caption": "Redis Cache",
+    "context": "When we think about low latency requests, the first thing that should come to mind is caching.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/62y6tjjhr6a7.759f1a99.svg"
+  },
+  {
+    "index": 6,
+    "files": {
+      "png": "diagram-06.png",
+      "svg": "diagram-06.svg"
+    },
+    "caption": "Real-time Cached Feeds with CDC",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/w0Uo6aUbkfVh.699bde35.svg"
+  },
+  {
+    "index": 7,
+    "files": {
+      "png": "diagram-07.png",
+      "svg": "diagram-07.svg"
+    },
+    "caption": "Increased RSS Polling Frequency",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/UMrGcxzzzSN4.19922e02.svg"
+  },
+  {
+    "index": 8,
+    "files": {
+      "png": "diagram-08.png",
+      "svg": "diagram-08.svg"
+    },
+    "caption": "Intelligent Web Scraping",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/dx0eOjByipQl.f82940df.svg"
+  },
+  {
+    "index": 9,
+    "files": {
+      "png": "diagram-09.png",
+      "svg": "diagram-09.svg"
+    },
+    "caption": "Publisher Webhooks with Fallback Polling",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/ADPZu-YFbhNz.a362642b.svg"
+  },
+  {
+    "index": 10,
+    "files": {
+      "png": "diagram-10.png",
+      "svg": "diagram-10.svg"
+    },
+    "caption": "S3 + CloudFront CDN with Multiple Sizes",
+    "context": "To avoid global users experiencing high latency when loading thumbnails from distant S3 regions, we can use a CDN to serve the thumbnails.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/j9MfRJ-8MRF8.6ccdaf6f.svg"
+  },
+  {
+    "index": 11,
+    "files": {
+      "png": "diagram-11.png",
+      "svg": "diagram-11.svg"
+    },
+    "caption": "Redis Scaling",
+    "context": "Realistically, we don't need this many per region. Some regions are more popular than others, and we can scale up and down based on demand.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/O1ljYEhXVeBF.e52eb632.svg"
+  }
+]

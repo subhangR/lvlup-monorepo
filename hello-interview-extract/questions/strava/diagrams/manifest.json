@@ -1,0 +1,92 @@
+[
+  {
+    "index": 1,
+    "files": {
+      "png": "diagram-01.png",
+      "svg": "diagram-01.svg"
+    },
+    "caption": "Strava Non-Functional Requirements",
+    "context": "Here is how it might look on the whiteboard:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/tqwxafTj_nBn.dc99c789.svg"
+  },
+  {
+    "index": 2,
+    "files": {
+      "png": "diagram-02.png",
+      "svg": "diagram-02.svg"
+    },
+    "caption": "Strava Entities",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/ovfbIQppjHyF.441b8eda.svg"
+  },
+  {
+    "index": 3,
+    "files": {
+      "png": "diagram-03.png",
+      "svg": "diagram-03.svg"
+    },
+    "caption": "Users should be able to start, pause, stop, and save their runs and rides.",
+    "context": "We can start by sketching out a very basic client-server architecture:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/Z4vPI-GqOH7T.9325f288.svg"
+  },
+  {
+    "index": 4,
+    "files": {
+      "png": "diagram-04.png",
+      "svg": "diagram-04.svg"
+    },
+    "caption": "While running or cycling, users should be able to view activity data, including route, distance, and time.",
+    "context": "When the activity is in progress we need to both update the state and display the activity data to the user.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/TBRqfrL5kYDm.4e0c4b77.svg"
+  },
+  {
+    "index": 5,
+    "files": {
+      "png": "diagram-05.png",
+      "svg": "diagram-05.svg"
+    },
+    "caption": "Users should be able to view details about their own completed activities as well as the activities of their friends.",
+    "context": "Example queries:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/oA6ITZXC_rBU.08aa9689.svg"
+  },
+  {
+    "index": 6,
+    "files": {
+      "png": "diagram-06.png",
+      "svg": "diagram-06.svg"
+    },
+    "caption": "How can we support tracking activities while offline?",
+    "context": "So how does this work in practice?",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/r8_nEeyH-d7D.17461a73.svg"
+  },
+  {
+    "index": 7,
+    "files": {
+      "png": "diagram-07.png",
+      "svg": "diagram-07.svg"
+    },
+    "caption": "How can we scale to support 10 million concurrent activities?",
+    "context": "What database should we choose?",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/oq1r-wW6858t.d8368c4a.svg"
+  },
+  {
+    "index": 8,
+    "files": {
+      "png": "diagram-08.png",
+      "svg": "diagram-08.svg"
+    },
+    "caption": "Periodic Aggregation",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/9bg9YgBtiyzN.053b35a5.svg"
+  },
+  {
+    "index": 9,
+    "files": {
+      "png": "diagram-09.png",
+      "svg": "diagram-09.svg"
+    },
+    "caption": "Strava System Design",
+    "context": "Here's a pseudo-code example of how this might work:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/ZZXMYtupeL9O.4bf0f45f.svg"
+  }
+]

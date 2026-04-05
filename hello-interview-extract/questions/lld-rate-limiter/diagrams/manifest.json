@@ -1,0 +1,22 @@
+[
+  {
+    "index": 1,
+    "files": {
+      "png": "diagram-01.png",
+      "svg": "diagram-01.svg"
+    },
+    "caption": "Token Bucket",
+    "context": "TokenBucketLimiter",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/5G0zTJJ58gkE.35e70fea.svg"
+  },
+  {
+    "index": 2,
+    "files": {
+      "png": "diagram-02.png",
+      "svg": "diagram-02.svg"
+    },
+    "caption": "Sliding Window Log",
+    "context": "SlidingWindowLogLimiter",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/saNxSqZNxcU1.020a175f.svg"
+  }
+]

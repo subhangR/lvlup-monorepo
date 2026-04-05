@@ -1,9 +1,9 @@
-import { useMemo } from 'react';
-import { useCurrentUser, useCurrentTenantId } from '@levelup/shared-stores';
-import { useLinkedStudents } from '../hooks/useLinkedStudents';
-import { useStudentNames } from '../hooks/useStudentNames';
-import { useChildSubmissions } from '../hooks/useChildSubmissions';
-import { useStudentProgressSummary } from '@levelup/shared-hooks';
+import { useMemo } from "react";
+import { useCurrentUser, useCurrentTenantId } from "@levelup/shared-stores";
+import { useLinkedStudents } from "../hooks/useLinkedStudents";
+import { useStudentNames } from "../hooks/useStudentNames";
+import { useChildSubmissions } from "../hooks/useChildSubmissions";
+import { useStudentProgressSummary } from "@levelup/shared-hooks";
 import {
   Card,
   CardContent,
@@ -12,24 +12,19 @@ import {
   AtRiskBadge,
   Skeleton,
   FadeIn,
-  AnimatedList,
-  AnimatedListItem,
   EmptyState,
-} from '@levelup/shared-ui';
-import {
-  AlertTriangle,
-  TrendingDown,
-  Clock,
-  CheckCircle2,
-  ClipboardList,
-} from 'lucide-react';
+} from "@levelup/shared-ui";
+import { AlertTriangle, TrendingDown, Clock, CheckCircle2, ClipboardList } from "lucide-react";
 
 export default function PerformanceAlertsPage() {
   const tenantId = useCurrentTenantId();
   const user = useCurrentUser();
   const parentId = user?.uid ?? null;
 
-  const { data: linkedStudents, isLoading: studentsLoading } = useLinkedStudents(tenantId, parentId);
+  const { data: linkedStudents, isLoading: studentsLoading } = useLinkedStudents(
+    tenantId,
+    parentId
+  );
   const studentUids = useMemo(() => linkedStudents?.map((s) => s.uid) ?? [], [linkedStudents]);
   const { data: studentNames } = useStudentNames(tenantId, studentUids);
   const { data: submissions } = useChildSubmissions(tenantId, studentUids);
@@ -51,11 +46,11 @@ export default function PerformanceAlertsPage() {
     <div className="space-y-6">
       <FadeIn>
         <div>
-          <h1 className="text-2xl font-bold flex items-center gap-2">
+          <h1 className="flex items-center gap-2 text-2xl font-bold">
             <AlertTriangle className="h-6 w-6 text-amber-500" aria-hidden="true" />
             Performance Alerts
           </h1>
-          <p className="text-sm text-muted-foreground mt-1">
+          <p className="text-muted-foreground mt-1 text-sm">
             Track alerts and performance issues across all your children
           </p>
         </div>
@@ -67,7 +62,7 @@ export default function PerformanceAlertsPage() {
           key={uid}
           tenantId={tenantId}
           studentId={uid}
-          studentName={studentNames?.[uid] ?? 'Student'}
+          studentName={studentNames?.[uid] ?? "Student"}
           submissions={submissions?.filter((s) => s.studentId === uid) ?? []}
         />
       ))}
@@ -92,16 +87,23 @@ function ChildAlertSection({
   tenantId: string | null;
   studentId: string;
   studentName: string;
-  submissions: Array<{ examTitle?: string; summary?: { percentage?: number; totalScore?: number; maxScore?: number } }>;
+  submissions: Array<{
+    examTitle?: string;
+    summary?: { percentage?: number; totalScore?: number; maxScore?: number };
+  }>;
 }) {
   const { data: summary } = useStudentProgressSummary(tenantId, studentId);
 
   // Derive alerts
-  const alerts: Array<{ type: 'danger' | 'warning' | 'info'; icon: React.ElementType; message: string }> = [];
+  const alerts: Array<{
+    type: "danger" | "warning" | "info";
+    icon: React.ElementType;
+    message: string;
+  }> = [];
 
   if (summary?.isAtRisk) {
     for (const reason of summary.atRiskReasons ?? []) {
-      alerts.push({ type: 'danger', icon: AlertTriangle, message: reason });
+      alerts.push({ type: "danger", icon: AlertTriangle, message: reason });
     }
   }
 
@@ -109,40 +111,40 @@ function ChildAlertSection({
   const lowScoreExams = submissions.filter((s) => (s.summary?.percentage ?? 0) < 40);
   for (const exam of lowScoreExams.slice(0, 3)) {
     alerts.push({
-      type: 'warning',
+      type: "warning",
       icon: TrendingDown,
-      message: `Scored ${Math.round(exam.summary?.percentage ?? 0)}% on ${exam.examTitle ?? 'an exam'}`,
+      message: `Scored ${Math.round(exam.summary?.percentage ?? 0)}% on ${exam.examTitle ?? "an exam"}`,
     });
   }
 
   // Low streak
   if (summary && summary.levelup.streakDays === 0) {
     alerts.push({
-      type: 'info',
+      type: "info",
       icon: Clock,
-      message: 'No learning activity recorded recently. Encourage daily practice!',
+      message: "No learning activity recorded recently. Encourage daily practice!",
     });
   }
 
   // Low space completion
   if (summary && summary.levelup.averageCompletion < 20 && summary.levelup.totalSpaces > 0) {
     alerts.push({
-      type: 'warning',
+      type: "warning",
       icon: ClipboardList,
       message: `Only ${Math.round(summary.levelup.averageCompletion)}% average space completion`,
     });
   }
 
   const typeStyles = {
-    danger: 'border-red-200 bg-red-50/50 dark:border-red-900/50 dark:bg-red-950/20',
-    warning: 'border-amber-200 bg-amber-50/50 dark:border-amber-900/50 dark:bg-amber-950/20',
-    info: 'border-blue-200 bg-blue-50/50 dark:border-blue-900/50 dark:bg-blue-950/20',
+    danger: "border-red-200 bg-red-50/50 dark:border-red-900/50 dark:bg-red-950/20",
+    warning: "border-amber-200 bg-amber-50/50 dark:border-amber-900/50 dark:bg-amber-950/20",
+    info: "border-blue-200 bg-blue-50/50 dark:border-blue-900/50 dark:bg-blue-950/20",
   };
 
   const iconStyles = {
-    danger: 'text-red-600',
-    warning: 'text-amber-600',
-    info: 'text-blue-600',
+    danger: "text-red-600",
+    warning: "text-amber-600",
+    info: "text-blue-600",
   };
 
   return (
@@ -150,12 +152,10 @@ function ChildAlertSection({
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle className="text-base">{studentName}</CardTitle>
-          {summary && (
-            <AtRiskBadge isAtRisk={summary.isAtRisk} reasons={summary.atRiskReasons} />
-          )}
+          {summary && <AtRiskBadge isAtRisk={summary.isAtRisk} reasons={summary.atRiskReasons} />}
         </div>
         {summary && (
-          <div className="flex gap-4 text-xs text-muted-foreground">
+          <div className="text-muted-foreground flex gap-4 text-xs">
             <span>Score: {Math.round(summary.overallScore * 100)}%</span>
             <span>Streak: {summary.levelup.streakDays}d</span>
             <span>Exams: {summary.autograde.completedExams}</span>
@@ -177,7 +177,10 @@ function ChildAlertSection({
                   key={i}
                   className={`flex items-start gap-3 rounded-md border p-3 ${typeStyles[alert.type]}`}
                 >
-                  <Icon className={`h-4 w-4 mt-0.5 shrink-0 ${iconStyles[alert.type]}`} aria-hidden="true" />
+                  <Icon
+                    className={`mt-0.5 h-4 w-4 shrink-0 ${iconStyles[alert.type]}`}
+                    aria-hidden="true"
+                  />
                   <p className="text-sm">{alert.message}</p>
                 </div>
               );

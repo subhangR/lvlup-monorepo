@@ -19,23 +19,30 @@ import {
   type TenantOption,
   type MobileNavItem,
 } from "@levelup/shared-ui";
-import { useNotifications, useUnreadCount, useMarkRead, useMarkAllRead, useTenantBranding, usePrefetch } from "@levelup/shared-hooks";
+import {
+  useNotifications,
+  useUnreadCount,
+  useMarkRead,
+  useMarkAllRead,
+  useTenantBranding,
+  usePrefetch,
+} from "@levelup/shared-hooks";
 
 /** Route prefetch map — triggers lazy imports on link hover */
 const TEACHER_PREFETCH_MAP: Record<string, () => Promise<unknown>> = {
-  '/': () => import('../pages/DashboardPage'),
-  '/spaces': () => import('../pages/spaces/SpaceListPage'),
-  '/exams': () => import('../pages/exams/ExamListPage'),
-  '/students': () => import('../pages/StudentsPage'),
-  '/settings': () => import('../pages/SettingsPage'),
-  '/analytics/classes': () => import('../pages/ClassAnalyticsPage'),
-  '/analytics/exams': () => import('../pages/ExamAnalyticsPage'),
-  '/analytics/spaces': () => import('../pages/SpaceAnalyticsPage'),
-  '/question-bank': () => import('../pages/spaces/QuestionBankPage'),
-  '/assignments': () => import('../pages/AssignmentTrackerPage'),
-  '/grading': () => import('../pages/BatchGradingPage'),
-  '/rubric-presets': () => import('../pages/RubricPresetsPage'),
-  '/notifications': () => import('../pages/NotificationsPage'),
+  "/": () => import("../pages/DashboardPage"),
+  "/spaces": () => import("../pages/spaces/SpaceListPage"),
+  "/exams": () => import("../pages/exams/ExamListPage"),
+  "/students": () => import("../pages/StudentsPage"),
+  "/settings": () => import("../pages/SettingsPage"),
+  "/analytics/classes": () => import("../pages/ClassAnalyticsPage"),
+  "/analytics/exams": () => import("../pages/ExamAnalyticsPage"),
+  "/analytics/spaces": () => import("../pages/SpaceAnalyticsPage"),
+  "/question-bank": () => import("../pages/spaces/QuestionBankPage"),
+  "/assignments": () => import("../pages/AssignmentTrackerPage"),
+  "/grading": () => import("../pages/BatchGradingPage"),
+  "/rubric-presets": () => import("../pages/RubricPresetsPage"),
+  "/notifications": () => import("../pages/NotificationsPage"),
 };
 import { getFirebaseServices } from "@levelup/shared-services";
 import { doc, getDoc } from "firebase/firestore";
@@ -48,7 +55,6 @@ import {
   Users,
   Settings,
   ListChecks,
-  FileText,
   Library,
   Ruler,
 } from "lucide-react";
@@ -67,7 +73,7 @@ export default function AppLayout() {
 
   const { data: notifData, isLoading: notifsLoading } = useNotifications(
     currentTenantId,
-    firebaseUser?.uid ?? null,
+    firebaseUser?.uid ?? null
   );
   const unreadCount = useUnreadCount(currentTenantId, firebaseUser?.uid ?? null);
   const markRead = useMarkRead();
@@ -177,7 +183,7 @@ export default function AppLayout() {
   const [tenantNames, setTenantNames] = useState<Record<string, string>>({});
 
   const teacherMemberships = allMemberships.filter(
-    (m) => m.role === "teacher" || m.role === "tenantAdmin",
+    (m) => m.role === "teacher" || m.role === "tenantAdmin"
   );
 
   useEffect(() => {
@@ -190,8 +196,8 @@ export default function AppLayout() {
     Promise.all(
       otherTenantIds.map(async (id) => {
         const snap = await getDoc(doc(db, "tenants", id));
-        return [id, snap.exists() ? (snap.data() as { name?: string }).name ?? id : id] as const;
-      }),
+        return [id, snap.exists() ? ((snap.data() as { name?: string }).name ?? id) : id] as const;
+      })
     ).then((entries) => {
       setTenantNames(Object.fromEntries(entries));
     });
@@ -201,8 +207,8 @@ export default function AppLayout() {
     tenantId: m.tenantId,
     tenantName:
       m.tenantId === currentTenantId
-        ? currentTenantName ?? m.tenantId
-        : tenantNames[m.tenantId] ?? m.tenantId,
+        ? (currentTenantName ?? m.tenantId)
+        : (tenantNames[m.tenantId] ?? m.tenantId),
     role: m.role,
   }));
 
@@ -214,10 +220,13 @@ export default function AppLayout() {
         onSwitch={switchTenant}
       />
       <div className="flex items-center justify-between gap-2 px-2 py-1">
-        <span className="truncate text-xs text-muted-foreground">
+        <span className="text-muted-foreground truncate text-xs">
           {user?.displayName ?? user?.email}
         </span>
-        <LogoutButton onLogout={logout} className="text-xs text-muted-foreground hover:text-foreground">
+        <LogoutButton
+          onLogout={logout}
+          className="text-muted-foreground hover:text-foreground text-xs"
+        >
           Sign Out
         </LogoutButton>
       </div>
@@ -257,17 +266,42 @@ export default function AppLayout() {
 
   const mobileNavItems: MobileNavItem[] = [
     { icon: LayoutDashboard, label: "Home", to: "/", isActive: location.pathname === "/" },
-    { icon: BookOpen, label: "Spaces", to: "/spaces", isActive: location.pathname.startsWith("/spaces") },
-    { icon: ClipboardList, label: "Exams", to: "/exams", isActive: location.pathname.startsWith("/exams") },
-    { icon: Users, label: "Students", to: "/students", isActive: location.pathname === "/students" },
-    { icon: BarChart3, label: "Analytics", to: "/analytics/classes", isActive: location.pathname.startsWith("/analytics") },
+    {
+      icon: BookOpen,
+      label: "Spaces",
+      to: "/spaces",
+      isActive: location.pathname.startsWith("/spaces"),
+    },
+    {
+      icon: ClipboardList,
+      label: "Exams",
+      to: "/exams",
+      isActive: location.pathname.startsWith("/exams"),
+    },
+    {
+      icon: Users,
+      label: "Students",
+      to: "/students",
+      isActive: location.pathname === "/students",
+    },
+    {
+      icon: BarChart3,
+      label: "Analytics",
+      to: "/analytics/classes",
+      isActive: location.pathname.startsWith("/analytics"),
+    },
   ];
 
   return (
     <>
       <OfflineBanner />
       <SkipToContent />
-      <AppShell sidebar={sidebar} headerRight={headerRight} hasBottomNav bottomNav={<MobileBottomNav items={mobileNavItems} LinkComponent={Link} />}>
+      <AppShell
+        sidebar={sidebar}
+        headerRight={headerRight}
+        hasBottomNav
+        bottomNav={<MobileBottomNav items={mobileNavItems} LinkComponent={Link} />}
+      >
         <RouteAnnouncer pathname={location.pathname} />
         <div id="main-content">
           <PageTransition pageKey={location.pathname}>

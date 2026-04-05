@@ -1,0 +1,102 @@
+[
+  {
+    "index": 1,
+    "files": {
+      "png": "diagram-01.png",
+      "svg": "diagram-01.svg"
+    },
+    "caption": "Requirements",
+    "context": "On the whiteboard, this could be short hand like this:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/d6kAnuax4EyL.6c2c1c16.svg"
+  },
+  {
+    "index": 2,
+    "files": {
+      "png": "diagram-02.png",
+      "svg": "diagram-02.svg"
+    },
+    "caption": "Core Entities",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/rtlJZpS8LS6I.adb8e749.svg"
+  },
+  {
+    "index": 3,
+    "files": {
+      "png": "diagram-03.png",
+      "svg": "diagram-03.svg"
+    },
+    "caption": "Create an Auction",
+    "context": "First things first, users need a way to start a new auction. They'll do this by POSTing to the /auctions endpoint with the auction details, including information about the item they are selling.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/sdH3cqXkm57F.9d67be09.svg"
+  },
+  {
+    "index": 4,
+    "files": {
+      "png": "diagram-04.png",
+      "svg": "diagram-04.svg"
+    },
+    "caption": "Place Bids",
+    "context": "We choose to separate bidding into its own service for several key reasons:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/0WLRRhe_csfr.924339d2.svg"
+  },
+  {
+    "index": 5,
+    "files": {
+      "png": "diagram-05.png",
+      "svg": "diagram-05.svg"
+    },
+    "caption": "View Auction",
+    "context": "We'll offload the depth of discussion here to our deep dives, but let's outline the basic approach which ensures that the current highest bid is at least reasonably up-to-date.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/NH1W3TM2I2Zh.4cd4e0c6.svg"
+  },
+  {
+    "index": 6,
+    "files": {
+      "png": "diagram-06.png",
+      "svg": "diagram-06.svg"
+    },
+    "caption": "Cache max bid",
+    "context": "To avoid this, we can cache the max bid in memory in something like Redis. Now, the data flow when a bid comes in looks very different:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/WYnOJRD-yxeI.2424fdc3.svg"
+  },
+  {
+    "index": 7,
+    "files": {
+      "png": "diagram-07.png",
+      "svg": "diagram-07.svg"
+    },
+    "caption": "Cache max bid in DB",
+    "context": "This approach avoids locks entirely while still maintaining consistency, at the cost of occasional retries when conflicts do occur.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/5PQz20m7Izt5.f8cc05bf.svg"
+  },
+  {
+    "index": 8,
+    "files": {
+      "png": "diagram-08.png",
+      "svg": "diagram-08.svg"
+    },
+    "caption": "Fault tolerant system",
+    "context": "The best approach here is to introduce a durable message queue and get bids into it as soon as possible. This offers several benefits:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/NIbmJvo4dWu0.7a87fb08.svg"
+  },
+  {
+    "index": 9,
+    "files": {
+      "png": "diagram-09.png",
+      "svg": "diagram-09.svg"
+    },
+    "caption": "SSE",
+    "context": "You could use websockets here as well, but SSE is arguably a better fit given the communication is unidirectional and SSE is typically lighter weight and easier to implement.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/NVsBIjSI4LLg.3241a3a4.svg"
+  },
+  {
+    "index": 10,
+    "files": {
+      "png": "diagram-10.png",
+      "svg": "diagram-10.svg"
+    },
+    "caption": "Scale",
+    "context": "If you want to learn more about Pub/Sub checkout the breakdown of FB Live Comments where I go into more detail.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/sNjKPEZpC_E2.9abc9b71.svg"
+  }
+]

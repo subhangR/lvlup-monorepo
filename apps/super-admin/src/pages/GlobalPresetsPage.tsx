@@ -125,10 +125,13 @@ const presetSchema = z.object({
     showKeyTakeaway: z.boolean(),
     prioritizeByImportance: z.boolean(),
   }),
-  dimensions: z.record(z.string(), z.object({
-    enabled: z.boolean(),
-    weight: z.number().min(1).max(5),
-  })),
+  dimensions: z.record(
+    z.string(),
+    z.object({
+      enabled: z.boolean(),
+      weight: z.number().min(1).max(5),
+    })
+  ),
 });
 type PresetFormValues = z.infer<typeof presetSchema>;
 
@@ -153,7 +156,10 @@ function presetToFormValues(preset: EvaluationSettings): PresetFormValues {
   const dimensions: Record<string, { enabled: boolean; weight: number }> = Object.fromEntries(
     DEFAULT_DIMENSIONS.map((d) => {
       const existing = preset.enabledDimensions?.find((ed) => ed.id === d.id);
-      return [d.id, { enabled: existing?.enabled ?? d.enabled, weight: existing?.weight ?? d.weight }];
+      return [
+        d.id,
+        { enabled: existing?.enabled ?? d.enabled, weight: existing?.weight ?? d.weight },
+      ];
     })
   );
   for (const ed of preset.enabledDimensions ?? []) {
@@ -191,9 +197,7 @@ function useGlobalPresets() {
       const colRef = collection(db, "evaluationSettings");
       const q = query(colRef, orderBy("name", "asc"));
       const snap = await getDocs(q);
-      return snap.docs.map(
-        (d) => ({ id: d.id, ...d.data() }) as EvaluationSettings
-      );
+      return snap.docs.map((d) => ({ id: d.id, ...d.data() }) as EvaluationSettings);
     },
     staleTime: 5 * 60 * 1000,
   });
@@ -301,10 +305,10 @@ export default function GlobalPresetsPage() {
         <div className="space-y-3">
           {Array.from({ length: 3 }).map((_, i) => (
             <Card key={i}>
-              <CardContent className="p-5 space-y-3">
+              <CardContent className="space-y-3 p-5">
                 <Skeleton className="h-5 w-48" />
                 <Skeleton className="h-4 w-64" />
-                <div className="flex gap-2 mt-4">
+                <div className="mt-4 flex gap-2">
                   {Array.from({ length: 4 }).map((_, j) => (
                     <Skeleton key={j} className="h-6 w-20 rounded-full" />
                   ))}
@@ -315,11 +319,11 @@ export default function GlobalPresetsPage() {
         </div>
       ) : !presets?.length ? (
         <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center">
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-            <Sliders className="h-6 w-6 text-muted-foreground" />
+          <div className="bg-muted flex h-12 w-12 items-center justify-center rounded-full">
+            <Sliders className="text-muted-foreground h-6 w-6" />
           </div>
           <h3 className="mt-4 text-lg font-semibold">No global presets</h3>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="text-muted-foreground mt-1 text-sm">
             Create evaluation presets that tenants can adopt
           </p>
           <Button variant="outline" className="mt-4 gap-2" onClick={openCreate}>
@@ -330,17 +334,14 @@ export default function GlobalPresetsPage() {
       ) : (
         <div className="space-y-3">
           {presets.map((preset) => (
-            <Card
-              key={preset.id}
-              className="transition-shadow hover:shadow-sm"
-            >
+            <Card key={preset.id} className="transition-shadow hover:shadow-sm">
               <CardContent className="p-5">
                 <div className="flex items-start justify-between gap-4">
                   <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2 flex-wrap">
+                    <div className="flex flex-wrap items-center gap-2">
                       <h3 className="font-semibold">{preset.name}</h3>
                       {preset.isDefault && (
-                        <span className="inline-flex items-center rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
+                        <span className="bg-primary/10 text-primary inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium">
                           Default
                         </span>
                       )}
@@ -351,20 +352,25 @@ export default function GlobalPresetsPage() {
                       )}
                     </div>
                     {preset.description && (
-                      <p className="mt-1 text-sm text-muted-foreground">
-                        {preset.description}
-                      </p>
+                      <p className="text-muted-foreground mt-1 text-sm">{preset.description}</p>
                     )}
                   </div>
-                  <div className="flex items-center gap-1 shrink-0">
-                    <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openEdit(preset)}>
+                  <div className="flex shrink-0 items-center gap-1">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-8 w-8"
+                      onClick={() => openEdit(preset)}
+                      aria-label="Edit preset"
+                    >
                       <Pencil className="h-3.5 w-3.5" />
                     </Button>
                     <Button
                       variant="ghost"
                       size="icon"
-                      className="h-8 w-8 text-destructive hover:text-destructive"
+                      className="text-destructive hover:text-destructive h-8 w-8"
                       onClick={() => setDeleteTarget(preset)}
+                      aria-label="Delete preset"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </Button>
@@ -372,7 +378,7 @@ export default function GlobalPresetsPage() {
                 </div>
 
                 <div className="mt-4">
-                  <p className="mb-2 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+                  <p className="text-muted-foreground mb-2 text-xs font-medium uppercase tracking-wider">
                     Dimensions
                   </p>
                   <div className="flex flex-wrap gap-1.5">
@@ -382,7 +388,7 @@ export default function GlobalPresetsPage() {
                         className={`inline-flex items-center rounded-md border px-2 py-1 text-xs font-medium transition-colors ${
                           dim.enabled
                             ? "border-blue-200 bg-blue-50 text-blue-700 dark:border-blue-800/50 dark:bg-blue-950/30 dark:text-blue-300"
-                            : "border-transparent bg-muted text-muted-foreground line-through"
+                            : "bg-muted text-muted-foreground border-transparent line-through"
                         }`}
                       >
                         {dim.name}
@@ -394,14 +400,19 @@ export default function GlobalPresetsPage() {
                   </div>
                 </div>
 
-                <div className="mt-3 flex gap-4 text-xs text-muted-foreground">
+                <div className="text-muted-foreground mt-3 flex gap-4 text-xs">
                   {[
                     { label: "Strengths", value: preset.displaySettings?.showStrengths },
                     { label: "Key Takeaway", value: preset.displaySettings?.showKeyTakeaway },
-                    { label: "Priority Sort", value: preset.displaySettings?.prioritizeByImportance },
+                    {
+                      label: "Priority Sort",
+                      value: preset.displaySettings?.prioritizeByImportance,
+                    },
                   ].map((item) => (
                     <span key={item.label} className="flex items-center gap-1">
-                      <span className={`h-1.5 w-1.5 rounded-full ${item.value ? "bg-emerald-500" : "bg-muted-foreground/30"}`} />
+                      <span
+                        className={`h-1.5 w-1.5 rounded-full ${item.value ? "bg-emerald-500" : "bg-muted-foreground/30"}`}
+                      />
                       {item.label}
                     </span>
                   ))}
@@ -413,17 +424,31 @@ export default function GlobalPresetsPage() {
       )}
 
       {/* Create / Edit Dialog */}
-      <Dialog open={dialogOpen} onOpenChange={(o) => { if (!o) { setCreateOpen(false); setEditOpen(false); setSubmitError(null); } }}>
-        <DialogContent className="max-w-lg max-h-[90vh] flex flex-col">
+      <Dialog
+        open={dialogOpen}
+        onOpenChange={(o) => {
+          if (!o) {
+            setCreateOpen(false);
+            setEditOpen(false);
+            setSubmitError(null);
+          }
+        }}
+      >
+        <DialogContent className="flex max-h-[90vh] max-w-lg flex-col">
           <DialogHeader className="flex-shrink-0">
             <DialogTitle>{dialogTitle}</DialogTitle>
             <DialogDescription>
-              {editOpen ? "Update the evaluation preset configuration" : "Configure a new evaluation rubric preset"}
+              {editOpen
+                ? "Update the evaluation preset configuration"
+                : "Configure a new evaluation rubric preset"}
             </DialogDescription>
           </DialogHeader>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(handleSubmit)} className="flex flex-col flex-1 min-h-0">
-              <div className="flex-1 overflow-y-auto space-y-5 py-2 px-1 -mx-1">
+            <form
+              onSubmit={form.handleSubmit(handleSubmit)}
+              className="flex min-h-0 flex-1 flex-col"
+            >
+              <div className="-mx-1 flex-1 space-y-5 overflow-y-auto px-1 py-2">
                 <FormField
                   control={form.control}
                   name="name"
@@ -445,7 +470,12 @@ export default function GlobalPresetsPage() {
                     <FormItem>
                       <FormLabel>Description</FormLabel>
                       <FormControl>
-                        <Textarea placeholder="Optional description" rows={2} className="resize-none" {...field} />
+                        <Textarea
+                          placeholder="Optional description"
+                          rows={2}
+                          className="resize-none"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -474,7 +504,9 @@ export default function GlobalPresetsPage() {
                         <FormControl>
                           <Checkbox checked={field.value} onCheckedChange={field.onChange} />
                         </FormControl>
-                        <FormLabel className="cursor-pointer">Public (visible to all tenants)</FormLabel>
+                        <FormLabel className="cursor-pointer">
+                          Public (visible to all tenants)
+                        </FormLabel>
                       </FormItem>
                     )}
                   />
@@ -531,26 +563,36 @@ export default function GlobalPresetsPage() {
                       const dimensionValues = form.watch(`dimensions.${dim.id}`);
                       const isEnabled = dimensionValues?.enabled ?? dim.enabled;
                       return (
-                        <div key={dim.id} className={`flex items-center gap-3 rounded-md px-2 py-2 transition-colors ${isEnabled ? "bg-muted/30" : ""}`}>
+                        <div
+                          key={dim.id}
+                          className={`flex items-center gap-3 rounded-md px-2 py-2 transition-colors ${isEnabled ? "bg-muted/30" : ""}`}
+                        >
                           <FormField
                             control={form.control}
                             name={`dimensions.${dim.id}.enabled`}
                             render={({ field }) => (
                               <FormItem className="flex items-center space-y-0">
                                 <FormControl>
-                                  <Checkbox checked={field.value} onCheckedChange={field.onChange} />
+                                  <Checkbox
+                                    checked={field.value}
+                                    onCheckedChange={field.onChange}
+                                  />
                                 </FormControl>
                               </FormItem>
                             )}
                           />
-                          <label className="flex-1 cursor-pointer min-w-0">
-                            <span className={`font-medium text-sm ${!isEnabled ? "text-muted-foreground" : ""}`}>{dim.name}</span>
-                            <span className="ml-1 text-xs text-muted-foreground hidden sm:inline">
+                          <label className="min-w-0 flex-1 cursor-pointer">
+                            <span
+                              className={`text-sm font-medium ${!isEnabled ? "text-muted-foreground" : ""}`}
+                            >
+                              {dim.name}
+                            </span>
+                            <span className="text-muted-foreground ml-1 hidden text-xs sm:inline">
                               — {dim.description}
                             </span>
                           </label>
-                          <div className="flex items-center gap-1.5 shrink-0">
-                            <span className="text-xs text-muted-foreground">Weight:</span>
+                          <div className="flex shrink-0 items-center gap-1.5">
+                            <span className="text-muted-foreground text-xs">Weight:</span>
                             <FormField
                               control={form.control}
                               name={`dimensions.${dim.id}.weight`}
@@ -586,7 +628,16 @@ export default function GlobalPresetsPage() {
               </div>
 
               <DialogFooter className="flex-shrink-0 pt-2">
-                <Button type="button" variant="outline" onClick={() => { setCreateOpen(false); setEditOpen(false); setSubmitError(null); }} disabled={isPending}>
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => {
+                    setCreateOpen(false);
+                    setEditOpen(false);
+                    setSubmitError(null);
+                  }}
+                  disabled={isPending}
+                >
                   Cancel
                 </Button>
                 <Button type="submit" disabled={isPending}>
@@ -604,7 +655,8 @@ export default function GlobalPresetsPage() {
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Preset</AlertDialogTitle>
             <AlertDialogDescription>
-              Are you sure you want to delete &ldquo;{deleteTarget?.name}&rdquo;? This action cannot be undone.
+              Are you sure you want to delete &ldquo;{deleteTarget?.name}&rdquo;? This action cannot
+              be undone.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

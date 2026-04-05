@@ -1,0 +1,12 @@
+[
+  {
+    "index": 1,
+    "files": {
+      "png": "diagram-01.png",
+      "svg": "diagram-01.svg"
+    },
+    "caption": "Uber System Design Example",
+    "context": "What is the difference between Low-Level Design and System Design?",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/Fetd1qDV_JL7.6bd92858.svg"
+  }
+]

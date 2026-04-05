@@ -194,26 +194,32 @@ function isActive(href: string) {
 
 <script>
   function initNav() {
-    const nav = document.getElementById('main-nav');
-    const scrollProgress = document.getElementById('scroll-progress');
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const menuIcon = document.getElementById('menu-icon');
-    const closeIcon = document.getElementById('close-icon');
+    const nav = document.getElementById('main-nav') as HTMLElement | null;
+    const scrollProgress = document.getElementById('scroll-progress') as HTMLElement | null;
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn') as HTMLElement | null;
+    const mobileMenu = document.getElementById('mobile-menu') as HTMLElement | null;
+    const menuIcon = document.getElementById('menu-icon') as HTMLElement | null;
+    const closeIcon = document.getElementById('close-icon') as HTMLElement | null;
     if (!nav || !scrollProgress || !mobileMenuBtn || !mobileMenu || !menuIcon || !closeIcon) return;
+    const _nav = nav;
+    const _scrollProgress = scrollProgress;
+    const _mobileMenuBtn = mobileMenuBtn;
+    const _mobileMenu = mobileMenu;
+    const _menuIcon = menuIcon;
+    const _closeIcon = closeIcon;
 
     // Frosted nav on scroll — adds border + background
     function updateNavOnScroll() {
       if (window.scrollY > 20) {
-        nav.classList.add('bg-white/90', 'backdrop-blur-xl', 'border-b', 'border-border/60', 'shadow-sm');
-        nav.classList.remove('bg-transparent');
+        _nav.classList.add('bg-white/90', 'backdrop-blur-xl', 'border-b', 'border-border/60', 'shadow-sm');
+        _nav.classList.remove('bg-transparent');
       } else {
-        nav.classList.remove('bg-white/90', 'backdrop-blur-xl', 'border-b', 'border-border/60', 'shadow-sm');
+        _nav.classList.remove('bg-white/90', 'backdrop-blur-xl', 'border-b', 'border-border/60', 'shadow-sm');
       }
       // Scroll progress
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const progress = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
-      scrollProgress.style.width = `${progress}%`;
+      _scrollProgress.style.width = `${progress}%`;
     }
 
     window.addEventListener('scroll', updateNavOnScroll, { passive: true });
@@ -224,27 +230,27 @@ function isActive(href: string) {
 
     function openMenu() {
       isOpen = true;
-      mobileMenu.classList.remove('hidden');
-      menuIcon.classList.add('hidden');
-      closeIcon.classList.remove('hidden');
-      mobileMenuBtn.setAttribute('aria-expanded', 'true');
+      _mobileMenu.classList.remove('hidden');
+      _menuIcon.classList.add('hidden');
+      _closeIcon.classList.remove('hidden');
+      _mobileMenuBtn.setAttribute('aria-expanded', 'true');
     }
 
     function closeMenu() {
       isOpen = false;
-      mobileMenu.classList.add('hidden');
-      menuIcon.classList.remove('hidden');
-      closeIcon.classList.add('hidden');
-      mobileMenuBtn.setAttribute('aria-expanded', 'false');
+      _mobileMenu.classList.add('hidden');
+      _menuIcon.classList.remove('hidden');
+      _closeIcon.classList.add('hidden');
+      _mobileMenuBtn.setAttribute('aria-expanded', 'false');
     }
 
-    mobileMenuBtn.addEventListener('click', () => isOpen ? closeMenu() : openMenu());
+    _mobileMenuBtn.addEventListener('click', () => isOpen ? closeMenu() : openMenu());
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && isOpen) { closeMenu(); mobileMenuBtn.focus(); }
+      if (e.key === 'Escape' && isOpen) { closeMenu(); _mobileMenuBtn.focus(); }
     });
 
-    mobileMenu.querySelectorAll('a').forEach((link) => {
+    _mobileMenu.querySelectorAll('a').forEach((link) => {
       link.addEventListener('click', closeMenu);
     });
   }

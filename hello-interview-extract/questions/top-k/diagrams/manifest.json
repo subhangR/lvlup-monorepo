@@ -1,0 +1,172 @@
+[
+  {
+    "index": 1,
+    "files": {
+      "png": "diagram-01.png",
+      "svg": "diagram-01.svg"
+    },
+    "caption": "Window Types",
+    "context": "This might seem obvious: they want to get the top K videos! But digging in here reveals some interesting wrinkles that your interviewer will be expecting you to discover.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/gBrYDVl1Lj7q.c67a4396.svg"
+  },
+  {
+    "index": 2,
+    "files": {
+      "png": "diagram-02.png",
+      "svg": "diagram-02.svg"
+    },
+    "caption": "Requirements",
+    "context": "And with some brief notes that we're writing as we're discussing with the interviewer, here's how it might look on your whiteboard:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/ol4XJYfPBkcx.dcb07652.svg"
+  },
+  {
+    "index": 3,
+    "files": {
+      "png": "diagram-03.png",
+      "svg": "diagram-03.svg"
+    },
+    "caption": "Basic View Event Consumer",
+    "context": "The view consumer retrieves a view event from the Kafka stream.\nThe view consumer updates the counter for the video ID in the Postgres database.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/uQv2bqR_Kch2.05c2e931.svg"
+  },
+  {
+    "index": 4,
+    "files": {
+      "png": "diagram-04.png",
+      "svg": "diagram-04.svg"
+    },
+    "caption": "Basic All-Time Top K",
+    "context": "Basic View Event Consumer",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/HdZm6pRlASHi.76ac2b49.svg"
+  },
+  {
+    "index": 5,
+    "files": {
+      "png": "diagram-05.png",
+      "svg": "diagram-05.svg"
+    },
+    "caption": "Basic Time Window Top K",
+    "context": "2) Clients should be able to query tumbling windows of 1 {hour, day, month} and all-time (up to a max of 1k results).",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/2lgbIc-l3cmg.2e33b81a.svg"
+  },
+  {
+    "index": 6,
+    "files": {
+      "png": "diagram-06.png",
+      "svg": "diagram-06.svg"
+    },
+    "caption": "Cache Top-K",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/WqduF1OHoq7R.2c3c7bf1.svg"
+  },
+  {
+    "index": 7,
+    "files": {
+      "png": "diagram-07.png",
+      "svg": "diagram-07.svg"
+    },
+    "caption": "Cron Top-K",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/pMMwCl-nM8z4.e0066b3b.svg"
+  },
+  {
+    "index": 8,
+    "files": {
+      "png": "diagram-08.png",
+      "svg": "diagram-08.svg"
+    },
+    "caption": "Sharded Top-K",
+    "context": "Sharding Ingestion",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/V__fgNAb6YuD.74754530.svg"
+  },
+  {
+    "index": 9,
+    "files": {
+      "png": "diagram-09.png",
+      "svg": "diagram-09.svg"
+    },
+    "caption": "Flink Batching",
+    "context": "Since Flink is reading from Kafka, if a given host fails or goes down, Flink can rewind to the checkpoint offset in the Kafka topic and resume processing from there.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/4s_yfoL2-sDU.41a29943.svg"
+  },
+  {
+    "index": 10,
+    "files": {
+      "png": "diagram-10.png",
+      "svg": "diagram-10.svg"
+    },
+    "caption": "Processing Top-K Queries",
+    "context": "We've sped up our happy path for reads. When we read from our cache, response are super fast.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/_XKgGXEo9w3G.fff3f114.svg"
+  },
+  {
+    "index": 11,
+    "files": {
+      "png": "diagram-11.png",
+      "svg": "diagram-11.svg"
+    },
+    "caption": "More Flink Granularities",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/1dMy9-DLQJdr.52b60a59.svg"
+  },
+  {
+    "index": 12,
+    "files": {
+      "png": "diagram-12.png",
+      "svg": "diagram-12.svg"
+    },
+    "caption": "Full Aggregates for Each Window",
+    "context": "To make this work, we'll need a table which has the current aggregate for each video for each window.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/ABYFXM-sOfv-.a3a4ec37.svg"
+  },
+  {
+    "index": 13,
+    "files": {
+      "png": "diagram-13.png",
+      "svg": "diagram-13.svg"
+    },
+    "caption": "Full Flink Solution",
+    "context": "Our net design is simplified:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/CUk15xjkMDUD.1c3adc0d.svg"
+  },
+  {
+    "index": 14,
+    "files": {
+      "png": "diagram-14.png",
+      "svg": "diagram-14.svg"
+    },
+    "caption": "Sliding Window",
+    "context": "Let's build on our Postgres-based window aggregates solution to support sliding windows.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/GkwA4oo1iuiV.63a898e1.svg"
+  },
+  {
+    "index": 15,
+    "files": {
+      "png": "diagram-15.png",
+      "svg": "diagram-15.svg"
+    },
+    "caption": "Full Aggregates for Each Window",
+    "context": "We'll do this for each of our windows (last hour, last day, last month). For the all-time window, the decrement is always 0!",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/AsleaLSDMkwm.8a191a71.svg"
+  },
+  {
+    "index": 16,
+    "files": {
+      "png": "diagram-16.png",
+      "svg": "diagram-16.svg"
+    },
+    "caption": "Redis CMS Top-K",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/pLLkJ6O_bZvJ.c8d24c52.svg"
+  },
+  {
+    "index": 17,
+    "files": {
+      "png": "diagram-17.png",
+      "svg": "diagram-17.svg"
+    },
+    "caption": "Flink CMS Top-K",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/CUk15xjkMDUD.1c3adc0d.svg"
+  }
+]

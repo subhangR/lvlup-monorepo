@@ -451,6 +451,23 @@ service cloud.firestore {
 
       allow delete: if isSuperAdmin()
         || isTenantAdmin(tenantId);
+
+      // ── storyPointProgress subcollection ──
+      match /storyPointProgress/{storyPointProgressId} {
+        allow read: if isSuperAdmin()
+          || isTenantAdmin(tenantId)
+          || isTeacher(tenantId)
+          || (isStudent(tenantId) && get(/databases/$(database)/documents/tenants/$(tenantId)/spaceProgress/$(progressId)).data.userId == request.auth.uid)
+          || (isParent(tenantId)
+              && request.auth.token.studentIds.hasAny([get(/databases/$(database)/documents/tenants/$(tenantId)/spaceProgress/$(progressId)).data.userId]));
+
+        allow create, update: if isSuperAdmin()
+          || isTenantAdmin(tenantId)
+          || (isStudent(tenantId) && get(/databases/$(database)/documents/tenants/$(tenantId)/spaceProgress/$(progressId)).data.userId == request.auth.uid && isTenantActive(tenantId));
+
+        allow delete: if isSuperAdmin()
+          || isTenantAdmin(tenantId);
+      }
     }
 
     // ── /tenants/{tenantId}/progress/{progressId} ───────

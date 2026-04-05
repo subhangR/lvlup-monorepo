@@ -3,15 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
 import { getFirebaseServices } from "@levelup/shared-services";
 import type { Tenant, DailyCostSummary } from "@levelup/shared-types";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 import {
   StatCard,
   PageHeader,
@@ -34,7 +26,15 @@ import {
   TableCaption,
   DataTablePagination,
 } from "@levelup/shared-ui";
-import { DollarSign, Zap, ArrowUpDown, ChevronLeft, ChevronRight, AlertCircle, Calendar } from "lucide-react";
+import {
+  DollarSign,
+  Zap,
+  ArrowUpDown,
+  ChevronLeft,
+  ChevronRight,
+  AlertCircle,
+  Calendar,
+} from "lucide-react";
 import { usePagination } from "../hooks/usePagination";
 
 function getMonthRange(offset: number) {
@@ -46,7 +46,10 @@ function getMonthRange(offset: number) {
   const lastDay = new Date(year, month + 1, 0).getDate();
   return {
     label,
-    displayLabel: new Date(year, month).toLocaleDateString("en-US", { month: "long", year: "numeric" }),
+    displayLabel: new Date(year, month).toLocaleDateString("en-US", {
+      month: "long",
+      year: "numeric",
+    }),
     start: `${label}-01`,
     end: `${label}-${String(lastDay).padStart(2, "0")}`,
   };
@@ -74,9 +77,7 @@ function usePlatformLLMUsage(monthOffset: number) {
       const { db } = getFirebaseServices();
 
       const tenantsSnap = await getDocs(collection(db, "tenants"));
-      const tenants = tenantsSnap.docs.map(
-        (d) => ({ id: d.id, ...d.data() }) as Tenant,
-      );
+      const tenants = tenantsSnap.docs.map((d) => ({ id: d.id, ...d.data() }) as Tenant);
 
       const tenantCostResults = await Promise.all(
         tenants.map(async (tenant) => {
@@ -85,14 +86,12 @@ function usePlatformLLMUsage(monthOffset: number) {
             colRef,
             where("date", ">=", range.start),
             where("date", "<=", range.end),
-            orderBy("date", "desc"),
+            orderBy("date", "desc")
           );
           const snap = await getDocs(q);
-          const days = snap.docs.map(
-            (d) => ({ id: d.id, ...d.data() }) as DailyCostSummary,
-          );
+          const days = snap.docs.map((d) => ({ id: d.id, ...d.data() }) as DailyCostSummary);
           return { tenant, days };
-        }),
+        })
       );
 
       const tenantCosts: TenantCostData[] = [];
@@ -206,14 +205,13 @@ export default function LLMUsagePage() {
           size="icon"
           className="h-8 w-8"
           onClick={() => setMonthOffset((o) => o - 1)}
+          aria-label="Previous month"
         >
           <ChevronLeft className="h-4 w-4" />
         </Button>
-        <div className="flex items-center gap-2 rounded-lg border bg-card px-3 py-1.5 min-w-[160px] justify-center">
-          <Calendar className="h-3.5 w-3.5 text-muted-foreground" />
-          <span className="text-sm font-medium">
-            {range.displayLabel}
-          </span>
+        <div className="bg-card flex min-w-[160px] items-center justify-center gap-2 rounded-lg border px-3 py-1.5">
+          <Calendar className="text-muted-foreground h-3.5 w-3.5" />
+          <span className="text-sm font-medium">{range.displayLabel}</span>
         </div>
         <Button
           variant="outline"
@@ -221,6 +219,7 @@ export default function LLMUsagePage() {
           className="h-8 w-8"
           disabled={monthOffset >= 0}
           onClick={() => setMonthOffset((o) => o + 1)}
+          aria-label="Next month"
         >
           <ChevronRight className="h-4 w-4" />
         </Button>
@@ -244,7 +243,7 @@ export default function LLMUsagePage() {
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {Array.from({ length: 4 }).map((_, i) => (
               <Card key={i}>
-                <CardContent className="pb-4 pt-4 px-4 space-y-2">
+                <CardContent className="space-y-2 px-4 pb-4 pt-4">
                   <Skeleton className="h-4 w-24" />
                   <Skeleton className="h-8 w-16" />
                   <Skeleton className="h-3 w-32" />
@@ -254,7 +253,7 @@ export default function LLMUsagePage() {
           </div>
           <Card>
             <CardContent className="p-6">
-              <Skeleton className="h-5 w-32 mb-4" />
+              <Skeleton className="mb-4 h-5 w-32" />
               <Skeleton className="h-[200px] w-full rounded-md" />
             </CardContent>
           </Card>
@@ -297,8 +296,15 @@ export default function LLMUsagePage() {
               </CardHeader>
               <CardContent className="pt-0">
                 <ResponsiveContainer width="100%" height={260}>
-                  <BarChart data={data.dailyTrend} margin={{ top: 8, right: 8, bottom: 0, left: -12 }}>
-                    <CartesianGrid strokeDasharray="3 3" className="stroke-border" vertical={false} />
+                  <BarChart
+                    data={data.dailyTrend}
+                    margin={{ top: 8, right: 8, bottom: 0, left: -12 }}
+                  >
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      className="stroke-border"
+                      vertical={false}
+                    />
                     <XAxis
                       dataKey="label"
                       className="text-xs"
@@ -316,11 +322,21 @@ export default function LLMUsagePage() {
                     <Tooltip
                       formatter={(value: number) => [`$${value.toFixed(2)}`, "Cost"]}
                       cursor={{ fill: "hsl(var(--muted))", radius: 4 }}
-                      contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "8px", color: "hsl(var(--card-foreground))" }}
+                      contentStyle={{
+                        backgroundColor: "hsl(var(--card))",
+                        border: "1px solid hsl(var(--border))",
+                        borderRadius: "8px",
+                        color: "hsl(var(--card-foreground))",
+                      }}
                       labelStyle={{ color: "hsl(var(--card-foreground))" }}
                       itemStyle={{ color: "hsl(var(--card-foreground))" }}
                     />
-                    <Bar dataKey="cost" fill="hsl(var(--primary))" radius={[6, 6, 0, 0]} maxBarSize={48} />
+                    <Bar
+                      dataKey="cost"
+                      fill="hsl(var(--primary))"
+                      radius={[6, 6, 0, 0]}
+                      maxBarSize={48}
+                    />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -343,9 +359,10 @@ export default function LLMUsagePage() {
                     return (
                       <div key={p.name} className="space-y-2">
                         <div className="flex items-center justify-between text-sm">
-                          <span className="capitalize font-medium">{p.name}</span>
+                          <span className="font-medium capitalize">{p.name}</span>
                           <span className="text-muted-foreground tabular-nums">
-                            ${p.costUsd.toFixed(2)} ({pct}%) &middot; {p.calls.toLocaleString()} calls
+                            ${p.costUsd.toFixed(2)} ({pct}%) &middot; {p.calls.toLocaleString()}{" "}
+                            calls
                           </span>
                         </div>
                         <Progress value={Math.min(pct, 100)} className="h-2" />
@@ -362,9 +379,7 @@ export default function LLMUsagePage() {
             <CardHeader className="pb-3">
               <div>
                 <CardTitle className="text-base">Per-Tenant Usage</CardTitle>
-                <p className="text-xs text-muted-foreground mt-0.5">
-                  Sorted by cost, descending
-                </p>
+                <p className="text-muted-foreground mt-0.5 text-xs">Sorted by cost, descending</p>
               </div>
             </CardHeader>
             <CardContent className="p-0">
@@ -384,13 +399,11 @@ export default function LLMUsagePage() {
                     <TableRow>
                       <TableCell colSpan={5} className="h-48">
                         <div className="flex flex-col items-center justify-center text-center">
-                          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-                            <Zap className="h-6 w-6 text-muted-foreground" />
+                          <div className="bg-muted flex h-12 w-12 items-center justify-center rounded-full">
+                            <Zap className="text-muted-foreground h-6 w-6" />
                           </div>
-                          <h3 className="mt-3 text-sm font-semibold">
-                            No AI usage this month
-                          </h3>
-                          <p className="mt-1 text-xs text-muted-foreground">
+                          <h3 className="mt-3 text-sm font-semibold">No AI usage this month</h3>
+                          <p className="text-muted-foreground mt-1 text-xs">
                             No tenants have recorded AI API calls for {range.displayLabel}.
                           </p>
                         </div>
@@ -402,7 +415,7 @@ export default function LLMUsagePage() {
                         <TableCell>
                           <div>
                             <p className="font-medium">{t.tenantName}</p>
-                            <code className="text-xs text-muted-foreground font-mono">
+                            <code className="text-muted-foreground font-mono text-xs">
                               {t.tenantCode}
                             </code>
                           </div>
@@ -414,9 +427,7 @@ export default function LLMUsagePage() {
                           ${t.totalCost.toFixed(2)}
                         </TableCell>
                         <TableCell className="text-right tabular-nums">
-                          {t.budgetLimitUsd
-                            ? `$${t.budgetLimitUsd.toFixed(2)}`
-                            : "--"}
+                          {t.budgetLimitUsd ? `$${t.budgetLimitUsd.toFixed(2)}` : "--"}
                         </TableCell>
                         <TableCell>
                           {t.budgetUsedPercent !== undefined ? (
@@ -431,20 +442,20 @@ export default function LLMUsagePage() {
                                       : ""
                                 }`}
                               />
-                              <span className={`text-xs w-10 text-right tabular-nums font-medium ${
-                                t.budgetUsedPercent >= 100
-                                  ? "text-destructive"
-                                  : t.budgetUsedPercent >= 80
-                                    ? "text-amber-600 dark:text-amber-400"
-                                    : "text-muted-foreground"
-                              }`}>
+                              <span
+                                className={`w-10 text-right text-xs font-medium tabular-nums ${
+                                  t.budgetUsedPercent >= 100
+                                    ? "text-destructive"
+                                    : t.budgetUsedPercent >= 80
+                                      ? "text-amber-600 dark:text-amber-400"
+                                      : "text-muted-foreground"
+                                }`}
+                              >
                                 {t.budgetUsedPercent}%
                               </span>
                             </div>
                           ) : (
-                            <span className="text-xs text-muted-foreground">
-                              No budget
-                            </span>
+                            <span className="text-muted-foreground text-xs">No budget</span>
                           )}
                         </TableCell>
                       </TableRow>
@@ -465,14 +476,13 @@ export default function LLMUsagePage() {
           {/* Empty state for zero usage */}
           {data.tenantCosts.length === 0 && data.dailyTrend.length === 0 && (
             <div className="flex flex-col items-center justify-center rounded-lg border border-dashed p-12 text-center">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-                <DollarSign className="h-6 w-6 text-muted-foreground" />
+              <div className="bg-muted flex h-12 w-12 items-center justify-center rounded-full">
+                <DollarSign className="text-muted-foreground h-6 w-6" />
               </div>
               <h3 className="mt-4 text-lg font-semibold">No AI usage data</h3>
-              <p className="mt-1 text-sm text-muted-foreground max-w-sm">
-                No tenants have recorded any AI API calls for {range.displayLabel}. Usage
-                data is generated when tenants use AI grading, tutoring, or evaluation
-                features.
+              <p className="text-muted-foreground mt-1 max-w-sm text-sm">
+                No tenants have recorded any AI API calls for {range.displayLabel}. Usage data is
+                generated when tenants use AI grading, tutoring, or evaluation features.
               </p>
             </div>
           )}

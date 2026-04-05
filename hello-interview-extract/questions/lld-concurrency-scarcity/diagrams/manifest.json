@@ -1,0 +1,32 @@
+[
+  {
+    "index": 1,
+    "files": {
+      "png": "diagram-01.png",
+      "svg": "diagram-01.svg"
+    },
+    "caption": "Connection Pool",
+    "context": "Here's what should happen when a request needs the database, each request getting a connection from the pool and executing a query:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/1fWOn-fkmNgj.d30dbd3d.svg"
+  },
+  {
+    "index": 2,
+    "files": {
+      "png": "diagram-02.png",
+      "svg": "diagram-02.svg"
+    },
+    "caption": "Connection Pool Blocked",
+    "context": "Five requests can run simultaneously, each using one connection. The sixth request, however, will need to wait until someone returns a connection before it can proceed.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/j2wgT8v9OnpP.661b3ff8.svg"
+  },
+  {
+    "index": 3,
+    "files": {
+      "png": "diagram-03.png",
+      "svg": "diagram-03.svg"
+    },
+    "caption": "Scarcity Decision Tree",
+    "context": "When you spot scarcity in an interview, run through this decision tree:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/l4xRIg4E7ZQM.55f368b6.svg"
+  }
+]

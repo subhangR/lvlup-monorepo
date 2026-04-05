@@ -39,14 +39,13 @@ interface StoreSpace {
   totalStoryPoints: number;
 }
 
-interface ListStoreResponse {
+interface _ListStoreResponse {
   spaces: StoreSpace[];
   hasMore: boolean;
   lastId: string | null;
 }
 
 type SortOption = "newest" | "popular" | "price-low" | "price-high";
-
 
 export default function StoreListPage() {
   const [search, setSearch] = useState("");
@@ -89,9 +88,7 @@ export default function StoreListPage() {
     if (search) {
       const q = search.toLowerCase();
       result = result.filter(
-        (s) =>
-          s.title.toLowerCase().includes(q) ||
-          s.storeDescription.toLowerCase().includes(q)
+        (s) => s.title.toLowerCase().includes(q) || s.storeDescription.toLowerCase().includes(q)
       );
     }
 
@@ -121,9 +118,7 @@ export default function StoreListPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Space Store</h1>
-          <p className="text-sm text-muted-foreground">
-            Browse and enroll in learning spaces
-          </p>
+          <p className="text-muted-foreground text-sm">Browse and enroll in learning spaces</p>
         </div>
         {cartCount > 0 && (
           <Button asChild>
@@ -138,7 +133,7 @@ export default function StoreListPage() {
       {/* Search, Filters & Sort */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Search className="text-muted-foreground absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2" />
           <Input
             type="text"
             placeholder="Search spaces..."
@@ -147,7 +142,10 @@ export default function StoreListPage() {
             className="pl-9"
           />
         </div>
-        <Select value={subjectFilter || 'all'} onValueChange={(v) => setSubjectFilter(v === 'all' ? '' : v)}>
+        <Select
+          value={subjectFilter || "all"}
+          onValueChange={(v) => setSubjectFilter(v === "all" ? "" : v)}
+        >
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="All Subjects" />
           </SelectTrigger>
@@ -162,7 +160,7 @@ export default function StoreListPage() {
         </Select>
         <Select value={sortBy} onValueChange={(v) => setSortBy(v as SortOption)}>
           <SelectTrigger className="w-[160px]">
-            <ArrowUpDown className="h-3.5 w-3.5 mr-1.5" />
+            <ArrowUpDown className="mr-1.5 h-3.5 w-3.5" />
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -192,22 +190,24 @@ export default function StoreListPage() {
 
       {/* Loading / Error */}
       {isLoading && (
-        <div className={viewMode === "grid" ? "grid gap-4 sm:grid-cols-2 lg:grid-cols-3" : "space-y-3"}>
+        <div
+          className={viewMode === "grid" ? "grid gap-4 sm:grid-cols-2 lg:grid-cols-3" : "space-y-3"}
+        >
           {[1, 2, 3, 4, 5, 6].map((i) => (
             <div key={i} className="rounded-lg border">
               {viewMode === "grid" && <Skeleton className="h-40 rounded-t-lg" />}
-              <div className="p-4 space-y-2">
+              <div className="space-y-2 p-4">
                 <Skeleton className="h-5 w-3/4" />
                 <Skeleton className="h-4 w-full" />
                 <Skeleton className="h-4 w-1/2" />
-                <Skeleton className="h-8 w-full mt-2" />
+                <Skeleton className="mt-2 h-8 w-full" />
               </div>
             </div>
           ))}
         </div>
       )}
       {error && (
-        <div className="rounded-md bg-destructive/10 p-4 text-sm text-destructive">
+        <div className="bg-destructive/10 text-destructive rounded-md p-4 text-sm">
           Failed to load store spaces. Please try again.
         </div>
       )}
@@ -215,9 +215,9 @@ export default function StoreListPage() {
       {/* Empty state */}
       {!isLoading && processedSpaces.length === 0 && (
         <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-16">
-          <Sparkles className="h-10 w-10 text-muted-foreground" />
+          <Sparkles className="text-muted-foreground h-10 w-10" />
           <p className="mt-3 text-sm font-medium">No spaces found</p>
-          <p className="mt-1 text-xs text-muted-foreground">
+          <p className="text-muted-foreground mt-1 text-xs">
             {search
               ? "Try adjusting your search or filters"
               : subjectFilter
@@ -242,11 +242,7 @@ export default function StoreListPage() {
 
       {/* Space Grid/List */}
       <div
-        className={
-          viewMode === "grid"
-            ? "grid gap-4 sm:grid-cols-2 lg:grid-cols-3"
-            : "space-y-3"
-        }
+        className={viewMode === "grid" ? "grid gap-4 sm:grid-cols-2 lg:grid-cols-3" : "space-y-3"}
       >
         {processedSpaces.map((space) => {
           const isEnrolled = enrolledIds.includes(space.id);
@@ -256,7 +252,7 @@ export default function StoreListPage() {
             return (
               <div
                 key={space.id}
-                className="flex items-center gap-4 rounded-lg border bg-card p-4 hover:shadow-sm transition-shadow"
+                className="bg-card flex items-center gap-4 rounded-lg border p-4 transition-shadow hover:shadow-sm"
               >
                 <Link to={`/store/${space.id}`} className="flex-shrink-0">
                   {space.storeThumbnailUrl ? (
@@ -268,21 +264,19 @@ export default function StoreListPage() {
                       className="h-20 w-28 rounded-md object-cover"
                     />
                   ) : (
-                    <div className="flex h-20 w-28 items-center justify-center rounded-md bg-muted">
-                      <BookOpen className="h-6 w-6 text-muted-foreground" />
+                    <div className="bg-muted flex h-20 w-28 items-center justify-center rounded-md">
+                      <BookOpen className="text-muted-foreground h-6 w-6" />
                     </div>
                   )}
                 </Link>
-                <div className="flex-1 min-w-0">
+                <div className="min-w-0 flex-1">
                   <Link to={`/store/${space.id}`}>
-                    <h3 className="font-semibold hover:text-primary truncate">
-                      {space.title}
-                    </h3>
+                    <h3 className="hover:text-primary truncate font-semibold">{space.title}</h3>
                   </Link>
-                  <p className="line-clamp-1 text-sm text-muted-foreground">
+                  <p className="text-muted-foreground line-clamp-1 text-sm">
                     {space.storeDescription}
                   </p>
-                  <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
+                  <div className="text-muted-foreground mt-1 flex items-center gap-3 text-xs">
                     {space.subject && <span>{space.subject}</span>}
                     <span className="flex items-center gap-1">
                       <Users className="h-3 w-3" />
@@ -329,7 +323,7 @@ export default function StoreListPage() {
           return (
             <div
               key={space.id}
-              className="group rounded-lg border bg-card transition-shadow hover:shadow-md"
+              className="bg-card group rounded-lg border transition-shadow hover:shadow-md"
             >
               <Link to={`/store/${space.id}`}>
                 {space.storeThumbnailUrl ? (
@@ -341,18 +335,16 @@ export default function StoreListPage() {
                     className="h-40 w-full rounded-t-lg object-cover"
                   />
                 ) : (
-                  <div className="flex h-40 items-center justify-center rounded-t-lg bg-muted">
-                    <BookOpen className="h-10 w-10 text-muted-foreground" />
+                  <div className="bg-muted flex h-40 items-center justify-center rounded-t-lg">
+                    <BookOpen className="text-muted-foreground h-10 w-10" />
                   </div>
                 )}
               </Link>
-              <div className="p-4 space-y-2">
+              <div className="space-y-2 p-4">
                 <Link to={`/store/${space.id}`}>
-                  <h3 className="font-semibold group-hover:text-primary">
-                    {space.title}
-                  </h3>
+                  <h3 className="group-hover:text-primary font-semibold">{space.title}</h3>
                 </Link>
-                <p className="line-clamp-2 text-sm text-muted-foreground">
+                <p className="text-muted-foreground line-clamp-2 text-sm">
                   {space.storeDescription}
                 </p>
 
@@ -362,14 +354,14 @@ export default function StoreListPage() {
                     {space.labels.slice(0, 3).map((label) => (
                       <span
                         key={label}
-                        className="inline-flex items-center gap-0.5 rounded-full bg-muted px-2 py-0.5 text-xs"
+                        className="bg-muted inline-flex items-center gap-0.5 rounded-full px-2 py-0.5 text-xs"
                       >
                         <Tag className="h-2.5 w-2.5" />
                         {label}
                       </span>
                     ))}
                     {space.labels.length > 3 && (
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-muted-foreground text-xs">
                         +{space.labels.length - 3}
                       </span>
                     )}
@@ -378,11 +370,9 @@ export default function StoreListPage() {
 
                 <div className="flex items-center justify-between pt-1">
                   <span className="text-lg font-bold">
-                    {space.price === 0
-                      ? "Free"
-                      : `${space.currency} ${space.price}`}
+                    {space.price === 0 ? "Free" : `${space.currency} ${space.price}`}
                   </span>
-                  <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                  <div className="text-muted-foreground flex items-center gap-3 text-xs">
                     <span className="flex items-center gap-1">
                       <Users className="h-3.5 w-3.5" />
                       {space.totalStudents}
@@ -395,7 +385,7 @@ export default function StoreListPage() {
                 </div>
 
                 {space.subject && (
-                  <span className="inline-block rounded-full bg-muted px-2.5 py-0.5 text-xs">
+                  <span className="bg-muted inline-block rounded-full px-2.5 py-0.5 text-xs">
                     {space.subject}
                   </span>
                 )}

@@ -1,11 +1,5 @@
-import * as admin from 'firebase-admin';
-import { logger } from 'firebase-functions/v2';
-import type { UnifiedUser, UserMembership, Tenant, TenantRole } from '@levelup/shared-types';
-import {
-  UnifiedUserSchema,
-  UserMembershipSchema,
-  TenantSchema,
-} from '@levelup/shared-types';
+import * as admin from "firebase-admin";
+import type { UnifiedUser, UserMembership, Tenant, TenantRole } from "@levelup/shared-types";
 
 const db = () => admin.firestore();
 
@@ -13,52 +7,34 @@ const db = () => admin.firestore();
 export async function getUser(uid: string): Promise<UnifiedUser | null> {
   const doc = await db().doc(`users/${uid}`).get();
   if (!doc.exists) return null;
-  const result = UnifiedUserSchema.safeParse({ ...doc.data() });
-  if (!result.success) {
-    logger.error('Invalid UnifiedUser document', { docId: doc.id, errors: result.error.flatten() });
-    return null;
-  }
-  return result.data as unknown as UnifiedUser;
+  return { id: doc.id, ...doc.data() } as unknown as UnifiedUser;
 }
 
 /** Get a membership document. */
-export async function getMembership(
-  uid: string,
-  tenantId: string,
-): Promise<UserMembership | null> {
+export async function getMembership(uid: string, tenantId: string): Promise<UserMembership | null> {
   const doc = await db().doc(`userMemberships/${uid}_${tenantId}`).get();
   if (!doc.exists) return null;
-  const result = UserMembershipSchema.safeParse({ ...doc.data() });
-  if (!result.success) {
-    logger.error('Invalid UserMembership document', { docId: doc.id, errors: result.error.flatten() });
-    return null;
-  }
-  return result.data as unknown as UserMembership;
+  return { id: doc.id, ...doc.data() } as unknown as UserMembership;
 }
 
 /** Get a tenant document. */
 export async function getTenant(tenantId: string): Promise<Tenant | null> {
   const doc = await db().doc(`tenants/${tenantId}`).get();
   if (!doc.exists) return null;
-  const result = TenantSchema.safeParse({ id: doc.id, ...doc.data() });
-  if (!result.success) {
-    logger.error('Invalid Tenant document', { docId: doc.id, errors: result.error.flatten() });
-    return null;
-  }
-  return result.data as unknown as Tenant;
+  return { id: doc.id, ...doc.data() } as unknown as Tenant;
 }
 
 /** Atomically increment or decrement a tenant stat counter. */
 export async function updateTenantStats(
   tenantId: string,
   role: TenantRole,
-  operation: 'increment' | 'decrement',
+  operation: "increment" | "decrement"
 ): Promise<void> {
-  const delta = operation === 'increment' ? 1 : -1;
+  const delta = operation === "increment" ? 1 : -1;
 
   const fieldMap: Partial<Record<TenantRole, string>> = {
-    student: 'stats.totalStudents',
-    teacher: 'stats.totalTeachers',
+    student: "stats.totalStudents",
+    teacher: "stats.totalTeachers",
   };
 
   const field = fieldMap[role];

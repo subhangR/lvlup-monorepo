@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Loader2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Label } from "../ui/label";
@@ -6,7 +7,9 @@ import { Label } from "../ui/label";
 export interface SchoolCodeStepProps {
   onSchoolResolved: (school: { id: string; name: string; code: string }) => void;
   onConsumerClick?: () => void;
-  lookupTenantByCode: (code: string) => Promise<{ id: string; name: string; status: string; code: string } | null>;
+  lookupTenantByCode: (
+    code: string
+  ) => Promise<{ id: string; name: string; status: string; code: string } | null>;
 }
 
 export function SchoolCodeStep({
@@ -43,9 +46,7 @@ export function SchoolCodeStep({
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {error && (
-        <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-          {error}
-        </div>
+        <div className="bg-destructive/10 text-destructive rounded-md p-3 text-sm">{error}</div>
       )}
 
       <div className="space-y-2">
@@ -62,11 +63,12 @@ export function SchoolCodeStep({
       </div>
 
       <Button type="submit" className="w-full" disabled={loading}>
+        {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
         {loading ? "Validating..." : "Continue"}
       </Button>
 
       {onConsumerClick && (
-        <p className="text-center text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-center text-sm">
           Don't have a code?{" "}
           <button
             type="button"

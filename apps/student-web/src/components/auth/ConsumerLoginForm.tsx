@@ -1,7 +1,8 @@
-import { useState, type FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '@levelup/shared-stores';
-import { Button, Input } from '@levelup/shared-ui';
+import { useState, type FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "@levelup/shared-stores";
+import { Button, Input } from "@levelup/shared-ui";
+import { Loader2 } from "lucide-react";
 
 interface ConsumerLoginFormProps {
   onSwitchToSignup: () => void;
@@ -12,8 +13,8 @@ export function ConsumerLoginForm({ onSwitchToSignup, onSwitchToSchool }: Consum
   const navigate = useNavigate();
   const { login, loginWithGoogle, loading, error, clearError } = useAuthStore();
 
-  const [credential, setCredential] = useState('');
-  const [password, setPassword] = useState('');
+  const [credential, setCredential] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -21,7 +22,7 @@ export function ConsumerLoginForm({ onSwitchToSignup, onSwitchToSchool }: Consum
 
     try {
       await login(credential, password);
-      navigate('/consumer', { replace: true });
+      navigate("/consumer", { replace: true });
     } catch {
       // Error is already set in the store
     }
@@ -31,7 +32,7 @@ export function ConsumerLoginForm({ onSwitchToSignup, onSwitchToSchool }: Consum
     clearError();
     try {
       await loginWithGoogle();
-      navigate('/consumer', { replace: true });
+      navigate("/consumer", { replace: true });
     } catch {
       // Error is already set in the store
     }
@@ -41,9 +42,7 @@ export function ConsumerLoginForm({ onSwitchToSignup, onSwitchToSchool }: Consum
     <>
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
-          <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-            {error}
-          </div>
+          <div className="bg-destructive/10 text-destructive rounded-md p-3 text-sm">{error}</div>
         )}
 
         <div className="space-y-2">
@@ -76,7 +75,8 @@ export function ConsumerLoginForm({ onSwitchToSignup, onSwitchToSchool }: Consum
         </div>
 
         <Button type="submit" disabled={loading} className="w-full">
-          {loading ? 'Signing in...' : 'Sign In'}
+          {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {loading ? "Signing in..." : "Sign In"}
         </Button>
       </form>
 
@@ -85,16 +85,12 @@ export function ConsumerLoginForm({ onSwitchToSignup, onSwitchToSchool }: Consum
           <span className="w-full border-t" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-card px-2 text-muted-foreground">or</span>
+          <span className="bg-card text-muted-foreground px-2">or</span>
         </div>
       </div>
 
-      <Button
-        variant="outline"
-        onClick={handleGoogle}
-        disabled={loading}
-        className="w-full gap-2"
-      >
+      <Button variant="outline" onClick={handleGoogle} disabled={loading} className="w-full gap-2">
+        {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
         Sign in with Google
       </Button>
 
@@ -102,11 +98,7 @@ export function ConsumerLoginForm({ onSwitchToSignup, onSwitchToSchool }: Consum
         <Button variant="link" onClick={onSwitchToSignup}>
           Create an account
         </Button>
-        <Button
-          variant="link"
-          onClick={onSwitchToSchool}
-          className="text-muted-foreground"
-        >
+        <Button variant="link" onClick={onSwitchToSchool} className="text-muted-foreground">
           Back to school login
         </Button>
       </div>

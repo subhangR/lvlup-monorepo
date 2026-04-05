@@ -1,0 +1,179 @@
+{
+  "spaceId": "zRMBmxWdz2yEENbwg1Ka",
+  "spaceTitle": "System Design Interview Prep V2 (HLD)",
+  "tenantId": "tenant_subhang",
+  "classId": "cls_g10_sysdesign_a",
+  "storyPointCount": 28,
+  "totalItemCount": 931,
+  "storyPoints": [
+    {
+      "id": "Vt1KbhgsdVC4XQhuCKO2",
+      "title": "Distributed Cache",
+      "type": "standard",
+      "itemCount": 32
+    },
+    {
+      "id": "rcaQ0ePafYPn11qsx2Ql",
+      "title": "Distributed Rate Limiter",
+      "type": "standard",
+      "itemCount": 35
+    },
+    {
+      "id": "DnYKCbEnPxDkaNPj8tKY",
+      "title": "Job Scheduler",
+      "type": "standard",
+      "itemCount": 33
+    },
+    {
+      "id": "Mrtmlu7UdH9HtJLXOBYe",
+      "title": "Metrics Monitoring",
+      "type": "standard",
+      "itemCount": 33
+    },
+    {
+      "id": "PZKrLdpJOgmEdzktZbWh",
+      "title": "Design a Top-K System (YouTube Top K)",
+      "type": "standard",
+      "itemCount": 35
+    },
+    {
+      "id": "nKxvgaJLUEGhxiYbDH53",
+      "title": "Web Crawler",
+      "type": "standard",
+      "itemCount": 33
+    },
+    {
+      "id": "lCyyCQmJOKlszrklMsgb",
+      "title": "Ad Click Aggregator",
+      "type": "standard",
+      "itemCount": 33
+    },
+    {
+      "id": "rDYQMQ9osw3TZOOZQ7sX",
+      "title": "Design Facebook News Feed",
+      "type": "standard",
+      "itemCount": 33
+    },
+    {
+      "id": "FhzuAqcBUyvgDr1v6nn4",
+      "title": "Facebook Live Comments — Real-Time Comment System Design",
+      "type": "standard",
+      "itemCount": 33
+    },
+    {
+      "id": "jfEuqPfxMxvneDJVEZtd",
+      "title": "Facebook Post Search",
+      "type": "standard",
+      "itemCount": 33
+    },
+    {
+      "id": "nbQR9ReabwPddSlknkBY",
+      "title": "Design Instagram",
+      "type": "standard",
+      "itemCount": 33
+    },
+    {
+      "id": "VUND1DJvaS4fI8DtjK2u",
+      "title": "Design WhatsApp (Real-time Messaging)",
+      "type": "standard",
+      "itemCount": 33
+    },
+    {
+      "id": "oR3Qg6uIHyyUFxkCAEz1",
+      "title": "YouTube",
+      "type": "standard",
+      "itemCount": 33
+    },
+    {
+      "id": "nL2aahHoMG7cRs0wdKXy",
+      "title": "Dropbox — Cloud File Storage System Design",
+      "type": "standard",
+      "itemCount": 33
+    },
+    {
+      "id": "ktHOfg9RdXVhfZL9QOP8",
+      "title": "Google Docs",
+      "type": "standard",
+      "itemCount": 33
+    },
+    {
+      "id": "vHQ0pnRtLjHwAOkkO6Gh",
+      "title": "Design a News Aggregator (Google News)",
+      "type": "standard",
+      "itemCount": 33
+    },
+    {
+      "id": "yVwEe3m0lLPI2SebLqTa",
+      "title": "LeetCode — Code Execution Platform System Design",
+      "type": "standard",
+      "itemCount": 33
+    },
+    {
+      "id": "zizyZf92PIQZWlVV8u7l",
+      "title": "Payment System",
+      "type": "standard",
+      "itemCount": 33
+    },
+    {
+      "id": "sUiUaHiJiMDYEXhSYTk5",
+      "title": "Robinhood",
+      "type": "standard",
+      "itemCount": 33
+    },
+    {
+      "id": "TK9Fa4LxZpRYMBNRtmVM",
+      "title": "Design an Online Auction System",
+      "type": "standard",
+      "itemCount": 33
+    },
+    {
+      "id": "QmNyc9oTAP94sfcsR3iM",
+      "title": "Ticketmaster",
+      "type": "standard",
+      "itemCount": 33
+    },
+    {
+      "id": "1N1is2eRDa60tzh5e87g",
+      "title": "Design CamelCamelCamel (Price Tracking Service)",
+      "type": "standard",
+      "itemCount": 33
+    },
+    {
+      "id": "0qnGUBbRHgfgIVE4ZG35",
+      "title": "Uber",
+      "type": "standard",
+      "itemCount": 33
+    },
+    {
+      "id": "XtFgnM1G1r0SARtjGuXO",
+      "title": "Tinder",
+      "type": "standard",
+      "itemCount": 35
+    },
+    {
+      "id": "faMSL9rKs9E5aeRYGdQX",
+      "title": "GoPuff — Local Delivery Service",
+      "type": "standard",
+      "itemCount": 35
+    },
+    {
+      "id": "OU3GYGHtjJ575NBUj2Bi",
+      "title": "Design a Fitness Tracking App (Strava)",
+      "type": "standard",
+      "itemCount": 33
+    },
+    {
+      "id": "D8Md5sFWvjCpfKRszNzZ",
+      "title": "Yelp",
+      "type": "standard",
+      "itemCount": 33
+    },
+    {
+      "id": "d8vRdRqlGMnUBFU7W2FC",
+      "title": "Design a URL Shortener (Bit.ly)",
+      "type": "standard",
+      "itemCount": 33
+    }
+  ],
+  "seededAt": "2026-03-26T17:45:48.013Z"
+}

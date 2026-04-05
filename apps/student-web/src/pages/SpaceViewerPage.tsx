@@ -1,9 +1,9 @@
-import { useMemo, useState } from 'react';
-import { useParams, Link, useNavigate } from 'react-router-dom';
-import { useAuthStore } from '@levelup/shared-stores';
-import { useSpace, useProgress } from '@levelup/shared-hooks';
-import { useStoryPoints } from '../hooks/useStoryPoints';
-import ProgressBar from '../components/common/ProgressBar';
+import { useMemo, useState } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
+import { useAuthStore } from "@levelup/shared-stores";
+import { useSpace, useProgress } from "@levelup/shared-hooks";
+import { useStoryPoints } from "../hooks/useStoryPoints";
+import ProgressBar from "../components/common/ProgressBar";
 import {
   Button,
   Skeleton,
@@ -20,7 +20,7 @@ import {
   TabsContent,
   Card,
   CardContent,
-} from '@levelup/shared-ui';
+} from "@levelup/shared-ui";
 import {
   BookOpen,
   Clock,
@@ -37,9 +37,9 @@ import {
   RefreshCw,
   BarChart3,
   Brain,
-} from 'lucide-react';
-import type { StoryPoint, StoryPointProgress } from '@levelup/shared-types';
-import SpaceReviewSection from '../components/spaces/SpaceReviewSection';
+} from "lucide-react";
+import type { StoryPoint, StoryPointProgress } from "@levelup/shared-types";
+import SpaceReviewSection from "../components/spaces/SpaceReviewSection";
 
 export default function SpaceViewerPage() {
   const { spaceId } = useParams<{ spaceId: string }>();
@@ -47,8 +47,16 @@ export default function SpaceViewerPage() {
   const { currentTenantId, user } = useAuthStore();
   const userId = user?.uid ?? null;
 
-  const { data: space, isLoading: spaceLoading, isError: spaceError, refetch: refetchSpace } = useSpace(currentTenantId, spaceId ?? null);
-  const { data: storyPoints, isLoading: spLoading } = useStoryPoints(currentTenantId, spaceId ?? null);
+  const {
+    data: space,
+    isLoading: spaceLoading,
+    isError: spaceError,
+    refetch: refetchSpace,
+  } = useSpace(currentTenantId, spaceId ?? null);
+  const { data: storyPoints, isLoading: spLoading } = useStoryPoints(
+    currentTenantId,
+    spaceId ?? null
+  );
   const { data: progress } = useProgress(currentTenantId, userId, spaceId);
 
   const overallPercentage = progress?.percentage ?? 0;
@@ -61,9 +69,9 @@ export default function SpaceViewerPage() {
     if (!storyPoints?.length || !progress) return null;
     for (const sp of storyPoints) {
       const spProgress = progress.storyPoints[sp.id];
-      if (!spProgress || spProgress.status !== 'completed') {
-        const isTest = sp.type === 'timed_test' || sp.type === 'test';
-        const isPractice = sp.type === 'practice';
+      if (!spProgress || spProgress.status !== "completed") {
+        const isTest = sp.type === "timed_test" || sp.type === "test";
+        const isPractice = sp.type === "practice";
         const base = `/spaces/${spaceId}`;
         if (isTest) return `${base}/test/${sp.id}`;
         if (isPractice) return `${base}/practice/${sp.id}`;
@@ -87,10 +95,10 @@ export default function SpaceViewerPage() {
 
   if (spaceError) {
     return (
-      <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-8 text-center">
-        <AlertCircle className="h-10 w-10 mx-auto mb-2 text-destructive/60" />
-        <p className="text-sm font-medium text-destructive">Failed to load space</p>
-        <p className="text-xs text-muted-foreground mt-1">Check your connection and try again.</p>
+      <div className="border-destructive/30 bg-destructive/5 rounded-lg border p-8 text-center">
+        <AlertCircle className="text-destructive/60 mx-auto mb-2 h-10 w-10" />
+        <p className="text-destructive text-sm font-medium">Failed to load space</p>
+        <p className="text-muted-foreground mt-1 text-xs">Check your connection and try again.</p>
         <Button variant="outline" size="sm" onClick={() => refetchSpace()} className="mt-3 gap-1.5">
           <RefreshCw className="h-3.5 w-3.5" /> Retry
         </Button>
@@ -100,9 +108,9 @@ export default function SpaceViewerPage() {
 
   if (!space) {
     return (
-      <div className="rounded-lg border bg-muted/50 p-8 text-center">
-        <BookOpen className="h-10 w-10 mx-auto mb-2 text-muted-foreground/30" />
-        <p className="text-sm text-muted-foreground">Space not found or has been removed.</p>
+      <div className="bg-muted/50 rounded-lg border p-8 text-center">
+        <BookOpen className="text-muted-foreground/30 mx-auto mb-2 h-10 w-10" />
+        <p className="text-muted-foreground text-sm">Space not found or has been removed.</p>
         <Button variant="outline" size="sm" asChild className="mt-3">
           <a href="/spaces">Back to Spaces</a>
         </Button>
@@ -124,7 +132,9 @@ export default function SpaceViewerPage() {
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
-              <BreadcrumbLink asChild><Link to="/spaces">Spaces</Link></BreadcrumbLink>
+              <BreadcrumbLink asChild>
+                <Link to="/spaces">Spaces</Link>
+              </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
@@ -132,24 +142,24 @@ export default function SpaceViewerPage() {
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
-        <h1 className="text-2xl font-bold mt-2">{space.title}</h1>
+        <h1 className="mt-2 text-2xl font-bold">{space.title}</h1>
         {space.description && (
-          <p className="text-sm text-muted-foreground mt-1">{space.description}</p>
+          <p className="text-muted-foreground mt-1 text-sm">{space.description}</p>
         )}
 
         {/* Progress + Points Summary */}
         <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end sm:gap-6">
-          <div className="flex-1 max-w-md">
+          <div className="max-w-md flex-1">
             <ProgressBar
               value={overallPercentage}
               label="Overall Progress"
-              color={overallPercentage === 100 ? 'green' : 'blue'}
+              color={overallPercentage === 100 ? "green" : "blue"}
               animate
             />
           </div>
           <div className="flex items-center gap-4">
             {totalPoints > 0 && (
-              <div className="flex items-center gap-2 rounded-lg border bg-card px-3 py-2">
+              <div className="bg-card flex items-center gap-2 rounded-lg border px-3 py-2">
                 <Trophy className="h-4 w-4 text-yellow-500" />
                 <div className="text-sm">
                   <span className="font-bold">{pointsEarned}</span>
@@ -158,11 +168,7 @@ export default function SpaceViewerPage() {
               </div>
             )}
             {resumeTarget && overallPercentage < 100 && (
-              <Button
-                size="sm"
-                onClick={() => navigate(resumeTarget)}
-                className="gap-1.5"
-              >
+              <Button size="sm" onClick={() => navigate(resumeTarget)} className="gap-1.5">
                 <ArrowRight className="h-3.5 w-3.5" />
                 Resume
               </Button>
@@ -176,16 +182,16 @@ export default function SpaceViewerPage() {
         <TabsList>
           <TabsTrigger value="contents">Contents</TabsTrigger>
           <TabsTrigger value="overview">
-            <BarChart3 className="h-3.5 w-3.5 mr-1" /> Overview
+            <BarChart3 className="mr-1 h-3.5 w-3.5" /> Overview
           </TabsTrigger>
           <TabsTrigger value="ai-analytics">
-            <Brain className="h-3.5 w-3.5 mr-1" /> AI Analytics
+            <Brain className="mr-1 h-3.5 w-3.5" /> AI Analytics
           </TabsTrigger>
         </TabsList>
 
-        <TabsContent value="contents" className="space-y-3 mt-4">
+        <TabsContent value="contents" className="mt-4 space-y-3">
           {!storyPoints?.length ? (
-            <p className="text-sm text-muted-foreground">No content available yet.</p>
+            <p className="text-muted-foreground text-sm">No content available yet.</p>
           ) : (
             storyPoints.map((sp, index) => (
               <StoryPointCard
@@ -200,11 +206,11 @@ export default function SpaceViewerPage() {
           )}
         </TabsContent>
 
-        <TabsContent value="overview" className="space-y-4 mt-4">
+        <TabsContent value="overview" className="mt-4 space-y-4">
           <ModuleOverview storyPoints={storyPoints ?? []} progress={progress} />
         </TabsContent>
 
-        <TabsContent value="ai-analytics" className="space-y-4 mt-4">
+        <TabsContent value="ai-analytics" className="mt-4 space-y-4">
           <AIAnalyticsSection
             storyPoints={storyPoints ?? []}
             progress={progress}
@@ -226,19 +232,19 @@ export default function SpaceViewerPage() {
 }
 
 const typeIcons: Record<string, React.ReactNode> = {
-  standard: <BookOpen className="h-5 w-5 text-primary" />,
-  timed_test: <Clock className="h-5 w-5 text-destructive" />,
-  test: <ClipboardList className="h-5 w-5 text-destructive" />,
+  standard: <BookOpen className="text-primary h-5 w-5" />,
+  timed_test: <Clock className="text-destructive h-5 w-5" />,
+  test: <ClipboardList className="text-destructive h-5 w-5" />,
   quiz: <Zap className="h-5 w-5 text-yellow-500" />,
   practice: <Dumbbell className="h-5 w-5 text-emerald-500" />,
 };
 
 const typeLabels: Record<string, string> = {
-  standard: 'Learning',
-  timed_test: 'Timed Test',
-  test: 'Test',
-  quiz: 'Quiz',
-  practice: 'Practice',
+  standard: "Learning",
+  timed_test: "Timed Test",
+  test: "Test",
+  quiz: "Quiz",
+  practice: "Practice",
 };
 
 function StoryPointCard({
@@ -252,11 +258,11 @@ function StoryPointCard({
   total: number;
   progress?: StoryPointProgress;
 }) {
-  const isTest = storyPoint.type === 'timed_test' || storyPoint.type === 'test';
-  const isPractice = storyPoint.type === 'practice';
-  const isQuiz = storyPoint.type === 'quiz';
+  const isTest = storyPoint.type === "timed_test" || storyPoint.type === "test";
+  const isPractice = storyPoint.type === "practice";
+  const isQuiz = storyPoint.type === "quiz";
   const percentage = progress?.percentage ?? 0;
-  const isCompleted = progress?.status === 'completed';
+  const isCompleted = progress?.status === "completed";
 
   const linkBase = `/spaces/${spaceId}`;
   const link = isTest
@@ -268,7 +274,7 @@ function StoryPointCard({
   return (
     <Link
       to={link}
-      className="flex items-center gap-4 rounded-lg border bg-card p-4 hover:shadow-sm transition-shadow"
+      className="bg-card flex items-center gap-4 rounded-lg border p-4 transition-shadow hover:shadow-sm"
     >
       {/* Completion badge */}
       <div className="flex-shrink-0">
@@ -277,23 +283,25 @@ function StoryPointCard({
             <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
           </div>
         ) : (
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted">
+          <div className="bg-muted flex h-10 w-10 items-center justify-center rounded-full">
             {typeIcons[storyPoint.type] ?? typeIcons.standard}
           </div>
         )}
       </div>
 
-      <div className="flex-1 min-w-0">
+      <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
-          <h3 className="font-medium text-sm">{storyPoint.title}</h3>
-          <span className="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+          <h3 className="text-sm font-medium">{storyPoint.title}</h3>
+          <span className="bg-muted text-muted-foreground rounded-full px-2 py-0.5 text-[10px] font-medium">
             {typeLabels[storyPoint.type] ?? storyPoint.type}
           </span>
         </div>
         {storyPoint.description && (
-          <p className="text-xs text-muted-foreground line-clamp-1 mt-0.5">{storyPoint.description}</p>
+          <p className="text-muted-foreground mt-0.5 line-clamp-1 text-xs">
+            {storyPoint.description}
+          </p>
         )}
-        <div className="flex items-center gap-3 mt-1 text-xs text-muted-foreground">
+        <div className="text-muted-foreground mt-1 flex items-center gap-3 text-xs">
           {storyPoint.stats && (
             <>
               <span>{storyPoint.stats.totalItems} items</span>
@@ -303,9 +311,7 @@ function StoryPointCard({
           {storyPoint.assessmentConfig?.durationMinutes && (
             <span>{storyPoint.assessmentConfig.durationMinutes} min</span>
           )}
-          {storyPoint.difficulty && (
-            <span className="capitalize">{storyPoint.difficulty}</span>
-          )}
+          {storyPoint.difficulty && <span className="capitalize">{storyPoint.difficulty}</span>}
         </div>
         {/* Type-specific display */}
         {isTest && (
@@ -315,21 +321,20 @@ function StoryPointCard({
                 <Award className="h-3 w-3" /> Completed — {percentage}%
               </span>
             ) : (
-              <span className="inline-flex items-center gap-1 text-xs font-medium text-primary">
+              <span className="text-primary inline-flex items-center gap-1 text-xs font-medium">
                 <PlayCircle className="h-3 w-3" /> Start Test
               </span>
             )}
           </div>
         )}
-        {(storyPoint.type === 'standard' || isQuiz) && (
+        {(storyPoint.type === "standard" || isQuiz) && (
           <div className="mt-2 max-w-xs">
             <ProgressBar value={percentage} size="sm" showPercent={false} />
           </div>
         )}
         {isPractice && storyPoint.stats && (
-          <p className="mt-1 text-xs text-muted-foreground">
-            {progress ? Math.round((progress.pointsEarned / (progress.totalPoints || 1)) * (storyPoint.stats.totalItems)) : 0}
-            /{storyPoint.stats.totalItems} solved
+          <p className="text-muted-foreground mt-1 text-xs">
+            {progress?.completedItems ?? 0}/{storyPoint.stats.totalItems} solved
           </p>
         )}
       </div>
@@ -338,11 +343,11 @@ function StoryPointCard({
       {progress && progress.pointsEarned > 0 && (
         <div className="flex-shrink-0 text-right">
           <div className="text-sm font-bold">{progress.pointsEarned}</div>
-          <div className="text-[10px] text-muted-foreground">pts</div>
+          <div className="text-muted-foreground text-[10px]">pts</div>
         </div>
       )}
 
-      <ChevronRight className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+      <ChevronRight className="text-muted-foreground h-5 w-5 flex-shrink-0" />
     </Link>
   );
 }
@@ -356,7 +361,7 @@ function ModuleOverview({
   progress,
 }: {
   storyPoints: StoryPoint[];
-  progress: ReturnType<typeof useProgress>['data'];
+  progress: ReturnType<typeof useProgress>["data"];
 }) {
   const typeCounts = useMemo(() => {
     const counts: Record<string, { total: number; completed: number }> = {};
@@ -364,7 +369,7 @@ function ModuleOverview({
       const label = typeLabels[sp.type] ?? sp.type;
       if (!counts[label]) counts[label] = { total: 0, completed: 0 };
       counts[label].total++;
-      if (progress?.storyPoints[sp.id]?.status === 'completed') {
+      if (progress?.storyPoints[sp.id]?.status === "completed") {
         counts[label].completed++;
       }
     }
@@ -389,37 +394,37 @@ function ModuleOverview({
         <Card>
           <CardContent className="p-4 text-center">
             <p className="text-2xl font-bold">{storyPoints.length}</p>
-            <p className="text-xs text-muted-foreground">Modules</p>
+            <p className="text-muted-foreground text-xs">Modules</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
             <p className="text-2xl font-bold">{totalItems}</p>
-            <p className="text-xs text-muted-foreground">Total Items</p>
+            <p className="text-muted-foreground text-xs">Total Items</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
             <p className="text-2xl font-bold">{totalPoints}</p>
-            <p className="text-xs text-muted-foreground">Total Points</p>
+            <p className="text-muted-foreground text-xs">Total Points</p>
           </CardContent>
         </Card>
       </div>
 
       {/* Type Breakdown */}
       <div className="rounded-lg border p-4">
-        <h3 className="text-sm font-semibold mb-3">Module Type Breakdown</h3>
+        <h3 className="mb-3 text-sm font-semibold">Module Type Breakdown</h3>
         <div className="space-y-2">
           {Object.entries(typeCounts).map(([type, { total, completed }]) => (
             <div key={type} className="flex items-center justify-between">
               <span className="text-sm">{type}</span>
               <div className="flex items-center gap-2">
-                <span className="text-xs text-muted-foreground">
+                <span className="text-muted-foreground text-xs">
                   {completed}/{total} completed
                 </span>
-                <div className="h-2 w-24 rounded-full bg-muted overflow-hidden">
+                <div className="bg-muted h-2 w-24 overflow-hidden rounded-full">
                   <div
-                    className="h-full rounded-full bg-primary transition-all"
+                    className="bg-primary h-full rounded-full transition-all"
                     style={{ width: `${total > 0 ? (completed / total) * 100 : 0}%` }}
                   />
                 </div>
@@ -431,25 +436,25 @@ function ModuleOverview({
 
       {/* Difficulty Distribution */}
       <div className="rounded-lg border p-4">
-        <h3 className="text-sm font-semibold mb-3">Difficulty Distribution</h3>
-        <div className="flex items-end gap-3 h-24">
-          {(['easy', 'medium', 'hard', 'expert'] as const).map((level) => {
+        <h3 className="mb-3 text-sm font-semibold">Difficulty Distribution</h3>
+        <div className="flex h-24 items-end gap-3">
+          {(["easy", "medium", "hard", "expert"] as const).map((level) => {
             const count = difficultyCounts[level] ?? 0;
             const maxCount = Math.max(...Object.values(difficultyCounts), 1);
             const heightPct = (count / maxCount) * 100;
             const colors: Record<string, string> = {
-              easy: 'bg-emerald-500',
-              medium: 'bg-yellow-500',
-              hard: 'bg-orange-500',
-              expert: 'bg-red-500',
+              easy: "bg-emerald-500",
+              medium: "bg-yellow-500",
+              hard: "bg-orange-500",
+              expert: "bg-red-500",
             };
             return (
-              <div key={level} className="flex-1 flex flex-col items-center gap-1">
+              <div key={level} className="flex flex-1 flex-col items-center gap-1">
                 <span className="text-xs font-medium">{count}</span>
                 <div className="w-full rounded-t" style={{ height: `${Math.max(heightPct, 4)}%` }}>
-                  <div className={`w-full h-full rounded-t ${colors[level]}`} />
+                  <div className={`h-full w-full rounded-t ${colors[level]}`} />
                 </div>
-                <span className="text-[10px] text-muted-foreground capitalize">{level}</span>
+                <span className="text-muted-foreground text-[10px] capitalize">{level}</span>
               </div>
             );
           })}
@@ -469,7 +474,7 @@ function AIAnalyticsSection({
   overallPercentage,
 }: {
   storyPoints: StoryPoint[];
-  progress: ReturnType<typeof useProgress>['data'];
+  progress: ReturnType<typeof useProgress>["data"];
   overallPercentage: number;
 }) {
   const insights = useMemo(() => {
@@ -477,12 +482,12 @@ function AIAnalyticsSection({
 
     // Completion rate
     const completed = storyPoints.filter(
-      (sp) => progress?.storyPoints[sp.id]?.status === 'completed',
+      (sp) => progress?.storyPoints[sp.id]?.status === "completed"
     ).length;
     result.push({
-      label: 'Completion Rate',
+      label: "Completion Rate",
       value: `${storyPoints.length > 0 ? Math.round((completed / storyPoints.length) * 100) : 0}%`,
-      color: completed === storyPoints.length ? 'text-emerald-600' : 'text-primary',
+      color: completed === storyPoints.length ? "text-emerald-600" : "text-primary",
     });
 
     // Average score
@@ -490,11 +495,17 @@ function AIAnalyticsSection({
       .map((sp) => progress?.storyPoints[sp.id])
       .filter((p): p is StoryPointProgress => !!p && p.totalPoints > 0)
       .map((p) => (p.pointsEarned / p.totalPoints) * 100);
-    const avgScore = scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
+    const avgScore =
+      scores.length > 0 ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length) : 0;
     result.push({
-      label: 'Avg Score',
+      label: "Avg Score",
       value: `${avgScore}%`,
-      color: avgScore >= 80 ? 'text-emerald-600' : avgScore >= 50 ? 'text-yellow-600' : 'text-destructive',
+      color:
+        avgScore >= 80
+          ? "text-emerald-600"
+          : avgScore >= 50
+            ? "text-yellow-600"
+            : "text-destructive",
     });
 
     // Weakest module
@@ -510,9 +521,9 @@ function AIAnalyticsSection({
     }
     if (weakest) {
       result.push({
-        label: 'Needs Attention',
+        label: "Needs Attention",
         value: `${weakest.name} (${weakest.score}%)`,
-        color: 'text-orange-600',
+        color: "text-orange-600",
       });
     }
 
@@ -529,9 +540,9 @@ function AIAnalyticsSection({
     }
     if (strongest) {
       result.push({
-        label: 'Strongest Area',
+        label: "Strongest Area",
         value: `${strongest.name} (${strongest.score}%)`,
-        color: 'text-emerald-600',
+        color: "text-emerald-600",
       });
     }
 
@@ -542,28 +553,30 @@ function AIAnalyticsSection({
   const recommendations = useMemo(() => {
     const recs: string[] = [];
     const incomplete = storyPoints.filter(
-      (sp) => progress?.storyPoints[sp.id]?.status !== 'completed',
+      (sp) => progress?.storyPoints[sp.id]?.status !== "completed"
     );
 
     if (overallPercentage === 100) {
-      recs.push('Excellent work! You have completed all modules in this space.');
+      recs.push("Excellent work! You have completed all modules in this space.");
     } else if (overallPercentage >= 75) {
-      recs.push(`Almost there! ${incomplete.length} module${incomplete.length > 1 ? 's' : ''} remaining.`);
+      recs.push(
+        `Almost there! ${incomplete.length} module${incomplete.length > 1 ? "s" : ""} remaining.`
+      );
     } else if (overallPercentage >= 25) {
       recs.push(`Good progress. Focus on completing the remaining ${incomplete.length} modules.`);
     } else {
-      recs.push('Get started by working through the modules in order.');
+      recs.push("Get started by working through the modules in order.");
     }
 
     // Suggest weakest areas
     const weak = storyPoints
       .filter((sp) => {
         const p = progress?.storyPoints[sp.id];
-        return p && p.totalPoints > 0 && (p.pointsEarned / p.totalPoints) < 0.5;
+        return p && p.totalPoints > 0 && p.pointsEarned / p.totalPoints < 0.5;
       })
       .slice(0, 2);
     if (weak.length > 0) {
-      recs.push(`Consider revisiting: ${weak.map((sp) => sp.title).join(', ')}`);
+      recs.push(`Consider revisiting: ${weak.map((sp) => sp.title).join(", ")}`);
     }
 
     return recs;
@@ -576,10 +589,8 @@ function AIAnalyticsSection({
         {insights.map((insight) => (
           <Card key={insight.label}>
             <CardContent className="p-4">
-              <p className="text-xs text-muted-foreground">{insight.label}</p>
-              <p className={`text-lg font-bold mt-1 ${insight.color} truncate`}>
-                {insight.value}
-              </p>
+              <p className="text-muted-foreground text-xs">{insight.label}</p>
+              <p className={`mt-1 text-lg font-bold ${insight.color} truncate`}>{insight.value}</p>
             </CardContent>
           </Card>
         ))}
@@ -587,26 +598,29 @@ function AIAnalyticsSection({
 
       {/* Per-module scores */}
       <div className="rounded-lg border p-4">
-        <h3 className="text-sm font-semibold mb-3 flex items-center gap-2">
-          <Brain className="h-4 w-4 text-primary" /> Module Performance
+        <h3 className="mb-3 flex items-center gap-2 text-sm font-semibold">
+          <Brain className="text-primary h-4 w-4" /> Module Performance
         </h3>
         <div className="space-y-2">
           {storyPoints.map((sp) => {
             const p = progress?.storyPoints[sp.id];
-            const pct = p && p.totalPoints > 0 ? Math.round((p.pointsEarned / p.totalPoints) * 100) : 0;
+            const pct =
+              p && p.totalPoints > 0 ? Math.round((p.pointsEarned / p.totalPoints) * 100) : 0;
             const status = p?.status;
             return (
               <div key={sp.id} className="flex items-center gap-3">
-                <span className="text-sm flex-1 truncate">{sp.title}</span>
-                <span className={`text-xs font-medium ${
-                  status === 'completed' ? 'text-emerald-600' : 'text-muted-foreground'
-                }`}>
+                <span className="flex-1 truncate text-sm">{sp.title}</span>
+                <span
+                  className={`text-xs font-medium ${
+                    status === "completed" ? "text-emerald-600" : "text-muted-foreground"
+                  }`}
+                >
                   {pct}%
                 </span>
-                <div className="h-2 w-20 rounded-full bg-muted overflow-hidden">
+                <div className="bg-muted h-2 w-20 overflow-hidden rounded-full">
                   <div
                     className={`h-full rounded-full transition-all ${
-                      status === 'completed' ? 'bg-emerald-500' : 'bg-primary'
+                      status === "completed" ? "bg-emerald-500" : "bg-primary"
                     }`}
                     style={{ width: `${pct}%` }}
                   />
@@ -619,13 +633,13 @@ function AIAnalyticsSection({
 
       {/* Recommendations */}
       {recommendations.length > 0 && (
-        <div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
-          <h3 className="text-sm font-semibold mb-2 flex items-center gap-2">
-            <Brain className="h-4 w-4 text-primary" /> AI Recommendations
+        <div className="border-primary/20 bg-primary/5 rounded-lg border p-4">
+          <h3 className="mb-2 flex items-center gap-2 text-sm font-semibold">
+            <Brain className="text-primary h-4 w-4" /> AI Recommendations
           </h3>
           <ul className="space-y-1.5">
             {recommendations.map((rec, i) => (
-              <li key={i} className="text-sm text-muted-foreground flex gap-2">
+              <li key={i} className="text-muted-foreground flex gap-2 text-sm">
                 <span className="text-primary font-bold">·</span>
                 {rec}
               </li>

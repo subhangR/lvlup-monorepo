@@ -1,8 +1,5 @@
 import { Link } from "react-router-dom";
-import {
-  useCurrentUser,
-  useCurrentTenantId,
-} from "@levelup/shared-stores";
+import { useCurrentUser, useCurrentTenantId } from "@levelup/shared-stores";
 import {
   useSpaces,
   useExams,
@@ -11,14 +8,7 @@ import {
   useStudents,
 } from "@levelup/shared-hooks";
 import { useClassSummaries } from "@levelup/shared-hooks";
-import {
-  BookOpen,
-  ClipboardList,
-  Users,
-  ArrowRight,
-  AlertTriangle,
-  BarChart3,
-} from "lucide-react";
+import { BookOpen, ClipboardList, Users, ArrowRight, AlertTriangle, BarChart3 } from "lucide-react";
 import {
   ScoreCard,
   SimpleBarChart,
@@ -26,8 +16,6 @@ import {
   AtRiskBadge,
   Card,
   CardContent,
-  CardHeader,
-  CardTitle,
   Skeleton,
   FadeIn,
   EmptyState,
@@ -50,18 +38,11 @@ export default function DashboardPage() {
 
   const classIds = classes.map((c) => c.id);
   const classSummaryResults = useClassSummaries(tenantId, classIds);
-  const classSummaries = classSummaryResults
-    .map((r) => r.data)
-    .filter(Boolean);
+  const classSummaries = classSummaryResults.map((r) => r.data).filter(Boolean);
 
-  const activeExams = exams.filter(
-    (e: Exam) => e.status !== "archived" && e.status !== "draft"
-  );
+  const activeExams = exams.filter((e: Exam) => e.status !== "archived" && e.status !== "draft");
 
-  const atRiskCount = classSummaries.reduce(
-    (sum, cs) => sum + (cs?.atRiskCount ?? 0),
-    0,
-  );
+  const atRiskCount = classSummaries.reduce((sum, cs) => sum + (cs?.atRiskCount ?? 0), 0);
 
   const classChartData = classSummaries
     .filter((cs) => cs != null)
@@ -78,7 +59,7 @@ export default function DashboardPage() {
       <FadeIn>
         <div>
           <h1 className="text-2xl font-bold">Teacher Dashboard</h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             Welcome back, {user?.displayName || user?.email || "Teacher"}
           </p>
         </div>
@@ -103,82 +84,68 @@ export default function DashboardPage() {
       {!isLoading && (
         <>
           <FadeIn delay={0.1}>
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-            <ScoreCard
-              label="Total Students"
-              value={students.length}
-              icon={Users}
-            />
-            <ScoreCard
-              label="Active Exams"
-              value={activeExams.length}
-              icon={ClipboardList}
-            />
-            <ScoreCard
-              label="Total Spaces"
-              value={spaces.length}
-              icon={BookOpen}
-            />
-            <ScoreCard
-              label="At-Risk Students"
-              value={atRiskCount}
-              icon={AlertTriangle}
-              trend={atRiskCount > 0 ? "down" : "neutral"}
-              trendValue={atRiskCount > 0 ? "Needs attention" : "All good"}
-            />
-          </div>
+            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+              <ScoreCard label="Total Students" value={students.length} icon={Users} />
+              <ScoreCard label="Active Exams" value={activeExams.length} icon={ClipboardList} />
+              <ScoreCard label="Total Spaces" value={spaces.length} icon={BookOpen} />
+              <ScoreCard
+                label="At-Risk Students"
+                value={atRiskCount}
+                icon={AlertTriangle}
+                trend={atRiskCount > 0 ? "down" : "neutral"}
+                trendValue={atRiskCount > 0 ? "Needs attention" : "All good"}
+              />
+            </div>
           </FadeIn>
 
           {/* Class Performance Chart + At-Risk Alerts */}
           <FadeIn delay={0.15}>
-          <div className="grid gap-6 lg:grid-cols-2">
-            {classChartData.length > 0 && (
-              <Card>
-                <CardContent className="p-5">
-                  <div className="flex items-center gap-2 mb-4">
-                    <BarChart3 className="h-4 w-4 text-muted-foreground" />
-                    <h2 className="font-semibold">Class Performance (Avg Score)</h2>
-                  </div>
-                  <SimpleBarChart data={classChartData} maxValue={100} height={200} />
-                </CardContent>
-              </Card>
-            )}
+            <div className="grid gap-6 lg:grid-cols-2">
+              {classChartData.length > 0 && (
+                <Card>
+                  <CardContent className="p-5">
+                    <div className="mb-4 flex items-center gap-2">
+                      <BarChart3 className="text-muted-foreground h-4 w-4" />
+                      <h2 className="font-semibold">Class Performance (Avg Score)</h2>
+                    </div>
+                    <SimpleBarChart data={classChartData} maxValue={100} height={200} />
+                  </CardContent>
+                </Card>
+              )}
 
-            {atRiskCount > 0 && (
-              <Card>
-                <div className="flex items-center justify-between border-b px-5 py-3">
-                  <div className="flex items-center gap-2">
-                    <AlertTriangle className="h-4 w-4 text-red-500" />
-                    <h2 className="font-semibold">At-Risk Students</h2>
+              {atRiskCount > 0 && (
+                <Card>
+                  <div className="flex items-center justify-between border-b px-5 py-3">
+                    <div className="flex items-center gap-2">
+                      <AlertTriangle className="h-4 w-4 text-red-500" />
+                      <h2 className="font-semibold">At-Risk Students</h2>
+                    </div>
+                    <span className="rounded-full bg-red-100 px-2 py-0.5 text-xs font-medium text-red-700 dark:bg-red-900/20 dark:text-red-400">
+                      {atRiskCount} students
+                    </span>
                   </div>
-                  <span className="rounded-full bg-red-100 dark:bg-red-900/20 px-2 py-0.5 text-xs font-medium text-red-700 dark:text-red-400">
-                    {atRiskCount} students
-                  </span>
-                </div>
-                <div className="divide-y max-h-[200px] overflow-y-auto">
-                  {classSummaries
-                    .filter((cs) => cs && cs.atRiskCount > 0)
-                    .map((cs) => (
-                      <div
-                        key={cs!.classId}
-                        className="flex items-center justify-between px-5 py-3"
-                      >
-                        <div>
-                          <p className="text-sm font-medium">
-                            {cs!.className || cs!.classId}
-                          </p>
-                          <p className="text-xs text-muted-foreground">
-                            {cs!.atRiskCount} at-risk student
-                            {cs!.atRiskCount !== 1 ? "s" : ""}
-                          </p>
+                  <div className="max-h-[200px] divide-y overflow-y-auto">
+                    {classSummaries
+                      .filter((cs) => cs && cs.atRiskCount > 0)
+                      .map((cs) => (
+                        <div
+                          key={cs!.classId}
+                          className="flex items-center justify-between px-5 py-3"
+                        >
+                          <div>
+                            <p className="text-sm font-medium">{cs!.className || cs!.classId}</p>
+                            <p className="text-muted-foreground text-xs">
+                              {cs!.atRiskCount} at-risk student
+                              {cs!.atRiskCount !== 1 ? "s" : ""}
+                            </p>
+                          </div>
+                          <AtRiskBadge isAtRisk={true} />
                         </div>
-                        <AtRiskBadge isAtRisk={true} />
-                      </div>
-                    ))}
-                </div>
-              </Card>
-            )}
-          </div>
+                      ))}
+                  </div>
+                </Card>
+              )}
+            </div>
           </FadeIn>
 
           {/* Class Performance Heatmap */}
@@ -201,119 +168,124 @@ export default function DashboardPage() {
           )}
 
           <FadeIn delay={0.25}>
-          <div className="grid gap-6 lg:grid-cols-2">
-            {/* Recent Spaces */}
-            <Card>
-              <div className="flex items-center justify-between border-b px-5 py-3">
-                <h2 className="font-semibold">Recent Spaces</h2>
-                <Link
-                  to="/spaces"
-                  className="text-sm text-primary hover:underline flex items-center gap-1"
-                >
-                  View all <ArrowRight className="h-3 w-3" />
-                </Link>
-              </div>
-              <div className="divide-y">
-                {spaces.length === 0 && (
-                  <EmptyState
-                    preset="no-courses"
-                    title="No spaces yet"
-                    compact
-                    action={{ label: "Create one", onClick: () => window.location.href = "/spaces" }}
-                  />
-                )}
-                {spaces.slice(0, 5).map((space: Space) => (
+            <div className="grid gap-6 lg:grid-cols-2">
+              {/* Recent Spaces */}
+              <Card>
+                <div className="flex items-center justify-between border-b px-5 py-3">
+                  <h2 className="font-semibold">Recent Spaces</h2>
                   <Link
-                    key={space.id}
-                    to={`/spaces/${space.id}/edit`}
-                    className="flex items-center justify-between px-5 py-3 hover:bg-muted/50"
+                    to="/spaces"
+                    className="text-primary flex items-center gap-1 text-sm hover:underline"
                   >
-                    <div>
-                      <p className="text-sm font-medium">{space.title}</p>
-                      <p className="text-xs text-muted-foreground capitalize">
-                        {space.type} &middot; {space.status}
-                      </p>
-                    </div>
-                    <span className="text-xs text-muted-foreground">
-                      {space.stats?.totalStoryPoints ?? 0} story points
-                    </span>
+                    View all <ArrowRight className="h-3 w-3" />
                   </Link>
-                ))}
-              </div>
-            </Card>
+                </div>
+                <div className="divide-y">
+                  {spaces.length === 0 && (
+                    <EmptyState
+                      preset="no-courses"
+                      title="No spaces yet"
+                      compact
+                      action={{
+                        label: "Create one",
+                        onClick: () => (window.location.href = "/spaces"),
+                      }}
+                    />
+                  )}
+                  {spaces.slice(0, 5).map((space: Space) => (
+                    <Link
+                      key={space.id}
+                      to={`/spaces/${space.id}/edit`}
+                      className="hover:bg-muted/50 flex items-center justify-between px-5 py-3"
+                    >
+                      <div>
+                        <p className="text-sm font-medium">{space.title}</p>
+                        <p className="text-muted-foreground text-xs capitalize">
+                          {space.type} &middot; {space.status}
+                        </p>
+                      </div>
+                      <span className="text-muted-foreground text-xs">
+                        {space.stats?.totalStoryPoints ?? 0} story points
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </Card>
 
-            {/* Recent Exams */}
-            <Card>
-              <div className="flex items-center justify-between border-b px-5 py-3">
-                <h2 className="font-semibold">Recent Exams</h2>
-                <Link
-                  to="/exams"
-                  className="text-sm text-primary hover:underline flex items-center gap-1"
-                >
-                  View all <ArrowRight className="h-3 w-3" />
-                </Link>
-              </div>
-              <div className="divide-y">
-                {exams.length === 0 && (
-                  <EmptyState
-                    preset="no-assignments"
-                    title="No exams yet"
-                    compact
-                    action={{ label: "Create one", onClick: () => window.location.href = "/exams/new" }}
-                  />
-                )}
-                {exams.slice(0, 5).map((exam: Exam) => (
+              {/* Recent Exams */}
+              <Card>
+                <div className="flex items-center justify-between border-b px-5 py-3">
+                  <h2 className="font-semibold">Recent Exams</h2>
                   <Link
-                    key={exam.id}
-                    to={`/exams/${exam.id}`}
-                    className="flex items-center justify-between px-5 py-3 hover:bg-muted/50"
+                    to="/exams"
+                    className="text-primary flex items-center gap-1 text-sm hover:underline"
                   >
-                    <div>
-                      <p className="text-sm font-medium">{exam.title}</p>
-                      <p className="text-xs text-muted-foreground capitalize">
-                        {exam.subject} &middot; {exam.status}
-                      </p>
-                    </div>
-                    <span className="text-xs text-muted-foreground">
-                      {exam.totalMarks} marks
-                    </span>
+                    View all <ArrowRight className="h-3 w-3" />
                   </Link>
-                ))}
-              </div>
-            </Card>
-          </div>
+                </div>
+                <div className="divide-y">
+                  {exams.length === 0 && (
+                    <EmptyState
+                      preset="no-assignments"
+                      title="No exams yet"
+                      compact
+                      action={{
+                        label: "Create one",
+                        onClick: () => (window.location.href = "/exams/new"),
+                      }}
+                    />
+                  )}
+                  {exams.slice(0, 5).map((exam: Exam) => (
+                    <Link
+                      key={exam.id}
+                      to={`/exams/${exam.id}`}
+                      className="hover:bg-muted/50 flex items-center justify-between px-5 py-3"
+                    >
+                      <div>
+                        <p className="text-sm font-medium">{exam.title}</p>
+                        <p className="text-muted-foreground text-xs capitalize">
+                          {exam.subject} &middot; {exam.status}
+                        </p>
+                      </div>
+                      <span className="text-muted-foreground text-xs">{exam.totalMarks} marks</span>
+                    </Link>
+                  ))}
+                </div>
+              </Card>
+            </div>
           </FadeIn>
 
           {/* Grading Queue */}
           {submissions.length > 0 && (
             <FadeIn delay={0.3}>
-            <Card>
-              <div className="flex items-center justify-between border-b px-5 py-3">
-                <h2 className="font-semibold">Grading Queue</h2>
-                <span className="rounded-full bg-orange-100 dark:bg-orange-900/30 px-2 py-0.5 text-xs font-medium text-orange-700 dark:text-orange-400">
-                  {submissions.length} pending
-                </span>
-              </div>
-              <div className="divide-y">
-                {submissions.slice(0, 5).map((sub: Submission) => (
-                  <Link
-                    key={sub.id}
-                    to={`/exams/${sub.examId}/submissions/${sub.id}`}
-                    className="flex items-center justify-between px-5 py-3 hover:bg-muted/50"
-                  >
-                    <div>
-                      <p className="text-sm font-medium">{sub.studentName}</p>
-                      <p className="text-xs text-muted-foreground capitalize">
-                        Roll: {sub.rollNumber} &middot; {sub.pipelineStatus}
-                      </p>
-                    </div>
-                    <span className="text-xs text-muted-foreground">
-                      {sub.summary?.questionsGraded ?? 0}/{sub.summary?.totalQuestions ?? 0} graded
-                    </span>
-                  </Link>
-                ))}
-              </div>
-            </Card>
+              <Card>
+                <div className="flex items-center justify-between border-b px-5 py-3">
+                  <h2 className="font-semibold">Grading Queue</h2>
+                  <span className="rounded-full bg-orange-100 px-2 py-0.5 text-xs font-medium text-orange-700 dark:bg-orange-900/30 dark:text-orange-400">
+                    {submissions.length} pending
+                  </span>
+                </div>
+                <div className="divide-y">
+                  {submissions.slice(0, 5).map((sub: Submission) => (
+                    <Link
+                      key={sub.id}
+                      to={`/exams/${sub.examId}/submissions/${sub.id}`}
+                      className="hover:bg-muted/50 flex items-center justify-between px-5 py-3"
+                    >
+                      <div>
+                        <p className="text-sm font-medium">{sub.studentName}</p>
+                        <p className="text-muted-foreground text-xs capitalize">
+                          Roll: {sub.rollNumber} &middot; {sub.pipelineStatus}
+                        </p>
+                      </div>
+                      <span className="text-muted-foreground text-xs">
+                        {sub.summary?.questionsGraded ?? 0}/{sub.summary?.totalQuestions ?? 0}{" "}
+                        graded
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </Card>
             </FadeIn>
           )}
         </>

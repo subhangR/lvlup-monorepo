@@ -1,0 +1,62 @@
+[
+  {
+    "index": 1,
+    "files": {
+      "png": "diagram-01.png",
+      "svg": "diagram-01.svg"
+    },
+    "caption": "Requirements",
+    "context": "Here's how it might look on your whiteboard:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/_XavFgW10EA8.f7802415.svg"
+  },
+  {
+    "index": 2,
+    "files": {
+      "png": "diagram-02.png",
+      "svg": "diagram-02.svg"
+    },
+    "caption": "High Level Design",
+    "context": "High-Level Design",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/awyN_A53oBkT.eb8dca74.svg"
+  },
+  {
+    "index": 3,
+    "files": {
+      "png": "diagram-03.png",
+      "svg": "diagram-03.svg"
+    },
+    "caption": "Multi-Stage Pipeline",
+    "context": "Here's how we might break the crawler service into stages:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/p2vEdFF5D7i4.c89ffbde.svg"
+  },
+  {
+    "index": 4,
+    "files": {
+      "png": "diagram-04.png",
+      "svg": "diagram-04.svg"
+    },
+    "caption": "SQS with Retry and DLQ",
+    "context": "Given SQS's visibility timeout mechanism (which makes implementing exponential backoff straightforward), automatic dead-letter queue support, and managed scaling, we'll use SQS for our system.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/Gx4Z7VMJTRW2.90e9c8b8.svg"
+  },
+  {
+    "index": 5,
+    "files": {
+      "png": "diagram-05.png",
+      "svg": "diagram-05.svg"
+    },
+    "caption": "Robots.txt and Rate Limiting",
+    "context": "We also need to respect the rate limit of 1 domain a second. With multiple crawlers, this can get a little trickier since, in theory, all N crawlers could be hitting a single domain at the same time.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/nWLDrf2heBzF.8804f19d.svg"
+  },
+  {
+    "index": 6,
+    "files": {
+      "png": "diagram-06.png",
+      "svg": "diagram-06.svg"
+    },
+    "caption": "Scale and Efficiency",
+    "context": "Last thing! Watch out for crawler traps",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/_GU94TDQrG7r.89725d92.svg"
+  }
+]

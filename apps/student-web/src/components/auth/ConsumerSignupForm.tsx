@@ -1,8 +1,9 @@
-import { useState, type FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { authService } from '@levelup/shared-services';
-import { getApiErrorMessage } from '@levelup/shared-hooks';
-import { Button, Input } from '@levelup/shared-ui';
+import { useState, type FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
+import { authService } from "@levelup/shared-services";
+import { getApiErrorMessage } from "@levelup/shared-hooks";
+import { Button, Input } from "@levelup/shared-ui";
+import { Loader2 } from "lucide-react";
 
 interface ConsumerSignupFormProps {
   onSwitchToLogin: () => void;
@@ -12,15 +13,15 @@ interface ConsumerSignupFormProps {
 export function ConsumerSignupForm({ onSwitchToLogin, onSwitchToSchool }: ConsumerSignupFormProps) {
   const navigate = useNavigate();
 
-  const [signupName, setSignupName] = useState('');
-  const [signupEmail, setSignupEmail] = useState('');
-  const [signupPassword, setSignupPassword] = useState('');
-  const [signupError, setSignupError] = useState('');
+  const [signupName, setSignupName] = useState("");
+  const [signupEmail, setSignupEmail] = useState("");
+  const [signupPassword, setSignupPassword] = useState("");
+  const [signupError, setSignupError] = useState("");
   const [signupLoading, setSignupLoading] = useState(false);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setSignupError('');
+    setSignupError("");
     setSignupLoading(true);
 
     try {
@@ -28,10 +29,10 @@ export function ConsumerSignupForm({ onSwitchToLogin, onSwitchToSchool }: Consum
       await authService.updateUserProfile(cred.user, {
         displayName: signupName,
       });
-      navigate('/consumer', { replace: true });
+      navigate("/consumer", { replace: true });
     } catch (err) {
       const { message } = getApiErrorMessage(err);
-      setSignupError(message || 'Signup failed');
+      setSignupError(message || "Signup failed");
     } finally {
       setSignupLoading(false);
     }
@@ -41,7 +42,7 @@ export function ConsumerSignupForm({ onSwitchToLogin, onSwitchToSchool }: Consum
     <>
       <form onSubmit={handleSubmit} className="space-y-4">
         {signupError && (
-          <div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
+          <div className="bg-destructive/10 text-destructive rounded-md p-3 text-sm">
             {signupError}
           </div>
         )}
@@ -90,7 +91,8 @@ export function ConsumerSignupForm({ onSwitchToLogin, onSwitchToSchool }: Consum
         </div>
 
         <Button type="submit" disabled={signupLoading} className="w-full">
-          {signupLoading ? 'Creating account...' : 'Create Account'}
+          {signupLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          {signupLoading ? "Creating account..." : "Create Account"}
         </Button>
       </form>
 
@@ -98,11 +100,7 @@ export function ConsumerSignupForm({ onSwitchToLogin, onSwitchToSchool }: Consum
         <Button variant="link" onClick={onSwitchToLogin}>
           Already have an account? Sign in
         </Button>
-        <Button
-          variant="link"
-          onClick={onSwitchToSchool}
-          className="text-muted-foreground"
-        >
+        <Button variant="link" onClick={onSwitchToSchool} className="text-muted-foreground">
           Back to school login
         </Button>
       </div>

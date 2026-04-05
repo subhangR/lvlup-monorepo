@@ -1,0 +1,102 @@
+[
+  {
+    "index": 1,
+    "files": {
+      "png": "diagram-01.png",
+      "svg": "diagram-01.svg"
+    },
+    "caption": "Yelp Non-Functional Requirements",
+    "context": "Here is what you might write on the whiteboard:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/-u4NXidtPWzP.6f869a38.svg"
+  },
+  {
+    "index": 2,
+    "files": {
+      "png": "diagram-02.png",
+      "svg": "diagram-02.svg"
+    },
+    "caption": "Yelp Entities",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/lDmuPIPy2Yxk.a63a2565.svg"
+  },
+  {
+    "index": 3,
+    "files": {
+      "png": "diagram-03.png",
+      "svg": "diagram-03.svg"
+    },
+    "caption": "Yelp High-Level Design",
+    "context": "To enable users to search for businesses, we'll start with a basic architecture:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/NOOnfP1ZS5e9.6abd6ecb.svg"
+  },
+  {
+    "index": 4,
+    "files": {
+      "png": "diagram-04.png",
+      "svg": "diagram-04.svg"
+    },
+    "caption": "Yelp High-Level Design",
+    "context": "Pattern: Scaling Reads\nGiven the massive read:write ratio, reading businesses is an perfect use case for the scaling reads pattern.\nLearn This Pattern",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/DK3Tl2iKM8Wn.8c413925.svg"
+  },
+  {
+    "index": 5,
+    "files": {
+      "png": "diagram-05.png",
+      "svg": "diagram-05.svg"
+    },
+    "caption": "Yelp High-Level Design",
+    "context": "3) Users should be able to leave reviews on businesses",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/YeGsoRDo-g4W.dc610579.svg"
+  },
+  {
+    "index": 6,
+    "files": {
+      "png": "diagram-06.png",
+      "svg": "diagram-06.svg"
+    },
+    "caption": "Periodic Update with Cron Job",
+    "context": "Now, anytime we search or query a business, we can simply read the average_rating from the database.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/tVWJaotX-i34.f4af39c0.svg"
+  },
+  {
+    "index": 7,
+    "files": {
+      "png": "diagram-07.png",
+      "svg": "diagram-07.svg"
+    },
+    "caption": "Synchronous Update with Optimistic Locking",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/w0HDI1wThTau.b4d62a39.svg"
+  },
+  {
+    "index": 8,
+    "files": {
+      "png": "diagram-08.png",
+      "svg": "diagram-08.svg"
+    },
+    "caption": "Elasticsearch",
+    "context": "We can issue a single search query to Elasticsearch that combines all of our filters and returns a ranked list of businesses.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/6dQQbHq9Ia6d.e6c23c55.svg"
+  },
+  {
+    "index": 9,
+    "files": {
+      "png": "diagram-09.png",
+      "svg": "diagram-09.svg"
+    },
+    "caption": "Postgres with Extensions",
+    "context": "CREATE EXTENSION IF NOT EXISTS pg_trgm;",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/T7uzKiamkKmi.ec7eca1e.svg"
+  },
+  {
+    "index": 10,
+    "files": {
+      "png": "diagram-10.png",
+      "svg": "diagram-10.svg"
+    },
+    "caption": "Yelp Final Design",
+    "context": "After applying all the deep dives, we may end up with a final design that looks like this:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/k_WKOn0_PJEG.c2065012.svg"
+  }
+]

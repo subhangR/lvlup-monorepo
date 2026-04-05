@@ -1,7 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCurrentTenantId, useTenantStore } from "@levelup/shared-stores";
-import { callSaveTenant, callSaveAcademicSession, callSaveClass } from "@levelup/shared-services/auth";
+import {
+  callSaveTenant,
+  callSaveAcademicSession,
+  callSaveClass,
+} from "@levelup/shared-services/auth";
 import {
   Button,
   Input,
@@ -67,15 +71,13 @@ export default function OnboardingWizardPage() {
     }
     setSaving(true);
     try {
-      await callSaveTenant({
-        id: tenantId,
-        data: {
-          name: schoolForm.name,
-          contactEmail: schoolForm.contactEmail,
-          contactPhone: schoolForm.contactPhone || undefined,
-          website: schoolForm.website || undefined,
-        },
-      });
+      const data: Record<string, string> = {
+        name: schoolForm.name,
+        contactEmail: schoolForm.contactEmail,
+      };
+      if (schoolForm.contactPhone) data.contactPhone = schoolForm.contactPhone;
+      if (schoolForm.website) data.website = schoolForm.website;
+      await callSaveTenant({ id: tenantId, data });
       await markStepComplete("school");
       setCurrentStep("academic");
       toast.success("School info saved");
@@ -170,9 +172,7 @@ export default function OnboardingWizardPage() {
     <div className="mx-auto max-w-2xl space-y-8 py-8">
       <div className="text-center">
         <h1 className="text-3xl font-bold">Welcome to Auto-LevelUp</h1>
-        <p className="mt-2 text-muted-foreground">
-          Let's set up your school in a few simple steps
-        </p>
+        <p className="text-muted-foreground mt-2">Let's set up your school in a few simple steps</p>
       </div>
 
       {/* Progress stepper */}
@@ -197,9 +197,7 @@ export default function OnboardingWizardPage() {
                 <StepIcon className="h-4 w-4" />
                 <span className="hidden sm:inline">{step.label}</span>
               </button>
-              {idx < STEPS.length - 1 && (
-                <ChevronRight className="h-4 w-4 text-muted-foreground" />
-              )}
+              {idx < STEPS.length - 1 && <ChevronRight className="text-muted-foreground h-4 w-4" />}
             </div>
           );
         })}
@@ -211,9 +209,7 @@ export default function OnboardingWizardPage() {
           <>
             <CardHeader>
               <CardTitle>School Information</CardTitle>
-              <CardDescription>
-                Tell us about your school or institution
-              </CardDescription>
+              <CardDescription>Tell us about your school or institution</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -269,9 +265,7 @@ export default function OnboardingWizardPage() {
           <>
             <CardHeader>
               <CardTitle>Academic Session</CardTitle>
-              <CardDescription>
-                Create your first academic session (school year)
-              </CardDescription>
+              <CardDescription>Create your first academic session (school year)</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -325,9 +319,7 @@ export default function OnboardingWizardPage() {
           <>
             <CardHeader>
               <CardTitle>Create Your First Class</CardTitle>
-              <CardDescription>
-                Add a class to start organizing students
-              </CardDescription>
+              <CardDescription>Add a class to start organizing students</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
@@ -394,7 +386,7 @@ export default function OnboardingWizardPage() {
                 <div className="mt-1 flex gap-2">
                   <Input
                     value={tenant?.tenantCode ?? ""}
-                    className="bg-muted font-mono text-center text-lg"
+                    className="bg-muted text-center font-mono text-lg"
                     readOnly
                   />
                   <Button
@@ -406,11 +398,12 @@ export default function OnboardingWizardPage() {
                       setTimeout(() => setCopied(false), 2000);
                       toast.success("Tenant code copied!");
                     }}
+                    aria-label="Copy tenant code"
                   >
                     {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
                   </Button>
                 </div>
-                <p className="mt-2 text-xs text-muted-foreground">
+                <p className="text-muted-foreground mt-2 text-xs">
                   Staff and students use this code to join your school
                 </p>
               </div>

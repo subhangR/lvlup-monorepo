@@ -1,8 +1,8 @@
 import { useState, useRef, useCallback } from "react";
 import { callUploadTenantAsset } from "@levelup/shared-services/auth";
-import { Button, Label } from "@levelup/shared-ui";
+import { Label } from "@levelup/shared-ui";
 import { toast } from "sonner";
-import { Upload, X, ImageIcon } from "lucide-react";
+import { X, ImageIcon } from "lucide-react";
 
 const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 const ALLOWED_TYPES = new Set(["image/png", "image/jpeg", "image/svg+xml", "image/webp"]);
@@ -30,60 +30,63 @@ export default function LogoUploader({ tenantId, currentLogoUrl, onUploaded }: L
     return null;
   };
 
-  const uploadFile = useCallback(async (file: File) => {
-    const error = validateFile(file);
-    if (error) {
-      toast.error(error);
-      return;
-    }
+  const uploadFile = useCallback(
+    async (file: File) => {
+      const error = validateFile(file);
+      if (error) {
+        toast.error(error);
+        return;
+      }
 
-    setUploading(true);
-    setProgress(10);
+      setUploading(true);
+      setProgress(10);
 
-    try {
-      // Get signed upload URL
-      const { uploadUrl, publicUrl } = await callUploadTenantAsset({
-        tenantId,
-        assetType: "logo",
-        contentType: file.type,
-      });
-
-      setProgress(30);
-
-      // Upload directly to Cloud Storage
-      const xhr = new XMLHttpRequest();
-      await new Promise<void>((resolve, reject) => {
-        xhr.upload.addEventListener("progress", (e) => {
-          if (e.lengthComputable) {
-            setProgress(30 + Math.round((e.loaded / e.total) * 60));
-          }
+      try {
+        // Get signed upload URL
+        const { uploadUrl, publicUrl } = await callUploadTenantAsset({
+          tenantId,
+          assetType: "logo",
+          contentType: file.type,
         });
-        xhr.addEventListener("load", () => {
-          if (xhr.status >= 200 && xhr.status < 300) {
-            resolve();
-          } else {
-            reject(new Error(`Upload failed with status ${xhr.status}`));
-          }
-        });
-        xhr.addEventListener("error", () => reject(new Error("Upload failed")));
-        xhr.open("PUT", uploadUrl);
-        xhr.setRequestHeader("Content-Type", file.type);
-        xhr.send(file);
-      });
 
-      setProgress(100);
-      setPreview(publicUrl);
-      onUploaded(publicUrl);
-      toast.success("Logo uploaded successfully");
-    } catch (err) {
-      toast.error("Failed to upload logo", {
-        description: err instanceof Error ? err.message : "Please try again",
-      });
-    } finally {
-      setUploading(false);
-      setProgress(0);
-    }
-  }, [tenantId, onUploaded]);
+        setProgress(30);
+
+        // Upload directly to Cloud Storage
+        const xhr = new XMLHttpRequest();
+        await new Promise<void>((resolve, reject) => {
+          xhr.upload.addEventListener("progress", (e) => {
+            if (e.lengthComputable) {
+              setProgress(30 + Math.round((e.loaded / e.total) * 60));
+            }
+          });
+          xhr.addEventListener("load", () => {
+            if (xhr.status >= 200 && xhr.status < 300) {
+              resolve();
+            } else {
+              reject(new Error(`Upload failed with status ${xhr.status}`));
+            }
+          });
+          xhr.addEventListener("error", () => reject(new Error("Upload failed")));
+          xhr.open("PUT", uploadUrl);
+          xhr.setRequestHeader("Content-Type", file.type);
+          xhr.send(file);
+        });
+
+        setProgress(100);
+        setPreview(publicUrl);
+        onUploaded(publicUrl);
+        toast.success("Logo uploaded successfully");
+      } catch (err) {
+        toast.error("Failed to upload logo", {
+          description: err instanceof Error ? err.message : "Please try again",
+        });
+      } finally {
+        setUploading(false);
+        setProgress(0);
+      }
+    },
+    [tenantId, onUploaded]
+  );
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -121,12 +124,12 @@ export default function LogoUploader({ tenantId, currentLogoUrl, onUploaded }: L
             alt="Logo preview"
             loading="lazy"
             decoding="async"
-            className="h-16 w-16 rounded-lg border object-cover bg-muted"
+            className="bg-muted h-16 w-16 rounded-lg border object-cover"
           />
           <button
             type="button"
             onClick={clearPreview}
-            className="absolute -right-1 -top-1 rounded-full bg-destructive p-0.5 text-destructive-foreground"
+            className="bg-destructive text-destructive-foreground absolute -right-1 -top-1 rounded-full p-0.5"
           >
             <X className="h-3 w-3" />
           </button>
@@ -140,9 +143,7 @@ export default function LogoUploader({ tenantId, currentLogoUrl, onUploaded }: L
         onDragLeave={handleDragLeave}
         onClick={() => inputRef.current?.click()}
         className={`cursor-pointer rounded-lg border-2 border-dashed p-6 text-center transition-colors ${
-          dragOver
-            ? "border-primary bg-primary/5"
-            : "border-border hover:border-primary/50"
+          dragOver ? "border-primary bg-primary/5" : "border-border hover:border-primary/50"
         }`}
       >
         <input
@@ -154,23 +155,19 @@ export default function LogoUploader({ tenantId, currentLogoUrl, onUploaded }: L
         />
         {uploading ? (
           <div className="space-y-2">
-            <p className="text-sm text-muted-foreground">Uploading...</p>
-            <div className="mx-auto h-1.5 w-48 rounded-full bg-muted overflow-hidden">
+            <p className="text-muted-foreground text-sm">Uploading...</p>
+            <div className="bg-muted mx-auto h-1.5 w-48 overflow-hidden rounded-full">
               <div
-                className="h-full rounded-full bg-primary transition-all"
+                className="bg-primary h-full rounded-full transition-all"
                 style={{ width: `${progress}%` }}
               />
             </div>
           </div>
         ) : (
           <>
-            <ImageIcon className="mx-auto h-8 w-8 text-muted-foreground" />
-            <p className="mt-2 text-sm font-medium">
-              Drop your logo here or click to browse
-            </p>
-            <p className="text-xs text-muted-foreground">
-              PNG, JPEG, SVG, or WebP — max 2MB
-            </p>
+            <ImageIcon className="text-muted-foreground mx-auto h-8 w-8" />
+            <p className="mt-2 text-sm font-medium">Drop your logo here or click to browse</p>
+            <p className="text-muted-foreground text-xs">PNG, JPEG, SVG, or WebP — max 2MB</p>
           </>
         )}
       </div>

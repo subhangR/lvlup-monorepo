@@ -1,0 +1,142 @@
+[
+  {
+    "index": 1,
+    "files": {
+      "png": "diagram-01.png",
+      "svg": "diagram-01.svg"
+    },
+    "caption": "Requirements",
+    "context": "Privacy and security.\nDisaster recovery.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/fJOBrgvwe33w.ed976cd1.svg"
+  },
+  {
+    "index": 2,
+    "files": {
+      "png": "diagram-02.png",
+      "svg": "diagram-02.svg"
+    },
+    "caption": "Core Entities",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/3bUBYKfFHtS5.3c217316.svg"
+  },
+  {
+    "index": 3,
+    "files": {
+      "png": "diagram-03.png",
+      "svg": "diagram-03.svg"
+    },
+    "caption": "API",
+    "context": "Defining the API",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/j9pCXxzhIn9e.2db0a344.svg"
+  },
+  {
+    "index": 4,
+    "files": {
+      "png": "diagram-04.png",
+      "svg": "diagram-04.svg"
+    },
+    "caption": "Primitive Nearby Service",
+    "context": "Let's move to the first requirement: customers should be able to query availability of items by location.",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/V8i_micnRVtZ.73e5c8a3.svg"
+  },
+  {
+    "index": 5,
+    "files": {
+      "png": "diagram-05.png",
+      "svg": "diagram-05.svg"
+    },
+    "caption": "Inventory Lookup",
+    "context": "Primitive Nearby Service",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/1ELIxGJW-Own.d4615de2.svg"
+  },
+  {
+    "index": 6,
+    "files": {
+      "png": "diagram-06.png",
+      "svg": "diagram-06.svg"
+    },
+    "caption": "All Together",
+    "context": "Putting it all together we have:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/j0RehZ8stYtb.96bd2c89.svg"
+  },
+  {
+    "index": 7,
+    "files": {
+      "png": "diagram-07.png",
+      "svg": "diagram-07.svg"
+    },
+    "caption": "Singular Postgres Transaction",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/VlfESagGkerQ.492d446d.svg"
+  },
+  {
+    "index": 8,
+    "files": {
+      "png": "diagram-08.png",
+      "svg": "diagram-08.svg"
+    },
+    "caption": "Initial Solution",
+    "context": "With the two approaches listed, we can now pull everything together for a solution to our problem:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/FF3Fx_9CtojI.d68694fd.svg"
+  },
+  {
+    "index": 9,
+    "files": {
+      "png": "diagram-09.png",
+      "svg": "diagram-09.svg"
+    },
+    "caption": "Simple SQL Distance",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/26q6WmtV5fw3.55e75e16.svg"
+  },
+  {
+    "index": 10,
+    "files": {
+      "png": "diagram-10.png",
+      "svg": "diagram-10.svg"
+    },
+    "caption": "Travel Time Estimation Service",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/3bR15f6CjJIP.0ac17269.svg"
+  },
+  {
+    "index": 11,
+    "files": {
+      "png": "diagram-11.png",
+      "svg": "diagram-11.svg"
+    },
+    "caption": "Travel Time Against Nearby DCs",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/ck2dd8gZP3z_.91a8ab05.svg"
+  },
+  {
+    "index": 12,
+    "files": {
+      "png": "diagram-12.png",
+      "svg": "diagram-12.svg"
+    },
+    "caption": "Inventory Through Cache",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/vmHrGKtRMLF7.44e13738.svg"
+  },
+  {
+    "index": 13,
+    "files": {
+      "png": "diagram-13.png",
+      "svg": "diagram-13.svg"
+    },
+    "caption": "Postgres Read Replicas and Partitioning",
+    "context": "",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/0aSFMFWnP1kg.7c07dde1.svg"
+  },
+  {
+    "index": 14,
+    "files": {
+      "png": "diagram-14.png",
+      "svg": "diagram-14.svg"
+    },
+    "caption": "Final Nearby Service",
+    "context": "By choosing the \"great\" solutions for both challenges we net out with a solution that looks something like this:",
+    "svgUrl": "https://files.hellointerview.com/build-assets/PRODUCTION/_next/static/media/4FgaR9e104m2.c830ca0b.svg"
+  }
+]

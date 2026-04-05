@@ -44,6 +44,18 @@
       "email": "parent.test@subhang.academy",
       "role": "parent",
       "parentEntityId": "3xBR5ReF1XceVUhDblRV"
+    },
+    "raghav": {
+      "uid": "SnuxbzG4Sjd0ZlvVSOLmIL6A5573",
+      "email": "raghav@subhang.academy",
+      "role": "student",
+      "studentEntityId": "pPL6JNLEPjB53yCktCPH"
+    },
+    "vamshi": {
+      "uid": "6nfDWTIpBuWGuYpZDu7mfcDig1g2",
+      "email": "vamshi@subhang.academy",
+      "role": "student",
+      "studentEntityId": "uvrGgmmYtBltnXrX5guj"
     }
   },
   "credentials": {
@@ -57,6 +69,14 @@
     },
     "parent": {
       "email": "parent.test@subhang.academy",
+      "password": "Test@12345"
+    },
+    "raghav": {
+      "email": "raghav@subhang.academy",
+      "password": "Test@12345"
+    },
+    "vamshi": {
+      "email": "vamshi@subhang.academy",
       "password": "Test@12345"
     }
   },
@@ -333,11 +353,11 @@
   "entityCounts": {
     "tenants": 1,
     "classes": 4,
-    "authUsers": 3,
+    "authUsers": 5,
     "teachers": 1,
-    "students": 1,
+    "students": 3,
     "parents": 1,
-    "memberships": 3,
+    "memberships": 5,
     "spaces": 4,
     "storyPoints": 40,
     "items": 286

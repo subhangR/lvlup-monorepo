@@ -1,11 +1,7 @@
 import { useState } from "react";
 import { useCurrentTenantId, useCurrentMembership } from "@levelup/shared-stores";
 import { callExportTenantData } from "@levelup/shared-services/auth";
-import {
-  Button,
-  Label,
-  Skeleton,
-} from "@levelup/shared-ui";
+import { Button, Label } from "@levelup/shared-ui";
 import { toast } from "sonner";
 import { useApiError } from "@levelup/shared-hooks";
 import { Download, FileDown, Clock } from "lucide-react";
@@ -90,7 +86,7 @@ export default function DataExportPage() {
       <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-bold">Data Export</h1>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground text-sm">
             You don&apos;t have permission to export data.
           </p>
         </div>
@@ -102,16 +98,16 @@ export default function DataExportPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-bold">Data Export</h1>
-        <p className="text-sm text-muted-foreground">
+        <p className="text-muted-foreground text-sm">
           Export your school data in JSON or CSV format
         </p>
       </div>
 
-      <div className="rounded-lg border bg-card p-6 space-y-6">
+      <div className="bg-card space-y-6 rounded-lg border p-6">
         {/* Collection selector */}
         <div className="space-y-3">
           <Label className="text-base font-medium">Select collections to export</Label>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
             {COLLECTIONS.map(({ key, label }) => (
               <label
                 key={key}
@@ -125,7 +121,7 @@ export default function DataExportPage() {
                   type="checkbox"
                   checked={selectedCollections.has(key)}
                   onChange={() => toggleCollection(key)}
-                  className="rounded border-primary"
+                  className="border-primary rounded"
                 />
                 <span className="text-sm font-medium">{label}</span>
               </label>
@@ -179,7 +175,7 @@ export default function DataExportPage() {
 
       {/* Export results */}
       {exportResults.length > 0 && (
-        <div className="rounded-lg border bg-card p-6 space-y-4">
+        <div className="bg-card space-y-4 rounded-lg border p-6">
           <h3 className="font-semibold">Export History</h3>
           <div className="space-y-3">
             {exportResults.map((result, idx) => {
@@ -187,20 +183,15 @@ export default function DataExportPage() {
               const isExpired = expiryDate < new Date();
 
               return (
-                <div
-                  key={idx}
-                  className="flex items-center justify-between rounded-lg border p-3"
-                >
+                <div key={idx} className="flex items-center justify-between rounded-lg border p-3">
                   <div className="space-y-1">
                     <p className="text-sm font-medium">
                       {result.collections.join(", ")} ({result.format.toUpperCase()})
                     </p>
-                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                    <div className="text-muted-foreground flex items-center gap-1 text-xs">
                       <Clock className="h-3 w-3" />
                       <span>
-                        {isExpired
-                          ? "Expired"
-                          : `Expires ${expiryDate.toLocaleTimeString()}`}
+                        {isExpired ? "Expired" : `Expires ${expiryDate.toLocaleTimeString()}`}
                       </span>
                     </div>
                   </div>
@@ -209,7 +200,7 @@ export default function DataExportPage() {
                       href={result.downloadUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+                      className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex items-center gap-1 rounded-md px-3 py-1.5 text-sm font-medium"
                     >
                       <Download className="h-4 w-4" />
                       Download
