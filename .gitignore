@@ -72,3 +72,9 @@ functions/*/package.json.bak
 .turbo
 
 package-lock.json
+
+# Content & extracted data (large generated files)
+hello-interview-extract/
+scripts/seed-configs/hi-*/
+scripts/seed-configs/*-content.ts
+scripts/seed-results/
